@@ -1,26 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --bg-primary: #EAE3D2;
+  --bg-secondary: #DFD7C2;
+  --bg-card: #E4DCC9;
+  --bg-dark-card: #2C2621;
+  --accent-gold: #9E7D52;
+  --accent-gold-light: #C5A069;
+  --text-dark: #1F1C18;
+  --text-muted: #5C554C;
+  --text-light: #F7F4EE;
+  --border-color: #D3C9B4;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-dark);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+.font-serif-luxury {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Custom luxury glass & depth cards */
+.suitoholic-card {
+  background: radial-gradient(135% 135% at 50% 10%, #EFE8DA 0%, #E2DA95 100%);
+  border: 1px solid rgba(158, 125, 82, 0.2);
+  box-shadow: 0 10px 30px -5px rgba(44, 38, 33, 0.08);
+}
+
+.suitoholic-dark-card {
+  background: radial-gradient(120% 120% at 50% 20%, #36302B 0%, #221D19 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 15px 35px rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+}
+
+/* Smooth Mannequin Transition */
+.mannequin-wrapper {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #E4DCC9;
+}
+::-webkit-scrollbar-thumb {
+  background: #9E7D52;
+  border-radius: 3px;
 }
