@@ -196,8 +196,8 @@ export default function Home() {
                 headerTitle={index === 0 ? "Latest drop" : collection.title}
               />
 
-              {/* 3D Revolving Categories Carousel (Inserted after 3rd section) */}
-              {index === 2 && (
+              {/* 3D Revolving Categories Carousel (Inserted right after 1st cloth section) */}
+              {index === 0 && (
                 <React.Fragment>
                   <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
                     <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
