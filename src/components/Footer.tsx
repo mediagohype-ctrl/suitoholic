@@ -420,37 +420,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* 3. ATELIER SALON REGIONAL NETWORK BAR                                     */}
-      {/* ========================================================================= */}
-      <div className="relative z-10 w-full bg-[#DDCFC0]/60 border-t border-b border-[#D0BFB0] py-4 px-5 sm:px-8 lg:px-14 xl:px-20">
-        <div className="max-w-[1680px] mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-[13px] font-medium text-[#46303D]">
-          <div className="flex flex-wrap items-center gap-2 sm:gap-6">
-            <span className="font-bold text-[#2C1822] uppercase tracking-wider text-[11px] sm:text-xs">
-              Atelier Regional Network:
-            </span>
-            <span className="flex items-center gap-1.5 text-[#38222E]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
-              <strong>Faridabad</strong> (Flagship Atelier)
-            </span>
-            <span className="hidden md:inline text-[#B59C86]">•</span>
-            <span className="flex items-center gap-1.5 text-[#38222E]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
-              <strong>New Delhi</strong> (Private Salon)
-            </span>
-            <span className="hidden md:inline text-[#B59C86]">•</span>
-            <span className="flex items-center gap-1.5 text-[#38222E]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
-              <strong>Mumbai</strong> (Trunk Show Suite)
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-2 text-xs font-semibold text-[#2C1822]">
-            <Globe size={14} className="text-[#8C5A28]" />
-            <span>Shipping Across 48+ Countries</span>
-          </div>
-        </div>
-      </div>
 
       {/* ========================================================================= */}
       {/* 4. BOTTOM COPYRIGHT, REGION & BACK TO TOP STRIP                          */}
