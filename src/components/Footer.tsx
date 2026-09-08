@@ -8,14 +8,12 @@ import {
   MapPin,
   Clock,
   ShieldCheck,
-  Sparkles,
   Scissors,
   Ruler,
   Truck,
   ArrowUp,
   ArrowRight,
   Lock,
-  Globe,
   ExternalLink,
 } from "lucide-react";
 
@@ -128,12 +126,11 @@ export default function Footer() {
               Dedicated to the timeless art of bespoke tailoring. Every garment is handcrafted with master precision from pure Egyptian Giza 140s twill, Sea Island cotton, and Super 150s Merino wool.
             </p>
 
-            {/* Direct Studio Concierge Box */}
-            <div className="bg-white/70 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-white/90 shadow-sm space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#D6C5B5]/60">
-                <span className="text-xs font-bold tracking-[0.2em] text-[#8C5A28] uppercase flex items-center gap-1.5">
-                  <Sparkles size={13} className="text-[#8C5A28]" />
-                  <span>Direct Concierge</span>
+            {/* Direct Studio Concierge - Flat Clean Layout */}
+            <div className="space-y-4 pt-2 border-t border-[#D6C5B5]/60">
+              <div className="flex items-center justify-between pb-1.5 border-b border-[#D6C5B5]/40">
+                <span className="text-xs font-bold tracking-[0.2em] text-[#8C5A28] uppercase">
+                  Direct Concierge
                 </span>
                 <span className="inline-flex items-center text-[#1B4332] text-[11px] font-bold gap-1.5 bg-[#2D6A4F]/15 px-2.5 py-0.5 rounded-full border border-[#2D6A4F]/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2D6A4F] animate-pulse" />
@@ -384,24 +381,21 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Office Address Card */}
-            <div className="space-y-3.5 pt-1">
-              <div className="flex items-center space-x-2">
-                <MapPin size={18} className="text-[#8C5A28]" />
-                <h3 className="text-xl sm:text-2xl font-bold text-[#3B222E] tracking-tight">
-                  Office Address
-                </h3>
-              </div>
+            {/* Office Address - Flat Clean Layout */}
+            <div className="space-y-3 pt-1">
+              <h3 className="text-xl sm:text-2xl font-bold text-[#3B222E] tracking-tight pb-2 border-b border-[#D6C5B5]">
+                Office Address
+              </h3>
               
-              <div className="bg-white/65 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-[#D6C5B5] shadow-xs space-y-2.5">
-                <address className="not-italic text-[14px] sm:text-[15px] text-[#422B36] font-medium leading-relaxed">
+              <div className="space-y-2.5">
+                <address className="not-italic text-[15px] sm:text-[16px] text-[#422B36] font-medium leading-relaxed">
                   <strong className="text-[#2C1822] block font-semibold">Suitoholic Bespoke Flagship Studio</strong>
                   Shop No. 3, Sco-17,<br />
                   HUDA Staff Colony, Sector 16,<br />
                   Faridabad, Haryana 121002, India
                 </address>
 
-                <div className="pt-2 border-t border-[#D6C5B5]/60 flex items-center justify-between text-xs font-bold text-[#8C5A28]">
+                <div className="pt-1 flex items-center justify-between text-xs font-bold text-[#8C5A28]">
                   <a 
                     href="https://maps.google.com" 
                     target="_blank" 
@@ -420,9 +414,8 @@ export default function Footer() {
         </div>
       </div>
 
-
       {/* ========================================================================= */}
-      {/* 4. BOTTOM COPYRIGHT, REGION & BACK TO TOP STRIP                          */}
+      {/* 3. BOTTOM COPYRIGHT, REGION & BACK TO TOP STRIP                          */}
       {/* ========================================================================= */}
       <div className="relative z-10 w-full bg-[#D4C4B3] border-t border-[#C7B5A3] py-6 px-5 sm:px-8 lg:px-14 xl:px-20">
         <div className="max-w-[1680px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-[#3E2833] font-medium">
