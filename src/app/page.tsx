@@ -17,40 +17,40 @@ export default function Home() {
       {/* Header */}
       <Header />
 
-      {/* Main Hero Section with Authentic Studio Lighting & 3D Floating Shirt (Full Screen Viewport) */}
-      <section className="relative w-full min-h-[calc(100vh-88px)] lg:h-[calc(100vh-88px)] flex flex-col justify-between pt-3 pb-5 sm:pt-5 sm:pb-7 lg:pt-6 lg:pb-8 px-4 sm:px-8 lg:px-12 xl:px-16">
-        <div className="max-w-[1720px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center flex-1 relative">
+      {/* Main Hero Section with Authentic Studio Lighting & 3D Floating Shirt (Full Screen Viewport across all screen sizes) */}
+      <section className="relative w-full min-h-[calc(100dvh-85px)] lg:min-h-[calc(100vh-90px)] xl:min-h-[calc(100vh-90px)] flex flex-col justify-between pt-4 pb-6 sm:pt-6 sm:pb-8 lg:pt-8 lg:pb-12 xl:pb-14 px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div className="max-w-[1780px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 xl:gap-14 items-center flex-1 relative my-auto">
           
           {/* Left Column: Typography & CTAs & Scroll Down */}
-          <div className="lg:col-span-5 flex flex-col justify-between h-full z-10 py-2 sm:py-4">
+          <div className="lg:col-span-5 flex flex-col justify-between h-full z-10 py-2 sm:py-6 lg:py-8">
             
             {/* Upper Content: Subtitle, Heading, Action Buttons */}
-            <div className="space-y-4 sm:space-y-6 my-auto">
+            <div className="space-y-4 sm:space-y-7 my-auto">
               {/* Subtitle */}
               <div>
-                <span className="text-[10px] sm:text-xs font-semibold tracking-[0.28em] text-[#9E774C] uppercase block">
+                <span className="text-[10px] sm:text-xs lg:text-sm font-semibold tracking-[0.28em] text-[#9E774C] uppercase block">
                   EFFORTLESSLY ELEGANT
                 </span>
               </div>
 
               {/* Main Luxury Serif Heading */}
-              <h1 className="font-serif-luxury font-normal text-3xl sm:text-5xl lg:text-[54px] xl:text-[62px] leading-[1.08] text-[#14110E] tracking-tight uppercase">
+              <h1 className="font-serif-luxury font-normal text-3xl sm:text-5xl lg:text-[56px] xl:text-[66px] 2xl:text-[74px] leading-[1.05] text-[#14110E] tracking-tight uppercase">
                 NOT EVERY BODY <br />
                 IS THE SAME SIZE.
               </h1>
 
               {/* Action Buttons: Row */}
-              <div className="flex flex-row items-center gap-3 sm:gap-4 pt-1 sm:pt-2">
+              <div className="flex flex-row items-center gap-3 sm:gap-4 pt-2 sm:pt-3">
                 <Link
                   href="/shop"
-                  className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-6 sm:px-8 py-3 sm:py-3.5 transition-all duration-300 text-center uppercase shadow-sm whitespace-nowrap"
+                  className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-[11px] sm:text-xs lg:text-[13px] font-bold tracking-[0.2em] px-7 sm:px-9 py-3.5 sm:py-4 transition-all duration-300 text-center uppercase shadow-md whitespace-nowrap"
                 >
                   SHOP SHIRTS
                 </Link>
                 
                 <Link
                   href="/custom-shirt"
-                  className="bg-transparent border border-[#14110E]/40 hover:border-[#14110E] hover:bg-black/5 text-[#14110E] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-5 sm:px-7 py-3 sm:py-3.5 transition-all duration-300 text-center uppercase flex items-center justify-center gap-2 group whitespace-nowrap"
+                  className="bg-transparent border border-[#14110E]/40 hover:border-[#14110E] hover:bg-black/5 text-[#14110E] text-[11px] sm:text-xs lg:text-[13px] font-bold tracking-[0.2em] px-6 sm:px-8 py-3.5 sm:py-4 transition-all duration-300 text-center uppercase flex items-center justify-center gap-2 group whitespace-nowrap"
                 >
                   <span>CUSTOM FIT</span>
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">→</span>
@@ -59,19 +59,19 @@ export default function Home() {
             </div>
 
             {/* Bottom: Scroll Down Indicator */}
-            <div className="pt-6 lg:pt-0 flex flex-col items-start space-y-2">
-              <span className="text-[9px] sm:text-[10px] tracking-[0.25em] text-[#14110E] uppercase font-semibold">
+            <div className="pt-8 lg:pt-10 flex flex-col items-start space-y-2">
+              <span className="text-[9px] sm:text-[10px] lg:text-[11px] tracking-[0.25em] text-[#14110E] uppercase font-semibold">
                 SCROLL DOWN
               </span>
-              <div className="w-[1.5px] h-7 sm:h-9 bg-[#14110E] opacity-75" />
+              <div className="w-[1.5px] h-8 sm:h-10 lg:h-12 bg-[#14110E] opacity-75" />
             </div>
           </div>
 
           {/* Right Column: 3D Floating White Shirt on Travertine Stone Podium Card */}
           <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end w-full h-full my-auto">
             
-            {/* Rounded Hero Studio Card Container */}
-            <div className="relative w-full h-[320px] sm:h-[440px] lg:h-[500px] xl:h-[560px] max-h-[75vh] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(20,17,14,0.12)] border border-white/40 bg-[#D4BEA9] flex items-center justify-center group">
+            {/* Rounded Hero Studio Card Container (Expands dynamically to fill tall screen heights) */}
+            <div className="relative w-full h-[360px] sm:h-[480px] md:h-[540px] lg:h-[calc(100vh-180px)] xl:h-[calc(100vh-200px)] min-h-[460px] max-h-[850px] 2xl:max-h-[960px] rounded-2xl sm:rounded-3xl lg:rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(20,17,14,0.14)] border border-white/50 bg-[#D4BEA9] flex items-center justify-center group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/hero_3d_shirt.jpg"
@@ -82,26 +82,26 @@ export default function Home() {
             </div>
 
             {/* Right Side Vertical Step / Carousel Indicator */}
-            <div className="absolute -right-2 sm:-right-3 lg:-right-5 xl:-right-7 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center space-y-2.5 text-[11px] font-medium text-[#14110E]">
-              <span className="font-bold text-xs">01</span>
-              <div className="w-[1px] h-4 bg-[#9E774C]" />
+            <div className="absolute -right-2 sm:-right-3 lg:-right-5 xl:-right-7 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center space-y-3 text-[11px] lg:text-xs font-medium text-[#14110E]">
+              <span className="font-bold text-xs lg:text-sm">01</span>
+              <div className="w-[1px] h-5 lg:h-6 bg-[#9E774C]" />
               <button 
                 onClick={() => setActiveSlide(1)}
-                className={`w-1.5 h-1.5 rounded-full transition-all ${activeSlide === 1 ? 'bg-[#14110E] scale-125' : 'bg-[#9E774C] hover:bg-[#14110E]'}`}
+                className={`w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full transition-all ${activeSlide === 1 ? 'bg-[#14110E] scale-125' : 'bg-[#9E774C] hover:bg-[#14110E]'}`}
                 aria-label="Slide 1" 
               />
               <button 
                 onClick={() => setActiveSlide(2)}
-                className={`w-1.5 h-1.5 rounded-full transition-all ${activeSlide === 2 ? 'bg-[#14110E] scale-125' : 'bg-[#9E774C] hover:bg-[#14110E]'}`}
+                className={`w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full transition-all ${activeSlide === 2 ? 'bg-[#14110E] scale-125' : 'bg-[#9E774C] hover:bg-[#14110E]'}`}
                 aria-label="Slide 2" 
               />
               <button 
                 onClick={() => setActiveSlide(3)}
-                className={`w-1.5 h-1.5 rounded-full transition-all ${activeSlide === 3 ? 'bg-[#14110E] scale-125' : 'bg-[#9E774C] hover:bg-[#14110E]'}`}
+                className={`w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full transition-all ${activeSlide === 3 ? 'bg-[#14110E] scale-125' : 'bg-[#9E774C] hover:bg-[#14110E]'}`}
                 aria-label="Slide 3" 
               />
-              <div className="w-[1px] h-4 bg-[#9E774C]" />
-              <span className="text-[#5A4E42] text-xs">05</span>
+              <div className="w-[1px] h-5 lg:h-6 bg-[#9E774C]" />
+              <span className="text-[#5A4E42] text-xs lg:text-sm">05</span>
             </div>
           </div>
 
