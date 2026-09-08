@@ -35,10 +35,10 @@ export default function ModernCollectionSection({
       className="py-0.5 sm:py-1 px-3.5 sm:px-6 lg:px-10 xl:px-12 max-w-[1720px] mx-auto w-full relative z-10"
     >
       {/* Top Header Row matching Reference Screenshot */}
-      <div className="flex items-center justify-between gap-4 mb-1 sm:mb-1.5">
+      <div className="flex items-center justify-between gap-4 mb-1.5 sm:mb-2 pt-1 sm:pt-1.5">
         
-        {/* Left Side: Clean Title with refined subtle boldness (font-medium sm:font-semibold) */}
-        <h2 className="text-xs sm:text-[14.5px] font-medium sm:font-semibold tracking-tight text-[#14110E]">
+        {/* Left Side: Bold, Luxury Title */}
+        <h2 className="text-sm sm:text-[16px] lg:text-[18px] font-bold tracking-tight text-[#14110E] leading-snug">
           {headerTitle || collection.title}
         </h2>
 
