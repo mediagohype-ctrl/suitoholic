@@ -2,20 +2,24 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Send, Sparkles } from "lucide-react";
+import { CheckCircle2, Send } from "lucide-react";
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("");
-  const [agreed, setAgreed] = useState(true);
+  const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  // Form is only valid when email has been entered AND the checkbox is checked
+  const isFormValid = email.trim().length > 0 && agreed;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim() && agreed) {
+    if (isFormValid) {
       setSubmitted(true);
       setTimeout(() => {
         setSubmitted(false);
         setEmail("");
+        setAgreed(false);
       }, 5000);
     }
   };
@@ -33,7 +37,7 @@ export default function NewsletterSection() {
 
         <div className="relative z-10 max-w-2xl mx-auto text-left space-y-4 sm:space-y-5">
           
-          {/* Main Title & Subtitle Matching User Specification */}
+          {/* Main Title & Subtitle */}
           <div className="space-y-2">
             <h3 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-[#3B222E] tracking-tight">
               Join Our Newsletter
@@ -68,17 +72,22 @@ export default function NewsletterSection() {
                   />
                 </div>
                 
+                {/* Subscribe Button - Light color until email is entered and checkbox is ticked */}
                 <button
                   type="submit"
-                  disabled={!agreed}
-                  className="bg-[#4A2635] hover:bg-[#341824] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm sm:text-base font-bold tracking-wide px-7 sm:px-9 py-3.5 rounded-xl transition-all duration-200 shadow-md flex items-center justify-center gap-2 shrink-0 cursor-pointer group"
+                  disabled={!isFormValid}
+                  className={`text-sm sm:text-base font-bold tracking-wide px-7 sm:px-9 py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shrink-0 ${
+                    isFormValid
+                      ? "bg-[#4A2635] hover:bg-[#341824] text-white shadow-md cursor-pointer group scale-100"
+                      : "bg-[#D5C2B3] text-[#8C7684] cursor-not-allowed opacity-75 shadow-none"
+                  }`}
                 >
                   <span>Subscribe</span>
-                  <Send size={15} className="transform group-hover:translate-x-0.5 transition-transform" />
+                  <Send size={15} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-white" : "text-[#8C7684]"}`} />
                 </button>
               </div>
 
-              {/* Checkbox Consent with Privacy Policy link */}
+              {/* Checkbox Consent with Privacy Policy link (unchecked by default) */}
               <label className="flex items-start space-x-2.5 cursor-pointer select-none group pt-1">
                 <input
                   type="checkbox"
