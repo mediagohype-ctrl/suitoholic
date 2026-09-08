@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="#7A5229" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Tape Roll Outer Cylinder -->
+  <ellipse cx="13.5" cy="12.5" rx="7.5" ry="3.8" />
+  <path d="M6 12.5V19C6 21.1 9.4 22.8 13.5 22.8C17.6 22.8 21 21.1 21 19V12.5" />
+  <!-- Tape Center Hole -->
+  <ellipse cx="13.5" cy="12.5" rx="3.5" ry="1.7" />
+  <!-- Extended Tape Strip to Right -->
+  <path d="M17.5 22.8H26C27.5 22.8 28.5 21.8 28.5 20.3C28.5 18.8 27.5 17.8 26 17.8H21" />
+  <!-- Tape Tick Marks -->
+  <line x1="22.5" y1="17.8" x2="22.5" y2="20.3" />
+  <line x1="24.8" y1="17.8" x2="24.8" y2="19.8" />
+  <line x1="27" y1="17.8" x2="27" y2="20.3" />
+</svg>

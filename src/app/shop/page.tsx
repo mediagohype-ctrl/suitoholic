@@ -1,324 +1,484 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
-import { ArrowRight, ChevronRight, Check, Sparkles, Filter, SlidersHorizontal, Heart } from "lucide-react";
+import Footer from "@/components/Footer";
+import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
+import { allProducts, collectionCategories, ProductItem } from "@/data/products";
+import { 
+  ArrowRight, 
+  ArrowLeft, 
+  Plus, 
+  RotateCcw, 
+  ChevronDown, 
+  Heart, 
+  Star, 
+  SlidersHorizontal 
+} from "lucide-react";
 
-export default function ShopPage() {
-  const [activeCategory, setActiveCategory] = useState<string>("plain");
-  const [activeSort, setActiveSort] = useState("NEW ARRIVALS");
+// Main Categories Showcase Data
+const mainCategories = [
+  {
+    id: "formal_shirts",
+    title: "EXCLUSIVE FORMAL SHIRTS",
+    mobileTitle: ["EXCLUSIVE", "FORMAL SHIRTS"],
+    subtitle: "100% pure Egyptian Giza 140s boardroom dress shirts.",
+    image: "/formal_white_twill.jpg",
+  },
+  {
+    id: "formal_stripes",
+    title: "EXECUTIVE STRIPED FORMAL SHIRTS",
+    mobileTitle: ["STRIPED", "FORMAL SHIRTS"],
+    subtitle: "Italian banker stripes, pinstripes & micro-checks.",
+    image: "/formal_banker_stripe.jpg",
+  },
+  {
+    id: "formal_bespoke",
+    title: "LUXURY TEXTURED & TWILL SHIRTS",
+    mobileTitle: ["TEXTURED &", "TWILL SHIRTS"],
+    subtitle: "Sea Island cotton, royal dobbies & herringbone weaves.",
+    image: "/formal_ivory_herringbone.jpg",
+  },
+  {
+    id: "trousers",
+    title: "TAILORED TROUSERS & PANTS",
+    mobileTitle: ["TAILORED", "TROUSERS"],
+    subtitle: "Italian pleated wool dress pants & Gurkha trousers.",
+    image: "/pant_pleated_beige.jpg",
+  },
+  {
+    id: "tshirts",
+    title: "PREMIUM POLOS & T-SHIRTS",
+    mobileTitle: ["POLOS &", "T-SHIRTS"],
+    subtitle: "Heavyweight Supima tees & silk-blend knit polos.",
+    image: "/tshirt_knit_navy_polo.jpg",
+  },
+  {
+    id: "blazers",
+    title: "BESPOKE SUITS & BLAZERS",
+    mobileTitle: ["SUITS &", "BLAZERS"],
+    subtitle: "Super 130s Italian wool jackets & dinner tuxedos.",
+    image: "/blazer_navy_wool.jpg",
+  },
+  {
+    id: "ceremonial",
+    title: "ETHNIC & CEREMONIAL LUXURY",
+    mobileTitle: ["CEREMONIAL &", "ROYAL ATELIER"],
+    subtitle: "Silk bandhgalas, wedding kurtas & smoking jackets.",
+    image: "/ceremonial_bandhgala.jpg",
+  },
+];
 
-  // Category listing matching reference image 2 & 3
-  const categories = [
-    {
-      id: "plain",
-      title: "PLAIN SHIRTS",
-      subtitle: "Timeless solids for every occasion.",
-      image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "stripe",
-      title: "STRIPE SHIRTS",
-      subtitle: "Classic stripes. Modern elegance.",
-      image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "linen",
-      title: "LINEN SHIRTS",
-      subtitle: "Breathe easy. Stay effortlessly stylish.",
-      image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "bespoke",
-      title: "BESPOKE HAND STITCH SHIRTS",
-      subtitle: "Handcrafted luxury. Made just for you.",
-      image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=600&q=80",
-    },
-  ];
+function ShopContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // Shirt Products for list view (Reference Image 3 - dark container boxes with soft rounded edges)
-  const products = [
-    {
-      id: "shirt-1",
-      name: "CLASSIC WHITE SHIRT",
-      category: "plain",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=500&q=80",
-      tag: "Best Seller",
-    },
-    {
-      id: "shirt-2",
-      name: "NAVY STRIPE SHIRT",
-      category: "stripe",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80",
-      tag: "Popular",
-    },
-    {
-      id: "shirt-3",
-      name: "PINK LINEN SHIRT",
-      category: "linen",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=500&q=80",
-    },
-    {
-      id: "shirt-4",
-      name: "CHARCOAL STRIPE SHIRT",
-      category: "stripe",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=500&q=80",
-    },
-    {
-      id: "shirt-5",
-      name: "SKY BLUE STRIPE SHIRT",
-      category: "stripe",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=500&q=80",
-    },
-    {
-      id: "shirt-6",
-      name: "BEIGE STRIPE SHIRT",
-      category: "stripe",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1588359348347-9bc6cbaa689e?auto=format&fit=crop&w=500&q=80",
-    },
-    {
-      id: "shirt-7",
-      name: "OLIVE STRIPE SHIRT",
-      category: "stripe",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80",
-    },
-    {
-      id: "shirt-8",
-      name: "MAROON STRIPE SHIRT",
-      category: "stripe",
-      price: "₹ 2,499",
-      image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=500&q=80",
-    },
-  ];
+  const selectedCategory = searchParams.get("category");
+  const [wishlist, setWishlist] = useState<number[]>([]);
+  const [sortOption] = useState<string>("NEW ARRIVALS");
+  const [openFilters, setOpenFilters] = useState<Record<string, boolean>>({});
+
+  const handleCategorySelect = (id: string) => {
+    router.push(`/shop?category=${id}`, { scroll: false });
+  };
+
+  const handleBackToCategories = () => {
+    router.push("/shop", { scroll: false });
+  };
+
+  const toggleWishlist = (id: number) => {
+    setWishlist((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const toggleFilter = (filter: string) => {
+    setOpenFilters((prev) => ({ ...prev, [filter]: !prev[filter] }));
+  };
+
+  const displayProducts = selectedCategory && selectedCategory !== "all"
+    ? allProducts.filter((p) => p.category === selectedCategory)
+    : allProducts;
+
+  const currentCategoryName = mainCategories.find(c => c.id === selectedCategory)?.title || "ALL SHIRTS";
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#EAE3D2]">
+    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
+      {/* Header */}
       <Header activeTab="shop" />
 
-      {/* Main Container */}
-      <main className="flex-1 container mx-auto px-4 py-6 sm:py-10">
-        {/* Breadcrumb navigation */}
-        <div className="flex items-center text-xs font-semibold tracking-widest text-[#5C554C] uppercase mb-4 space-x-2">
-          <Link href="/" className="hover:text-[#9E7D52]">HOME</Link>
-          <ChevronRight size={14} />
-          <span className="text-[#1F1C18]">SHOP SHIRTS</span>
-        </div>
-
-        {/* Header Title Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-[#D3C9B4]">
-          <div>
-            <h1 className="text-3xl sm:text-5xl font-serif-luxury font-bold text-[#1F1C18] tracking-wider uppercase mb-2">
-              SHOP <span className="text-[#9E7D52]">SHIRTS</span>
-            </h1>
-            <p className="text-sm text-[#5C554C] max-w-xl">
-              Explore our premium collection of shirts. Designed for every occasion. Tailored for you.
-            </p>
-          </div>
-          <div className="mt-4 md:mt-0 text-right hidden md:block">
-            <span className="font-serif-luxury text-xl text-[#9E7D52] italic tracking-wide">
-              SHIRTS FOR A BETTER YOU.
-            </span>
-          </div>
-        </div>
-
-        {/* REFERENCE IMAGE 2: 4 Different Shirt Categories Horizontal Showcase */}
-        <section id="shop-categories" className="mb-14">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold tracking-wider text-[#1F1C18] uppercase">
-              Browse Categories
-            </h2>
-            <span className="text-xs font-medium text-[#9E7D52]">4 Collections Available</span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((cat) => {
-              const isSelected = activeCategory === cat.id;
-              return (
-                <div
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`cursor-pointer group relative overflow-hidden rounded-2xl p-4 transition-all duration-300 ${
-                    isSelected
-                      ? "bg-[#2C2621] text-[#EAE3D2] shadow-2xl scale-[1.02] border-2 border-[#9E7D52]"
-                      : "bg-[#E4DCC9] hover:bg-[#DED5BE] text-[#1F1C18] border border-[#D3C9B4]/80 shadow-md"
-                  }`}
-                >
-                  {/* Category Image Box with rounded edges and soft depth shadow */}
-                  <div className="relative w-full h-56 sm:h-64 rounded-xl overflow-hidden mb-4 shadow-inner bg-[#DFD7C2]">
-                    <Image
-                      src={cat.image}
-                      alt={cat.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
-                  </div>
-
-                  <h3 className={`font-serif-luxury text-lg font-bold tracking-wider uppercase mb-1 ${
-                    isSelected ? "text-[#EAE3D2]" : "text-[#1F1C18]"
-                  }`}>
-                    {cat.title}
-                  </h3>
-                  <p className={`text-xs mb-4 line-clamp-2 ${
-                    isSelected ? "text-[#D4C3A3]" : "text-[#5C554C]"
-                  }`}>
-                    {cat.subtitle}
-                  </p>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-current/10">
-                    <span className="text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
-                      EXPLORE <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
-                    {isSelected && (
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#9E7D52] animate-pulse" />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* REFERENCE IMAGE 3: Product Listing Grid with Dark Container Boxes */}
-        <section className="mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 pb-4 border-b border-[#D3C9B4]/60 gap-4">
-            <div className="flex items-center space-x-3 text-xs font-semibold tracking-wider text-[#1F1C18] uppercase">
-              <span className="bg-[#1F1C18] text-[#EAE3D2] px-3 py-1.5 rounded-md flex items-center gap-2">
-                <Filter size={14} /> FILTER BY
-              </span>
-              <span className="text-[#5C554C]">Showing 24 Products</span>
+      {/* Studio Atmosphere Backdrop */}
+      <div className="relative flex-1 w-full">
+        <main className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 pt-3 sm:pt-6 pb-8 sm:pb-16">
+          
+          {/* Top Section: Breadcrumb & Title */}
+          <div className="mb-4 sm:mb-6">
+            <div className="flex items-center text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] uppercase mb-2 sm:mb-3 space-x-2">
+              <Link href="/" className="text-[#332B24] hover:text-[#966839] transition-colors">HOME</Link>
+              <span className="text-[#966839] text-xs font-normal">&gt;</span>
+              <span className="text-[#8C6D47] font-bold">SHOP SHIRTS</span>
             </div>
 
-            <div className="flex items-center space-x-3 text-xs">
-              <span className="text-[#5C554C] font-medium uppercase tracking-wider">SORT BY:</span>
-              <select
-                value={activeSort}
-                onChange={(e) => setActiveSort(e.target.value)}
-                className="bg-[#E4DCC9] border border-[#D3C9B4] px-3 py-1.5 rounded-md font-semibold text-[#1F1C18] focus:outline-none focus:border-[#9E7D52]"
-              >
-                <option value="NEW ARRIVALS">NEW ARRIVALS</option>
-                <option value="PRICE LOW TO HIGH">PRICE: LOW TO HIGH</option>
-                <option value="PRICE HIGH TO LOW">PRICE: HIGH TO LOW</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar Filter Menu */}
-            <div className="lg:col-span-1 bg-[#E4DCC9]/90 border border-[#D3C9B4] p-5 rounded-2xl h-fit shadow-sm space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
               <div>
-                <h4 className="text-xs font-bold tracking-widest text-[#1F1C18] uppercase mb-3 pb-2 border-b border-[#D3C9B4]">
-                  CATEGORIES
-                </h4>
-                <ul className="space-y-2 text-xs font-semibold text-[#5C554C]">
-                  {categories.map((c) => (
-                    <li
-                      key={c.id}
-                      onClick={() => setActiveCategory(c.id)}
-                      className={`cursor-pointer flex items-center justify-between py-1 px-2 rounded hover:text-[#1F1C18] transition-colors ${
-                        activeCategory === c.id ? "bg-[#9E7D52]/20 text-[#9E7D52] font-bold" : ""
-                      }`}
-                    >
-                      <span>{c.title}</span>
-                      {activeCategory === c.id && <ArrowRight size={14} />}
-                    </li>
-                  ))}
-                </ul>
+                <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-normal text-[#140F0A] tracking-tight uppercase leading-[1.05]">
+                  SHOP SHIRTS
+                </h1>
+                <p className="text-xs sm:text-sm text-[#44372D] font-normal mt-1 leading-relaxed">
+                  Explore our premium collection of shirts. <br className="hidden sm:inline" />
+                  Designed for every occasion. Tailored for you.
+                </p>
+              </div>
+              
+              {/* Right Editorial Slogan on Desktop */}
+              <div className="hidden lg:block text-right select-none opacity-85">
+                <p className="font-serif-luxury text-[13px] text-[#966839] font-normal tracking-[0.14em] uppercase leading-tight">
+                  SHIRTS <br />
+                  FOR A BETTER <br />
+                  YOU.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* VIEW 1: 4 CATEGORIES SHOWCASE (Default Initial View)                       */}
+          {/* ========================================================================= */}
+          {!selectedCategory && (
+            <div className="space-y-6">
+              {/* Desktop View: 4 Category Cards in 1 Horizontal Row on Stone Slabs */}
+              <div className="hidden lg:grid grid-cols-4 gap-5">
+                {mainCategories.map((cat) => (
+                  <div
+                    key={cat.id}
+                    onClick={() => handleCategorySelect(cat.id)}
+                    className="bg-[#EEDAC4] border border-[#CEB8A0] rounded-2xl p-3.5 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between text-left group cursor-pointer"
+                  >
+                    {/* Top: 3D Shirt on Stone Slab Image */}
+                    <div className="w-full aspect-[4/3.8] rounded-xl overflow-hidden relative bg-[#241D17] shadow-xs">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={cat.image}
+                        alt={cat.title}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                        loading="eager"
+                      />
+                    </div>
+
+                    {/* Bottom: Title, Subtitle, & Explore Link */}
+                    <div className="pt-3.5 pb-1 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="font-serif-luxury text-[15px] font-bold tracking-[0.06em] text-[#1F1C18] uppercase leading-tight group-hover:text-[#966839] transition-colors">
+                          {cat.title}
+                        </h3>
+                        <p className="text-[11.5px] text-[#5C5044] font-sans mt-1 leading-snug">
+                          {cat.subtitle}
+                        </p>
+                      </div>
+                      
+                      <div className="pt-3 flex items-center justify-between border-t border-[#DAC2AA]/60 mt-3 text-[11px] font-bold text-[#1F1C18] group-hover:text-[#966839] uppercase tracking-wider">
+                        <span>EXPLORE COLLECTION</span>
+                        <ArrowRight size={15} className="transform group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              {/* Filter Attributes */}
-              {["COLOR", "SIZE", "FABRIC", "FIT", "PRICE"].map((filterName) => (
-                <div key={filterName} className="border-t border-[#D3C9B4] pt-4">
-                  <div className="flex items-center justify-between text-xs font-bold tracking-widest text-[#1F1C18] cursor-pointer">
-                    <span>{filterName}</span>
-                    <span>+</span>
-                  </div>
-                </div>
-              ))}
+              {/* Mobile View: 4 Stacked Category Cards with Clean Stone Slabs */}
+              <div className="lg:hidden space-y-3">
+                {mainCategories.map((cat) => (
+                  <div
+                    key={cat.id}
+                    onClick={() => handleCategorySelect(cat.id)}
+                    className="bg-[#F1E0CE]/95 border border-[#DEC6B0]/75 rounded-[20px] p-2.5 shadow-xs hover:shadow-md flex items-center group transition-all text-left cursor-pointer"
+                  >
+                    {/* Left: 3D Shirt on Stone Slab */}
+                    <div className="w-[125px] h-[95px] rounded-[15px] overflow-hidden shrink-0 relative bg-[#241D17] shadow-xs">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={cat.image}
+                        alt={cat.title}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                        loading="eager"
+                      />
+                    </div>
 
-              <button className="w-full bg-[#1F1C18] text-[#EAE3D2] py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#9E7D52] transition-colors shadow">
-                CLEAR ALL
-              </button>
-            </div>
-
-            {/* Main Products Grid - Reference Image 3 Dark Boxes */}
-            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-              {products.map((p) => (
-                <div
-                  key={p.id}
-                  className="suitoholic-dark-card group p-3.5 flex flex-col justify-between transition-all duration-300 hover:transform hover:-translate-y-1.5 hover:shadow-2xl border border-white/10"
-                >
-                  {/* Image container inside box with rounded corners and darker depth */}
-                  <div className="relative w-full h-52 sm:h-56 rounded-xl overflow-hidden mb-3 bg-[#1F1C18]">
-                    <Image
-                      src={p.image}
-                      alt={p.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                    />
-                    <button className="absolute top-2.5 right-2.5 p-1.5 bg-black/40 hover:bg-[#9E7D52] text-white rounded-full transition-colors">
-                      <Heart size={14} />
-                    </button>
-                    {p.tag && (
-                      <span className="absolute top-2.5 left-2.5 bg-[#9E7D52] text-white text-[9px] font-bold tracking-widest px-2 py-0.5 rounded uppercase">
-                        {p.tag}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Product Details */}
-                  <div className="flex flex-col flex-1 justify-between">
-                    <div>
-                      <h4 className="font-serif-luxury text-sm font-bold tracking-wider text-[#FAF6EE] uppercase line-clamp-1 mb-1">
-                        {p.name}
-                      </h4>
-                      <p className="text-xs font-semibold text-[#C5A069] mb-3">
-                        {p.price}
+                    {/* Center: Title & Subtitle */}
+                    <div className="flex-1 min-w-0 pl-3.5 pr-1 py-0.5">
+                      <h3 className="font-serif-luxury text-[15px] font-bold tracking-[0.05em] text-[#140F0A] uppercase leading-[1.12]">
+                        {cat.mobileTitle[0]} <br />
+                        {cat.mobileTitle[1]}
+                      </h3>
+                      <p className="text-[10.5px] text-[#524538] font-sans mt-1 leading-tight line-clamp-2">
+                        {cat.subtitle}
                       </p>
                     </div>
 
-                    <Link
-                      href={`/custom-shirt?style=${p.category}&name=${encodeURIComponent(p.name)}`}
-                      className="w-full bg-[#3D352E] hover:bg-[#9E7D52] text-[#FAF6EE] py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider text-center transition-colors flex items-center justify-center gap-1 shadow-sm"
-                    >
-                      <Sparkles size={12} /> CUSTOM FIT THIS
-                    </Link>
+                    {/* Right: Action Arrow */}
+                    <div className="shrink-0 pr-2 pl-1 text-[#140F0A] group-hover:text-[#966839] group-hover:translate-x-1 transition-all">
+                      <ArrowRight size={20} strokeWidth={1.5} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          )}
 
-        {/* Feature Highlights Banner */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#E4DCC9] border border-[#D3C9B4] p-6 rounded-2xl text-center">
-          <div className="p-3">
-            <h5 className="text-xs font-bold uppercase tracking-wider text-[#1F1C18] mb-1">CUSTOM FIT</h5>
-            <p className="text-[11px] text-[#5C554C]">Made for Your Body</p>
-          </div>
-          <div className="p-3 border-l border-[#D3C9B4]">
-            <h5 className="text-xs font-bold uppercase tracking-wider text-[#1F1C18] mb-1">PREMIUM FABRICS</h5>
-            <p className="text-[11px] text-[#5C554C]">Finest Quality Cotton</p>
-          </div>
-          <div className="p-3 border-l border-[#D3C9B4]">
-            <h5 className="text-xs font-bold uppercase tracking-wider text-[#1F1C18] mb-1">EXPERT TAILORING</h5>
-            <p className="text-[11px] text-[#5C554C]">Every Stitch Matters</p>
-          </div>
-          <div className="p-3 border-l border-[#D3C9B4]">
-            <h5 className="text-xs font-bold uppercase tracking-wider text-[#1F1C18] mb-1">EASY RETURNS</h5>
-            <p className="text-[11px] text-[#5C554C]">Hassle Free Guarantee</p>
-          </div>
-        </div>
-      </main>
+          {/* ========================================================================= */}
+          {/* VIEW 2: PRODUCT CATALOG (When any category is clicked)                     */}
+          {/* ========================================================================= */}
+          {selectedCategory && (
+            <div>
+              {/* Back to All Categories Button on Mobile */}
+              <div className="lg:hidden flex items-center justify-between mb-4">
+                <button
+                  onClick={handleBackToCategories}
+                  className="inline-flex items-center space-x-1.5 bg-[#E4D1BC] border border-[#C5AE96] px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase text-[#1F1C18]"
+                >
+                  <ArrowLeft size={14} />
+                  <span>ALL CATEGORIES</span>
+                </button>
+                <span className="text-[10.5px] font-semibold text-[#54483C]">
+                  {displayProducts.length} Products
+                </span>
+              </div>
+
+              {/* Mobile Category Filter Pills */}
+              <div className="lg:hidden flex space-x-2 overflow-x-auto pb-3 mb-4 scrollbar-none">
+                {mainCategories.map((cat) => {
+                  const isActive = selectedCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => handleCategorySelect(cat.id)}
+                      className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase whitespace-nowrap tracking-wider transition-all ${
+                        isActive
+                          ? "bg-[#1F1C18] text-[#FAF8F5] shadow-xs"
+                          : "bg-[#EEDAC4] text-[#44382D] border border-[#CEB8A0]"
+                      }`}
+                    >
+                      {cat.title}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Desktop Layout: Left Sidebar + Right 4x2 Catalog Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-8">
+                
+                {/* Left Sidebar (Desktop Only) */}
+                <aside className="hidden lg:block lg:col-span-3 space-y-4 select-none">
+                  
+                  {/* CATEGORIES SECTION */}
+                  <div className="bg-[#EEDAC4]/85 border border-[#D5C0A8] rounded-xl p-3.5 shadow-xs">
+                    <div className="flex items-center justify-between mb-2.5 pb-1 border-b border-[#DAC2AA]/60">
+                      <h3 className="text-[11px] font-bold tracking-[0.2em] text-[#332B24] uppercase">
+                        CATEGORIES
+                      </h3>
+                      <button 
+                        onClick={handleBackToCategories}
+                        className="text-[9.5px] text-[#8A6E48] hover:underline uppercase font-bold"
+                      >
+                        VIEW ALL
+                      </button>
+                    </div>
+                    <div className="space-y-1 text-xs">
+                      {mainCategories.map((cat) => {
+                        const isActive = selectedCategory === cat.id;
+                        return (
+                          <button
+                            key={cat.id}
+                            onClick={() => handleCategorySelect(cat.id)}
+                            className={`w-full text-left px-3 py-2 rounded-lg text-[10.5px] tracking-wider uppercase transition-all flex items-center justify-between ${
+                              isActive
+                                ? "bg-[#E4CEB8] border border-[#C5AE96] text-[#1A1511] font-bold shadow-2xs"
+                                : "text-[#54483C] hover:text-[#1A1511] hover:bg-[#E7D3BF]"
+                            }`}
+                          >
+                            <span>{cat.title}</span>
+                            {isActive && <span className="text-xs">→</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* FILTER BY SECTION */}
+                  <div className="bg-[#EEDAC4]/85 border border-[#D5C0A8] rounded-xl p-3.5 shadow-xs space-y-2.5">
+                    <h3 className="text-[11px] font-bold tracking-[0.2em] text-[#332B24] uppercase pb-1 border-b border-[#DAC2AA]/60">
+                      FILTER BY
+                    </h3>
+
+                    {["COLOR", "SIZE", "FABRIC", "FIT", "PRICE"].map((filter) => (
+                      <div key={filter} className="border-b border-[#DAC2AA]/40 pb-2 last:border-0 last:pb-0">
+                        <button
+                          onClick={() => toggleFilter(filter)}
+                          className="w-full flex items-center justify-between text-[11px] font-semibold text-[#44382D] hover:text-[#110E0B] tracking-wider uppercase py-0.5"
+                        >
+                          <span>{filter}</span>
+                          <Plus size={14} className={`transform transition-transform ${openFilters[filter] ? "rotate-45" : ""}`} />
+                        </button>
+                        {openFilters[filter] && (
+                          <div className="pt-2 pl-1 space-y-1 text-[10px] text-[#635548]">
+                            <p className="cursor-pointer hover:text-[#110E0B]">Option 1</p>
+                            <p className="cursor-pointer hover:text-[#110E0B]">Option 2</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CLEAR ALL BUTTON */}
+                  <button
+                    onClick={() => {
+                      handleCategorySelect("formal_shirts");
+                      setOpenFilters({});
+                    }}
+                    className="w-full bg-[#E5D2BE] hover:bg-[#1F1C18] text-[#332B24] hover:text-white border border-[#C5AE96] rounded-xl py-2.5 px-3 text-[10px] font-bold tracking-[0.18em] uppercase transition-all flex items-center justify-center space-x-2 shadow-2xs"
+                  >
+                    <span>CLEAR ALL</span>
+                    <RotateCcw size={12} />
+                  </button>
+                </aside>
+
+                {/* Right Main Catalog: Sort Bar + Products Grid */}
+                <div className="col-span-1 lg:col-span-9 space-y-3">
+                  
+                  {/* Top Sort & Count Bar */}
+                  <div className="flex items-center justify-between sm:justify-end sm:space-x-6 text-[11px] text-[#4A3E33] font-medium pb-1 tracking-wider">
+                    <span className="lg:hidden text-[#695B4E] font-semibold uppercase">{currentCategoryName}</span>
+                    <div className="flex items-center space-x-1.5 cursor-pointer hover:text-[#110E0B]">
+                      <span className="uppercase text-[#695B4E] font-semibold">SORT BY:</span>
+                      <span className="font-bold uppercase text-[#1F1C18] flex items-center gap-1">
+                        {sortOption} <ChevronDown size={14} />
+                      </span>
+                    </div>
+                    <span className="hidden sm:inline text-[#695B4E] font-normal">24 Products</span>
+                  </div>
+
+                  {/* MOBILE VIEW (< lg:): 1 Horizontal Shirt Card Per Row (Matching Screenshot) */}
+                  <div className="lg:hidden space-y-2.5 mb-6">
+                    {displayProducts.map((p) => (
+                      <Link
+                        key={p.id}
+                        href={`/product/${p.slug}`}
+                        className="bg-[#F1E0CE]/95 border border-[#DEC6B0]/75 rounded-[20px] p-2 shadow-xs hover:shadow-md flex items-center group transition-all"
+                      >
+                        {/* Left: Thumbnail with Rounded Edges on Stone Slab */}
+                        <div className="w-[125px] h-[90px] rounded-[15px] overflow-hidden shrink-0 relative bg-[#241D17] shadow-xs">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={p.image}
+                            alt={p.name}
+                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                            loading="eager"
+                          />
+                        </div>
+
+                        {/* Center: Title, Subtitle & Price */}
+                        <div className="flex-1 min-w-0 pl-3.5 pr-1 py-0.5">
+                          <h3 className="font-serif-luxury text-[13.5px] font-bold tracking-[0.03em] text-[#140F0A] uppercase leading-[1.15]">
+                            {p.name}
+                          </h3>
+                          <p className="text-[10px] text-[#524538] font-sans mt-0.5 leading-tight line-clamp-1">
+                            {p.subtitle}
+                          </p>
+                          <p className="text-[11.5px] font-bold text-[#140F0A] mt-1.5 font-sans tracking-wide">
+                            {p.price}
+                          </p>
+                        </div>
+
+                        {/* Right: Action Arrow */}
+                        <div className="shrink-0 pr-2 pl-1 text-[#140F0A] group-hover:text-[#966839] group-hover:translate-x-1 transition-all">
+                          <ArrowRight size={20} strokeWidth={1.5} />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* DESKTOP VIEW (lg:+): 4-Column × 2-Row Product Grid */}
+                  <div className="hidden lg:grid grid-cols-4 gap-3.5">
+                    {displayProducts.map((p) => {
+                      const isFavorited = wishlist.includes(p.id);
+                      return (
+                        <div
+                          key={p.id}
+                          className="bg-[#EEDAC4] border border-[#CEB8A0] rounded-xl p-2.5 shadow-2xs hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group"
+                        >
+                          {/* Product Thumbnail Container with Wishlist Heart */}
+                          <div className="relative w-full aspect-[4/3.7] rounded-lg overflow-hidden bg-[#241D17] flex items-center justify-center shadow-inner">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={p.image}
+                              alt={p.name}
+                              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                              loading="eager"
+                            />
+                            {/* Wishlist Heart Button */}
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleWishlist(p.id);
+                              }}
+                              className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs flex items-center justify-center text-white transition-all shadow-xs"
+                              aria-label="Add to wishlist"
+                            >
+                              <Heart
+                                size={13}
+                                className={isFavorited ? "fill-[#E04B4B] text-[#E04B4B]" : "text-white/90"}
+                              />
+                            </button>
+                          </div>
+
+                          {/* Product Title & Price Details */}
+                          <div className="pt-2.5 pb-0.5 text-center flex flex-col items-center">
+                            <h4 className="font-serif-luxury text-[11.5px] font-bold tracking-[0.05em] text-[#1F1C18] uppercase leading-tight line-clamp-1">
+                              {p.name}
+                            </h4>
+                            <p className="text-[11px] font-bold text-[#1F1C18] mt-1 font-sans tracking-wide">
+                              {p.price}
+                            </p>
+                          </div>
+
+                          {/* Explore / Customize Link Button */}
+                          <Link
+                            href={`/product/${p.slug}`}
+                            className="mt-2 w-full bg-[#E5D2BE] hover:bg-[#1F1C18] text-[#1F1C18] hover:text-white border border-[#C5AE96] py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider text-center transition-all flex items-center justify-center gap-1 shadow-2xs"
+                          >
+                            <span>CUSTOMIZE</span>
+                            <span>→</span>
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          )}
+
+        </main>
+      </div>
+
+      {/* Bottom Feature Highlights Bar */}
+      <FeatureHighlightsBar />
+
+      {/* Comprehensive Luxury E-Commerce Footer */}
+      <Footer />
     </div>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#D7C2AD] flex items-center justify-center text-sm font-semibold tracking-widest uppercase text-[#14110E]">Loading Shop...</div>}>
+      <ShopContent />
+    </Suspense>
   );
 }

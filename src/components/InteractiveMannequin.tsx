@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { Sparkles } from "lucide-react";
+import React from "react";
 
 export interface CustomFitState {
   chestSize: number;
@@ -28,19 +26,16 @@ interface InteractiveMannequinProps {
   currentStep?: number;
 }
 
-export default function InteractiveMannequin({ customFit, showRotateControl = false, onColorChange, currentStep }: InteractiveMannequinProps) {
+export default function InteractiveMannequin({ customFit, currentStep }: InteractiveMannequinProps) {
   // Body fit stomach width scaling calculation
   let stomachWidth = 140; // Default lean
-  let stomachScale = 1;
   let stomachCurve = 0;
   
   if (customFit.bodyFit === "regular") {
     stomachWidth = 158;
-    stomachScale = 1.12;
     stomachCurve = 8;
   } else if (customFit.bodyFit === "tummy") {
     stomachWidth = 178;
-    stomachScale = 1.25;
     stomachCurve = 18;
   }
 
@@ -48,8 +43,8 @@ export default function InteractiveMannequin({ customFit, showRotateControl = fa
   const isTall = customFit.height?.includes("Tall") || customFit.height?.includes("6'");
   const isShort = customFit.height?.includes("Short") || customFit.height?.includes("5'4") || customFit.height?.includes("5'5");
   
-  let shirtLength = isTall ? 320 : isShort ? 270 : 295;
-  let sleeveLength = customFit.sleeveType === "half" ? 80 : (isTall ? 220 : isShort ? 185 : 200);
+  const shirtLength = isTall ? 320 : isShort ? 270 : 295;
+  const sleeveLength = customFit.sleeveType === "half" ? 80 : (isTall ? 220 : isShort ? 185 : 200);
 
   // Shirt colors mapping matching luxury references
   const colorMap: Record<string, { body: string; shadow: string; stroke: string }> = {

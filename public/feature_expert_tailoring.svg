@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="#7A5229" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Base Plate / Bed -->
+  <line x1="4" y1="24.5" x2="28" y2="24.5" />
+  <path d="M5.5 24.5L7.5 27.5H24.5L26.5 24.5" />
+  <!-- Machine Arm & Body -->
+  <path d="M8.5 24.5V14C8.5 11 10.5 9 13.5 9H23.5C25 9 26 10 26 11.5V24.5" />
+  <!-- Spool of Thread on Top -->
+  <line x1="16.5" y1="5.5" x2="16.5" y2="9" />
+  <rect x="15" y="6" width="3" height="3" rx="0.5" fill="#7A5229" fill-opacity="0.25" />
+  <!-- Needle Assembly & Presser Foot -->
+  <line x1="11" y1="13.5" x2="11" y2="21" />
+  <path d="M9.5 21H12.5" />
+  <!-- Handwheel on Right -->
+  <circle cx="26" cy="14" r="2.5" />
+  <!-- Fabric with stitch pattern underneath -->
+  <path d="M5 24.5C8 23 11 25.5 14 24.5" stroke-dasharray="1.5 1.5" />
+</svg>

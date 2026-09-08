@@ -1,46 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Michroma&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cinzel:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #EAE3D2;
-  --bg-secondary: #DFD7C2;
-  --bg-card: #E4DCC9;
-  --bg-dark-card: #2C2621;
-  --accent-gold: #9E7D52;
+  --bg-primary: #D7C2AD;
+  --bg-sand: #D7C2AD;
+  --bg-sand-light: #EFE2D4;
+  --bg-sand-glow: #F6ECE2;
+  --bg-sand-dark: #C2AC96;
+  --bg-bar: #F2E8E0;
+  --bg-card: #EFE2D4;
+  --bg-card-dark: #14110E;
+  --bg-dark: #110E0D;
+  --accent-gold: #9E774C;
   --accent-gold-light: #C5A069;
-  --text-dark: #1F1C18;
-  --text-muted: #5C554C;
-  --text-light: #F7F4EE;
-  --border-color: #D3C9B4;
+  --text-dark: #14110E;
+  --text-muted: #5A4E42;
+  --text-light: #FAF8F5;
+  --border-color: #D0BDA9;
 }
 
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-dark);
+html, body {
+  background-color: #D7C2AD;
+  color: #14110E;
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Authentic Luxury Studio Backdrop Gradient */
+.bg-studio-warm {
+  background: 
+    radial-gradient(ellipse at 65% 35%, rgba(248, 238, 228, 0.85) 0%, rgba(225, 203, 182, 0.5) 45%, transparent 75%),
+    linear-gradient(135deg, #E6D2BF 0%, #D7C2AD 35%, #CBB29C 70%, #BA9F87 100%);
+  background-color: #D7C2AD;
 }
 
 .font-serif-luxury {
   font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
-/* Custom luxury glass & depth cards */
-.suitoholic-card {
-  background: radial-gradient(135% 135% at 50% 10%, #EFE8DA 0%, #E2DA95 100%);
-  border: 1px solid rgba(158, 125, 82, 0.2);
-  box-shadow: 0 10px 30px -5px rgba(44, 38, 33, 0.08);
+.font-brand-logo {
+  font-family: var(--font-orbitron), 'Orbitron', 'Michroma', 'Eurostile', 'Microgramma', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.01em;
 }
 
-.suitoholic-dark-card {
-  background: radial-gradient(120% 120% at 50% 20%, #36302B 0%, #221D19 100%);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 15px 35px rgba(0, 0, 0, 0.35);
-  border-radius: 12px;
+/* Subtle Levitating Float Animation for Hero 3D Shirt */
+@keyframes levitate {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
-/* Smooth Mannequin Transition */
-.mannequin-wrapper {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.animate-levitate {
+  animation: levitate 5s ease-in-out infinite;
+}
+
+/* Studio Ground & Floating Shadows */
+.studio-podium-shadow {
+  box-shadow: 0 20px 40px -15px rgba(20, 17, 14, 0.25);
+}
+
+.studio-card-shadow {
+  box-shadow: 0 10px 30px -10px rgba(20, 17, 14, 0.12);
 }
 
 /* Custom scrollbar */
@@ -49,9 +76,14 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #E4DCC9;
+  background: #D7C2AD;
 }
 ::-webkit-scrollbar-thumb {
-  background: #9E7D52;
+  background: #9E774C;
   border-radius: 3px;
+}
+
+/* High Fidelity Image Rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
 }
