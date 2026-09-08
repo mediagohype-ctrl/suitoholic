@@ -169,20 +169,31 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Horizontal Divider */}
+      <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-2 sm:my-3">
+        <div className="w-full h-[1px] bg-[#CBB5A0]/60" />
+      </div>
+
       {/* ========================================================================= */}
-      {/* 5 BESPOKE CLOTHING SHOWCASE SECTIONS (COMPACT GAP & TALL IMAGES)           */}
+      {/* 7 BESPOKE CLOTHING SHOWCASE SECTIONS (WITH HORIZONTAL SEPARATORS)          */}
       {/* ========================================================================= */}
       <div className="space-y-0 py-0">
         {collectionCategories.map((collection, index) => {
           const categoryProducts = allProducts.filter((p) => p.category === collection.id);
 
           return (
-            <ModernCollectionSection
-              key={collection.id}
-              collection={collection}
-              products={categoryProducts}
-              headerTitle={index === 0 ? "Latest drop" : collection.title}
-            />
+            <React.Fragment key={collection.id}>
+              {index > 0 && (
+                <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-2.5 sm:my-3.5">
+                  <div className="w-full h-[1px] bg-[#CBB5A0]/60" />
+                </div>
+              )}
+              <ModernCollectionSection
+                collection={collection}
+                products={categoryProducts}
+                headerTitle={index === 0 ? "Latest drop" : collection.title}
+              />
+            </React.Fragment>
           );
         })}
       </div>
