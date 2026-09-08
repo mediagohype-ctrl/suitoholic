@@ -25,7 +25,7 @@ export interface CustomFitState {
 }
 
 export default function CustomShirtConfigurator() {
-  const [currentStep, setCurrentStep] = useState<number>(4); // Default to Step 4 to match user view
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [customFit, setCustomFit] = useState<CustomFitState>({
     chestSize: 38,
     collarSize: 15,
