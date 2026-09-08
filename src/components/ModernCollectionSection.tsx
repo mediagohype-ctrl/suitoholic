@@ -34,45 +34,52 @@ export default function ModernCollectionSection({
       id={collection.id}
       className="py-2.5 sm:py-3.5 lg:py-4 px-3.5 sm:px-6 lg:px-10 xl:px-12 max-w-[1720px] mx-auto w-full relative z-10"
     >
-      {/* Top Header Row matching Reference Screenshot */}
-      <div className="flex items-center justify-between gap-4 mb-2.5 sm:mb-3">
+      {/* Top Header Row with Luxury Accents */}
+      <div className="flex items-center justify-between gap-4 mb-3 sm:mb-4">
         
-        {/* Left Side: Bold, Luxury Title */}
-        <h2 className="text-sm sm:text-[16px] lg:text-[18px] font-bold tracking-tight text-[#14110E] leading-snug">
-          {headerTitle || collection.title}
-        </h2>
+        {/* Left Side: Premium Bold Title with Bronze Accent & Badge */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-1 sm:w-1.5 h-4 sm:h-5 rounded-full bg-[#9E774C]" />
+          <h2 className="text-[15px] sm:text-[18px] lg:text-[20px] font-bold tracking-tight text-[#14110E] leading-snug">
+            {headerTitle || collection.title}
+          </h2>
+          <span className="hidden sm:inline-flex text-[10px] sm:text-[11px] font-bold tracking-wider text-[#7A5428] bg-white/70 px-2 py-0.5 rounded-full border border-[#D5C2AF]/80 uppercase">
+            {products.length} Styles
+          </span>
+        </div>
 
         {/* Right Side: Navigation Controls + Discover More Button */}
         <div className="flex items-center space-x-2 shrink-0">
           
           {/* Subtle Carousel Arrow Buttons for desktop (if more than 4 items) */}
           {products.length > 4 && (
-            <div className="hidden sm:flex items-center space-x-1 mr-1">
+            <div className="hidden sm:flex items-center space-x-1.5 mr-1">
               <button
                 onClick={() => handleScroll("left")}
                 type="button"
                 aria-label="Scroll left"
-                className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#FAF8F5]/90 hover:bg-[#14110E] hover:text-[#FAF8F5] text-[#14110E] border border-[#D0BDA9] flex items-center justify-center transition-colors shadow-2xs"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/80 hover:bg-[#14110E] hover:text-[#FAF8F5] text-[#14110E] border border-[#D0BDA9] flex items-center justify-center transition-all duration-200 shadow-2xs active:scale-95"
               >
-                <ChevronLeft size={13} />
+                <ChevronLeft size={14} />
               </button>
               <button
                 onClick={() => handleScroll("right")}
                 type="button"
                 aria-label="Scroll right"
-                className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#FAF8F5]/90 hover:bg-[#14110E] hover:text-[#FAF8F5] text-[#14110E] border border-[#D0BDA9] flex items-center justify-center transition-colors shadow-2xs"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/80 hover:bg-[#14110E] hover:text-[#FAF8F5] text-[#14110E] border border-[#D0BDA9] flex items-center justify-center transition-all duration-200 shadow-2xs active:scale-95"
               >
-                <ChevronRight size={13} />
+                <ChevronRight size={14} />
               </button>
             </div>
           )}
 
-          {/* Pill "Discover more" Button matching reference image */}
+          {/* Pill "Discover more" Button with animated arrow */}
           <Link
             href={`/shop?category=${collection.id}`}
-            className="bg-[#FAF8F5] hover:bg-[#14110E] text-[#14110E] hover:text-[#FAF8F5] border border-[#14110E]/15 text-[10.5px] sm:text-[11.5px] font-medium px-3.5 sm:px-4 py-0.5 sm:py-1 rounded-full transition-all duration-200 shadow-2xs whitespace-nowrap"
+            className="bg-white/80 hover:bg-[#14110E] text-[#14110E] hover:text-[#FAF8F5] border border-[#14110E]/15 text-[11px] sm:text-[12px] font-semibold px-4 sm:px-4.5 py-1 sm:py-1.5 rounded-full transition-all duration-200 shadow-2xs flex items-center gap-1.5 group whitespace-nowrap"
           >
-            Discover more
+            <span>Discover more</span>
+            <span className="transform group-hover:translate-x-0.5 transition-transform duration-200 text-[10px]">→</span>
           </Link>
         </div>
 
