@@ -32,7 +32,7 @@ export default function Footer() {
       {/* Background Architectural Subtle Watermark */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] flex items-center justify-center select-none overflow-hidden">
         <span className="font-serif-luxury text-[18vw] font-black tracking-widest text-[#14110E] uppercase whitespace-nowrap">
-          DELAN
+          SUITOHOLIC
         </span>
       </div>
 
@@ -115,8 +115,8 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-6 sm:space-y-7">
             <div>
               <Link href="/" className="inline-block group">
-                <span className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-[#2C1822] uppercase inline-flex items-center">
-                  DELAN<span className="text-xs sm:text-sm font-sans font-bold text-[#8C5A28] -mt-4 ml-1 select-none">®</span>
+                <span className="font-brand-logo text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-[#2C1822] lowercase inline-flex items-center">
+                  suitoholic<span className="text-xs sm:text-sm font-sans font-bold text-[#8C5A28] -mt-4 ml-1 select-none">™</span>
                 </span>
                 <span className="block text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-[#8C5A28] uppercase mt-1">
                   BESPOKE SARTORIAL ATELIER • ESTD. 2003
@@ -154,8 +154,8 @@ export default function Footer() {
                   <Mail size={16} className="text-[#8C5A28] shrink-0" />
                   <div>
                     <span className="text-[10px] uppercase text-[#6C5562] font-bold block">Private Appointments</span>
-                    <a href="mailto:support@delansuits.com" className="text-sm text-[#2C1822] font-bold hover:text-[#8C5A28] transition-colors">
-                      support@delansuits.com
+                    <a href="mailto:support@suitoholic.com" className="text-sm text-[#2C1822] font-bold hover:text-[#8C5A28] transition-colors">
+                      support@suitoholic.com
                     </a>
                   </div>
                 </div>
@@ -241,7 +241,7 @@ export default function Footer() {
                 <li>
                   <Link href="/about" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
                     <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                    <span>Why Delan</span>
+                    <span>Why Suitoholic</span>
                   </Link>
                 </li>
                 <li>
@@ -395,7 +395,7 @@ export default function Footer() {
               
               <div className="bg-white/65 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-[#D6C5B5] shadow-xs space-y-2.5">
                 <address className="not-italic text-[14px] sm:text-[15px] text-[#422B36] font-medium leading-relaxed">
-                  <strong className="text-[#2C1822] block font-semibold">Delan Bespoke Flagship Studio</strong>
+                  <strong className="text-[#2C1822] block font-semibold">Suitoholic Bespoke Flagship Studio</strong>
                   Shop No. 3, Sco-17,<br />
                   HUDA Staff Colony, Sector 16,<br />
                   Faridabad, Haryana 121002, India
@@ -461,7 +461,7 @@ export default function Footer() {
           {/* Copyright & Estd Note */}
           <div className="text-center md:text-left flex flex-wrap items-center justify-center md:justify-start gap-2">
             <span>© 2003–{new Date().getFullYear()}</span>
-            <span className="font-bold text-[#2C1822] tracking-wide">DELAN ATELIER.</span>
+            <span className="font-bold text-[#2C1822] tracking-wide uppercase">SUITOHOLIC ATELIER.</span>
             <span>All rights reserved.</span>
             <span className="hidden sm:inline text-[#8C5A28]">•</span>
             <span className="hidden sm:inline text-xs text-[#5C4553]">Handcrafted with Savile Row precision.</span>
