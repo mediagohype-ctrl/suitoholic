@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import ModernCollectionSection from "@/components/ModernCollectionSection";
+import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase";
 import { allProducts, collectionCategories } from "@/data/products";
 
 export default function Home() {
@@ -175,7 +176,7 @@ export default function Home() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 7 BESPOKE CLOTHING SHOWCASE SECTIONS (WITH HORIZONTAL SEPARATORS)          */}
+      {/* 7 BESPOKE CLOTHING SHOWCASE SECTIONS (WITH 3D CATEGORIES SHOWCASE)         */}
       {/* ========================================================================= */}
       <div className="space-y-2 sm:space-y-4 py-2 sm:py-3">
         {collectionCategories.map((collection, index) => {
@@ -193,6 +194,16 @@ export default function Home() {
                 products={categoryProducts}
                 headerTitle={index === 0 ? "Latest drop" : collection.title}
               />
+
+              {/* 3D Revolving Categories Carousel (Inserted after 3rd section) */}
+              {index === 2 && (
+                <React.Fragment>
+                  <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
+                    <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+                  </div>
+                  <CategoriesRotatingShowcase />
+                </React.Fragment>
+              )}
             </React.Fragment>
           );
         })}
