@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import ModernCollectionSection from "@/components/ModernCollectionSection";
 import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase";
+import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
 import { allProducts, collectionCategories } from "@/data/products";
 
 export default function Home() {
@@ -71,7 +72,7 @@ export default function Home() {
           <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end w-full h-full my-auto">
             
             {/* Rounded Hero Studio Card Container (Expands dynamically to fill tall screen heights) */}
-            <div className="relative w-full h-[360px] sm:h-[480px] md:h-[540px] lg:h-[calc(100vh-180px)] xl:h-[calc(100vh-200px)] min-h-[460px] max-h-[850px] 2xl:max-h-[960px] rounded-2xl sm:rounded-3xl lg:rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(20,17,14,0.14)] border border-white/50 bg-[#D4BEA9] flex items-center justify-center group">
+            <div className="relative w-full h-[360px] sm:h-[480px] md:h-[540px] lg:h-[calc(100vh-180px)] xl:h-[calc(100vh-200px)] min-h-[460px] max-h-[850px] 2xl:max-h-[960px] rounded-2xl sm:rounded-3xl lg:rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(20,17,14,0.18)] border border-white/50 bg-[#D4BEA9] flex items-center justify-center group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/hero_3d_shirt.jpg"
@@ -176,7 +177,7 @@ export default function Home() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 7 BESPOKE CLOTHING SHOWCASE SECTIONS (WITH 3D CATEGORIES SHOWCASE)         */}
+      {/* 5 BESPOKE CLOTHING SHOWCASE SECTIONS (WITH 3D REVOLVING & ATELIER BANNER) */}
       {/* ========================================================================= */}
       <div className="space-y-2 sm:space-y-4 py-2 sm:py-3">
         {collectionCategories.map((collection, index) => {
@@ -202,6 +203,16 @@ export default function Home() {
                     <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
                   </div>
                   <CategoriesRotatingShowcase />
+                </React.Fragment>
+              )}
+
+              {/* Full-Width High Quality Editorial Atelier Banner (Inserted after Tailored Trousers & Pants / index 3) */}
+              {collection.id === "trousers" && (
+                <React.Fragment>
+                  <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
+                    <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+                  </div>
+                  <AtelierEditorialBanner />
                 </React.Fragment>
               )}
             </React.Fragment>
