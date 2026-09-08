@@ -63,20 +63,6 @@ export const collectionCategories: CollectionCategory[] = [
     tag: "COLLECTION 05 • LUXURY CASUALS",
     bgImage: "/tshirt_knit_navy_polo.jpg",
   },
-  {
-    id: "blazers",
-    title: "Bespoke Suits & Blazers",
-    subtitle: "Super 130s Italian wool jackets, houndstooth sport coats, and structured double-breasted blazers.",
-    tag: "COLLECTION 06 • TAILORED BLAZERS",
-    bgImage: "/blazer_navy_wool.jpg",
-  },
-  {
-    id: "ceremonial",
-    title: "Ethnic & Ceremonial Luxury",
-    subtitle: "Royal silk bandhgalas, artisanal wedding kurtas, and satin-lapel gala dinner jackets.",
-    tag: "COLLECTION 07 • BLACK TIE & FESTIVE",
-    bgImage: "/ceremonial_bandhgala.jpg",
-  },
 ];
 
 export const allProducts: ProductItem[] = [
