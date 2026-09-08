@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   Lock,
@@ -20,20 +20,8 @@ import {
 } from "lucide-react";
 
 export default function Footer() {
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newsletterEmail.trim()) {
-      setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 5000);
-      setNewsletterEmail("");
-    }
-  };
-
   return (
-    <footer className="w-full min-h-[90vh] bg-gradient-to-b from-[#EFE3D5] via-[#E5D5C3] to-[#D5C0AB] text-[#14110E] rounded-t-[36px] sm:rounded-t-[54px] lg:rounded-t-[68px] border-t-2 border-[#CBB39C] font-sans antialiased relative z-20 shadow-[0_-20px_50px_rgba(20,17,14,0.08)] overflow-hidden mt-8 sm:mt-14 flex flex-col justify-between select-none">
+    <footer className="w-full bg-gradient-to-b from-[#EFE3D5] via-[#E5D5C3] to-[#D5C0AB] text-[#14110E] rounded-t-[36px] sm:rounded-t-[54px] lg:rounded-t-[68px] border-t-2 border-[#CBB39C] font-sans antialiased relative z-20 shadow-[0_-20px_50px_rgba(20,17,14,0.08)] overflow-hidden mt-8 sm:mt-14 flex flex-col justify-between select-none">
       
       {/* Background Architectural Subtle Motif */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.035] flex items-center justify-center">
@@ -43,85 +31,7 @@ export default function Footer() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 1. TOP TIER: EDITORIAL INVITATION & VIP SARTORIAL PRIVILEGE               */}
-      {/* ========================================================================= */}
-      <div className="relative z-10 w-full border-b border-[#CBB39C]/70 bg-white/40 backdrop-blur-md px-4 sm:px-8 lg:px-12 xl:px-16 py-10 sm:py-14">
-        <div className="max-w-[1720px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-          
-          {/* Left Column: Big Luxury Serif Headline */}
-          <div className="lg:col-span-6 space-y-3 sm:space-y-4">
-            <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-[0.28em] text-[#8C5A28] uppercase bg-[#8C5A28]/10 px-3.5 py-1.5 rounded-full border border-[#8C5A28]/25">
-              <Sparkles size={13} className="text-[#8C5A28]" />
-              <span>THE SARTORIAL PRIVILEGE CLUB • ESTD. 2003</span>
-            </div>
-
-            <h3 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] font-normal text-[#14110E] tracking-tight leading-[1.08] uppercase">
-              CRAFTED FOR THOSE WHO <br />
-              <span className="italic font-light text-[#70481F]">COMMAND DISTINCTION.</span>
-            </h3>
-
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#4A3B2E] max-w-xl font-normal leading-relaxed">
-              Subscribe to unlock private runway previews, rare Egyptian Giza fabric allocations, and invitations to private bespoke trunk shows.
-            </p>
-          </div>
-
-          {/* Right Column: Clean White VIP Input Card */}
-          <div className="lg:col-span-6 w-full flex flex-col justify-center space-y-5">
-            {subscribed ? (
-              <div className="bg-[#2D6A4F]/15 border border-[#2D6A4F]/40 p-5 rounded-2xl flex items-center space-x-3.5 text-[#1B4332] shadow-sm backdrop-blur-xs">
-                <CheckCircle2 size={24} className="shrink-0 text-[#2D6A4F]" />
-                <span className="text-sm sm:text-base font-semibold tracking-wide">
-                  Welcome to the Atelier Circle. A private invitation has been dispatched to your email.
-                </span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-stretch gap-3 w-full max-w-xl lg:ml-auto">
-                <div className="relative flex-1">
-                  <input
-                    type="email"
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    placeholder="Enter your email address..."
-                    required
-                    className="w-full bg-white border border-[#C5B3A0] focus:border-[#14110E] focus:ring-2 focus:ring-[#14110E]/10 text-sm sm:text-base px-5 py-4 rounded-xl sm:rounded-full text-[#14110E] placeholder:text-[#8C7A6B] focus:outline-hidden transition-all shadow-xs"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-[#14110E] hover:bg-[#8C5A28] text-white text-xs sm:text-sm font-bold tracking-[0.2em] px-8 py-4 rounded-xl sm:rounded-full transition-all duration-300 uppercase shadow-md flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer group"
-                >
-                  <span>JOIN CLUB</span>
-                  <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
-                </button>
-              </form>
-            )}
-
-            {/* 4 Architectural Highlight Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-[#CBB39C]/60 lg:ml-auto w-full max-w-xl">
-              <div className="flex items-center space-x-2 text-xs font-semibold text-[#30251C]">
-                <Ruler size={16} className="text-[#8C5A28] shrink-0" />
-                <span>40+ Body Data Points</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs font-semibold text-[#30251C]">
-                <Scissors size={16} className="text-[#8C5A28] shrink-0" />
-                <span>Master Draped Canvas</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs font-semibold text-[#30251C]">
-                <ShieldCheck size={16} className="text-[#8C5A28] shrink-0" />
-                <span>100% Fit Guarantee</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs font-semibold text-[#30251C]">
-                <Award size={16} className="text-[#8C5A28] shrink-0" />
-                <span>Global Express Air</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* 2. MIDDLE TIER: 4 EXPANSIVE EDITORIAL COLUMNS                             */}
+      {/* 4 EXPANSIVE EDITORIAL COLUMNS (BRAND, COLLECTIONS, CARE, CONCIERGE)       */}
       {/* ========================================================================= */}
       <div className="relative z-10 w-full px-4 sm:px-8 lg:px-12 xl:px-16 py-12 sm:py-16 lg:py-20 flex-1 flex flex-col justify-center">
         <div className="max-w-[1720px] mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">

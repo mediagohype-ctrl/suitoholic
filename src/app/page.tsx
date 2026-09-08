@@ -8,6 +8,7 @@ import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import ModernCollectionSection from "@/components/ModernCollectionSection";
 import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase";
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
+import NewsletterSection from "@/components/NewsletterSection";
 import { allProducts, collectionCategories } from "@/data/products";
 
 export default function Home() {
@@ -219,6 +220,9 @@ export default function Home() {
           );
         })}
       </div>
+
+      {/* Standalone Compact Newsletter Section */}
+      <NewsletterSection />
 
       {/* Comprehensive E-Commerce Luxury Footer */}
       <Footer />
