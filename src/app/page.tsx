@@ -16,80 +16,72 @@ export default function Home() {
       {/* Header */}
       <Header />
 
-      {/* Main Hero Section with Authentic Studio Lighting & 3D Floating Shirt */}
-      <section className="relative w-full overflow-hidden pt-3 pb-3 sm:pt-4 sm:pb-4 lg:pt-6 lg:pb-6 px-3.5 sm:px-6 lg:px-10 xl:px-12">
-        <div className="max-w-[1720px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-center relative">
+      {/* Main Hero Section with Authentic Studio Lighting & 3D Floating Shirt (Full Screen Viewport) */}
+      <section className="relative w-full min-h-[calc(100vh-88px)] lg:h-[calc(100vh-88px)] flex flex-col justify-between pt-3 pb-5 sm:pt-5 sm:pb-7 lg:pt-6 lg:pb-8 px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div className="max-w-[1720px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center flex-1 relative">
           
-          {/* Left Column: Typography & CTAs (Top on Mobile) */}
-          <div className="lg:col-span-5 flex flex-col justify-center z-10 space-y-3.5 sm:space-y-5">
+          {/* Left Column: Typography & CTAs & Scroll Down */}
+          <div className="lg:col-span-5 flex flex-col justify-between h-full z-10 py-2 sm:py-4">
             
-            {/* Subtitle */}
-            <div>
-              <span className="text-[9px] sm:text-[11px] font-semibold tracking-[0.28em] text-[#9E774C] uppercase block">
-                EFFORTLESSLY ELEGANT
-              </span>
+            {/* Upper Content: Subtitle, Heading, Action Buttons */}
+            <div className="space-y-4 sm:space-y-6 my-auto">
+              {/* Subtitle */}
+              <div>
+                <span className="text-[10px] sm:text-xs font-semibold tracking-[0.28em] text-[#9E774C] uppercase block">
+                  EFFORTLESSLY ELEGANT
+                </span>
+              </div>
+
+              {/* Main Luxury Serif Heading */}
+              <h1 className="font-serif-luxury font-normal text-3xl sm:text-5xl lg:text-[54px] xl:text-[62px] leading-[1.08] text-[#14110E] tracking-tight uppercase">
+                NOT EVERY BODY <br />
+                IS THE SAME SIZE.
+              </h1>
+
+              {/* Action Buttons: Row */}
+              <div className="flex flex-row items-center gap-3 sm:gap-4 pt-1 sm:pt-2">
+                <Link
+                  href="/shop"
+                  className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-6 sm:px-8 py-3 sm:py-3.5 transition-all duration-300 text-center uppercase shadow-sm whitespace-nowrap"
+                >
+                  SHOP SHIRTS
+                </Link>
+                
+                <Link
+                  href="/custom-shirt"
+                  className="bg-transparent border border-[#14110E]/40 hover:border-[#14110E] hover:bg-black/5 text-[#14110E] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-5 sm:px-7 py-3 sm:py-3.5 transition-all duration-300 text-center uppercase flex items-center justify-center gap-2 group whitespace-nowrap"
+                >
+                  <span>CUSTOM FIT</span>
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                </Link>
+              </div>
             </div>
 
-            {/* Main Luxury Serif Heading */}
-            <h1 className="font-serif-luxury font-normal text-2xl sm:text-4xl lg:text-[50px] xl:text-[54px] leading-[1.1] text-[#14110E] tracking-tight uppercase">
-              NOT EVERY BODY <br />
-              IS THE SAME SIZE.
-            </h1>
-
-            {/* Action Buttons: Vertically stacked on mobile matching screenshot, row on desktop */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2 w-[155px] sm:w-auto">
-              <Link
-                href="/shop"
-                className="w-full sm:w-auto bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-[10px] sm:text-[11px] font-bold tracking-[0.18em] px-5 sm:px-7 py-2.5 sm:py-3.5 transition-all duration-300 text-center uppercase shadow-sm whitespace-nowrap"
-              >
-                SHOP SHIRTS
-              </Link>
-              
-              <Link
-                href="/custom-shirt"
-                className="w-full sm:w-auto bg-transparent border border-[#14110E] hover:border-[#9E774C] hover:text-[#9E774C] text-[#14110E] text-[10px] sm:text-[11px] font-bold tracking-[0.18em] px-4 sm:px-6 py-2.5 sm:py-3.5 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group whitespace-nowrap"
-              >
-                <span>CUSTOM FIT</span>
-                <span className="transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-              </Link>
-            </div>
-
-            {/* Desktop Scroll Down Indicator (hidden on mobile) */}
-            <div className="hidden lg:flex pt-4 sm:pt-6 flex-col items-start space-y-2">
+            {/* Bottom: Scroll Down Indicator */}
+            <div className="pt-6 lg:pt-0 flex flex-col items-start space-y-2">
               <span className="text-[9px] sm:text-[10px] tracking-[0.25em] text-[#14110E] uppercase font-semibold">
                 SCROLL DOWN
               </span>
-              <div className="w-[1.5px] h-7 sm:h-9 bg-[#14110E] opacity-80" />
+              <div className="w-[1.5px] h-7 sm:h-9 bg-[#14110E] opacity-75" />
             </div>
           </div>
 
-          {/* Right Column: 3D Floating White Shirt on Travertine Stone Podium */}
-          <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end mt-2 lg:mt-0 w-full">
+          {/* Right Column: 3D Floating White Shirt on Travertine Stone Podium Card */}
+          <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end w-full h-full my-auto">
             
-            {/* Mobile Vertical Step Indicator (left of image on mobile) */}
-            <div className="lg:hidden absolute -left-1 sm:left-0 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center space-y-1.5 text-[10px] font-semibold text-[#14110E]">
-              <span className="text-[9px] font-bold">01</span>
-              <div className="w-[1px] h-2.5 bg-[#9E774C]" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[#14110E]" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[#9E774C]" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[#9E774C]" />
-              <div className="w-[1px] h-2.5 bg-[#9E774C]" />
-              <span className="text-[9px] text-[#5A4E42]">05</span>
-            </div>
-
-            {/* Direct Robust Image Display (100% visible on all mobile and desktop devices) */}
-            <div className="relative w-full max-w-[620px] rounded-xl overflow-hidden group ml-5 lg:ml-0 shadow-sm flex items-center justify-center bg-transparent">
+            {/* Rounded Hero Studio Card Container */}
+            <div className="relative w-full h-[320px] sm:h-[440px] lg:h-[500px] xl:h-[560px] max-h-[75vh] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(20,17,14,0.12)] border border-white/40 bg-[#D4BEA9] flex items-center justify-center group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/hero_3d_shirt_hq.jpg"
+                src="/hero_3d_shirt.jpg"
                 alt="3D Floating Tailored Shirt on Travertine Stone Podium"
-                className="w-full h-auto max-h-[280px] sm:max-h-[420px] lg:max-h-[540px] object-cover object-center animate-levitate transition-transform duration-700 block"
+                className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 loading="eager"
               />
             </div>
 
-            {/* Desktop Vertical Slide Indicator on far right */}
-            <div className="hidden lg:flex absolute -right-2 xl:-right-6 top-1/2 -translate-y-1/2 z-20 flex-col items-center space-y-2.5 text-[11px] font-medium text-[#14110E]">
+            {/* Right Side Vertical Step / Carousel Indicator */}
+            <div className="absolute -right-2 sm:-right-3 lg:-right-5 xl:-right-7 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center space-y-2.5 text-[11px] font-medium text-[#14110E]">
               <span className="font-bold text-xs">01</span>
               <div className="w-[1px] h-4 bg-[#9E774C]" />
               <button 
@@ -110,14 +102,6 @@ export default function Home() {
               <div className="w-[1px] h-4 bg-[#9E774C]" />
               <span className="text-[#5A4E42] text-xs">05</span>
             </div>
-          </div>
-
-          {/* Mobile Scroll Down Indicator (Rendered below shirt on mobile matching mockup) */}
-          <div className="lg:hidden col-span-1 pt-2 pb-1 flex flex-col items-start space-y-1.5">
-            <span className="text-[9px] tracking-[0.25em] text-[#14110E] uppercase font-semibold">
-              SCROLL DOWN
-            </span>
-            <div className="w-[1.5px] h-5 bg-[#14110E] opacity-80" />
           </div>
 
         </div>
