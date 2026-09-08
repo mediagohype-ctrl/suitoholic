@@ -111,7 +111,7 @@ export default function Home() {
       <FeatureHighlightsBar />
 
       {/* Split Feature Banners (PREMIUM FABRICS & CUSTOM FIT) */}
-      <section id="fabrics" className="py-2 sm:py-3 px-3.5 sm:px-6 lg:px-10 xl:px-12">
+      <section id="fabrics" className="py-4 sm:py-6 lg:py-8 px-3.5 sm:px-6 lg:px-10 xl:px-12">
         <div className="max-w-[1720px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           
           {/* Left Banner: PREMIUM FABRICS */}
@@ -170,21 +170,21 @@ export default function Home() {
       </section>
 
       {/* Horizontal Divider */}
-      <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-2.5 sm:my-3.5">
+      <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
         <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
       </div>
 
       {/* ========================================================================= */}
       {/* 7 BESPOKE CLOTHING SHOWCASE SECTIONS (WITH HORIZONTAL SEPARATORS)          */}
       {/* ========================================================================= */}
-      <div className="space-y-0 py-0">
+      <div className="space-y-2 sm:space-y-4 py-2 sm:py-3">
         {collectionCategories.map((collection, index) => {
           const categoryProducts = allProducts.filter((p) => p.category === collection.id);
 
           return (
             <React.Fragment key={collection.id}>
               {index > 0 && (
-                <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-3 sm:my-4">
+                <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
                   <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
                 </div>
               )}

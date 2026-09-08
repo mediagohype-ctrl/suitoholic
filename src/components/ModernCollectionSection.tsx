@@ -32,10 +32,10 @@ export default function ModernCollectionSection({
   return (
     <section
       id={collection.id}
-      className="py-0.5 sm:py-1 px-3.5 sm:px-6 lg:px-10 xl:px-12 max-w-[1720px] mx-auto w-full relative z-10"
+      className="py-2.5 sm:py-3.5 lg:py-4 px-3.5 sm:px-6 lg:px-10 xl:px-12 max-w-[1720px] mx-auto w-full relative z-10"
     >
       {/* Top Header Row matching Reference Screenshot */}
-      <div className="flex items-center justify-between gap-4 mb-1.5 sm:mb-2 pt-1 sm:pt-1.5">
+      <div className="flex items-center justify-between gap-4 mb-2.5 sm:mb-3">
         
         {/* Left Side: Bold, Luxury Title */}
         <h2 className="text-sm sm:text-[16px] lg:text-[18px] font-bold tracking-tight text-[#14110E] leading-snug">
