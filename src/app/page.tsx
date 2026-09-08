@@ -170,8 +170,8 @@ export default function Home() {
       </section>
 
       {/* Horizontal Divider */}
-      <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-2 sm:my-3">
-        <div className="w-full h-[1px] bg-[#CBB5A0]/60" />
+      <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-2.5 sm:my-3.5">
+        <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
       </div>
 
       {/* ========================================================================= */}
@@ -184,8 +184,8 @@ export default function Home() {
           return (
             <React.Fragment key={collection.id}>
               {index > 0 && (
-                <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-2.5 sm:my-3.5">
-                  <div className="w-full h-[1px] bg-[#CBB5A0]/60" />
+                <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-3 sm:my-4">
+                  <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
                 </div>
               )}
               <ModernCollectionSection
