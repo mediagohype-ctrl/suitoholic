@@ -206,8 +206,8 @@ export default function Home() {
                 </React.Fragment>
               )}
 
-              {/* Full-Width High Quality Editorial Atelier Banner (Inserted after Tailored Trousers & Pants / index 3) */}
-              {collection.id === "trousers" && (
+              {/* Full-Width High Quality Editorial Atelier Banner (Inserted right after Luxury Textured & Twill Shirts / formal_bespoke) */}
+              {collection.id === "formal_bespoke" && (
                 <React.Fragment>
                   <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
                     <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
