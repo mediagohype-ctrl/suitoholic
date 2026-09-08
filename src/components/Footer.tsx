@@ -104,7 +104,7 @@ export default function Footer() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. MAIN TIER: EXPANSIVE MULTI-COLUMN EDITORIAL DIRECTORY                  */}
+      {/* 2. MAIN TIER: EXPANSIVE 4-COLUMN EDITORIAL DIRECTORY                      */}
       {/* ========================================================================= */}
       <div className="relative z-10 w-full px-5 sm:px-8 lg:px-14 xl:px-20 py-14 sm:py-20 lg:py-24 flex-1">
         <div className="max-w-[1680px] mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-14 xl:gap-20 items-start">
@@ -126,15 +126,11 @@ export default function Footer() {
               Dedicated to the timeless art of bespoke tailoring. Every garment is handcrafted with master precision from pure Egyptian Giza 140s twill, Sea Island cotton, and Super 150s Merino wool.
             </p>
 
-            {/* Direct Studio Concierge - Flat Clean Layout */}
+            {/* Direct Studio Concierge - Flat Clean Layout without live reception badge */}
             <div className="space-y-4 pt-2 border-t border-[#D6C5B5]/60">
-              <div className="flex items-center justify-between pb-1.5 border-b border-[#D6C5B5]/40">
-                <span className="text-xs font-bold tracking-[0.2em] text-[#8C5A28] uppercase">
+              <div className="pb-1 border-b border-[#D6C5B5]/40">
+                <span className="text-xs font-bold tracking-[0.2em] text-[#8C5A28] uppercase block">
                   Direct Concierge
-                </span>
-                <span className="inline-flex items-center text-[#1B4332] text-[11px] font-bold gap-1.5 bg-[#2D6A4F]/15 px-2.5 py-0.5 rounded-full border border-[#2D6A4F]/30">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#2D6A4F] animate-pulse" />
-                  Live Reception
                 </span>
               </div>
 
@@ -176,8 +172,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Customer Service (lg:col-span-2) */}
-          <div className="lg:col-span-2 space-y-4 sm:space-y-5">
+          {/* Column 2: Customer Service (lg:col-span-3) */}
+          <div className="lg:col-span-3 space-y-4 sm:space-y-5">
             <h3 className="text-xl sm:text-2xl font-bold text-[#3B222E] tracking-tight pb-2 border-b border-[#D6C5B5]">
               Customer Service
             </h3>
@@ -227,99 +223,40 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Company & Secure Payment (lg:col-span-3) */}
-          <div className="lg:col-span-3 space-y-8 sm:space-y-10">
-            {/* Company Links */}
-            <div className="space-y-4 sm:space-y-5">
-              <h3 className="text-xl sm:text-2xl font-bold text-[#3B222E] tracking-tight pb-2 border-b border-[#D6C5B5]">
-                Company
-              </h3>
-              <ul className="space-y-3 sm:space-y-3.5 text-[15px] sm:text-[16px] text-[#422B36] font-medium">
-                <li>
-                  <Link href="/about" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
-                    <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                    <span>Why Suitoholic</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
-                    <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                    <span>About Us</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/affiliate" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
-                    <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                    <span>Affiliate Marketing</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/blog" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
-                    <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                    <span>Blog</span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Secure Payment */}
-            <div className="space-y-3.5 sm:space-y-4 pt-1">
-              <div className="flex items-center justify-between">
-                <h4 className="text-lg sm:text-xl font-bold text-[#3B222E] tracking-tight">
-                  Secure Payment
-                </h4>
-                <div className="flex items-center space-x-1 text-[11px] font-bold text-[#2D6A4F]">
-                  <Lock size={12} className="shrink-0" />
-                  <span>256-Bit SSL</span>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
-                {/* Visa */}
-                <div className="h-8.5 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="Visa">
-                  <svg className="h-4 w-auto" viewBox="0 0 48 16" fill="none">
-                    <path d="M19.14 0.68L12.55 15.32H8.22L5.03 3.86C4.83 3.08 4.67 2.8 4.07 2.47C3.1 1.95 1.45 1.47 0 1.15L0.1 0.68H7.13C8.03 0.68 8.84 1.28 9.03 2.31L10.77 11.5L14.99 0.68H19.14ZM36.03 10.45C36.05 6.47 30.5 6.25 30.54 4.47C30.55 3.93 31.07 3.35 32.22 3.2C32.79 3.12 34.36 3.07 36.08 3.86L36.77 0.67C35.83 0.33 34.62 0 33.1 0C29.06 0 26.22 2.15 26.2 5.22C26.17 7.5 28.21 8.78 29.77 9.54C31.37 10.32 31.91 10.82 31.9 11.51C31.89 12.57 30.63 13.04 29.46 13.06C27.4 13.09 26.2 12.5 25.26 12.06L24.54 15.42C25.5 15.86 27.27 16.24 29.1 16.27C33.39 16.27 36.01 14.15 36.03 10.45ZM46.66 15.32H50.33L47.14 0.68H43.76C42.99 0.68 42.34 1.12 42.06 1.79L35.92 15.32H40.26L41.12 12.94H46.42L46.66 15.32ZM42.32 9.62L44.5 3.65L45.75 9.62H42.32ZM25.04 0.68L21.68 15.32H17.56L20.92 0.68H25.04Z" fill="#1A1F71"/>
-                  </svg>
-                </div>
-
-                {/* Paytm */}
-                <div className="h-8.5 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="Paytm">
-                  <span className="font-black text-[13px] tracking-tight leading-none flex items-center">
-                    <span className="text-[#002970]">pay</span>
-                    <span className="text-[#00BAF2]">tm</span>
-                  </span>
-                </div>
-
-                {/* Mastercard */}
-                <div className="h-8.5 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="Mastercard">
-                  <svg className="h-5 w-auto" viewBox="0 0 32 20" fill="none">
-                    <circle cx="10" cy="10" r="10" fill="#EB001B"/>
-                    <circle cx="22" cy="10" r="10" fill="#F79E1B"/>
-                    <path d="M16 3.12C18.15 4.87 19.5 7.49 19.5 10.45C19.5 13.41 18.15 16.03 16 17.78C13.85 16.03 12.5 13.41 12.5 10.45C12.5 7.49 13.85 4.87 16 3.12Z" fill="#FF5F00"/>
-                  </svg>
-                </div>
-
-                {/* American Express */}
-                <div className="h-8.5 px-2.5 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="American Express">
-                  <svg className="h-4.5 w-auto" viewBox="0 0 32 16" fill="none">
-                    <rect width="32" height="16" rx="2" fill="#006FCF"/>
-                    <text x="2" y="11.5" fontFamily="sans-serif" fontSize="6.5" fontWeight="900" fill="#FFFFFF" letterSpacing="0.5">AMEX</text>
-                  </svg>
-                </div>
-
-                {/* UPI */}
-                <div className="h-8.5 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="UPI">
-                  <svg className="h-4.5 w-auto" viewBox="0 0 36 16" fill="none">
-                    <path d="M3.5 1.5L9.5 8L3.5 14.5L0 8L3.5 1.5Z" fill="#097938"/>
-                    <path d="M7 1.5L13 8L7 14.5L3.5 8L7 1.5Z" fill="#F47920"/>
-                    <text x="14.5" y="12.5" fontFamily="sans-serif" fontSize="10" fontWeight="900" fill="#0C2340" letterSpacing="0.5">UPI</text>
-                  </svg>
-                </div>
-              </div>
-            </div>
+          {/* Column 3: Company (lg:col-span-2) */}
+          <div className="lg:col-span-2 space-y-4 sm:space-y-5">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#3B222E] tracking-tight pb-2 border-b border-[#D6C5B5]">
+              Company
+            </h3>
+            <ul className="space-y-3 sm:space-y-3.5 text-[15px] sm:text-[16px] text-[#422B36] font-medium">
+              <li>
+                <Link href="/about" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
+                  <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                  <span>Why Suitoholic</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
+                  <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                  <span>About Us</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/affiliate" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
+                  <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                  <span>Affiliate Marketing</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-[#8C5A28] hover:translate-x-1 transition-all flex items-center gap-1 group">
+                  <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                  <span>Blog</span>
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* Column 4: Follow Us & Office Address (lg:col-span-3) */}
+          {/* Column 4: Follow Us & Office Info (lg:col-span-3) */}
           <div className="lg:col-span-3 space-y-8 sm:space-y-10">
             {/* Follow Us */}
             <div className="space-y-4 sm:space-y-5">
@@ -381,10 +318,10 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Office Address - Flat Clean Layout */}
+            {/* Office Info - Flat Clean Layout */}
             <div className="space-y-3 pt-1">
               <h3 className="text-xl sm:text-2xl font-bold text-[#3B222E] tracking-tight pb-2 border-b border-[#D6C5B5]">
-                Office Address
+                Office Info
               </h3>
               
               <div className="space-y-2.5">
@@ -415,12 +352,70 @@ export default function Footer() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. BOTTOM COPYRIGHT, REGION & BACK TO TOP STRIP                          */}
+      {/* 3. BOTTOM TIER: HORIZONTAL SECURE PAYMENT STRIP & COPYRIGHT / LEGAL LINKS */}
       {/* ========================================================================= */}
-      <div className="relative z-10 w-full bg-[#D4C4B3] border-t border-[#C7B5A3] py-6 px-5 sm:px-8 lg:px-14 xl:px-20">
+      <div className="relative z-10 w-full bg-[#D4C4B3] border-t border-[#C7B5A3] py-6 px-5 sm:px-8 lg:px-14 xl:px-20 space-y-5">
+        
+        {/* Horizontal Secure Payment Strip */}
+        <div className="max-w-[1680px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-4 pb-5 border-b border-[#C7B5A3]/90">
+          <div className="flex items-center space-x-2.5">
+            <span className="text-sm font-bold text-[#2C1822] tracking-wide uppercase">
+              Secure Payment
+            </span>
+            <div className="flex items-center space-x-1 text-[11px] font-bold text-[#2D6A4F] bg-[#2D6A4F]/10 px-2 py-0.5 rounded-md border border-[#2D6A4F]/20">
+              <Lock size={12} className="shrink-0" />
+              <span>256-Bit SSL</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 justify-center md:justify-end">
+            {/* Visa */}
+            <div className="h-8 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="Visa">
+              <svg className="h-4 w-auto" viewBox="0 0 48 16" fill="none">
+                <path d="M19.14 0.68L12.55 15.32H8.22L5.03 3.86C4.83 3.08 4.67 2.8 4.07 2.47C3.1 1.95 1.45 1.47 0 1.15L0.1 0.68H7.13C8.03 0.68 8.84 1.28 9.03 2.31L10.77 11.5L14.99 0.68H19.14ZM36.03 10.45C36.05 6.47 30.5 6.25 30.54 4.47C30.55 3.93 31.07 3.35 32.22 3.2C32.79 3.12 34.36 3.07 36.08 3.86L36.77 0.67C35.83 0.33 34.62 0 33.1 0C29.06 0 26.22 2.15 26.2 5.22C26.17 7.5 28.21 8.78 29.77 9.54C31.37 10.32 31.91 10.82 31.9 11.51C31.89 12.57 30.63 13.04 29.46 13.06C27.4 13.09 26.2 12.5 25.26 12.06L24.54 15.42C25.5 15.86 27.27 16.24 29.1 16.27C33.39 16.27 36.01 14.15 36.03 10.45ZM46.66 15.32H50.33L47.14 0.68H43.76C42.99 0.68 42.34 1.12 42.06 1.79L35.92 15.32H40.26L41.12 12.94H46.42L46.66 15.32ZM42.32 9.62L44.5 3.65L45.75 9.62H42.32ZM25.04 0.68L21.68 15.32H17.56L20.92 0.68H25.04Z" fill="#1A1F71"/>
+              </svg>
+            </div>
+
+            {/* Paytm */}
+            <div className="h-8 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="Paytm">
+              <span className="font-black text-[13px] tracking-tight leading-none flex items-center">
+                <span className="text-[#002970]">pay</span>
+                <span className="text-[#00BAF2]">tm</span>
+              </span>
+            </div>
+
+            {/* Mastercard */}
+            <div className="h-8 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="Mastercard">
+              <svg className="h-5 w-auto" viewBox="0 0 32 20" fill="none">
+                <circle cx="10" cy="10" r="10" fill="#EB001B"/>
+                <circle cx="22" cy="10" r="10" fill="#F79E1B"/>
+                <path d="M16 3.12C18.15 4.87 19.5 7.49 19.5 10.45C19.5 13.41 18.15 16.03 16 17.78C13.85 16.03 12.5 13.41 12.5 10.45C12.5 7.49 13.85 4.87 16 3.12Z" fill="#FF5F00"/>
+              </svg>
+            </div>
+
+            {/* American Express */}
+            <div className="h-8 px-2.5 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="American Express">
+              <svg className="h-4.5 w-auto" viewBox="0 0 32 16" fill="none">
+                <rect width="32" height="16" rx="2" fill="#006FCF"/>
+                <text x="2" y="11.5" fontFamily="sans-serif" fontSize="6.5" fontWeight="900" fill="#FFFFFF" letterSpacing="0.5">AMEX</text>
+              </svg>
+            </div>
+
+            {/* UPI */}
+            <div className="h-8 px-3 bg-white rounded-lg border border-[#D0BFB0] flex items-center justify-center shadow-xs hover:border-[#8C5A28] transition-colors" title="UPI">
+              <svg className="h-4.5 w-auto" viewBox="0 0 36 16" fill="none">
+                <path d="M3.5 1.5L9.5 8L3.5 14.5L0 8L3.5 1.5Z" fill="#097938"/>
+                <path d="M7 1.5L13 8L7 14.5L3.5 8L7 1.5Z" fill="#F47920"/>
+                <text x="14.5" y="12.5" fontFamily="sans-serif" fontSize="10" fontWeight="900" fill="#0C2340" letterSpacing="0.5">UPI</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright & Estd Note & Legal Links */}
         <div className="max-w-[1680px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-[#3E2833] font-medium">
           
-          {/* Copyright & Estd Note */}
+          {/* Copyright */}
           <div className="text-center md:text-left flex flex-wrap items-center justify-center md:justify-start gap-2">
             <span>© 2003–{new Date().getFullYear()}</span>
             <span className="font-bold text-[#2C1822] tracking-wide uppercase">SUITOHOLIC ATELIER.</span>
@@ -447,6 +442,7 @@ export default function Footer() {
           </div>
 
         </div>
+
       </div>
 
     </footer>
