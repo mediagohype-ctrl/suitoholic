@@ -20,6 +20,7 @@ import {
   Check 
 } from "lucide-react";
 import confetti from "canvas-confetti";
+import CustomizationModal, { CustomFitState } from "@/components/CustomizationModal";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -35,18 +36,21 @@ export default function ProductDetailPage() {
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [cartCount, setCartCount] = useState<number>(0);
   const [toastVisible, setToastVisible] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+  const [isCustomizerOpen, setIsCustomizerOpen] = useState<boolean>(false);
 
-  const handleAddToCart = () => {
+  const handleOpenCustomizer = () => {
+    setIsCustomizerOpen(true);
+  };
+
+  const handleConfirmCustomization = (customFit: CustomFitState) => {
     setCartCount((prev) => prev + 1);
+    setIsCustomizerOpen(false);
+    setToastMessage(`${product.name} (CHEST ${customFit.chestSize}" • ${customFit.bodyFit.toUpperCase()} FIT • BESPOKE CUSTOMIZED) ADDED TO BAG!`);
     setToastVisible(true);
-    confetti({
-      particleCount: 80,
-      spread: 60,
-      origin: { y: 0.8 },
-    });
     setTimeout(() => {
       setToastVisible(false);
-    }, 4000);
+    }, 5000);
   };
 
   return (
@@ -198,99 +202,27 @@ export default function ProductDetailPage() {
                 {product.description}
               </p>
 
-              {/* Fit Silhouette Selector */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label className="text-[10.5px] font-bold tracking-[0.16em] uppercase text-[#1B1713]">
-                    FIT SILHOUETTE
-                  </label>
-                  <span className="text-[10px] text-[#9E774C] font-semibold uppercase">{selectedFit}</span>
-                </div>
-                <div className="grid grid-cols-3 gap-2.5">
-                  {["Slim Fit", "Regular Fit", "Relaxed Fit"].map((fit) => (
-                    <button
-                      key={fit}
-                      onClick={() => setSelectedFit(fit)}
-                      className={`py-2.5 rounded-xl text-xs font-bold uppercase transition-all ${
-                        selectedFit === fit
-                          ? "bg-[#120F0D] text-white shadow-md"
-                          : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
-                      }`}
-                    >
-                      {fit}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Size Selector */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label className="text-[10.5px] font-bold tracking-[0.16em] uppercase text-[#1B1713]">
-                    SELECT CHEST SIZE (INCHES)
-                  </label>
-                  <Link href="/custom-shirt" className="text-[10px] text-[#9E774C] hover:underline font-bold uppercase flex items-center gap-1">
-                    <Ruler size={12} /> Custom Fit Guide
-                  </Link>
-                </div>
-                <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
-                  {[38, 39, 40, 41, 42, 44, 46, 48].map((sz) => (
-                    <button
-                      key={sz}
-                      onClick={() => setSelectedSize(sz)}
-                      className={`py-2.5 rounded-xl text-xs font-bold transition-all ${
-                        selectedSize === sz
-                          ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
-                          : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
-                      }`}
-                    >
-                      {sz}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Primary Action Buttons */}
+              {/* Primary Call to Action Button */}
               <div className="space-y-3 pt-3 border-t border-[#D5C2AF]/70">
-                
-                {/* ADD TO BAG & BUY NOW Buttons */}
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full bg-[#120F0D] hover:bg-[#2A231D] text-white py-3.5 px-4 rounded-xl text-xs font-bold tracking-[0.14em] uppercase transition-all flex items-center justify-center space-x-2 shadow-md"
-                  >
-                    <ShoppingBag size={15} />
-                    <span>ADD TO BAG</span>
-                  </button>
-
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full bg-[#8A6E48] hover:bg-[#725938] text-white py-3.5 px-4 rounded-xl text-xs font-bold tracking-[0.14em] uppercase transition-all flex items-center justify-center space-x-1.5 shadow-md"
-                  >
-                    <span>BUY NOW</span>
-                    <ArrowRight size={15} />
-                  </button>
-                </div>
-
-                {/* CUSTOMIZE FIT (BESPOKE) Link */}
-                <Link
-                  href={`/custom-shirt?product=${product.slug}&chest=${selectedSize}`}
-                  className="w-full bg-[#E2D0BE] hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B] py-3 sm:py-3.5 px-6 rounded-xl text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-xs group"
+                <button
+                  onClick={handleOpenCustomizer}
+                  className="w-full bg-[#120F0D] hover:bg-[#2A231D] text-white py-4 px-6 rounded-2xl text-xs sm:text-sm font-bold tracking-[0.18em] uppercase transition-all flex items-center justify-between shadow-xl cursor-pointer group"
                 >
-                  <div className="flex items-center space-x-2.5">
-                    <Scissors size={15} className="text-[#8A6E48] group-hover:rotate-12 transition-transform" />
-                    <span>CUSTOMIZE FIT ON BESPOKE TAILOR</span>
+                  <div className="flex items-center space-x-3">
+                    <ShoppingBag size={18} className="text-[#C68A4C]" />
+                    <span>ADD TO BAG</span>
                   </div>
-                  <span className="text-[10px] font-normal tracking-widest">
-                    6 STEPS →
-                  </span>
-                </Link>
+                  <div className="flex items-center space-x-2 text-[11px] font-semibold text-[#D7C2AD] tracking-widest bg-white/10 px-3 py-1 rounded-lg group-hover:bg-white/20 transition-all">
+                    <Scissors size={14} className="text-[#C68A4C]" />
+                    <span>CUSTOMIZE FIT (6 STEPS) →</span>
+                  </div>
+                </button>
 
                 {/* Added to cart toast notification */}
                 {toastVisible && (
-                  <div className="bg-[#2D6A4F] text-white p-3 rounded-xl text-center text-xs font-bold tracking-wider animate-in slide-in-from-top-2 duration-300 shadow-lg flex items-center justify-center space-x-2">
+                  <div className="bg-[#2D6A4F] text-white p-3.5 rounded-xl text-center text-xs font-bold tracking-wider animate-in slide-in-from-top-2 duration-300 shadow-lg flex items-center justify-center space-x-2">
                     <Check size={16} />
-                    <span>{product.name} (SIZE {selectedSize}&quot;) ADDED TO BAG!</span>
+                    <span>{toastMessage}</span>
                   </div>
                 )}
               </div>
@@ -366,6 +298,15 @@ export default function ProductDetailPage() {
 
       {/* Comprehensive Luxury E-Commerce Footer */}
       <Footer />
+
+      {/* 6-Step Bespoke Customization Popup Modal */}
+      <CustomizationModal
+        isOpen={isCustomizerOpen}
+        onClose={() => setIsCustomizerOpen(false)}
+        productName={product.name}
+        initialChestSize={selectedSize}
+        onConfirmCustomization={handleConfirmCustomization}
+      />
     </div>
   );
 }

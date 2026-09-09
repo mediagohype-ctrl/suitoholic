@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full w-full overflow-x-hidden antialiased ${orbitron.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`h-full w-full overflow-x-hidden antialiased ${orbitron.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -30,7 +30,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col bg-[#D7C2AD] text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
+      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col bg-[#D7C2AD] text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
         {/* Global Studio Atmosphere: Exact Warm Sand Tone #D7C2AD + Sun Disk + Palm Shadows */}
         <StudioBackground />
         
