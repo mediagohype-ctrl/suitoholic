@@ -3,7 +3,7 @@ import React from "react";
 export default function FeatureHighlightsBar({ className = "" }: { className?: string }) {
   return (
     <section className={`w-full z-30 bg-[#EFE5D9]/95 backdrop-blur-md border-t border-b border-[#D8C7B7] py-3.5 sm:py-3.5 px-3 sm:px-6 lg:px-12 shadow-[0_-2px_12px_rgba(0,0,0,0.04)] select-none transition-all ${className}`}>
-      <div className="w-full max-w-[1360px] mx-auto">
+      <div className="w-full max-w-[1500px] mx-auto">
         
         {/* MOBILE VIEW: 2 Columns × 2 Rows with Vertical Divider between columns matching screenshot */}
         <div className="grid grid-cols-2 gap-y-3.5 md:hidden">

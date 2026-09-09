@@ -116,7 +116,7 @@ export default function CustomShirtConfigurator() {
 
       {/* Main Studio Content */}
       <div className="relative flex-1 w-full overflow-hidden flex flex-col justify-center">
-        <main className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 pt-3 sm:pt-6 pb-6 sm:pb-12">
+        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-3 sm:pt-6 pb-6 sm:pb-12">
           
           {/* Breadcrumb Navigation on top left (e.g. HOME > CUSTOM SHIRT > SLEEVES) */}
           <div className="flex items-center text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] uppercase mb-3 sm:mb-6 space-x-2">
