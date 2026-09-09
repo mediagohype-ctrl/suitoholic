@@ -8,6 +8,7 @@ import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import ModernCollectionSection from "@/components/ModernCollectionSection";
 import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase";
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
+import ShopByCategoryGrid from "@/components/ShopByCategoryGrid";
 import NewsletterSection from "@/components/NewsletterSection";
 import { allProducts, collectionCategories } from "@/data/products";
 
@@ -209,6 +210,16 @@ export default function Home() {
                     <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
                   </div>
                   <CategoriesRotatingShowcase />
+                </React.Fragment>
+              )}
+
+              {/* SHOP BY CATEGORY GRID (Inserted right after Executive Striped Formal Shirts / formal_stripes) */}
+              {collection.id === "formal_stripes" && (
+                <React.Fragment>
+                  <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
+                    <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+                  </div>
+                  <ShopByCategoryGrid />
                 </React.Fragment>
               )}
 

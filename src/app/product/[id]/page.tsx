@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
+import ShopByCategoryGrid from "@/components/ShopByCategoryGrid";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
 import { allProducts, ProductItem } from "@/data/products";
 import {
@@ -557,6 +558,9 @@ export default function ProductDetailPage() {
               ))}
             </div>
           </div>
+
+          {/* SECTION 5: SHOP BY CATEGORY GRID */}
+          <ShopByCategoryGrid />
 
         </main>
       </div>
