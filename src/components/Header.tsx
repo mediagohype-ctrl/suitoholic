@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
@@ -12,7 +12,20 @@ interface HeaderProps {
 
 export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Highlight tab only if explicitly specified or matching the current route
   const currentTab = activeTab !== undefined 
@@ -24,27 +37,37 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
         : "";
 
   return (
-    <header className="w-full sticky top-0 z-50 transition-all">
-      {/* Top Announcement Bar matching Master Reference */}
-      <div className="hidden sm:block bg-[#120F0D] text-[#D8C7B5] border-b border-[#2A231D] py-1.5 px-4 sm:px-8 text-[10px] tracking-[0.18em] uppercase">
+    <header
+      className={`w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "fixed top-0 left-0 right-0 shadow-md bg-white/95 backdrop-blur-md"
+          : "absolute top-0 left-0 right-0 bg-transparent"
+      }`}
+    >
+      {/* Top Announcement Bar */}
+      <div className="hidden sm:block bg-[#14110E] text-[#EFE5D8] border-b border-[#2A231D] py-1.5 px-4 sm:px-8 text-[10px] font-medium tracking-[0.18em] uppercase z-50 relative shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span>Welcome to Suitoholic</span>
-            <span className="text-[#8C6D47]">|</span>
-            <span className="text-[#AFA293]">Tailored for You.</span>
+            <span className="text-[#C5A069]">|</span>
+            <span className="text-[#D8C6B3]">Tailored for You.</span>
           </div>
-          <div className="flex items-center space-x-4 text-[#AFA293]">
+          <div className="flex items-center space-x-4 text-[#D8C6B3]">
             <Link href="/#store" className="hover:text-white transition-colors">Store Locator</Link>
-            <span className="text-[#8C6D47]">|</span>
+            <span className="text-[#C5A069]">|</span>
             <Link href="/#help" className="hover:text-white transition-colors">Help</Link>
-            <span className="text-[#8C6D47]">|</span>
+            <span className="text-[#C5A069]">|</span>
             <Link href="/#track" className="hover:text-white transition-colors">Track Order</Link>
           </div>
         </div>
       </div>
 
       {/* Main Navigation Bar */}
-      <div className="bg-[#D7C2AD]/95 backdrop-blur-md border-b border-[#C5AF9A]/50">
+      <div className={`transition-all duration-300 ${
+        scrolled
+          ? "bg-white/90 backdrop-blur-md border-b border-gray-200"
+          : "bg-transparent border-b border-transparent"
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between relative">
 
           {/* Mobile: Hamburger Button (Left) */}
@@ -61,15 +84,15 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
           {/* Brand Logo & Tagline (Perfect Center on Mobile, Left on Desktop) */}
           <div className="flex items-center lg:static absolute left-1/2 -translate-x-1/2 lg:translate-x-0 z-0">
             <Link href="/" className="flex flex-col items-center group">
-              <span className="font-brand-logo text-xl sm:text-2xl font-bold tracking-tight text-[#14110E] group-hover:text-[#9E774C] transition-colors leading-none lowercase inline-flex items-center">
-                suitoholic<span className="text-[9px] sm:text-[10px] font-sans font-bold text-[#14110E] group-hover:text-[#9E774C] -mt-2 ml-0.5 select-none">™</span>
+              <span className="font-brand-logo text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-black tracking-tight text-[#14110E] group-hover:text-[#9E774C] transition-colors leading-none lowercase inline-flex items-center">
+                suitoholic<span className="text-[10px] sm:text-xs lg:text-[13px] font-sans font-bold text-[#14110E] group-hover:text-[#9E774C] -mt-3 ml-0.5 select-none">™</span>
               </span>
               <div className="flex items-center gap-2 mt-1.5 w-full justify-center">
-                <div className="h-[1px] w-6 sm:w-8 bg-[#9E774C]" />
-                <span className="text-[8px] sm:text-[9px] tracking-[0.25em] text-[#9E774C] font-semibold uppercase whitespace-nowrap">
+                <div className="h-[1.5px] w-8 sm:w-10 lg:w-12 bg-[#9E774C]" />
+                <span className="text-[9px] sm:text-[10px] lg:text-[11px] tracking-[0.28em] text-[#9E774C] font-bold uppercase whitespace-nowrap">
                   ESTD. 2003
                 </span>
-                <div className="h-[1px] w-6 sm:w-8 bg-[#9E774C]" />
+                <div className="h-[1.5px] w-8 sm:w-10 lg:w-12 bg-[#9E774C]" />
               </div>
             </Link>
           </div>
@@ -134,7 +157,7 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#EAD3BD] border-b border-[#DAC2AB] px-6 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
+        <div className="lg:hidden bg-white border-b border-gray-200 px-6 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
           <Link
             href="/shop"
             onClick={() => setMobileMenuOpen(false)}

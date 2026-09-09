@@ -19,8 +19,13 @@ export default function Home() {
       {/* Header */}
       <Header />
 
-      {/* Main Hero Section with Authentic Studio Lighting & 3D Floating Shirt (Full Screen Viewport across all screen sizes) */}
-      <section className="relative w-full min-h-[calc(100dvh-85px)] lg:min-h-[calc(100vh-90px)] xl:min-h-[calc(100vh-90px)] flex flex-col justify-between pt-4 pb-6 sm:pt-6 sm:pb-8 lg:pt-8 lg:pb-12 xl:pb-14 px-4 sm:px-8 lg:px-12 xl:px-16">
+      {/* Main Hero Section with Authentic Studio Lighting & 3D Floating Shirt */}
+      <section className="relative w-full min-h-screen flex flex-col justify-between pt-24 sm:pt-28 lg:pt-32 pb-6 sm:pb-8 lg:pb-12 xl:pb-14 px-4 sm:px-8 lg:px-12 xl:px-16 bg-gradient-to-br from-[#FAF4EC] via-[#EFE3D5] to-[#E3D1BE] border-b border-[#D6C1AE] overflow-hidden">
+        
+        {/* Soft Ambient Spotlight Glows */}
+        <div className="absolute top-1/4 left-10 w-[500px] h-[500px] bg-[#C5A069]/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-10 right-1/3 w-[400px] h-[400px] bg-[#9E774C]/10 rounded-full blur-[120px] pointer-events-none" />
+
         <div className="max-w-[1780px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 xl:gap-14 items-center flex-1 relative my-auto">
           
           {/* Left Column: Typography & CTAs & Scroll Down */}
@@ -113,14 +118,14 @@ export default function Home() {
       {/* Feature Highlights Bar (Full Width Edge to Edge) */}
       <FeatureHighlightsBar />
 
-      {/* Split Feature Banners (PREMIUM FABRICS & CUSTOM FIT) */}
-      <section id="fabrics" className="py-4 sm:py-6 lg:py-8 px-3.5 sm:px-6 lg:px-10 xl:px-12">
-        <div className="max-w-[1720px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+      {/* Split Feature Banners (PREMIUM FABRICS & CUSTOM FIT - 100% FULL BLEED EDGE TO EDGE) */}
+      <section id="fabrics" className="w-full py-0 px-0 my-0">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-0">
           
           {/* Left Banner: PREMIUM FABRICS */}
           <Link 
             href="/shop"
-            className="relative overflow-hidden h-[180px] sm:h-[240px] lg:h-[270px] rounded-none flex flex-col justify-end p-5 sm:p-8 group cursor-pointer shadow-md"
+            className="relative overflow-hidden h-[200px] sm:h-[260px] lg:h-[300px] xl:h-[330px] rounded-none flex flex-col justify-end p-6 sm:p-10 lg:p-12 group cursor-pointer shadow-md"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -132,7 +137,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
             <div className="relative z-10 text-white space-y-1.5">
-              <h3 className="font-serif-luxury text-xl sm:text-3xl lg:text-[34px] font-normal uppercase tracking-wider leading-tight">
+              <h3 className="font-serif-luxury text-2xl sm:text-4xl lg:text-[40px] font-normal uppercase tracking-wider leading-tight">
                 PREMIUM <br />
                 FABRICS
               </h3>
@@ -146,7 +151,7 @@ export default function Home() {
           {/* Right Banner: CUSTOM FIT */}
           <Link 
             href="/custom-shirt"
-            className="relative overflow-hidden h-[180px] sm:h-[240px] lg:h-[270px] rounded-none flex flex-col justify-end p-5 sm:p-8 group cursor-pointer shadow-md"
+            className="relative overflow-hidden h-[200px] sm:h-[260px] lg:h-[300px] xl:h-[330px] rounded-none flex flex-col justify-end p-6 sm:p-10 lg:p-12 group cursor-pointer shadow-md"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -158,7 +163,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
 
             <div className="relative z-10 text-white space-y-1.5">
-              <h3 className="font-serif-luxury text-xl sm:text-3xl lg:text-[34px] font-normal uppercase tracking-wider leading-tight">
+              <h3 className="font-serif-luxury text-2xl sm:text-4xl lg:text-[40px] font-normal uppercase tracking-wider leading-tight">
                 CUSTOM <br />
                 FIT
               </h3>
@@ -173,7 +178,7 @@ export default function Home() {
       </section>
 
       {/* Horizontal Divider */}
-      <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
+      <div className="w-full my-4 sm:my-6 lg:my-8">
         <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
       </div>
 

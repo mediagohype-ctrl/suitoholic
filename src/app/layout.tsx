@@ -30,8 +30,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col bg-[#D7C2AD] text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
-        {/* Global Studio Atmosphere: Exact Warm Sand Tone #D7C2AD + Sun Disk + Palm Shadows */}
+      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col bg-white text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
+        {/* Global Studio Atmosphere: Clean Crisp White Background */}
         <StudioBackground />
         
         {/* Page Content Container */}

@@ -2,13 +2,13 @@
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #D7C2AD;
-  --bg-sand: #D7C2AD;
-  --bg-sand-light: #EFE2D4;
-  --bg-sand-glow: #F6ECE2;
-  --bg-sand-dark: #C2AC96;
-  --bg-bar: #F2E8E0;
-  --bg-card: #EFE2D4;
+  --bg-primary: #FFFFFF;
+  --bg-sand: #FFFFFF;
+  --bg-sand-light: #F9F9F9;
+  --bg-sand-glow: #FFFFFF;
+  --bg-sand-dark: #F3F3F3;
+  --bg-bar: #FFFFFF;
+  --bg-card: #FFFFFF;
   --bg-card-dark: #14110E;
   --bg-dark: #110E0D;
   --accent-gold: #9E774C;
@@ -16,11 +16,11 @@
   --text-dark: #14110E;
   --text-muted: #5A4E42;
   --text-light: #FAF8F5;
-  --border-color: #D0BDA9;
+  --border-color: #E2E8F0;
 }
 
 html, body {
-  background-color: #D7C2AD;
+  background-color: #FFFFFF;
   color: #14110E;
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
@@ -32,10 +32,7 @@ html, body {
 
 /* Authentic Luxury Studio Backdrop Gradient */
 .bg-studio-warm {
-  background: 
-    radial-gradient(ellipse at 65% 35%, rgba(248, 238, 228, 0.85) 0%, rgba(225, 203, 182, 0.5) 45%, transparent 75%),
-    linear-gradient(135deg, #E6D2BF 0%, #D7C2AD 35%, #CBB29C 70%, #BA9F87 100%);
-  background-color: #D7C2AD;
+  background-color: #FFFFFF;
 }
 
 .font-serif-luxury {
@@ -63,11 +60,11 @@ html, body {
 
 /* Studio Ground & Floating Shadows */
 .studio-podium-shadow {
-  box-shadow: 0 20px 40px -15px rgba(20, 17, 14, 0.25);
+  box-shadow: 0 20px 40px -15px rgba(20, 17, 14, 0.08);
 }
 
 .studio-card-shadow {
-  box-shadow: 0 10px 30px -10px rgba(20, 17, 14, 0.12);
+  box-shadow: 0 10px 30px -10px rgba(20, 17, 14, 0.06);
 }
 
 /* Custom scrollbar */
@@ -76,10 +73,10 @@ html, body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #D7C2AD;
+  background: #FFFFFF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #9E774C;
+  background: #C5A069;
   border-radius: 3px;
 }
 
