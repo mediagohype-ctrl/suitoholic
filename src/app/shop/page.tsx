@@ -241,9 +241,6 @@ function ShopContent() {
                   <ArrowLeft size={14} />
                   <span>ALL CATEGORIES</span>
                 </button>
-                <span className="text-[10.5px] font-semibold text-[#54483C]">
-                  {displayProducts.length} Products
-                </span>
               </div>
 
               {/* Mobile Category Filter Pills */}
@@ -347,7 +344,7 @@ function ShopContent() {
                 {/* Right Main Catalog: Sort Bar + Products Grid */}
                 <div className="col-span-1 lg:col-span-9 space-y-3">
                   
-                  {/* Top Sort & Count Bar */}
+                  {/* Top Sort Bar */}
                   <div className="flex items-center justify-between sm:justify-end sm:space-x-6 text-[11px] text-[#4A3E33] font-medium pb-1 tracking-wider">
                     <span className="lg:hidden text-[#695B4E] font-semibold uppercase">{currentCategoryName}</span>
                     <div className="flex items-center space-x-1.5 cursor-pointer hover:text-[#110E0B]">
@@ -356,7 +353,6 @@ function ShopContent() {
                         {sortOption} <ChevronDown size={14} />
                       </span>
                     </div>
-                    <span className="hidden sm:inline text-[#695B4E] font-normal">24 Products</span>
                   </div>
 
                   {/* MOBILE VIEW (< lg:): 1 Horizontal Shirt Card Per Row (Matching Screenshot) */}

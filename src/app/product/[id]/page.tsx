@@ -9,10 +9,10 @@ import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import { allProducts, ProductItem } from "@/data/products";
 import { 
   ArrowLeft, 
+  ArrowRight,
   Heart, 
   Star, 
   ShoppingBag, 
-  Sparkles, 
   Scissors, 
   Ruler, 
   ShieldCheck, 
@@ -267,8 +267,8 @@ export default function ProductDetailPage() {
                     onClick={handleAddToCart}
                     className="w-full bg-[#8A6E48] hover:bg-[#725938] text-white py-3.5 px-4 rounded-xl text-xs font-bold tracking-[0.14em] uppercase transition-all flex items-center justify-center space-x-1.5 shadow-md"
                   >
-                    <Sparkles size={15} />
                     <span>BUY NOW</span>
+                    <ArrowRight size={15} />
                   </button>
                 </div>
 

@@ -37,15 +37,12 @@ export default function ModernCollectionSection({
       {/* Top Header Row with Luxury Accents */}
       <div className="flex items-center justify-between gap-4 mb-3 sm:mb-4">
         
-        {/* Left Side: Premium Bold Title with Bronze Accent & Badge */}
+        {/* Left Side: Premium Bold Title with Bronze Accent */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           <div className="w-1 sm:w-1.5 h-4 sm:h-5 rounded-full bg-[#9E774C]" />
           <h2 className="text-[15px] sm:text-[18px] lg:text-[20px] font-bold tracking-tight text-[#14110E] leading-snug">
             {headerTitle || collection.title}
           </h2>
-          <span className="hidden sm:inline-flex text-[10px] sm:text-[11px] font-bold tracking-wider text-[#7A5428] bg-white/70 px-2 py-0.5 rounded-full border border-[#D5C2AF]/80 uppercase">
-            {products.length} Styles
-          </span>
         </div>
 
         {/* Right Side: Navigation Controls + Discover More Button */}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Sparkles, ArrowRight, ShieldCheck, Ruler, Scissors, Award, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ShieldCheck, Ruler, Scissors, Award, CheckCircle2 } from "lucide-react";
 
 export default function AtelierEditorialBanner() {
   return (

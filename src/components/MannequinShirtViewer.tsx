@@ -94,100 +94,52 @@ export default function MannequinShirtViewer({
               transformOrigin: "center 50%",
             }}
           >
-            {/* SVG ClipPath Definition for Tailored Half Sleeve Cut */}
-            <svg className="absolute w-0 h-0" aria-hidden="true">
-              <defs>
-                <clipPath id="halfSleeveCut" clipPathUnits="objectBoundingBox">
-                  <path d="M 0.20 0 L 0.80 0 C 0.86 0.12 0.96 0.22 0.97 0.44 C 0.90 0.48 0.79 0.49 0.74 0.45 L 0.73 0.98 C 0.64 0.99 0.36 0.99 0.27 0.98 L 0.26 0.45 C 0.21 0.49 0.10 0.48 0.03 0.44 C 0.04 0.22 0.14 0.12 0.20 0 Z" />
-                </clipPath>
-              </defs>
-            </svg>
-
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/custom_fit_shirt_hq.png"
-              alt="3D Bespoke Tailored Shirt on Mannequin"
-              className="w-full h-full object-contain drop-shadow-[0_20px_35px_rgba(20,17,14,0.28)] transition-all duration-700 ease-out"
+            {/* Photorealistic Mannequin Shirt Images (Full Sleeve & Half Sleeve with Smooth Transition) */}
+            <div
+              className="relative w-full h-full flex items-center justify-center"
               style={{
-                filter:
-                  bodyFit === "tummy"
-                    ? "contrast(1.02) drop-shadow(0 22px 38px rgba(20,17,14,0.32))"
-                    : bodyFit === "regular"
-                    ? "contrast(1.01) drop-shadow(0 20px 35px rgba(20,17,14,0.28))"
-                    : "contrast(1.0) drop-shadow(0 18px 32px rgba(20,17,14,0.25))",
                 transform: `scaleX(${fitConfig.waistScaleX}) scaleY(${heightConfig.scaleY})`,
                 transformOrigin: "center 55%",
-                clipPath: isHalfSleeve ? "url(#halfSleeveCut)" : "none",
               }}
-              loading="eager"
-            />
-
-            {/* Tailored Short-Sleeve Folded Hem & Cuff Overlays when Half-Sleeve is Selected */}
-            {isHalfSleeve && (
-              <div
-                className="absolute inset-0 pointer-events-none transition-all duration-500 flex items-center justify-center"
+            >
+              {/* Full-Sleeve High-Fidelity Shirt */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/custom_fit_shirt_hq.png"
+                alt="3D Bespoke Tailored Full Sleeve Shirt on Mannequin"
+                className={`absolute inset-0 w-full h-full object-contain drop-shadow-[0_20px_35px_rgba(20,17,14,0.28)] transition-all duration-500 ease-out ${
+                  isHalfSleeve ? "opacity-0 pointer-events-none scale-[0.98]" : "opacity-100 scale-100"
+                }`}
                 style={{
-                  transform: `scaleX(${fitConfig.waistScaleX}) scaleY(${heightConfig.scaleY})`,
-                  transformOrigin: "center 55%",
+                  filter:
+                    bodyFit === "tummy"
+                      ? "contrast(1.02) drop-shadow(0 22px 38px rgba(20,17,14,0.32))"
+                      : bodyFit === "regular"
+                      ? "contrast(1.01) drop-shadow(0 20px 35px rgba(20,17,14,0.28))"
+                      : "contrast(1.0) drop-shadow(0 18px 32px rgba(20,17,14,0.25))",
                 }}
-              >
-                <svg viewBox="0 0 400 480" className="w-full h-full">
-                  {/* Left Half-Sleeve Folded Hem Cuff & Tailored Stitching */}
-                  <g className="transition-all duration-500">
-                    <path
-                      d="M 38 208 Q 66 216 94 206"
-                      stroke="#B8A896"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      fill="none"
-                      className="drop-shadow-xs"
-                    />
-                    <path
-                      d="M 38 205 Q 66 213 94 203"
-                      stroke="#E5DCD0"
-                      strokeWidth="1.2"
-                      strokeDasharray="2.5 2"
-                      strokeLinecap="round"
-                      fill="none"
-                    />
-                    <path
-                      d="M 40 212 Q 66 220 92 210"
-                      stroke="#7D6954"
-                      strokeWidth="0.8"
-                      opacity="0.4"
-                      fill="none"
-                    />
-                  </g>
+                loading="eager"
+              />
 
-                  {/* Right Half-Sleeve Folded Hem Cuff & Tailored Stitching */}
-                  <g className="transition-all duration-500">
-                    <path
-                      d="M 306 206 Q 334 216 362 208"
-                      stroke="#B8A896"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      fill="none"
-                      className="drop-shadow-xs"
-                    />
-                    <path
-                      d="M 306 203 Q 334 213 362 205"
-                      stroke="#E5DCD0"
-                      strokeWidth="1.2"
-                      strokeDasharray="2.5 2"
-                      strokeLinecap="round"
-                      fill="none"
-                    />
-                    <path
-                      d="M 308 210 Q 334 220 360 212"
-                      stroke="#7D6954"
-                      strokeWidth="0.8"
-                      opacity="0.4"
-                      fill="none"
-                    />
-                  </g>
-                </svg>
-              </div>
-            )}
+              {/* Half-Sleeve High-Fidelity Shirt */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/custom_fit_shirt_half_sleeve_hq.jpg"
+                alt="3D Bespoke Tailored Half Sleeve Shirt on Mannequin"
+                className={`absolute inset-0 w-full h-full object-contain drop-shadow-[0_20px_35px_rgba(20,17,14,0.28)] transition-all duration-500 ease-out ${
+                  isHalfSleeve ? "opacity-100 scale-100" : "opacity-0 pointer-events-none scale-[0.98]"
+                }`}
+                style={{
+                  filter:
+                    bodyFit === "tummy"
+                      ? "contrast(1.02) drop-shadow(0 22px 38px rgba(20,17,14,0.32))"
+                      : bodyFit === "regular"
+                      ? "contrast(1.01) drop-shadow(0 20px 35px rgba(20,17,14,0.28))"
+                      : "contrast(1.0) drop-shadow(0 18px 32px rgba(20,17,14,0.25))",
+                }}
+                loading="eager"
+              />
+            </div>
 
             {/* Subtle natural fabric tension & soft waist shadow expansion for Regular & Tummy fits */}
             {bodyFit !== "lean" && (

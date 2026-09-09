@@ -494,11 +494,11 @@ export default function CustomShirtConfigurator() {
                             <path d="M 40 18 L 50 26 L 60 18 L 54 12 L 46 12 Z" />
                             <path d="M 40 18 L 33 28 L 47 26" />
                             <path d="M 60 18 L 67 28 L 53 26" />
-                            {/* Shoulders & Short Sleeves */}
-                            <path d="M 33 28 L 18 36 L 24 54 L 33 50 L 33 92 L 67 92 L 67 50 L 76 54 L 82 36 L 67 28" />
-                            {/* Hem Cuts on Arms */}
-                            <path d="M 18 36 L 24 54" strokeDasharray="1 1" />
-                            <path d="M 76 54 L 82 36" strokeDasharray="1 1" />
+                            {/* Torso & Half Sleeves */}
+                            <path d="M 33 28 L 16 42 L 26 48 L 33 46 L 33 92 L 67 92 L 67 46 L 74 48 L 84 42 L 67 28" />
+                            {/* Sleeve Hem Fold Lines */}
+                            <line x1="17.5" y1="40" x2="27.5" y2="46" strokeDasharray="1.5 1.5" />
+                            <line x1="82.5" y1="40" x2="72.5" y2="46" strokeDasharray="1.5 1.5" />
                             {/* Button Placket & Buttons */}
                             <line x1="50" y1="26" x2="50" y2="92" strokeDasharray="2 2" />
                             <circle cx="50" cy="40" r="1.2" fill="currentColor" />
