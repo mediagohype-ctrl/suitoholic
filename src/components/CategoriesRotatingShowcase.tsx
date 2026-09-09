@@ -111,7 +111,7 @@ export default function CategoriesRotatingShowcase() {
     >
       {/* Top Heading matching reference image: CATEGORIES */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl text-[#3D1E28] tracking-[0.22em] uppercase font-medium">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl text-[#14110E] tracking-[0.22em] uppercase font-medium">
           CATEGORIES
         </h2>
         <div className="w-12 sm:w-16 h-[1.5px] bg-[#9E774C]/60 mx-auto mt-2 sm:mt-3" />
@@ -125,7 +125,7 @@ export default function CategoriesRotatingShowcase() {
           onClick={rotateAntiClockwise}
           aria-label="Rotate Anti-Clockwise (Previous Category)"
           type="button"
-          className="absolute left-2 sm:left-6 lg:left-12 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#3D1E28] hover:bg-[#14110E] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 border border-white/20 group cursor-pointer"
+          className="absolute left-2 sm:left-6 lg:left-12 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#9E774C] hover:bg-[#7A4B1A] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 border border-[#D5C2AF]/60 group cursor-pointer"
         >
           <ChevronLeft size={20} className="transform group-hover:-translate-x-0.5 transition-transform" />
         </button>
@@ -135,7 +135,7 @@ export default function CategoriesRotatingShowcase() {
           onClick={rotateClockwise}
           aria-label="Rotate Clockwise (Next Category)"
           type="button"
-          className="absolute right-2 sm:right-6 lg:right-12 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#3D1E28] hover:bg-[#14110E] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 border border-white/20 group cursor-pointer"
+          className="absolute right-2 sm:right-6 lg:right-12 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#9E774C] hover:bg-[#7A4B1A] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 border border-[#D5C2AF]/60 group cursor-pointer"
         >
           <ChevronRight size={20} className="transform group-hover:translate-x-0.5 transition-transform" />
         </button>
@@ -239,8 +239,8 @@ export default function CategoriesRotatingShowcase() {
               aria-label={`Go to category ${i + 1}`}
               className={`h-1 rounded-full transition-all duration-300 ${
                 isActive
-                  ? "w-8 sm:w-10 bg-[#3D1E28] shadow-xs"
-                  : "w-5 sm:w-7 bg-[#3D1E28]/25 hover:bg-[#3D1E28]/50"
+                  ? "w-8 sm:w-10 bg-[#9E774C] shadow-xs"
+                  : "w-5 sm:w-7 bg-[#9E774C]/30 hover:bg-[#9E774C]/60"
               }`}
             />
           );

@@ -54,10 +54,6 @@ export default function Footer() {
               </Link>
             </div>
 
-            <p className="text-xs sm:text-[13px] text-[#5A4552] leading-relaxed font-normal">
-              Dedicated to the timeless art of bespoke tailoring. Every garment is handcrafted with master precision from pure Egyptian Giza 140s twill, Sea Island cotton, and Super 150s Merino wool.
-            </p>
-
             {/* Direct Studio Concierge */}
             <div className="space-y-3 pt-2 border-t border-[#D6C5B5]/60">
               <div className="pb-1 border-b border-[#D6C5B5]/40">
@@ -157,25 +153,25 @@ export default function Footer() {
               <li>
                 <Link href="/about" className="hover:text-[#8C5A28] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
                   <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                  <span>Why Suitoholic</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-[#8C5A28] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
-                  <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
                   <span>About Us</span>
                 </Link>
               </li>
               <li>
-                <Link href="/affiliate" className="hover:text-[#8C5A28] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
+                <Link href="/fabrics" className="hover:text-[#8C5A28] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
                   <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                  <span>Affiliate Marketing</span>
+                  <span>Fabric Archives</span>
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-[#8C5A28] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
+                <Link href="/custom-shirt" className="hover:text-[#8C5A28] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
                   <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                  <span>Blog</span>
+                  <span>Custom Fit Configurator</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop" className="hover:text-[#8C5A28] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
+                  <span className="text-[#8C5A28] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                  <span>Bespoke Shop</span>
                 </Link>
               </li>
             </ul>

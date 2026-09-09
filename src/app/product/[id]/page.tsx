@@ -98,19 +98,8 @@ export default function ProductDetailPage() {
       <div className="relative flex-1 w-full">
         <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-8 sm:pb-16 space-y-10 sm:space-y-14">
 
-          {/* Breadcrumb Navigation on top */}
+          {/* Top Bar Navigation */}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase space-x-2">
-              <Link href="/" className="text-[#332B24] hover:text-[#966839] transition-colors">HOME</Link>
-              <span className="text-[#966839] text-xs font-normal">&gt;</span>
-              <Link href="/shop" className="text-[#332B24] hover:text-[#966839] transition-colors uppercase">
-                SHOP
-              </Link>
-              <span className="text-[#966839] text-xs font-normal">&gt;</span>
-              <span className="text-[#8C6D47] font-bold">{activeProduct.name}</span>
-            </div>
-
-            {/* Back to Catalog button */}
             <Link
               href={`/shop?category=${activeProduct.category}`}
               className="inline-flex items-center space-x-2 bg-white hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-gray-300 px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-xs"

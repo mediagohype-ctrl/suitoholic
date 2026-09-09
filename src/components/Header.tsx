@@ -34,7 +34,11 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
       ? "shop" 
       : pathname === "/custom-shirt" 
         ? "custom-fit" 
-        : "";
+        : pathname === "/fabrics" || pathname?.startsWith("/fabrics")
+          ? "fabrics"
+          : pathname === "/about" || pathname?.startsWith("/about")
+            ? "about"
+            : "";
 
   return (
     <header
@@ -118,14 +122,20 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
               CUSTOM FIT
             </Link>
             <Link
-              href="/#fabrics"
-              className="text-[#554A3F] hover:text-[#14110E] transition-colors pb-1"
+              href="/fabrics"
+              className={`transition-colors duration-200 pb-1 relative ${currentTab === "fabrics"
+                ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
+                : "text-[#554A3F] hover:text-[#14110E]"
+                }`}
             >
               FABRICS
             </Link>
             <Link
-              href="/#about"
-              className="text-[#554A3F] hover:text-[#14110E] transition-colors pb-1"
+              href="/about"
+              className={`transition-colors duration-200 pb-1 relative ${currentTab === "about"
+                ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
+                : "text-[#554A3F] hover:text-[#14110E]"
+                }`}
             >
               ABOUT US
             </Link>
@@ -173,14 +183,14 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
             CUSTOM FIT CONFIGURATOR
           </Link>
           <Link
-            href="/#fabrics"
+            href="/fabrics"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-xs font-bold tracking-[0.2em] uppercase text-[#1F1C18] py-2 border-b border-[#DAC2AB]/60"
           >
             FABRICS
           </Link>
           <Link
-            href="/#about"
+            href="/about"
             onClick={() => setMobileMenuOpen(false)}
             className="block text-xs font-bold tracking-[0.2em] uppercase text-[#1F1C18] py-2 border-b border-[#DAC2AB]/60"
           >

@@ -116,19 +116,8 @@ export default function CustomShirtConfigurator() {
 
       {/* Main Studio Content */}
       <div className="relative flex-1 w-full overflow-hidden flex flex-col justify-center">
-        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-3 sm:pt-6 pb-6 sm:pb-12">
+        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-6 sm:pb-12">
           
-          {/* Breadcrumb Navigation on top left (e.g. HOME > CUSTOM SHIRT > SLEEVES) */}
-          <div className="flex items-center text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] uppercase mb-3 sm:mb-6 space-x-2">
-            <Link href="/" className="text-[#332B24] hover:text-[#966839] transition-colors">HOME</Link>
-            <span className="text-[#966839] text-xs font-normal">&gt;</span>
-            <button onClick={() => setCurrentStep(1)} className="text-[#332B24] hover:text-[#966839] transition-colors uppercase font-semibold">
-              CUSTOM SHIRT
-            </button>
-            <span className="text-[#966839] text-xs font-normal">&gt;</span>
-            <span className="text-[#8C6D47] font-bold">{stepBreadcrumbs[currentStep - 1]}</span>
-          </div>
-
           {/* Main 2-Column Grid: Left 3D Mannequin & Right Configurator Box */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative">
             

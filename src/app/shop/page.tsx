@@ -113,14 +113,8 @@ function ShopContent() {
       <div className="relative flex-1 w-full">
         <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-8 sm:pb-16">
           
-          {/* Top Section: Breadcrumb & Title */}
-          <div className="mb-4 sm:mb-6">
-            <div className="flex items-center text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] uppercase mb-2 sm:mb-3 space-x-2">
-              <Link href="/" className="text-[#332B24] hover:text-[#966839] transition-colors">HOME</Link>
-              <span className="text-[#966839] text-xs font-normal">&gt;</span>
-              <span className="text-[#8C6D47] font-bold">SHOP SHIRTS</span>
-            </div>
-
+          {/* Top Section: Title & Subtitle */}
+          <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
               <div>
                 <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-normal text-[#140F0A] tracking-tight uppercase leading-[1.05]">
