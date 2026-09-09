@@ -113,7 +113,7 @@ export default function ProductDetailPage() {
             {/* Back to Catalog button */}
             <Link
               href={`/shop?category=${activeProduct.category}`}
-              className="inline-flex items-center space-x-2 bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B] px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-xs"
+              className="inline-flex items-center space-x-2 bg-white hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-gray-300 px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-xs"
             >
               <ArrowLeft size={15} />
               <span>BACK TO CATALOG</span>
@@ -127,7 +127,7 @@ export default function ProductDetailPage() {
             <div className="lg:col-span-6 space-y-4">
 
               {/* Mode Switcher Tabs (High-Res Photo vs. 3D Mannequin Fit) */}
-              <div className="flex items-center justify-between bg-[#EFE2D4]/90 border border-[#D0BDA9] p-1.5 rounded-2xl shadow-xs">
+              <div className="flex items-center justify-between bg-white border border-gray-200 p-1.5 rounded-2xl shadow-xs">
                 <button
                   onClick={() => setViewMode("photo")}
                   className={`flex-1 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider flex items-center justify-center space-x-2 transition-all cursor-pointer ${viewMode === "photo"
@@ -221,17 +221,17 @@ export default function ProductDetailPage() {
 
               {/* Visual Assurance Badges Strip */}
               <div className="grid grid-cols-3 gap-2.5 pt-1 text-center">
-                <div className="bg-[#EFE2D4]/90 border border-[#D0BDA9] rounded-2xl p-3 shadow-xs">
+                <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-xs">
                   <ShieldCheck size={18} className="mx-auto text-[#9E774C] mb-1" />
                   <span className="text-[10px] font-extrabold uppercase tracking-wider block text-[#14110E]">100% Giza Cotton</span>
                   <span className="text-[9px] text-[#665749] block">140s 2-Ply Fine Weave</span>
                 </div>
-                <div className="bg-[#EFE2D4]/90 border border-[#D0BDA9] rounded-2xl p-3 shadow-xs">
+                <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-xs">
                   <Scissors size={18} className="mx-auto text-[#9E774C] mb-1" />
                   <span className="text-[10px] font-extrabold uppercase tracking-wider block text-[#14110E]">Hand Cut &amp; Sewn</span>
                   <span className="text-[9px] text-[#665749] block">Master Shirtmakers</span>
                 </div>
-                <div className="bg-[#EFE2D4]/90 border border-[#D0BDA9] rounded-2xl p-3 shadow-xs">
+                <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-xs">
                   <RefreshCw size={18} className="mx-auto text-[#9E774C] mb-1" />
                   <span className="text-[10px] font-extrabold uppercase tracking-wider block text-[#14110E]">30-Day Fit Guarantee</span>
                   <span className="text-[9px] text-[#665749] block">Free Alterations</span>
@@ -241,7 +241,7 @@ export default function ProductDetailPage() {
             </div>
 
             {/* RIGHT COLUMN: Interactive Product Specs, Swatches & Action Buttons */}
-            <div className="lg:col-span-6 bg-[#EFE2D4]/95 border border-[#D0BDA9] rounded-3xl p-6 sm:p-9 shadow-xl backdrop-blur-md space-y-6">
+            <div className="lg:col-span-6 bg-white border border-gray-200 rounded-3xl p-6 sm:p-9 shadow-lg space-y-6">
 
               {/* Brand Title & Price */}
               <div>
@@ -264,7 +264,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Price Display */}
-                <div className="mt-4 flex items-baseline space-x-3 border-t border-[#D5C2AF]/70 pt-3.5">
+                <div className="mt-4 flex items-baseline space-x-3 border-t border-gray-200 pt-3.5">
                   <span className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#14110E]">
                     {activeProduct.price}
                   </span>
@@ -275,7 +275,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* VISUAL COLORWAY / FABRIC SWATCH SELECTOR */}
-              <div className="space-y-2.5 border-t border-[#D5C2AF]/70 pt-3.5">
+              <div className="space-y-2.5 border-t border-gray-200 pt-3.5">
                 <div className="flex justify-between items-center">
                   <label className="text-[10.5px] font-extrabold tracking-[0.2em] uppercase text-[#14110E]">
                     AVAILABLE FABRIC COLORWAYS
@@ -298,7 +298,7 @@ export default function ProductDetailPage() {
                         }}
                         className={`w-9 h-9 rounded-full border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm relative group ${isSelected
                           ? "border-[#120F0D] ring-2 ring-[#C68A4C] scale-110"
-                          : "border-[#C6B09B] opacity-80 hover:opacity-100"
+                          : "border-gray-300 opacity-80 hover:opacity-100"
                           }`}
                         style={{ backgroundColor: cw.hex }}
                         title={cw.name}
@@ -313,7 +313,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* E-COMMERCE ACTION BUTTONS */}
-              <div className="space-y-3 pt-3 border-t border-[#D5C2AF]/70">
+              <div className="space-y-3 pt-3 border-t border-gray-200">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     onClick={handleOpenCustomizer}
@@ -347,7 +347,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Specifications Card */}
-              <div className="bg-[#F5EBE1]/90 border border-[#D8C6B3] rounded-2xl p-4.5 space-y-2 text-xs shadow-xs">
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4.5 space-y-2 text-xs shadow-xs">
                 <h4 className="text-[10.5px] font-extrabold tracking-[0.2em] text-[#9E774C] uppercase mb-2">
                   PRODUCT SPECIFICATIONS
                 </h4>
