@@ -138,20 +138,15 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           </div>
         </div>
 
-        {/* Right: Plus Button */}
-        <button
-          onClick={handleQuickAdd}
-          type="button"
-          aria-label="Quick add or customize"
-          title="Quick Add / Custom Fit"
+        {/* Right: Plus Button -> Redirects to Product Details Page */}
+        <Link
+          href={`/product/${product.slug}`}
+          aria-label={`View details and customize ${product.name}`}
+          title="Customize Fit & Product Details"
           className="shrink-0 p-1 text-[#14110E] hover:text-[#9E774C] transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
         >
-          {isAdded ? (
-            <Check size={16} className="text-emerald-700 stroke-[2.5]" />
-          ) : (
-            <Plus size={16} className="stroke-[2]" />
-          )}
-        </button>
+          <Plus size={16} className="stroke-[2]" />
+        </Link>
 
       </div>
     </div>
