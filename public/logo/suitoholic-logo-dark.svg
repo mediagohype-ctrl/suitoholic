@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="100%" height="100%">
+  <!-- Double V Lapel / Collar Icon -->
+  <g stroke="#14110E" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Outer V -->
+    <path d="M 60,40 L 200,240 L 340,40" />
+    <!-- Inner V -->
+    <path d="M 100,40 L 200,195 L 300,40" />
+  </g>
+
+  <!-- Bowtie Icon -->
+  <g fill="#14110E">
+    <!-- Left Wing -->
+    <polygon points="120,40 185,60 185,20" />
+    <!-- Right Wing -->
+    <polygon points="280,40 215,60 215,20" />
+    <!-- Center Knot -->
+    <rect x="185" y="30" width="30" height="20" rx="3" />
+  </g>
+
+  <!-- Typography: suitoholic -->
+  <text 
+    x="200" 
+    y="280" 
+    text-anchor="middle" 
+    fill="#14110E" 
+    font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" 
+    font-size="52" 
+    font-weight="700" 
+    letter-spacing="-1.5"
+  >suitoholic<tspan font-size="20" dy="-25">™</tspan></text>
+
+  <!-- Divider Lines & ESTD. 2003 -->
+  <g stroke="#9E774C" stroke-width="2.5">
+    <line x1="40" y1="302" x2="135" y2="302" />
+    <line x1="265" y1="302" x2="360" y2="302" />
+  </g>
+  <text 
+    x="200" 
+    y="307" 
+    text-anchor="middle" 
+    fill="#9E774C" 
+    font-family="Georgia, 'Times New Roman', serif" 
+    font-size="16" 
+    font-weight="bold" 
+    letter-spacing="5"
+  >ESTD. 2003</text>
+</svg>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 
@@ -87,17 +88,15 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
 
           {/* Brand Logo & Tagline (Perfect Center on Mobile, Left on Desktop) */}
           <div className="flex items-center lg:static absolute left-1/2 -translate-x-1/2 lg:translate-x-0 z-0">
-            <Link href="/" className="flex flex-col items-center group">
-              <span className="font-brand-logo text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-black tracking-tight text-[#14110E] group-hover:text-[#9E774C] transition-colors leading-none lowercase inline-flex items-center">
-                suitoholic<span className="text-[10px] sm:text-xs lg:text-[13px] font-sans font-bold text-[#14110E] group-hover:text-[#9E774C] -mt-3 ml-0.5 select-none">™</span>
-              </span>
-              <div className="flex items-center gap-2 mt-1.5 w-full justify-center">
-                <div className="h-[1.5px] w-8 sm:w-10 lg:w-12 bg-[#9E774C]" />
-                <span className="text-[9px] sm:text-[10px] lg:text-[11px] tracking-[0.28em] text-[#9E774C] font-bold uppercase whitespace-nowrap">
-                  ESTD. 2003
-                </span>
-                <div className="h-[1.5px] w-8 sm:w-10 lg:w-12 bg-[#9E774C]" />
-              </div>
+            <Link href="/" className="flex flex-col items-center group py-1">
+              <Image
+                src="/logo/suitoholic-logo-dark.png"
+                alt="Suitoholic Logo"
+                width={280}
+                height={250}
+                priority
+                className="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
+              />
             </Link>
           </div>
 

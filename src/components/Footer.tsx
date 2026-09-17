@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Phone,
   Mail,
@@ -45,12 +46,13 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-4 sm:space-y-5">
             <div>
               <Link href="/" className="inline-block group">
-                <span className="font-brand-logo text-2xl sm:text-3xl font-bold tracking-tight text-[#2C1822] lowercase inline-flex items-center">
-                  suitoholic<span className="text-[11px] font-sans font-bold text-[#8C5A28] -mt-3 ml-0.5 select-none">™</span>
-                </span>
-                <span className="block text-[10px] sm:text-[11px] font-medium tracking-[0.25em] text-[#8C5A28] uppercase mt-0.5">
-                  BESPOKE SARTORIAL ATELIER • ESTD. 2003
-                </span>
+                <Image
+                  src="/logo/suitoholic-logo-dark.png"
+                  alt="Suitoholic Logo"
+                  width={280}
+                  height={250}
+                  className="h-16 sm:h-20 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
+                />
               </Link>
             </div>
 
