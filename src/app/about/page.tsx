@@ -254,7 +254,7 @@ export default function AboutPage() {
       <Header />
 
       {/* Main Container */}
-      <main className="flex-1 w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 pt-24 sm:pt-28 lg:pt-32 pb-8 sm:pb-12 lg:pb-16 space-y-12 sm:space-y-16 lg:space-y-20 select-none">
+      <main className="flex-1 w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 pt-36 sm:pt-44 lg:pt-48 pb-8 sm:pb-12 lg:pb-16 space-y-12 sm:space-y-16 lg:space-y-20 select-none">
         
         {/* ========================================================================= */}
         {/* 1. HERO SECTION: Brand Mission & What Suitoholic Does                     */}

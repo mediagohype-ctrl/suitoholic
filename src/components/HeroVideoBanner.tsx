@@ -49,7 +49,7 @@ export default function HeroVideoBanner() {
       </div>
 
       {/* 2. Hero Content Container (Constrained strictly to left side) */}
-      <div className="relative z-20 w-full max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 flex flex-col justify-center">
+      <div className="relative z-20 w-full max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 pt-36 sm:pt-44 lg:pt-48 pb-12 sm:pb-16 flex flex-col justify-center">
         
         {/* Left Column: Heading & CTA Action Buttons (Zero Overlap with Shirt) */}
         <div className="max-w-md sm:max-w-lg lg:max-w-[480px] xl:max-w-[540px] flex flex-col items-start space-y-5 sm:space-y-7">

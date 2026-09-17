@@ -116,7 +116,7 @@ export default function CustomShirtConfigurator() {
 
       {/* Main Studio Content */}
       <div className="relative flex-1 w-full overflow-hidden flex flex-col justify-center">
-        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-6 sm:pb-12">
+        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-6 sm:pb-12">
           
           {/* Main 2-Column Grid: Left 3D Mannequin & Right Configurator Box */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative">

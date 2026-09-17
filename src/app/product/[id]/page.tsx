@@ -96,7 +96,7 @@ export default function ProductDetailPage() {
 
       {/* Main Studio Content */}
       <div className="relative flex-1 w-full">
-        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-8 sm:pb-16 space-y-10 sm:space-y-14">
+        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-8 sm:pb-16 space-y-10 sm:space-y-14">
 
           {/* Top Bar Navigation */}
           <div className="flex flex-wrap items-center justify-between gap-3">

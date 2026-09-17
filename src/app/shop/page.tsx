@@ -111,7 +111,7 @@ function ShopContent() {
 
       {/* Studio Atmosphere Backdrop */}
       <div className="relative flex-1 w-full">
-        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-8 sm:pb-16">
+        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-8 sm:pb-16">
           
           {/* Top Section: Title & Subtitle */}
           <div className="mb-6 sm:mb-8">

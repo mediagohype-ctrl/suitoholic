@@ -468,7 +468,7 @@ export default function FabricsPage() {
       {/* ========================================================================= */}
       {/* 1. 100% PURE VISUAL FABRIC HERO BANNER (ZERO TEXT OVERLAYS ON IMAGE)      */}
       {/* ========================================================================= */}
-      <section className="relative w-full pt-24 sm:pt-28 lg:pt-32 pb-4 sm:pb-6 px-4 sm:px-8 lg:px-12 xl:px-16">
+      <section className="relative w-full pt-36 sm:pt-44 lg:pt-48 pb-4 sm:pb-6 px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="max-w-[1780px] w-full mx-auto space-y-4">
           
           {/* Main Pure Visual Fabric Showcase Frame (100% Clean Image, No Text) */}

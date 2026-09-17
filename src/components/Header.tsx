@@ -86,9 +86,9 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
             </button>
           </div>
 
-          {/* Brand Logo & Tagline (Perfect Center on Mobile, Left on Desktop) */}
-          <div className="flex items-center lg:static absolute left-1/2 -translate-x-1/2 lg:translate-x-0 z-0">
-            <Link href="/" className="flex flex-col items-center group py-1">
+          {/* Brand Logo & Tagline */}
+          <div className="flex items-center z-10 shrink-0">
+            <Link href="/" className="flex items-center group py-1">
               <Image
                 src="/logo/suitoholic-logo-dark.png"
                 alt="Suitoholic Logo"
