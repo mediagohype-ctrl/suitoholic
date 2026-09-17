@@ -75,7 +75,8 @@ function ShopContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const selectedCategory = searchParams.get("category");
+  const categoryParam = searchParams.get("category");
+  const selectedCategory = categoryParam || "all";
   const [wishlist, setWishlist] = useState<number[]>([]);
   const [sortOption] = useState<string>("NEW ARRIVALS");
   const [openFilters, setOpenFilters] = useState<Record<string, boolean>>({});
@@ -277,6 +278,17 @@ function ShopContent() {
                       </button>
                     </div>
                     <div className="space-y-1 text-xs">
+                      <button
+                        onClick={() => handleCategorySelect("all")}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-[10.5px] tracking-wider uppercase transition-all flex items-center justify-between ${
+                          selectedCategory === "all"
+                            ? "bg-[#E4CEB8] border border-[#C5AE96] text-[#1A1511] font-bold shadow-2xs"
+                            : "text-[#54483C] hover:text-[#1A1511] hover:bg-[#E7D3BF]"
+                        }`}
+                      >
+                        <span>ALL SHIRTS &amp; PRODUCTS</span>
+                        {selectedCategory === "all" && <span className="text-xs">→</span>}
+                      </button>
                       {mainCategories.map((cat) => {
                         const isActive = selectedCategory === cat.id;
                         return (
@@ -389,24 +401,32 @@ function ShopContent() {
                     ))}
                   </div>
 
-                  {/* DESKTOP VIEW (lg:+): 4-Column × 2-Row Product Grid */}
-                  <div className="hidden lg:grid grid-cols-4 gap-3.5">
+                  {/* DESKTOP VIEW (lg:+): Luxury 3-Column Editorial Product Grid */}
+                  <div className="hidden lg:grid grid-cols-3 gap-6">
                     {displayProducts.map((p) => {
                       const isFavorited = wishlist.includes(p.id);
                       return (
                         <div
                           key={p.id}
-                          className="bg-[#EEDAC4] border border-[#CEB8A0] rounded-xl p-2.5 shadow-2xs hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group"
+                          className="bg-[#FAF4EC] border border-[#DCD0C0] rounded-2xl p-4 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between group relative overflow-hidden"
                         >
                           {/* Product Thumbnail Container with Wishlist Heart */}
-                          <div className="relative w-full aspect-[4/3.7] rounded-lg overflow-hidden bg-[#241D17] flex items-center justify-center shadow-inner">
+                          <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-[#241D17] flex items-center justify-center shadow-xs">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={p.image}
                               alt={p.name}
-                              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
                               loading="eager"
                             />
+
+                            {/* Tag Pill Overlay */}
+                            {p.tag && (
+                              <div className="absolute top-3 left-3 bg-[#14110E]/85 backdrop-blur-md text-white text-[9.5px] font-bold tracking-[0.16em] uppercase px-2.5 py-1 rounded-full border border-white/20 shadow-xs">
+                                {p.tag}
+                              </div>
+                            )}
+
                             {/* Wishlist Heart Button */}
                             <button
                               onClick={(e) => {
@@ -414,34 +434,40 @@ function ShopContent() {
                                 e.stopPropagation();
                                 toggleWishlist(p.id);
                               }}
-                              className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs flex items-center justify-center text-white transition-all shadow-xs"
+                              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 hover:bg-black/75 backdrop-blur-xs flex items-center justify-center text-white transition-all shadow-md cursor-pointer"
                               aria-label="Add to wishlist"
                             >
                               <Heart
-                                size={13}
+                                size={14}
                                 className={isFavorited ? "fill-[#E04B4B] text-[#E04B4B]" : "text-white/90"}
                               />
                             </button>
                           </div>
 
                           {/* Product Title & Price Details */}
-                          <div className="pt-2.5 pb-0.5 text-center flex flex-col items-center">
-                            <h4 className="font-serif-luxury text-[11.5px] font-bold tracking-[0.05em] text-[#1F1C18] uppercase leading-tight line-clamp-1">
+                          <div className="pt-4 pb-1 text-left flex flex-col">
+                            <span className="text-[10px] font-bold tracking-[0.18em] text-[#9E774C] uppercase">
+                              {p.fabric}
+                            </span>
+                            <h4 className="font-serif-luxury text-sm font-bold tracking-[0.04em] text-[#14110E] uppercase leading-snug mt-1 group-hover:text-[#9E774C] transition-colors">
                               {p.name}
                             </h4>
-                            <p className="text-[11px] font-bold text-[#1F1C18] mt-1 font-sans tracking-wide">
-                              {p.price}
+                            <p className="text-[11.5px] text-[#55473B] font-sans mt-0.5 line-clamp-1">
+                              {p.subtitle}
                             </p>
+                            <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-[#EAE0D3]">
+                              <p className="text-sm font-bold text-[#14110E] font-sans tracking-tight">
+                                {p.price}
+                              </p>
+                              <Link
+                                href={`/product/${p.slug}`}
+                                className="inline-flex items-center space-x-1.5 bg-[#14110E] hover:bg-[#9E774C] text-white px-3.5 py-1.5 rounded-lg text-[10.5px] font-bold uppercase tracking-wider transition-all shadow-xs"
+                              >
+                                <span>CUSTOMIZE</span>
+                                <span>→</span>
+                              </Link>
+                            </div>
                           </div>
-
-                          {/* Explore / Customize Link Button */}
-                          <Link
-                            href={`/product/${p.slug}`}
-                            className="mt-2 w-full bg-[#E5D2BE] hover:bg-[#1F1C18] text-[#1F1C18] hover:text-white border border-[#C5AE96] py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider text-center transition-all flex items-center justify-center gap-1 shadow-2xs"
-                          >
-                            <span>CUSTOMIZE</span>
-                            <span>→</span>
-                          </Link>
                         </div>
                       );
                     })}
