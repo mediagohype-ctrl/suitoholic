@@ -114,49 +114,52 @@ function ShopContent() {
       <div className="relative flex-1 w-full">
         <main className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-12 sm:pb-20">
           
-          {/* Top Editorial Banner */}
-          <div className="mb-8 sm:mb-12 border-b border-[#DCD0C0] pb-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
-                <div className="flex items-center space-x-2 text-[11px] font-bold tracking-[0.25em] text-[#9E774C] uppercase mb-2">
-                  <span>SUITOHOLIC ATELIER</span>
-                  <span>•</span>
-                  <span>BESPOKE COLLECTION 2026</span>
-                </div>
-                <h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-[56px] font-normal text-[#14110E] tracking-tight uppercase leading-[1.02]">
-                  THE SHIRT ATELIER
-                </h1>
-              </div>
+          {/* Top Editorial Banner - Clean Luxury Centered Header */}
+          <div className="mb-8 sm:mb-10 text-center relative max-w-3xl mx-auto">
+            <div className="inline-flex items-center justify-center space-x-3 text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-[#9E774C] uppercase mb-2">
+              <span className="h-[1px] w-8 sm:w-12 bg-[#9E774C]" />
+              <span>SUITOHOLIC ATELIER</span>
+              <span>•</span>
+              <span>BESPOKE COLLECTION</span>
+              <span className="h-[1px] w-8 sm:w-12 bg-[#9E774C]" />
+            </div>
+            
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] font-normal text-[#14110E] tracking-tight uppercase leading-tight">
+              THE SHIRT ATELIER
+            </h1>
+            
+            <div className="w-16 h-[1.5px] bg-[#9E774C] mx-auto mt-3" />
+          </div>
               
-              {/* Category Quick Selector Filter Pills Bar (Desktop & Mobile) */}
-              <div className="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
-                <button
-                  onClick={() => handleCategorySelect("all")}
-                  className={`px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-[0.14em] transition-all cursor-pointer whitespace-nowrap shadow-xs ${
-                    selectedCategory === "all"
-                      ? "bg-[#14110E] text-white ring-1 ring-[#14110E]"
-                      : "bg-[#F3E8DB] hover:bg-[#14110E] text-[#4A3E33] hover:text-white border border-[#D5C2AF]"
-                  }`}
-                >
-                  ALL SHIRTS
-                </button>
-                {mainCategories.map((cat) => {
-                  const isActive = selectedCategory === cat.id;
-                  return (
-                    <button
-                      key={cat.id}
-                      onClick={() => handleCategorySelect(cat.id)}
-                      className={`px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-[0.14em] transition-all cursor-pointer whitespace-nowrap shadow-xs ${
-                        isActive
-                          ? "bg-[#14110E] text-white ring-1 ring-[#14110E]"
-                          : "bg-[#F3E8DB] hover:bg-[#14110E] text-[#4A3E33] hover:text-white border border-[#D5C2AF]"
-                      }`}
-                    >
-                      {cat.title.replace("EXCLUSIVE ", "").replace("EXECUTIVE ", "").replace("LUXURY ", "").replace("PREMIUM ", "").replace("BESPOKE ", "").replace("ETHNIC & ", "")}
-                    </button>
-                  );
-                })}
-              </div>
+          {/* Category Quick Selector Filter Pills Bar (Centered Luxury Tabs) */}
+          <div className="mb-10 flex items-center justify-center">
+            <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none max-w-full px-2">
+              <button
+                onClick={() => handleCategorySelect("all")}
+                className={`px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-[0.16em] transition-all cursor-pointer whitespace-nowrap shadow-xs ${
+                  selectedCategory === "all"
+                    ? "bg-[#14110E] text-white ring-1 ring-[#14110E]"
+                    : "bg-[#FAF5EE] hover:bg-[#14110E] text-[#4A3E33] hover:text-white border border-[#E2D4C3]"
+                }`}
+              >
+                ALL SHIRTS
+              </button>
+              {mainCategories.map((cat) => {
+                const isActive = selectedCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => handleCategorySelect(cat.id)}
+                    className={`px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-[0.16em] transition-all cursor-pointer whitespace-nowrap shadow-xs ${
+                      isActive
+                        ? "bg-[#14110E] text-white ring-1 ring-[#14110E]"
+                        : "bg-[#FAF5EE] hover:bg-[#14110E] text-[#4A3E33] hover:text-white border border-[#E2D4C3]"
+                    }`}
+                  >
+                    {cat.title.replace("EXCLUSIVE ", "").replace("EXECUTIVE ", "").replace("LUXURY ", "").replace("PREMIUM ", "").replace("BESPOKE ", "").replace("ETHNIC & ", "")}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
