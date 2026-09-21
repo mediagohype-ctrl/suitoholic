@@ -11,50 +11,40 @@ interface ShirtVariant {
   colorHex: string;
   swatchGradient: string;
   startTime: number;
-  autoEndTime: number; // Duration in 2-second auto-cycle
-  loopEndTime: number; // Full clip duration when held manually
 }
 
 const SHIRT_VARIANTS: ShirtVariant[] = [
   {
-    id: "navy",
-    name: "Midnight Navy Stripe",
-    shortLabel: "Navy Stripe",
-    colorHex: "#1E2A38",
-    swatchGradient: "linear-gradient(135deg, #182330 0%, #2A3B4E 100%)",
+    id: "blue_stripe",
+    name: "Royal Steel Blue Stripe",
+    shortLabel: "Royal Blue Stripe",
+    colorHex: "#3A5276",
+    swatchGradient: "linear-gradient(135deg, #2E456A 0%, #4F6A8F 100%)",
     startTime: 0.0,
-    autoEndTime: 2.2, // ~2.9s real time at 0.75x speed
-    loopEndTime: 2.92,
   },
   {
-    id: "terracotta",
+    id: "dark_brown",
+    name: "Dark Espresso Brown",
+    shortLabel: "Espresso Brown",
+    colorHex: "#3D2820",
+    swatchGradient: "linear-gradient(135deg, #251712 0%, #4D3329 100%)",
+    startTime: 7.5,
+  },
+  {
+    id: "sand_linen",
+    name: "Sand Beige Linen",
+    shortLabel: "Sand Linen",
+    colorHex: "#CBBBA9",
+    swatchGradient: "linear-gradient(135deg, #B5A28E 0%, #D4C4B3 100%)",
+    startTime: 15.5,
+  },
+  {
+    id: "terracotta_stripe",
     name: "Terracotta Rust Stripe",
     shortLabel: "Terracotta Stripe",
-    colorHex: "#9C5743",
-    swatchGradient: "linear-gradient(135deg, #8E4C38 0%, #B56A54 100%)",
-    startTime: 3.0,
-    autoEndTime: 5.2, // ~2.9s real time at 0.75x speed
-    loopEndTime: 6.45,
-  },
-  {
-    id: "rose",
-    name: "Blush Rose Stripe",
-    shortLabel: "Blush Rose Stripe",
-    colorHex: "#DF9F97",
-    swatchGradient: "linear-gradient(135deg, #CF887E 0%, #E8B4AD 100%)",
-    startTime: 6.55,
-    autoEndTime: 8.75, // ~2.9s real time at 0.75x speed
-    loopEndTime: 8.95,
-  },
-  {
-    id: "trio",
-    name: "All 3 Colors (Trio Edition)",
-    shortLabel: "All 3 Combined",
-    colorHex: "multi",
-    swatchGradient: "linear-gradient(135deg, #182330 0%, #182330 33.3%, #9C5743 33.3%, #9C5743 66.6%, #DF9F97 66.6%, #DF9F97 100%)",
-    startTime: 9.0,
-    autoEndTime: 13.0, // ~5.3s real time at 0.75x speed - generous display time
-    loopEndTime: 13.9,
+    colorHex: "#A85A48",
+    swatchGradient: "linear-gradient(135deg, #8E4434 0%, #B86755 100%)",
+    startTime: 24.5,
   },
 ];
 
@@ -64,8 +54,6 @@ export default function HeroVideoBanner() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  const isManualModeRef = useRef<boolean>(false);
-  const manualIndexRef = useRef<number>(0);
   const isSeekingRef = useRef<boolean>(false);
 
   const currentVariant = SHIRT_VARIANTS[activeIndex];
@@ -77,10 +65,8 @@ export default function HeroVideoBanner() {
     }
   }, []);
 
-  // Manual Color Selection: user clicks a swatch
+  // Manual Color Selection: user clicks a swatch -> jump to video timestamp immediately
   const selectVariant = useCallback((index: number) => {
-    isManualModeRef.current = true;
-    manualIndexRef.current = index;
     setActiveIndex(index);
 
     if (videoRef.current) {
@@ -94,63 +80,24 @@ export default function HeroVideoBanner() {
     }
   }, []);
 
-  // Single Synchronized Controller for Smooth Serial Playback & Accurate Swatch Active State
+  // Single Synchronized Controller for Real-Time Video Timestamp & Color Swatch Sync
   const handleTimeUpdate = useCallback(() => {
     if (!videoRef.current || isSeekingRef.current) return;
     const ct = videoRef.current.currentTime;
 
-    // MANUAL MODE: Loop only the selected shirt variant smoothly
-    if (isManualModeRef.current) {
-      const selected = SHIRT_VARIANTS[manualIndexRef.current];
-      if (ct >= selected.loopEndTime - 0.05 || ct < selected.startTime - 0.15) {
-        isSeekingRef.current = true;
-        videoRef.current.currentTime = selected.startTime;
-        videoRef.current.playbackRate = 0.75;
-        setTimeout(() => {
-          isSeekingRef.current = false;
-        }, 120);
-      }
-      return;
+    let currentIdx = 0;
+    if (ct >= 24.5) {
+      currentIdx = 3; // Terracotta Rust Stripe
+    } else if (ct >= 15.5) {
+      currentIdx = 2; // Sand Beige Linen
+    } else if (ct >= 7.5) {
+      currentIdx = 1; // Dark Espresso Brown
+    } else {
+      currentIdx = 0; // Royal Steel Blue Stripe
     }
 
-    // AUTO SERIAL MODE:
-    // Serial sequence: 1 (Navy) -> 2 (Terracotta) -> 3 (Rose) -> 4 (Trio) -> Loop
-    if (ct < 3.0) {
-      if (activeIndex !== 0) setActiveIndex(0);
-      if (ct >= SHIRT_VARIANTS[0].autoEndTime) {
-        isSeekingRef.current = true;
-        videoRef.current.currentTime = SHIRT_VARIANTS[1].startTime;
-        videoRef.current.playbackRate = 0.75;
-        setActiveIndex(1);
-        setTimeout(() => { isSeekingRef.current = false; }, 120);
-      }
-    } else if (ct >= 3.0 && ct < 6.55) {
-      if (activeIndex !== 1) setActiveIndex(1);
-      if (ct >= SHIRT_VARIANTS[1].autoEndTime) {
-        isSeekingRef.current = true;
-        videoRef.current.currentTime = SHIRT_VARIANTS[2].startTime;
-        videoRef.current.playbackRate = 0.75;
-        setActiveIndex(2);
-        setTimeout(() => { isSeekingRef.current = false; }, 120);
-      }
-    } else if (ct >= 6.55 && ct < 9.0) {
-      if (activeIndex !== 2) setActiveIndex(2);
-      if (ct >= SHIRT_VARIANTS[2].autoEndTime) {
-        isSeekingRef.current = true;
-        videoRef.current.currentTime = SHIRT_VARIANTS[3].startTime;
-        videoRef.current.playbackRate = 0.75;
-        setActiveIndex(3);
-        setTimeout(() => { isSeekingRef.current = false; }, 120);
-      }
-    } else if (ct >= 9.0) {
-      if (activeIndex !== 3) setActiveIndex(3);
-      if (ct >= SHIRT_VARIANTS[3].autoEndTime) {
-        isSeekingRef.current = true;
-        videoRef.current.currentTime = SHIRT_VARIANTS[0].startTime;
-        videoRef.current.playbackRate = 0.75;
-        setActiveIndex(0);
-        setTimeout(() => { isSeekingRef.current = false; }, 120);
-      }
+    if (activeIndex !== currentIdx) {
+      setActiveIndex(currentIdx);
     }
   }, [activeIndex]);
 
@@ -173,25 +120,23 @@ export default function HeroVideoBanner() {
   }, []);
 
   return (
-    <section className="relative w-full h-[100dvh] min-h-[560px] flex flex-col justify-between overflow-hidden bg-[#E7D6C4] select-none">
+    <section className="relative w-full h-[100dvh] min-h-[560px] flex flex-col justify-between overflow-hidden bg-[#DDD1C3] select-none">
       
       {/* 1. Background Video Layer */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
           ref={videoRef}
-          src="/video/create_a_second_premium_shirt_video.mp4"
+          src="/video/Suitoholic.mp4"
           autoPlay
           loop
           muted
           playsInline
+          disablePictureInPicture
+          controlsList="nodownload no-picture-in-picture"
           preload="auto"
           onLoadedData={() => setIsVideoLoaded(true)}
           onTimeUpdate={handleTimeUpdate}
-          className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-700 ease-out ${
-            activeIndex === 3
-              ? "object-[50%_bottom] sm:object-[50%_center] md:object-[52%_center] lg:object-center scale-[1.0] sm:scale-[1.0]"
-              : "object-[52%_bottom] sm:object-[54%_center] md:object-[58%_center] lg:object-center scale-[1.01]"
-          }`}
+          className="absolute inset-0 w-full h-full object-contain object-center pointer-events-none transition-all duration-700 ease-out scale-[0.85] sm:scale-[0.78] md:scale-[0.74] lg:scale-[0.70] pt-12 sm:pt-14 lg:pt-16 pb-10 sm:pb-14"
           style={{
             opacity: isVideoLoaded ? 1 : 0.85,
           }}
@@ -199,13 +144,13 @@ export default function HeroVideoBanner() {
 
         {/* Soft natural ambient gradient on left for crystal clear readability */}
         <div
-          className={`absolute inset-0 bg-gradient-to-r from-[#E7D6C4]/80 via-[#E7D6C4]/30 to-transparent pointer-events-none transition-all duration-700 ${
+          className={`absolute inset-0 bg-gradient-to-r from-[#DDD1C3]/85 via-[#DDD1C3]/35 to-transparent pointer-events-none transition-all duration-700 ${
             activeIndex === 3
               ? "w-[45%] sm:w-[40%] md:w-[35%] lg:w-[32%] opacity-60"
               : "w-[85%] sm:w-[70%] md:w-[58%] lg:w-[48%] opacity-100"
           }`}
         />
-        <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-[#E2D0BD]/70 via-[#E2D0BD]/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-[#DDD1C3]/80 via-[#DDD1C3]/20 to-transparent pointer-events-none" />
       </div>
 
       {/* 2. Hero Content Container (flex-1 centers content) */}
