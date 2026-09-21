@@ -23,7 +23,7 @@ const SHIRT_VARIANTS: ShirtVariant[] = [
     colorHex: "#1E2A38",
     swatchGradient: "linear-gradient(135deg, #182330 0%, #2A3B4E 100%)",
     startTime: 0.0,
-    autoEndTime: 2.0, // ~2.67s real time at 0.75x speed
+    autoEndTime: 2.2, // ~2.9s real time at 0.75x speed
     loopEndTime: 2.92,
   },
   {
@@ -33,7 +33,7 @@ const SHIRT_VARIANTS: ShirtVariant[] = [
     colorHex: "#9C5743",
     swatchGradient: "linear-gradient(135deg, #8E4C38 0%, #B56A54 100%)",
     startTime: 3.0,
-    autoEndTime: 5.0, // ~2.67s real time at 0.75x speed
+    autoEndTime: 5.2, // ~2.9s real time at 0.75x speed
     loopEndTime: 6.45,
   },
   {
@@ -43,8 +43,8 @@ const SHIRT_VARIANTS: ShirtVariant[] = [
     colorHex: "#DF9F97",
     swatchGradient: "linear-gradient(135deg, #CF887E 0%, #E8B4AD 100%)",
     startTime: 6.55,
-    autoEndTime: 8.55, // ~2.67s real time at 0.75x speed
-    loopEndTime: 8.92,
+    autoEndTime: 8.75, // ~2.9s real time at 0.75x speed
+    loopEndTime: 8.95,
   },
   {
     id: "trio",
@@ -53,8 +53,8 @@ const SHIRT_VARIANTS: ShirtVariant[] = [
     colorHex: "multi",
     swatchGradient: "linear-gradient(135deg, #182330 0%, #182330 33.3%, #9C5743 33.3%, #9C5743 66.6%, #DF9F97 66.6%, #DF9F97 100%)",
     startTime: 9.0,
-    autoEndTime: 9.98,
-    loopEndTime: 9.98,
+    autoEndTime: 13.0, // ~5.3s real time at 0.75x speed - generous display time
+    loopEndTime: 13.9,
   },
 ];
 
@@ -187,14 +187,24 @@ export default function HeroVideoBanner() {
           preload="auto"
           onLoadedData={() => setIsVideoLoaded(true)}
           onTimeUpdate={handleTimeUpdate}
-          className="absolute inset-0 w-full h-full object-cover object-[52%_bottom] sm:object-[54%_center] md:object-[58%_center] lg:object-center pointer-events-none scale-[1.01] transition-opacity duration-700"
+          className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-700 ease-out ${
+            activeIndex === 3
+              ? "object-[50%_bottom] sm:object-[50%_center] md:object-[52%_center] lg:object-center scale-[1.0] sm:scale-[1.0]"
+              : "object-[52%_bottom] sm:object-[54%_center] md:object-[58%_center] lg:object-center scale-[1.01]"
+          }`}
           style={{
             opacity: isVideoLoaded ? 1 : 0.85,
           }}
         />
 
         {/* Soft natural ambient gradient on left for crystal clear readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#E7D6C4]/80 via-[#E7D6C4]/30 to-transparent w-[85%] sm:w-[70%] md:w-[58%] lg:w-[48%] pointer-events-none" />
+        <div
+          className={`absolute inset-0 bg-gradient-to-r from-[#E7D6C4]/80 via-[#E7D6C4]/30 to-transparent pointer-events-none transition-all duration-700 ${
+            activeIndex === 3
+              ? "w-[45%] sm:w-[40%] md:w-[35%] lg:w-[32%] opacity-60"
+              : "w-[85%] sm:w-[70%] md:w-[58%] lg:w-[48%] opacity-100"
+          }`}
+        />
         <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-[#E2D0BD]/70 via-[#E2D0BD]/20 to-transparent pointer-events-none" />
       </div>
 
@@ -205,14 +215,20 @@ export default function HeroVideoBanner() {
         <div className="max-w-[280px] sm:max-w-md md:max-w-xl lg:max-w-[560px] xl:max-w-[620px] flex flex-col items-start pt-10 sm:pt-16 md:pt-0">
 
           {/* Golden/Tan Eyebrow Subtitle */}
-          <div className="mb-1.5 sm:mb-3 flex items-center gap-2 sm:gap-3">
+          <div className="mb-1.5 sm:mb-3 flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="text-[#A57545] text-[10px] sm:text-xs md:text-[13px] font-bold tracking-[0.22em] sm:tracking-[0.28em] uppercase inline-block">
               EFFORTLESSLY ELEGANT
             </span>
             <span className="hidden sm:inline text-[#A57545]/40 font-mono text-xs">|</span>
-            <span className="hidden sm:inline text-[#4A3F35] text-[11px] font-semibold tracking-wider transition-all duration-300">
+            <span className="text-[#4A3F35] text-[11px] font-semibold tracking-wider transition-all duration-300">
               {currentVariant.name}
             </span>
+            {activeIndex === 3 && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9.5px] font-bold tracking-widest uppercase bg-[#14110E] text-[#FAF8F5] shadow-xs transition-opacity duration-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#DF9F97]" />
+                TRIO COLLECTION
+              </span>
+            )}
           </div>
 
           {/* Main Luxury High-Contrast Heading */}
