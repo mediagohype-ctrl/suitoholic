@@ -2,14 +2,14 @@ import React from "react";
 
 export default function FeatureHighlightsBar({ className = "" }: { className?: string }) {
   return (
-    <section className={`w-full z-30 bg-[#EFE5D9]/95 backdrop-blur-md border-t border-b border-[#D8C7B7] py-3.5 sm:py-4 px-2 sm:px-4 shadow-[0_-2px_12px_rgba(0,0,0,0.04)] select-none transition-all ${className}`}>
-      <div className="w-full">
+    <section className={`w-full z-30 shrink-0 bg-[#EFE5D9] border-t border-b border-[#D8C7B7]/80 py-2.5 sm:py-3.5 md:py-4 px-3 sm:px-6 shadow-[0_-2px_12px_rgba(0,0,0,0.03)] select-none transition-all ${className}`}>
+      <div className="w-full max-w-7xl mx-auto">
         
-        {/* MOBILE VIEW: 2 Columns × 2 Rows with Vertical Divider between columns matching screenshot */}
-        <div className="grid grid-cols-2 gap-y-3.5 md:hidden">
+        {/* MOBILE VIEW: 2 Columns × 2 Rows with Cross Dividers matching screenshot */}
+        <div className="grid grid-cols-2 md:hidden">
           
           {/* 1. CUSTOM FIT */}
-          <div className="flex items-center space-x-2.5 pr-2 border-r border-[#D8C7B7]/70">
+          <div className="flex items-center space-x-2.5 pr-2.5 pb-2.5 border-r border-b border-[#D8C7B7]/80">
             <div className="w-7 h-7 flex items-center justify-center shrink-0 text-[#14110E]">
               <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
                 <ellipse cx="13.5" cy="12.5" rx="7.5" ry="3.8" />
@@ -22,17 +22,17 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
               </svg>
             </div>
             <div className="min-w-0">
-              <h4 className="text-[10px] sm:text-[11px] font-bold tracking-[0.06em] text-[#14110E] uppercase leading-tight font-sans">
+              <h4 className="text-[10.5px] font-bold tracking-[0.08em] text-[#14110E] uppercase leading-tight font-sans">
                 CUSTOM FIT
               </h4>
-              <p className="text-[9px] sm:text-[10px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
+              <p className="text-[9px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
                 Made for You
               </p>
             </div>
           </div>
 
           {/* 2. PREMIUM FABRICS */}
-          <div className="flex items-center space-x-2.5 pl-3">
+          <div className="flex items-center space-x-2.5 pl-3 pb-2.5 border-b border-[#D8C7B7]/80">
             <div className="w-7 h-7 flex items-center justify-center shrink-0 text-[#14110E]">
               <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
                 <rect x="5" y="5" width="22" height="22" rx="4" transform="rotate(45 16 16)" />
@@ -42,17 +42,17 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
               </svg>
             </div>
             <div className="min-w-0">
-              <h4 className="text-[10px] sm:text-[11px] font-bold tracking-[0.06em] text-[#14110E] uppercase leading-tight font-sans">
+              <h4 className="text-[10.5px] font-bold tracking-[0.08em] text-[#14110E] uppercase leading-tight font-sans">
                 PREMIUM FABRICS
               </h4>
-              <p className="text-[9px] sm:text-[10px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
+              <p className="text-[9px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
                 Finest Quality
               </p>
             </div>
           </div>
 
           {/* 3. PERFECT DETAILS */}
-          <div className="flex items-center space-x-2.5 pr-2 border-r border-[#D8C7B7]/70">
+          <div className="flex items-center space-x-2.5 pr-2.5 pt-2.5 border-r border-[#D8C7B7]/80">
             <div className="w-7 h-7 flex items-center justify-center shrink-0 text-[#14110E]">
               <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
                 <line x1="4" y1="24.5" x2="28" y2="24.5" />
@@ -67,17 +67,17 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
               </svg>
             </div>
             <div className="min-w-0">
-              <h4 className="text-[10px] sm:text-[11px] font-bold tracking-[0.06em] text-[#14110E] uppercase leading-tight font-sans">
+              <h4 className="text-[10.5px] font-bold tracking-[0.08em] text-[#14110E] uppercase leading-tight font-sans">
                 PERFECT DETAILS
               </h4>
-              <p className="text-[9px] sm:text-[10px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
+              <p className="text-[9px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
                 Every Stitch
               </p>
             </div>
           </div>
 
           {/* 4. EASY RETURNS */}
-          <div className="flex items-center space-x-2.5 pl-3">
+          <div className="flex items-center space-x-2.5 pl-3 pt-2.5">
             <div className="w-7 h-7 flex items-center justify-center shrink-0 text-[#14110E]">
               <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
                 <path d="M16 6L26 11V21L16 26L6 21V11L16 6Z" />
@@ -87,10 +87,10 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
               </svg>
             </div>
             <div className="min-w-0">
-              <h4 className="text-[10px] sm:text-[11px] font-bold tracking-[0.06em] text-[#14110E] uppercase leading-tight font-sans">
+              <h4 className="text-[10.5px] font-bold tracking-[0.08em] text-[#14110E] uppercase leading-tight font-sans">
                 EASY RETURNS
               </h4>
-              <p className="text-[9px] sm:text-[10px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
+              <p className="text-[9px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
                 Hassle Free
               </p>
             </div>
