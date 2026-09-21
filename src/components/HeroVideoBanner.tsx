@@ -223,12 +223,6 @@ export default function HeroVideoBanner() {
             <span className="text-[#4A3F35] text-[11px] font-semibold tracking-wider transition-all duration-300">
               {currentVariant.name}
             </span>
-            {activeIndex === 3 && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9.5px] font-bold tracking-widest uppercase bg-[#14110E] text-[#FAF8F5] shadow-xs transition-opacity duration-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#DF9F97]" />
-                TRIO COLLECTION
-              </span>
-            )}
           </div>
 
           {/* Main Luxury High-Contrast Heading */}
