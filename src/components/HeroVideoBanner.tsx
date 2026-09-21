@@ -173,7 +173,7 @@ export default function HeroVideoBanner() {
   }, []);
 
   return (
-    <section className="relative w-full h-[100dvh] min-h-[540px] flex flex-col justify-between overflow-hidden bg-[#E7D6C4] select-none">
+    <section className="relative w-full h-[100dvh] min-h-[560px] flex flex-col justify-between overflow-hidden bg-[#E7D6C4] select-none">
       
       {/* 1. Background Video Layer */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -212,7 +212,7 @@ export default function HeroVideoBanner() {
       <div className="relative z-20 w-full max-w-[1780px] mx-auto px-4 sm:px-10 lg:px-16 xl:px-20 flex-1 min-h-0 flex flex-col justify-center">
         
         {/* Left Column: Eyebrow + Main Heading + Action Buttons (+ Mobile Range Tracker) */}
-        <div className="max-w-[280px] sm:max-w-md md:max-w-xl lg:max-w-[560px] xl:max-w-[620px] flex flex-col items-start pt-10 sm:pt-16 md:pt-0">
+        <div className="max-w-[280px] sm:max-w-md md:max-w-xl lg:max-w-[560px] xl:max-w-[620px] flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
 
           {/* Golden/Tan Eyebrow Subtitle */}
           <div className="mb-1.5 sm:mb-3 flex items-center gap-2 sm:gap-3 flex-wrap">
@@ -337,7 +337,7 @@ export default function HeroVideoBanner() {
       </div>
 
       {/* 3. Bottom Left: "SCROLL DOWN" Indicator */}
-      <div className="absolute bottom-28 sm:bottom-20 left-4 sm:left-10 lg:left-16 xl:left-20 z-20 flex flex-col items-start pointer-events-none">
+      <div className="absolute bottom-24 sm:bottom-20 left-4 sm:left-10 lg:left-16 xl:left-20 z-20 flex flex-col items-start pointer-events-none">
         <span className="text-[#3D352E] text-[8.5px] sm:text-[9.5px] font-semibold tracking-[0.22em] uppercase">
           SCROLL DOWN
         </span>

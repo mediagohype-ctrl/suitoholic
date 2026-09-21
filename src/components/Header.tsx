@@ -88,20 +88,15 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
 
           {/* Brand Logo & Tagline (Centered on Mobile, Left-aligned on Desktop) */}
           <div className="flex items-center justify-center lg:justify-start flex-1 lg:flex-none z-10">
-            <Link href="/" className="flex flex-col items-center lg:items-start group py-0.5 select-none">
-              <div className="flex items-start">
-                <span className="text-[21px] sm:text-[24px] lg:text-[27px] font-black tracking-[-0.03em] text-[#14110E] leading-none font-sans lowercase">
-                  suitoholic
-                </span>
-                <span className="text-[9px] font-bold text-[#14110E] ml-0.5 -mt-0.5">™</span>
-              </div>
-              <div className="flex items-center gap-2 mt-1 w-full justify-center lg:justify-start">
-                <div className="h-[1.5px] bg-[#9E774C] w-7 sm:w-10" />
-                <span className="text-[8px] sm:text-[9px] font-bold tracking-[0.24em] text-[#9E774C] uppercase font-mono whitespace-nowrap">
-                  ESTD. 2003
-                </span>
-                <div className="h-[1.5px] bg-[#9E774C] w-7 sm:w-10" />
-              </div>
+            <Link href="/" className="flex items-center group py-0.5 select-none">
+              <Image
+                src="/logo/suitoholic-logo-dark.png"
+                alt="Suitoholic"
+                width={280}
+                height={220}
+                className="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
+                priority
+              />
             </Link>
           </div>
 
