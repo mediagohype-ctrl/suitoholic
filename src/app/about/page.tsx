@@ -778,7 +778,7 @@ export default function AboutPage() {
               <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
                 <Link
                   href="/custom-shirt"
-                  className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-xs font-bold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md flex items-center gap-2 group whitespace-nowrap"
+                  className="bg-[#14110E] hover:bg-black text-[#FAF8F5] text-xs font-bold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md flex items-center gap-2 group whitespace-nowrap"
                 >
                   <span>START YOUR CUSTOM FIT</span>
                   <ArrowRight size={15} className="transform group-hover:translate-x-1 transition-transform" />
@@ -786,7 +786,7 @@ export default function AboutPage() {
                 
                 <Link
                   href="/shop"
-                  className="bg-transparent hover:bg-black/5 text-[#14110E] border border-[#14110E]/40 hover:border-[#14110E] text-xs font-bold tracking-[0.2em] px-7 sm:px-9 py-4 transition-all duration-300 uppercase whitespace-nowrap"
+                  className="bg-[#14110E] hover:bg-black text-white border border-[#14110E] text-xs font-bold tracking-[0.2em] px-7 sm:px-9 py-4 transition-all duration-300 uppercase whitespace-nowrap shadow-md"
                 >
                   EXPLORE COLLECTION
                 </Link>

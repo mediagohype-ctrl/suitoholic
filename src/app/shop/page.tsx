@@ -378,7 +378,7 @@ function ShopContent() {
                           </p>
                           <Link
                             href={`/product/${p.slug}`}
-                            className="inline-flex items-center space-x-1.5 bg-[#14110E] hover:bg-[#9E774C] text-white px-4 py-2 rounded-xl text-[10.5px] font-bold uppercase tracking-[0.14em] transition-all shadow-sm cursor-pointer"
+                            className="inline-flex items-center space-x-1.5 bg-[#14110E] hover:bg-black text-white px-4 py-2 rounded-xl text-[10.5px] font-bold uppercase tracking-[0.14em] transition-all shadow-sm cursor-pointer"
                           >
                             <span>CUSTOMIZE</span>
                             <span>→</span>

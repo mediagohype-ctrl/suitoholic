@@ -187,7 +187,7 @@ export default function HeroVideoBanner() {
             
             <Link
               href="/custom-shirt"
-              className="bg-transparent hover:bg-[#14110E] hover:text-[#FAF8F5] text-[#14110E] border border-[#14110E] text-[10px] sm:text-xs lg:text-[12px] font-bold tracking-[0.16em] px-3.5 sm:px-7 lg:px-8 py-2.5 sm:py-3.5 md:py-4 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-xs active:scale-98 whitespace-nowrap w-[130px] sm:w-auto"
+              className="bg-[#14110E] hover:bg-black text-[#FAF8F5] border border-[#14110E] text-[10px] sm:text-xs lg:text-[12px] font-bold tracking-[0.16em] px-3.5 sm:px-7 lg:px-8 py-2.5 sm:py-3.5 md:py-4 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md active:scale-98 whitespace-nowrap w-[130px] sm:w-auto"
             >
               <span>CUSTOM FIT</span>
               <span className="transform group-hover:translate-x-1 transition-transform duration-200 text-xs sm:text-sm leading-none">→</span>

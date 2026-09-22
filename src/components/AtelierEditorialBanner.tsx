@@ -27,14 +27,6 @@ export default function AtelierEditorialBanner() {
           
           {/* Left Column: Editorial Suiting Copy & Actions */}
           <div className="lg:col-span-7 xl:col-span-8 space-y-4 sm:space-y-6 max-w-2xl">
-            {/* Atelier Badge */}
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-2 text-[9px] sm:text-[11px] font-bold tracking-[0.25em] text-[#C5A069] uppercase bg-black/60 px-3.5 py-1.5 rounded-full border border-[#C5A069]/40 backdrop-blur-md shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C5A069] animate-pulse" />
-                THE SARTORIAL ATELIER • BESPOKE CRAFTSMANSHIP
-              </span>
-            </div>
-
             {/* Heading */}
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-normal uppercase leading-[1.08] tracking-tight">
               MASTER CRAFTED <br />
@@ -72,15 +64,15 @@ export default function AtelierEditorialBanner() {
             <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3 sm:gap-4">
               <Link
                 href="/custom-shirt"
-                className="bg-[#C5A069] hover:bg-white text-[#14110E] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase shadow-lg flex items-center gap-2 group/btn"
+                className="bg-[#14110E] hover:bg-black text-white border border-[#C5A069]/60 hover:border-[#C5A069] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase shadow-lg flex items-center gap-2 group/btn"
               >
                 <span>CUSTOM FIT ATELIER</span>
-                <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />
+                <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform text-[#C5A069]" />
               </Link>
 
               <Link
                 href="/shop"
-                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 text-[11px] sm:text-xs font-bold tracking-[0.2em] px-6 sm:px-8 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase backdrop-blur-xs"
+                className="bg-[#14110E] hover:bg-black text-white border border-white/30 hover:border-white/60 text-[11px] sm:text-xs font-bold tracking-[0.2em] px-6 sm:px-8 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase shadow-md"
               >
                 BROWSE LOOKBOOK
               </Link>

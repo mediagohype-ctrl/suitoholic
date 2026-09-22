@@ -28,8 +28,8 @@ export default function Footer() {
     <footer className="w-full bg-gradient-to-b from-[#FAF5EF] via-[#F2E7DC] to-[#E3D4C4] text-[#36212B] rounded-t-[28px] sm:rounded-t-[42px] lg:rounded-t-[52px] border-t border-[#D8C5B3] font-sans antialiased relative z-20 shadow-[0_-20px_50px_rgba(20,17,14,0.06)] overflow-hidden mt-8 sm:mt-12 select-none flex flex-col justify-between">
 
       {/* Background Architectural Subtle Watermark */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.025] flex items-center justify-center select-none overflow-hidden">
-        <span className="font-serif-luxury text-[16vw] font-black tracking-widest text-[#14110E] uppercase whitespace-nowrap">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.045] flex items-center justify-center select-none overflow-hidden px-4">
+        <span className="font-serif-luxury text-[10vw] sm:text-[11vw] lg:text-[11.5vw] xl:text-[150px] 2xl:text-[180px] font-black tracking-[0.08em] sm:tracking-[0.1em] text-[#14110E] uppercase whitespace-nowrap leading-none text-center select-none">
           SUITOHOLIC
         </span>
       </div>
@@ -308,7 +308,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <div className="text-center md:text-left flex flex-wrap items-center justify-center md:justify-start gap-1.5">
-            <span>© 2003–{new Date().getFullYear()}</span>
+            <span suppressHydrationWarning>© 2003–{new Date().getFullYear()}</span>
             <span className="font-semibold text-[#2C1822] tracking-wide uppercase">SUITOHOLIC ATELIER.</span>
             <span>All rights reserved.</span>
             <span className="hidden sm:inline text-[#8C5A28]">•</span>

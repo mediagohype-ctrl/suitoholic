@@ -39,7 +39,9 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
           ? "fabrics"
           : pathname === "/about" || pathname?.startsWith("/about")
             ? "about"
-            : "";
+            : pathname === "/contact" || pathname?.startsWith("/contact")
+              ? "contact"
+              : "";
 
   return (
     <header
@@ -58,11 +60,11 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
             <span className="text-[#D8C6B3]">Tailored for You.</span>
           </div>
           <div className="flex items-center space-x-4 text-[#D8C6B3]">
-            <Link href="/#store" className="hover:text-white transition-colors">Store Locator</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Store Locator</Link>
             <span className="text-[#C5A069]">|</span>
-            <Link href="/#help" className="hover:text-white transition-colors">Help</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Help</Link>
             <span className="text-[#C5A069]">|</span>
-            <Link href="/#track" className="hover:text-white transition-colors">Track Order</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Track Order</Link>
           </div>
         </div>
       </div>
@@ -139,8 +141,11 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
               ABOUT US
             </Link>
             <Link
-              href="/#contact"
-              className="text-[#554A3F] hover:text-[#14110E] transition-colors pb-1"
+              href="/contact"
+              className={`transition-colors duration-200 pb-1 relative ${currentTab === "contact"
+                ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
+                : "text-[#554A3F] hover:text-[#14110E]"
+                }`}
             >
               CONTACT
             </Link>
@@ -196,21 +201,23 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
             ABOUT US
           </Link>
           <Link
-            href="/#contact"
+            href="/contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.2em] uppercase text-[#1F1C18] py-2"
+            className={`block text-xs font-bold tracking-[0.2em] uppercase py-2 ${
+              currentTab === "contact" ? "text-[#8A6E48]" : "text-[#1F1C18]"
+            }`}
           >
             CONTACT
           </Link>
 
           <div className="pt-2 border-t border-[#DAC2AB]/60 flex justify-between text-[10px] tracking-wider text-[#5C5247] uppercase">
-            <Link href="/#store" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
               Store Locator
             </Link>
-            <Link href="/#help" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
               Help
             </Link>
-            <Link href="/#track" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
               Track Order
             </Link>
           </div>
