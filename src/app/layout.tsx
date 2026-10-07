@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { Orbitron } from "next/font/google";
 import "./globals.css";
 import StudioBackground from "@/components/StudioBackground";
+import { mergeContent } from "@/content/merge";
+import { contentDefaults } from "@/content/registry";
+import { CartProvider } from "@/context/CartProvider";
+import { SiteDataProvider } from "@/context/SiteDataProvider";
+import { getSiteBundle } from "@/lib/site-data";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -10,16 +16,24 @@ const orbitron = Orbitron({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Suitoholic™ - Tailored for You | Custom Shirts & Suits ESTD. 2003",
-  description: "Experience bespoke luxury tailoring with Suitoholic. Tailored for your unique body type, chest size, fit preference, and custom initial embroidery.",
-};
+// Content, catalog and prices are edited live from /admin, so render on every request.
+export const dynamic = "force-dynamic";
 
-export default function RootLayout({
+const loadSite = cache(getSiteBundle);
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { content } = await loadSite();
+  const seo = mergeContent(contentDefaults.seo, content.seo);
+  return { title: seo.title, description: seo.description };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const site = await loadSite();
+
   return (
     <html lang="en" suppressHydrationWarning className={`h-full w-full overflow-x-hidden antialiased ${orbitron.variable}`}>
       <head>
@@ -33,13 +47,14 @@ export default function RootLayout({
       <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col bg-white text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
         {/* Global Studio Atmosphere: Clean Crisp White Background */}
         <StudioBackground />
-        
+
         {/* Page Content Container */}
         <div className="relative z-10 flex-1 flex flex-col min-h-screen w-full overflow-x-hidden">
-          {children}
+          <SiteDataProvider value={site}>
+            <CartProvider>{children}</CartProvider>
+          </SiteDataProvider>
         </div>
       </body>
     </html>
   );
 }
-

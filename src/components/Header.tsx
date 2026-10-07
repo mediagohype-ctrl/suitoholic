@@ -5,16 +5,30 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
+import { useContent } from "@/context/SiteDataProvider";
+import { useCart } from "@/context/CartProvider";
 
 interface HeaderProps {
+  /** Legacy tab id ("shop", "custom-fit", "fabrics", "about") forcing the highlighted link. */
   activeTab?: string;
+  /** Overrides the live bag count (normally read from the bag). */
   cartCount?: number;
 }
 
-export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
+const TAB_PATHS: Record<string, string> = {
+  shop: "/shop",
+  "custom-fit": "/custom-shirt",
+  fabrics: "/fabrics",
+  about: "/about",
+};
+
+export default function Header({ activeTab, cartCount }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const c = useContent("header");
+  const { itemCount } = useCart();
+  const bagCount = cartCount ?? itemCount;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,18 +42,10 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Highlight tab only if explicitly specified or matching the current route
-  const currentTab = activeTab !== undefined 
-    ? activeTab 
-    : pathname === "/shop" || pathname?.startsWith("/shop/") 
-      ? "shop" 
-      : pathname === "/custom-shirt" 
-        ? "custom-fit" 
-        : pathname === "/fabrics" || pathname?.startsWith("/fabrics")
-          ? "fabrics"
-          : pathname === "/about" || pathname?.startsWith("/about")
-            ? "about"
-            : "";
+  // Highlight the link for the explicit tab, or the one whose path matches the current route
+  const activePath = activeTab !== undefined ? TAB_PATHS[activeTab] ?? "" : pathname ?? "";
+  const isActive = (href: string) =>
+    !href.includes("#") && href !== "/" && (activePath === href || activePath.startsWith(`${href}/`));
 
   return (
     <header
@@ -53,16 +59,17 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
       <div className="hidden sm:block bg-[#14110E] text-[#EFE5D8] border-b border-[#2A231D] py-1.5 px-4 sm:px-8 text-[10px] font-medium tracking-[0.18em] uppercase z-50 relative shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span>Welcome to Suitoholic</span>
+            <span>{c.announcementWelcome}</span>
             <span className="text-[#C5A069]">|</span>
-            <span className="text-[#D8C6B3]">Tailored for You.</span>
+            <span className="text-[#D8C6B3]">{c.announcementTagline}</span>
           </div>
           <div className="flex items-center space-x-4 text-[#D8C6B3]">
-            <Link href="/#store" className="hover:text-white transition-colors">Store Locator</Link>
-            <span className="text-[#C5A069]">|</span>
-            <Link href="/#help" className="hover:text-white transition-colors">Help</Link>
-            <span className="text-[#C5A069]">|</span>
-            <Link href="/#track" className="hover:text-white transition-colors">Track Order</Link>
+            {c.topLinks.map((link, i) => (
+              <React.Fragment key={`${link.href}-${i}`}>
+                {i > 0 && <span className="text-[#C5A069]">|</span>}
+                <Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </div>
@@ -90,8 +97,9 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
           <div className="flex items-center z-10 shrink-0">
             <Link href="/" className="flex items-center group py-1">
               <Image
-                src="/logo/suitoholic-logo-dark.png"
-                alt="Suitoholic Logo"
+                src={c.logo}
+                alt={c.logoAlt}
+                unoptimized={/^https?:/.test(c.logo)}
                 width={280}
                 height={250}
                 priority
@@ -102,48 +110,18 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
 
           {/* Desktop Navigation Links (Center) */}
           <nav className="hidden lg:flex items-center space-x-9 text-[11px] font-semibold tracking-[0.2em] uppercase">
-            <Link
-              href="/shop"
-              className={`transition-colors duration-200 pb-1 relative ${currentTab === "shop"
-                ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
-                : "text-[#554A3F] hover:text-[#14110E]"
-                }`}
-            >
-              SHOP
-            </Link>
-            <Link
-              href="/custom-shirt"
-              className={`transition-colors duration-200 pb-1 relative ${currentTab === "custom-fit"
-                ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
-                : "text-[#554A3F] hover:text-[#14110E]"
-                }`}
-            >
-              CUSTOM FIT
-            </Link>
-            <Link
-              href="/fabrics"
-              className={`transition-colors duration-200 pb-1 relative ${currentTab === "fabrics"
-                ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
-                : "text-[#554A3F] hover:text-[#14110E]"
-                }`}
-            >
-              FABRICS
-            </Link>
-            <Link
-              href="/about"
-              className={`transition-colors duration-200 pb-1 relative ${currentTab === "about"
-                ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
-                : "text-[#554A3F] hover:text-[#14110E]"
-                }`}
-            >
-              ABOUT US
-            </Link>
-            <Link
-              href="/#contact"
-              className="text-[#554A3F] hover:text-[#14110E] transition-colors pb-1"
-            >
-              CONTACT
-            </Link>
+            {c.navLinks.map((link, i) => (
+              <Link
+                key={`${link.href}-${i}`}
+                href={link.href}
+                className={`transition-colors duration-200 pb-1 relative ${isActive(link.href)
+                  ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
+                  : "text-[#554A3F] hover:text-[#14110E]"
+                  }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
           {/* Header Right Icons */}
@@ -154,10 +132,10 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
             <button className="p-1 hover:text-[#9E774C] transition-colors" aria-label="Account">
               <User size={19} strokeWidth={1.75} />
             </button>
-            <Link href="/custom-shirt" className="relative p-1 hover:text-[#9E774C] transition-colors" aria-label="Shopping Cart">
+            <Link href="/cart" className="relative p-1 hover:text-[#9E774C] transition-colors" aria-label={`Shopping bag, ${bagCount} items`}>
               <ShoppingBag size={19} strokeWidth={1.75} />
-              <span className="absolute -top-1 -right-1.5 w-4 h-4 bg-[#9E774C] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
-                {cartCount}
+              <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#9E774C] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
+                {bagCount > 99 ? "99+" : bagCount}
               </span>
             </Link>
           </div>
@@ -167,52 +145,23 @@ export default function Header({ activeTab, cartCount = 0 }: HeaderProps) {
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 px-6 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
-          <Link
-            href="/shop"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.2em] uppercase text-[#1F1C18] py-2 border-b border-[#DAC2AB]/60"
-          >
-            SHOP
-          </Link>
-          <Link
-            href="/custom-shirt"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.2em] uppercase text-[#8A6E48] py-2 border-b border-[#DAC2AB]/60"
-          >
-            CUSTOM FIT CONFIGURATOR
-          </Link>
-          <Link
-            href="/fabrics"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.2em] uppercase text-[#1F1C18] py-2 border-b border-[#DAC2AB]/60"
-          >
-            FABRICS
-          </Link>
-          <Link
-            href="/about"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.2em] uppercase text-[#1F1C18] py-2 border-b border-[#DAC2AB]/60"
-          >
-            ABOUT US
-          </Link>
-          <Link
-            href="/#contact"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.2em] uppercase text-[#1F1C18] py-2"
-          >
-            CONTACT
-          </Link>
+          {c.navLinks.map((link, i) => (
+            <Link
+              key={`${link.href}-${i}`}
+              href={link.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block text-xs font-bold tracking-[0.2em] uppercase py-2 ${i < c.navLinks.length - 1 ? "border-b border-[#DAC2AB]/60" : ""} ${link.highlight ? "text-[#8A6E48]" : "text-[#1F1C18]"}`}
+            >
+              {link.mobileLabel || link.label}
+            </Link>
+          ))}
 
           <div className="pt-2 border-t border-[#DAC2AB]/60 flex justify-between text-[10px] tracking-wider text-[#5C5247] uppercase">
-            <Link href="/#store" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
-              Store Locator
-            </Link>
-            <Link href="/#help" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
-              Help
-            </Link>
-            <Link href="/#track" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
-              Track Order
-            </Link>
+            {c.topLinks.map((link, i) => (
+              <Link key={`${link.href}-${i}`} href={link.href} onClick={() => setMobileMenuOpen(false)} className="hover:text-[#1F1C18] transition-colors">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       )}

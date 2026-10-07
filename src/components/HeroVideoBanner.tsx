@@ -2,8 +2,10 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
+import { useContent } from "@/context/SiteDataProvider";
 
 export default function HeroVideoBanner() {
+  const c = useContent("homeHero");
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -29,7 +31,7 @@ export default function HeroVideoBanner() {
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
           ref={videoRef}
-          src="/video/create_a_second_premium_shirt_video.mp4"
+          src={c.video}
           autoPlay
           loop
           muted
@@ -56,24 +58,24 @@ export default function HeroVideoBanner() {
 
           {/* Main Luxury Heading with Clean Left-Aligned Sizing */}
           <h1 className="font-serif-luxury font-normal text-2xl sm:text-4xl lg:text-[42px] xl:text-[48px] 2xl:text-[54px] leading-[1.08] text-[#14110E] tracking-tight uppercase">
-            NOT EVERY BODY <br />
-            IS THE SAME SIZE.
+            {c.headingLine1} <br />
+            {c.headingLine2}
           </h1>
 
           {/* Action Buttons: SHOP SHIRTS & CUSTOM FIT (Moved slightly down with spacious padding) */}
           <div className="flex flex-row items-center gap-3 sm:gap-4 pt-3 sm:pt-5 lg:pt-6">
             <Link
-              href="/shop"
+              href={c.primaryCtaHref}
               className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-[11px] sm:text-xs lg:text-[13px] font-bold tracking-[0.2em] px-7 sm:px-9 py-3.5 sm:py-4 transition-all duration-300 text-center uppercase shadow-md whitespace-nowrap hover:shadow-lg active:scale-98"
             >
-              SHOP SHIRTS
+              {c.primaryCtaLabel}
             </Link>
             
             <Link
-              href="/custom-shirt"
+              href={c.secondaryCtaHref}
               className="bg-[#FAF4EC]/85 backdrop-blur-sm border border-[#14110E]/70 hover:border-[#14110E] hover:bg-[#14110E] hover:text-[#FAF8F5] text-[#14110E] text-[11px] sm:text-xs lg:text-[13px] font-bold tracking-[0.2em] px-6 sm:px-8 py-3.5 sm:py-4 transition-all duration-300 text-center uppercase flex items-center justify-center gap-2 group whitespace-nowrap shadow-2xs active:scale-98"
             >
-              <span>CUSTOM FIT</span>
+              <span>{c.secondaryCtaLabel}</span>
               <span className="transform group-hover:translate-x-1 transition-transform duration-200">→</span>
             </Link>
           </div>

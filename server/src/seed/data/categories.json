@@ -1,0 +1,128 @@
+[
+  {
+    "key": "formal_shirts",
+    "title": "EXCLUSIVE FORMAL SHIRTS",
+    "shortTitle": "FORMAL SHIRTS",
+    "mobileTitle": [
+      "EXCLUSIVE",
+      "FORMAL SHIRTS"
+    ],
+    "subtitle": "100% pure Egyptian Giza 140s boardroom dress shirts.",
+    "image": "/formal_white_twill.jpg",
+    "homeTitle": "Exclusive Formal Shirts",
+    "description": "100% Pure corporate & boardroom dress shirts in Egyptian Giza 140s twill, French cuffs & cutaway collars.",
+    "tag": "COLLECTION 01 • PURE FORMAL DRESS SHIRTS",
+    "bgImage": "/formal_white_twill.jpg",
+    "showOnHome": true,
+    "sortOrder": 1,
+    "active": true
+  },
+  {
+    "key": "formal_stripes",
+    "title": "EXECUTIVE STRIPED FORMAL SHIRTS",
+    "shortTitle": "STRIPED FORMAL SHIRTS",
+    "mobileTitle": [
+      "STRIPED",
+      "FORMAL SHIRTS"
+    ],
+    "subtitle": "Italian banker stripes, pinstripes & micro-checks.",
+    "image": "/formal_banker_stripe.jpg",
+    "homeTitle": "Executive Striped Formal Shirts",
+    "description": "Double-ply Italian banker stripes, micro-checks, and precision office pinstripes.",
+    "tag": "COLLECTION 02 • PATTERNED FORMAL SHIRTS",
+    "bgImage": "/formal_banker_stripe.jpg",
+    "showOnHome": true,
+    "sortOrder": 2,
+    "active": true
+  },
+  {
+    "key": "formal_bespoke",
+    "title": "LUXURY TEXTURED & TWILL SHIRTS",
+    "shortTitle": "TEXTURED & TWILL SHIRTS",
+    "mobileTitle": [
+      "TEXTURED &",
+      "TWILL SHIRTS"
+    ],
+    "subtitle": "Sea Island cotton, royal dobbies & herringbone weaves.",
+    "image": "/formal_ivory_herringbone.jpg",
+    "homeTitle": "Luxury Textured & Twill Shirts",
+    "description": "Pure Sea Island cotton, French cuffs, royal dobbies, and Austrian herringbone weaves.",
+    "tag": "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
+    "bgImage": "/formal_ivory_herringbone.jpg",
+    "showOnHome": true,
+    "sortOrder": 3,
+    "active": true
+  },
+  {
+    "key": "trousers",
+    "title": "TAILORED TROUSERS & PANTS",
+    "shortTitle": "TAILORED TROUSERS & PANTS",
+    "mobileTitle": [
+      "TAILORED",
+      "TROUSERS"
+    ],
+    "subtitle": "Italian pleated wool dress pants & Gurkha trousers.",
+    "image": "/pant_pleated_beige.jpg",
+    "homeTitle": "Tailored Trousers & Pants",
+    "description": "Italian pleated wool dress pants, sartorial Gurkha trousers, and premium stretch chinos.",
+    "tag": "COLLECTION 04 • TAILORED PANTS",
+    "bgImage": "/pant_pleated_beige.jpg",
+    "showOnHome": true,
+    "sortOrder": 4,
+    "active": true
+  },
+  {
+    "key": "tshirts",
+    "title": "PREMIUM POLOS & T-SHIRTS",
+    "shortTitle": "POLOS & T-SHIRTS",
+    "mobileTitle": [
+      "POLOS &",
+      "T-SHIRTS"
+    ],
+    "subtitle": "Heavyweight Supima tees & silk-blend knit polos.",
+    "image": "/tshirt_knit_navy_polo.jpg",
+    "homeTitle": "Premium Polos & T-Shirts",
+    "description": "Heavyweight Supima cotton tees, silk-blend knit polos, and fine-gauge textured casuals.",
+    "tag": "COLLECTION 05 • LUXURY CASUALS",
+    "bgImage": "/tshirt_knit_navy_polo.jpg",
+    "showOnHome": true,
+    "sortOrder": 5,
+    "active": true
+  },
+  {
+    "key": "blazers",
+    "title": "BESPOKE SUITS & BLAZERS",
+    "shortTitle": "SUITS & BLAZERS",
+    "mobileTitle": [
+      "SUITS &",
+      "BLAZERS"
+    ],
+    "subtitle": "Super 130s Italian wool jackets & dinner tuxedos.",
+    "image": "/blazer_navy_wool.jpg",
+    "homeTitle": "",
+    "description": "",
+    "tag": "",
+    "bgImage": "/blazer_navy_wool.jpg",
+    "showOnHome": false,
+    "sortOrder": 6,
+    "active": true
+  },
+  {
+    "key": "ceremonial",
+    "title": "ETHNIC & CEREMONIAL LUXURY",
+    "shortTitle": "CEREMONIAL LUXURY",
+    "mobileTitle": [
+      "CEREMONIAL &",
+      "ROYAL ATELIER"
+    ],
+    "subtitle": "Silk bandhgalas, wedding kurtas & smoking jackets.",
+    "image": "/ceremonial_bandhgala.jpg",
+    "homeTitle": "",
+    "description": "",
+    "tag": "",
+    "bgImage": "/ceremonial_bandhgala.jpg",
+    "showOnHome": false,
+    "sortOrder": 7,
+    "active": true
+  }
+]

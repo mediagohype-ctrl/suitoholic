@@ -3,24 +3,41 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, Send } from "lucide-react";
+import { useContent } from "@/context/SiteDataProvider";
+import { apiFetch, ApiError } from "@/lib/api";
 
 export default function NewsletterSection() {
+  const c = useContent("newsletter");
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Form is only valid when email has been entered AND the checkbox is checked
-  const isFormValid = email.trim().length > 0 && agreed;
+  const isFormValid = email.trim().length > 0 && agreed && !loading;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isFormValid) {
+    if (!isFormValid) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await apiFetch("/newsletter", {
+        method: "POST",
+        body: { email: email.trim(), source: "newsletter_section" },
+      });
       setSubmitted(true);
       setTimeout(() => {
         setSubmitted(false);
         setEmail("");
         setAgreed(false);
       }, 5000);
+    } catch (err) {
+      const apiErr = err as ApiError;
+      setError(apiErr.details?.[0]?.message || apiErr.message || c.errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -31,7 +48,7 @@ export default function NewsletterSection() {
         {/* Subtle Watermark Accent */}
         <div className="absolute right-0 top-0 bottom-0 pointer-events-none opacity-[0.03] select-none flex items-center pr-8">
           <span className="font-serif-luxury text-[110px] font-black tracking-widest text-[#14110E] uppercase">
-            PRIVILEGE
+            {c.watermarkText}
           </span>
         </div>
 
@@ -40,11 +57,11 @@ export default function NewsletterSection() {
           {/* Main Title & Subtitle */}
           <div className="space-y-2">
             <h3 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-[#3B222E] tracking-tight">
-              Join Our Newsletter
+              {c.heading}
             </h3>
             <p className="text-sm sm:text-base text-[#523B47] leading-relaxed font-normal">
-              Get drops, tips &amp; members-only offers.<br className="hidden sm:inline" />
-              {" "}No spam.
+              {c.subtitleLine1}<br className="hidden sm:inline" />
+              {" "}{c.subtitleLine2}
             </p>
           </div>
 
@@ -53,7 +70,7 @@ export default function NewsletterSection() {
             <div className="bg-[#2D6A4F]/15 border border-[#2D6A4F]/40 p-4 sm:p-5 rounded-xl flex items-center space-x-3 text-[#1B4332] shadow-xs">
               <CheckCircle2 size={22} className="shrink-0 text-[#2D6A4F]" />
               <span className="text-xs sm:text-sm font-semibold">
-                Thank you for subscribing! You are now subscribed to Suitoholic private drops and offers.
+                {c.successMessage}
               </span>
             </div>
           ) : (
@@ -65,8 +82,12 @@ export default function NewsletterSection() {
                   <input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="e.g. name@example.com"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (error) setError(null);
+                    }}
+                    placeholder={c.emailPlaceholder}
+                    disabled={loading}
                     required
                     className="w-full bg-white border border-[#C5B3A0] focus:border-[#3B222E] focus:ring-2 focus:ring-[#3B222E]/10 text-sm sm:text-base px-4 sm:px-5 py-3.5 rounded-xl text-[#2C1822] placeholder:text-[#917B87] focus:outline-hidden transition-all shadow-xs"
                   />
@@ -82,7 +103,7 @@ export default function NewsletterSection() {
                       : "bg-[#D5C2B3] text-[#8C7684] cursor-not-allowed opacity-75 shadow-none"
                   }`}
                 >
-                  <span>Subscribe</span>
+                  <span>{loading ? c.subscribingLabel : c.subscribeLabel}</span>
                   <Send size={15} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-white" : "text-[#8C7684]"}`} />
                 </button>
               </div>
@@ -97,13 +118,19 @@ export default function NewsletterSection() {
                   className="mt-1 w-4 h-4 rounded-sm border-[#A38D99] text-[#4A2635] focus:ring-[#4A2635] accent-[#4A2635] cursor-pointer"
                 />
                 <span className="text-xs sm:text-sm text-[#4E3744] font-medium leading-relaxed">
-                  I agree to receive marketing emails from Suitoholic. Read our{" "}
-                  <Link href="/privacy" className="text-[#3B222E] font-semibold underline hover:text-[#8C5A28] transition-colors">
-                    Privacy Policy
+                  {c.consentText}{" "}
+                  <Link href={c.privacyHref || "/privacy"} className="text-[#3B222E] font-semibold underline hover:text-[#8C5A28] transition-colors">
+                    {c.privacyLinkLabel}
                   </Link>
                   .
                 </span>
               </label>
+
+              {error && (
+                <p role="alert" className="text-xs sm:text-sm font-medium text-[#9B2C2C]">
+                  {error}
+                </p>
+              )}
 
             </form>
           )}

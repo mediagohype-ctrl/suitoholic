@@ -1,10 +1,21 @@
+// Built-in catalog. The live catalog is served by the Express API (server/) and edited in /admin;
+// this copy is the fallback used when the API is unreachable and the source of the initial seed.
+
+export interface Colorway {
+  name: string;
+  hex: string;
+  productSlug: string;
+}
+
 export interface ProductItem {
   id: number;
   slug: string;
   name: string;
-  category: "formal_shirts" | "formal_stripes" | "formal_bespoke" | "trousers" | "tshirts" | "blazers" | "ceremonial";
+  category: string;
+  /** Formatted price label, e.g. "₹ 2,499". */
   price: string;
   rawPrice: number;
+  compareAtPrice?: number | null;
   subtitle: string;
   description: string;
   fabric: string;
@@ -14,13 +25,18 @@ export interface ProductItem {
   fit?: string;
   image: string;
   gallery: string[];
+  colorways?: Colorway[];
   rating: number;
   reviewsCount: number;
   tag?: string;
+  stock?: number | null;
+  customizable?: boolean;
+  featured?: boolean;
 }
 
+/** Homepage collection section (derived from a Category with showOnHome). */
 export interface CollectionCategory {
-  id: "formal_shirts" | "formal_stripes" | "formal_bespoke" | "trousers" | "tshirts" | "blazers" | "ceremonial";
+  id: string;
   title: string;
   subtitle: string;
   tag: string;

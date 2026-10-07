@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev:api": "npm --prefix server run dev",
+    "db:local": "npm --prefix server run db:local",
+    "setup:api": "npm --prefix server install"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
@@ -15,6 +18,7 @@
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {

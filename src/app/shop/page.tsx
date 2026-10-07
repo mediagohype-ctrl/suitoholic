@@ -1,92 +1,39 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useMemo, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
-import { allProducts, collectionCategories, ProductItem } from "@/data/products";
-import { 
-  ArrowRight, 
-  ArrowLeft, 
-  Plus, 
-  RotateCcw, 
-  ChevronDown, 
-  Heart, 
-  Star, 
-  SlidersHorizontal 
+import { useCatalog, useContent } from "@/context/SiteDataProvider";
+import {
+  ArrowRight,
+  Plus,
+  RotateCcw,
+  ChevronDown,
+  Heart,
 } from "lucide-react";
 
-// Main Categories Showcase Data
-const mainCategories = [
-  {
-    id: "formal_shirts",
-    title: "EXCLUSIVE FORMAL SHIRTS",
-    mobileTitle: ["EXCLUSIVE", "FORMAL SHIRTS"],
-    subtitle: "100% pure Egyptian Giza 140s boardroom dress shirts.",
-    image: "/formal_white_twill.jpg",
-  },
-  {
-    id: "formal_stripes",
-    title: "EXECUTIVE STRIPED FORMAL SHIRTS",
-    mobileTitle: ["STRIPED", "FORMAL SHIRTS"],
-    subtitle: "Italian banker stripes, pinstripes & micro-checks.",
-    image: "/formal_banker_stripe.jpg",
-  },
-  {
-    id: "formal_bespoke",
-    title: "LUXURY TEXTURED & TWILL SHIRTS",
-    mobileTitle: ["TEXTURED &", "TWILL SHIRTS"],
-    subtitle: "Sea Island cotton, royal dobbies & herringbone weaves.",
-    image: "/formal_ivory_herringbone.jpg",
-  },
-  {
-    id: "trousers",
-    title: "TAILORED TROUSERS & PANTS",
-    mobileTitle: ["TAILORED", "TROUSERS"],
-    subtitle: "Italian pleated wool dress pants & Gurkha trousers.",
-    image: "/pant_pleated_beige.jpg",
-  },
-  {
-    id: "tshirts",
-    title: "PREMIUM POLOS & T-SHIRTS",
-    mobileTitle: ["POLOS &", "T-SHIRTS"],
-    subtitle: "Heavyweight Supima tees & silk-blend knit polos.",
-    image: "/tshirt_knit_navy_polo.jpg",
-  },
-  {
-    id: "blazers",
-    title: "BESPOKE SUITS & BLAZERS",
-    mobileTitle: ["SUITS &", "BLAZERS"],
-    subtitle: "Super 130s Italian wool jackets & dinner tuxedos.",
-    image: "/blazer_navy_wool.jpg",
-  },
-  {
-    id: "ceremonial",
-    title: "ETHNIC & CEREMONIAL LUXURY",
-    mobileTitle: ["CEREMONIAL &", "ROYAL ATELIER"],
-    subtitle: "Silk bandhgalas, wedding kurtas & smoking jackets.",
-    image: "/ceremonial_bandhgala.jpg",
-  },
-];
+type SortKey = "featured" | "priceAsc" | "priceDesc" | "rating";
 
 function ShopContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { products, categories } = useCatalog();
+  const c = useContent("shopPage");
 
   const categoryParam = searchParams.get("category");
   const selectedCategory = categoryParam || "all";
   const [wishlist, setWishlist] = useState<number[]>([]);
-  const [sortOption] = useState<string>("NEW ARRIVALS");
+  const [sortOption, setSortOption] = useState<SortKey>("featured");
+  const [sortOpen, setSortOpen] = useState(false);
   const [openFilters, setOpenFilters] = useState<Record<string, boolean>>({});
+  const [fabricFilter, setFabricFilter] = useState<string | null>(null);
+  const [priceFilter, setPriceFilter] = useState<number | null>(null);
 
   const handleCategorySelect = (id: string) => {
-    router.push(`/shop?category=${id}`, { scroll: false });
-  };
-
-  const handleBackToCategories = () => {
-    router.push("/shop", { scroll: false });
+    router.push(id === "all" ? "/shop" : `/shop?category=${id}`, { scroll: false });
   };
 
   const toggleWishlist = (id: number) => {
@@ -99,11 +46,53 @@ function ShopContent() {
     setOpenFilters((prev) => ({ ...prev, [filter]: !prev[filter] }));
   };
 
-  const displayProducts = selectedCategory && selectedCategory !== "all"
-    ? allProducts.filter((p) => p.category === selectedCategory)
-    : allProducts;
+  const resetAll = () => {
+    setFabricFilter(null);
+    setPriceFilter(null);
+    setSortOption("featured");
+    setOpenFilters({});
+    handleCategorySelect("all");
+  };
 
-  const currentCategoryName = mainCategories.find(c => c.id === selectedCategory)?.title || "ALL SHIRTS";
+  const categoryProducts = useMemo(
+    () => (selectedCategory !== "all" ? products.filter((p) => p.category === selectedCategory) : products),
+    [products, selectedCategory],
+  );
+
+  // Fabric options come from the products in the current collection
+  const fabricOptions = useMemo(
+    () => Array.from(new Set(categoryProducts.map((p) => p.fabric).filter(Boolean))).sort(),
+    [categoryProducts],
+  );
+
+  const displayProducts = useMemo(() => {
+    const range = priceFilter !== null ? c.priceRanges[priceFilter] : undefined;
+    const filtered = categoryProducts.filter(
+      (p) =>
+        (!fabricFilter || p.fabric === fabricFilter) &&
+        (!range || (p.rawPrice >= range.min && p.rawPrice <= range.max)),
+    );
+    const sorted = [...filtered];
+    if (sortOption === "priceAsc") sorted.sort((a, b) => a.rawPrice - b.rawPrice);
+    if (sortOption === "priceDesc") sorted.sort((a, b) => b.rawPrice - a.rawPrice);
+    if (sortOption === "rating") sorted.sort((a, b) => b.rating - a.rating || b.reviewsCount - a.reviewsCount);
+    return sorted;
+  }, [categoryProducts, fabricFilter, priceFilter, sortOption, c.priceRanges]);
+
+  const currentCategoryName = categories.find((cat) => cat.id === selectedCategory)?.title || c.allCategoryName;
+
+  const filterGroups = [
+    {
+      id: "fabric",
+      label: c.fabricFilterLabel,
+      options: fabricOptions.map((f) => ({ label: f, active: fabricFilter === f, onClick: () => setFabricFilter(fabricFilter === f ? null : f) })),
+    },
+    {
+      id: "price",
+      label: c.priceFilterLabel,
+      options: c.priceRanges.map((r, i) => ({ label: r.label, active: priceFilter === i, onClick: () => setPriceFilter(priceFilter === i ? null : i) })),
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
@@ -113,24 +102,24 @@ function ShopContent() {
       {/* Studio Atmosphere Backdrop */}
       <div className="relative flex-1 w-full">
         <main className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-12 sm:pb-20">
-          
+
           {/* Top Editorial Banner - Clean Luxury Centered Header */}
           <div className="mb-8 sm:mb-10 text-center relative max-w-3xl mx-auto">
             <div className="inline-flex items-center justify-center space-x-3 text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-[#9E774C] uppercase mb-2">
               <span className="h-[1px] w-8 sm:w-12 bg-[#9E774C]" />
-              <span>SUITOHOLIC ATELIER</span>
+              <span>{c.eyebrowLeft}</span>
               <span>•</span>
-              <span>BESPOKE COLLECTION</span>
+              <span>{c.eyebrowRight}</span>
               <span className="h-[1px] w-8 sm:w-12 bg-[#9E774C]" />
             </div>
-            
+
             <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] font-normal text-[#14110E] tracking-tight uppercase leading-tight">
-              THE SHIRT ATELIER
+              {c.title}
             </h1>
-            
+
             <div className="w-16 h-[1.5px] bg-[#9E774C] mx-auto mt-3" />
           </div>
-              
+
           {/* Category Quick Selector Filter Pills Bar (Centered Luxury Tabs) */}
           <div className="mb-10 flex items-center justify-center">
             <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none max-w-full px-2">
@@ -142,9 +131,9 @@ function ShopContent() {
                     : "bg-[#FAF5EE] hover:bg-[#14110E] text-[#4A3E33] hover:text-white border border-[#E2D4C3]"
                 }`}
               >
-                ALL SHIRTS
+                {c.allPillLabel}
               </button>
-              {mainCategories.map((cat) => {
+              {categories.map((cat) => {
                 const isActive = selectedCategory === cat.id;
                 return (
                   <button
@@ -156,7 +145,7 @@ function ShopContent() {
                         : "bg-[#FAF5EE] hover:bg-[#14110E] text-[#4A3E33] hover:text-white border border-[#E2D4C3]"
                     }`}
                   >
-                    {cat.title.replace("EXCLUSIVE ", "").replace("EXECUTIVE ", "").replace("LUXURY ", "").replace("PREMIUM ", "").replace("BESPOKE ", "").replace("ETHNIC & ", "")}
+                    {cat.shortTitle || cat.title}
                   </button>
                 );
               })}
@@ -165,24 +154,24 @@ function ShopContent() {
 
           {/* Catalog Layout: Left Sidebar + Right Product Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
+
             {/* Left Sidebar (Desktop Only) */}
             <aside className="hidden lg:block lg:col-span-3 space-y-6 select-none sticky top-32">
-              
+
               {/* CATEGORIES SECTION */}
               <div className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 shadow-sm space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-[#E8DACB]">
                   <h3 className="text-[11px] font-bold tracking-[0.22em] text-[#14110E] uppercase">
-                    COLLECTIONS
+                    {c.collectionsHeading}
                   </h3>
-                  <button 
+                  <button
                     onClick={() => handleCategorySelect("all")}
                     className="text-[10px] text-[#9E774C] hover:underline uppercase font-bold tracking-wider"
                   >
-                    RESET
+                    {c.resetLabel}
                   </button>
                 </div>
-                
+
                 <div className="space-y-1.5 pt-1">
                   <button
                     onClick={() => handleCategorySelect("all")}
@@ -192,11 +181,11 @@ function ShopContent() {
                         : "text-[#4A3E33] hover:text-[#14110E] hover:bg-[#F2E5D5]"
                     }`}
                   >
-                    <span>ALL SHIRTS &amp; PRODUCTS</span>
+                    <span>{c.allSidebarLabel}</span>
                     {selectedCategory === "all" && <span className="text-xs">→</span>}
                   </button>
 
-                  {mainCategories.map((cat) => {
+                  {categories.map((cat) => {
                     const isActive = selectedCategory === cat.id;
                     return (
                       <button
@@ -219,23 +208,29 @@ function ShopContent() {
               {/* FILTER BY SECTION */}
               <div className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 shadow-sm space-y-3">
                 <h3 className="text-[11px] font-bold tracking-[0.22em] text-[#14110E] uppercase pb-2 border-b border-[#E8DACB]">
-                  FILTER BY
+                  {c.filterHeading}
                 </h3>
 
-                {["FABRIC WEAVE", "COLLAR STYLE", "CHEST SIZE", "FIT PREFERENCE", "PRICE RANGE"].map((filter) => (
-                  <div key={filter} className="border-b border-[#E8DACB]/60 pb-2.5 last:border-0 last:pb-0">
+                {filterGroups.map((group) => (
+                  <div key={group.id} className="border-b border-[#E8DACB]/60 pb-2.5 last:border-0 last:pb-0">
                     <button
-                      onClick={() => toggleFilter(filter)}
+                      onClick={() => toggleFilter(group.id)}
                       className="w-full flex items-center justify-between text-[11px] font-semibold text-[#3A3028] hover:text-[#14110E] tracking-wider uppercase py-1 cursor-pointer"
                     >
-                      <span>{filter}</span>
-                      <Plus size={14} className={`transform transition-transform text-[#9E774C] ${openFilters[filter] ? "rotate-45" : ""}`} />
+                      <span>{group.label}</span>
+                      <Plus size={14} className={`transform transition-transform text-[#9E774C] ${openFilters[group.id] ? "rotate-45" : ""}`} />
                     </button>
-                    {openFilters[filter] && (
+                    {openFilters[group.id] && (
                       <div className="pt-2 pl-1 space-y-1.5 text-[11px] text-[#635548]">
-                        <p className="cursor-pointer hover:text-[#14110E] transition-colors">• Egyptian Giza Cotton</p>
-                        <p className="cursor-pointer hover:text-[#14110E] transition-colors">• Italian Poplin Weave</p>
-                        <p className="cursor-pointer hover:text-[#14110E] transition-colors">• Sea Island Twill</p>
+                        {group.options.map((opt) => (
+                          <button
+                            key={opt.label}
+                            onClick={opt.onClick}
+                            className={`block text-left cursor-pointer hover:text-[#14110E] transition-colors ${opt.active ? "text-[#14110E] font-bold" : ""}`}
+                          >
+                            {opt.active ? "✓" : "•"} {opt.label}
+                          </button>
+                        ))}
                       </div>
                     )}
                   </div>
@@ -244,35 +239,65 @@ function ShopContent() {
 
               {/* CLEAR ALL BUTTON */}
               <button
-                onClick={() => {
-                  handleCategorySelect("all");
-                  setOpenFilters({});
-                }}
+                onClick={resetAll}
                 className="w-full bg-[#EAE0D3] hover:bg-[#14110E] text-[#14110E] hover:text-white border border-[#D5C2AF] rounded-xl py-3 px-4 text-[10.5px] font-bold tracking-[0.2em] uppercase transition-all flex items-center justify-center space-x-2 shadow-xs cursor-pointer"
               >
-                <span>RESET ALL FILTERS</span>
+                <span>{c.resetAllLabel}</span>
                 <RotateCcw size={13} />
               </button>
             </aside>
 
             {/* Right Main Catalog: Sort Bar + Products Grid */}
             <div className="col-span-1 lg:col-span-9 space-y-4">
-              
+
               {/* Top Control Bar */}
-              <div className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-xl px-4 py-3 flex items-center justify-between text-[11px] text-[#4A3E33] font-medium shadow-xs">
-                <div className="flex items-center space-x-2">
-                  <span className="font-bold text-[#14110E] uppercase tracking-wider">{currentCategoryName}</span>
+              <div className="relative bg-[#FAF5EE] border border-[#E2D4C3] rounded-xl px-4 py-3 flex flex-wrap gap-2 items-center justify-between text-[11px] text-[#4A3E33] font-medium shadow-xs">
+                <div className="flex items-center space-x-2 min-w-0">
+                  <span className="font-bold text-[#14110E] uppercase tracking-wider truncate">{currentCategoryName}</span>
                   <span className="text-[#9E774C]">•</span>
-                  <span className="text-[#7A6B5D]">{displayProducts.length} Items Available</span>
+                  <span className="text-[#7A6B5D] whitespace-nowrap">{displayProducts.length} {c.itemsAvailableLabel}</span>
                 </div>
 
-                <div className="flex items-center space-x-2 cursor-pointer hover:text-[#14110E]">
-                  <span className="uppercase text-[#7A6B5D] font-bold tracking-wider">SORT BY:</span>
+                <button
+                  type="button"
+                  onClick={() => setSortOpen((v) => !v)}
+                  aria-expanded={sortOpen}
+                  className="flex items-center space-x-2 cursor-pointer hover:text-[#14110E]"
+                >
+                  <span className="uppercase text-[#7A6B5D] font-bold tracking-wider">{c.sortLabel}</span>
                   <span className="font-bold uppercase text-[#14110E] tracking-wider flex items-center gap-1">
-                    {sortOption} <ChevronDown size={14} className="text-[#9E774C]" />
+                    {c.sortOptions[sortOption]} <ChevronDown size={14} className={`text-[#9E774C] transition-transform ${sortOpen ? "rotate-180" : ""}`} />
                   </span>
-                </div>
+                </button>
+                {sortOpen && (
+                  <div className="absolute right-3 top-full mt-1 z-20 bg-white border border-[#E2D4C3] rounded-xl shadow-lg py-1 min-w-[200px]">
+                    {(Object.keys(c.sortOptions) as SortKey[]).map((key) => (
+                      <button
+                        key={key}
+                        onClick={() => {
+                          setSortOption(key);
+                          setSortOpen(false);
+                        }}
+                        className={`w-full text-left px-4 py-2 text-[11px] font-bold uppercase tracking-wider hover:bg-[#FAF5EE] ${sortOption === key ? "text-[#9E774C]" : "text-[#14110E]"}`}
+                      >
+                        {c.sortOptions[key]}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
+
+              {displayProducts.length === 0 && (
+                <div className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-10 text-center space-y-4">
+                  <p className="text-sm text-[#55473B]">{c.emptyText}</p>
+                  <button
+                    onClick={resetAll}
+                    className="inline-flex items-center gap-2 bg-[#14110E] hover:bg-[#9E774C] text-white px-5 py-2.5 rounded-xl text-[10.5px] font-bold uppercase tracking-[0.16em] transition-all"
+                  >
+                    {c.resetAllLabel} <RotateCcw size={13} />
+                  </button>
+                </div>
+              )}
 
               {/* MOBILE VIEW (< lg:): 1 Horizontal Shirt Card Per Row */}
               <div className="lg:hidden space-y-3 mb-6">
@@ -380,7 +405,7 @@ function ShopContent() {
                             href={`/product/${p.slug}`}
                             className="inline-flex items-center space-x-1.5 bg-[#14110E] hover:bg-[#9E774C] text-white px-4 py-2 rounded-xl text-[10.5px] font-bold uppercase tracking-[0.14em] transition-all shadow-sm cursor-pointer"
                           >
-                            <span>CUSTOMIZE</span>
+                            <span>{c.customizeLabel}</span>
                             <span>→</span>
                           </Link>
                         </div>
@@ -406,9 +431,18 @@ function ShopContent() {
   );
 }
 
+function ShopLoading() {
+  const c = useContent("shopPage");
+  return (
+    <div className="min-h-screen bg-[#D7C2AD] flex items-center justify-center text-sm font-semibold tracking-widest uppercase text-[#14110E]">
+      {c.loadingText}
+    </div>
+  );
+}
+
 export default function ShopPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#D7C2AD] flex items-center justify-center text-sm font-semibold tracking-widest uppercase text-[#14110E]">Loading Shop...</div>}>
+    <Suspense fallback={<ShopLoading />}>
       <ShopContent />
     </Suspense>
   );
