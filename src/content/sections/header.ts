@@ -1,6 +1,6 @@
 export const header = {
   logo: "/logo/suitoholic-logo-dark.png",
-  logoAlt: "Suitoholic Logo",
+  logoAlt: "Suitoholic",
   announcementWelcome: "Welcome to Suitoholic",
   announcementTagline: "Tailored for You.",
   topLinks: [

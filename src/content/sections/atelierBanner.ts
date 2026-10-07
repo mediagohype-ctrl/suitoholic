@@ -4,7 +4,6 @@
 export const atelierBanner = {
   image: "/tailoring_tools.jpg",
   imageAlt: "Bespoke Tailoring Atelier Craftsmanship",
-  badgeText: "THE SARTORIAL ATELIER • BESPOKE CRAFTSMANSHIP",
   headingLine1: "MASTER CRAFTED",
   headingAccent: "FOR DISTINCTION.",
   description:

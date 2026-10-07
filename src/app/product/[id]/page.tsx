@@ -401,7 +401,7 @@ export default function ProductDetailPage() {
                   <button
                     onClick={() => handleOpenCustomizer(true)}
                     disabled={outOfStock || busy}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-[#8A6E48] to-[#6E5030] hover:brightness-110 text-white py-4 px-5 rounded-2xl text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md"
+                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#14110E] hover:bg-black border border-white/20 text-white py-4 px-5 rounded-2xl text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md"
                   >
                     <span>{c.buyNowLabel}</span>
                     <ArrowRight size={16} />

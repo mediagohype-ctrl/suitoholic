@@ -15,7 +15,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Exclusive Formal Shirts",
     "description": "100% Pure corporate & boardroom dress shirts in Egyptian Giza 140s twill, French cuffs & cutaway collars.",
     "tag": "COLLECTION 01 • PURE FORMAL DRESS SHIRTS",
-    "bgImage": "/formal_white_twill.jpg",
+    "bgImage": "/new_shirts/shirt_1.jpg",
     "showOnHome": true,
     "sortOrder": 1,
     "active": true
@@ -33,7 +33,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Executive Striped Formal Shirts",
     "description": "Double-ply Italian banker stripes, micro-checks, and precision office pinstripes.",
     "tag": "COLLECTION 02 • PATTERNED FORMAL SHIRTS",
-    "bgImage": "/formal_banker_stripe.jpg",
+    "bgImage": "/new_shirts/shirt_2.jpg",
     "showOnHome": true,
     "sortOrder": 2,
     "active": true
@@ -51,7 +51,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Luxury Textured & Twill Shirts",
     "description": "Pure Sea Island cotton, French cuffs, royal dobbies, and Austrian herringbone weaves.",
     "tag": "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
-    "bgImage": "/formal_ivory_herringbone.jpg",
+    "bgImage": "/new_shirts/shirt_3.jpg",
     "showOnHome": true,
     "sortOrder": 3,
     "active": true
@@ -69,7 +69,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Tailored Trousers & Pants",
     "description": "Italian pleated wool dress pants, sartorial Gurkha trousers, and premium stretch chinos.",
     "tag": "COLLECTION 04 • TAILORED PANTS",
-    "bgImage": "/pant_pleated_beige.jpg",
+    "bgImage": "/new_shirts/shirt_4.jpg",
     "showOnHome": true,
     "sortOrder": 4,
     "active": true
@@ -87,7 +87,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Premium Polos & T-Shirts",
     "description": "Heavyweight Supima cotton tees, silk-blend knit polos, and fine-gauge textured casuals.",
     "tag": "COLLECTION 05 • LUXURY CASUALS",
-    "bgImage": "/tshirt_knit_navy_polo.jpg",
+    "bgImage": "/new_shirts/shirt_1.jpg",
     "showOnHome": true,
     "sortOrder": 5,
     "active": true

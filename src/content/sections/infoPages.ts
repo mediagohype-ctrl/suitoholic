@@ -2,16 +2,9 @@
 // Body formatting: separate paragraphs with a blank line; start a line with "## " for a
 // heading and "- " for a bullet point. Starter copy — review before going live.
 // showContactForm adds a contact form whose messages appear in Admin → Inquiries.
+// (/contact has its own dedicated page, so it is not listed here.)
 export const infoPages = {
   pages: [
-    {
-      slug: "contact",
-      eyebrow: "CONCIERGE",
-      title: "CONTACT US",
-      intro: "Our atelier concierge is here to help with fittings, orders and bespoke requests.",
-      body: "## Visit the Atelier\nAppointments are available Monday to Saturday, 11am – 8pm.\n\n## Write to Us\nSend us a message using the form below and our team will reply within one working day.",
-      showContactForm: true,
-    },
     {
       slug: "returns",
       eyebrow: "CUSTOMER CARE",

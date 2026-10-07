@@ -679,7 +679,7 @@ export default function CustomShirtConfigurator() {
                   {currentStep > 1 && (
                     <button
                       onClick={handlePrevStep}
-                      className="px-4 py-3.5 bg-[#E2D0BE] hover:bg-[#120F0D] text-[#332B24] hover:text-white border border-[#C6B09B] rounded-xl text-xs font-bold tracking-wider uppercase transition-all flex items-center space-x-1.5 cursor-pointer"
+                      className="px-4 py-3.5 bg-[#14110E] hover:bg-black text-white border border-[#14110E] rounded-xl text-xs font-bold tracking-wider uppercase transition-all flex items-center space-x-1.5 cursor-pointer shadow-md"
                     >
                       <ArrowLeft size={14} />
                       <span>{opts.backLabel}</span>

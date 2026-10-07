@@ -1,11 +1,9 @@
-// Newsletter signup block. subtitleLine2 wraps onto a new line on larger screens.
+// Newsletter signup block. Signups appear in Admin → Subscribers.
 // errorMessage is the fallback shown when the server gives no specific reason.
 export const newsletter = {
-  watermarkText: "PRIVILEGE",
   heading: "Join Our Newsletter",
-  subtitleLine1: "Get drops, tips & members-only offers.",
-  subtitleLine2: "No spam.",
-  emailPlaceholder: "e.g. name@example.com",
+  subtitle: "Get exclusive fabric drops, craftsmanship journals & members-only offers directly to your inbox. No spam.",
+  emailPlaceholder: "Enter your email address (e.g. name@example.com)",
   subscribeLabel: "Subscribe",
   subscribingLabel: "Subscribing...",
   consentText: "I agree to receive marketing emails from Suitoholic. Read our",

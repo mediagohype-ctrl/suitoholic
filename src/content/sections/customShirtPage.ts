@@ -81,7 +81,7 @@ export const customShirtPage = {
   confirmLabel: "ADD TO BAG ✓",
   addingLabel: "ADDING TO BAG…",
   addedLabel: "ADDED TO BAG ✓",
-  successMessage: "✨ BESPOKE SHIRT ADDED TO YOUR BAG!",
+  successMessage: "BESPOKE SHIRT ADDED TO YOUR BAG!",
   viewBagLabel: "VIEW BAG",
   viewBagHref: "/cart",
   productNotFoundError: "The custom-fit base shirt is currently unavailable. Please try again later.",

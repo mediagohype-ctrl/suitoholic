@@ -73,5 +73,5 @@ export const contentSections: ContentSectionMeta[] = [
   { key: "aboutPage", label: "About Us Page", group: "Pages", description: "All sections of the About page.", previewPath: "/about" },
   { key: "customShirtPage", label: "Custom Fit Page", group: "Pages", description: "All sections of the Custom Fit configurator page.", previewPath: "/custom-shirt" },
   { key: "fabricsPage", label: "Fabrics Page", group: "Pages", description: "All sections of the Fabrics page.", previewPath: "/fabrics" },
-  { key: "infoPages", label: "Info Pages (Contact, Policies, FAQ)", group: "Pages", description: "Text pages served at /<slug>: contact, returns, shipping, privacy, terms, fabric care, FAQ. Add a page here to create a new URL.", previewPath: "/contact" },
+  { key: "infoPages", label: "Info Pages (Policies, FAQ)", group: "Pages", description: "Text pages served at /<slug>: returns, shipping, privacy, terms, fabric care, FAQ. Add a page here to create a new URL.", previewPath: "/faq" },
 ];

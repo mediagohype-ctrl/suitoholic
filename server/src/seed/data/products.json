@@ -11,12 +11,12 @@
     "threadCount": "140s / 2-Ply Fine Formal Twill",
     "collar": "Classic English Spread Collar",
     "cuff": "Dual-Use Convertible French Cuff",
-    "image": "/white_twill_model_editorial.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/white_twill_model_editorial.jpg",
-      "/formal_white_twill.jpg",
-      "/detail_fabric_macro.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 184,
@@ -66,12 +66,12 @@
     "threadCount": "120s / 2-Ply Pinpoint Weave",
     "collar": "Semi-Spread Formal Collar",
     "cuff": "Double French Cuff (For Cufflinks)",
-    "image": "/sky_blue_model_editorial.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/sky_blue_model_editorial.jpg",
-      "/formal_french_cuff_blue.jpg",
-      "/detail_fabric_macro.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 128,
@@ -121,11 +121,12 @@
     "threadCount": "140s High-Density Poplin",
     "collar": "Wide Cutaway Formal Collar",
     "cuff": "Mitred Dual-Button Cuff",
-    "image": "/luxury_pinstripe_flatlay_macro.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/luxury_pinstripe_flatlay_macro.jpg",
-      "/formal_banker_stripe.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 145,
@@ -175,11 +176,12 @@
     "threadCount": "130s Micro-Herringbone Weave",
     "collar": "Semi-Spread Formal Collar",
     "cuff": "Beveled Button Cuff",
-    "image": "/formal_ivory_herringbone.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/formal_ivory_herringbone.jpg",
-      "/detail_fabric_macro.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 96,
@@ -229,11 +231,12 @@
     "threadCount": "120s Fine Micro-Twill",
     "collar": "English Point Collar",
     "cuff": "Single Button Barrel Cuff",
-    "image": "/formal_charcoal_boardroom.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/formal_charcoal_boardroom.jpg",
-      "/detail_fabric_macro.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 110,
@@ -282,11 +285,12 @@
     "fabric": "90% Super 120s Wool, 10% Cashmere",
     "threadCount": "Sartorial 320 GSM Drape",
     "fit": "Classic Sartorial Pleated",
-    "image": "/pant_pleated_beige.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/pant_pleated_beige.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 162,
@@ -309,11 +313,12 @@
     "fabric": "100% Heavy Cotton Cavalry Twill",
     "threadCount": "380 GSM Heavy Twill",
     "fit": "High-Rise Tailored Fit",
-    "image": "/pant_gurkha_olive.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/pant_gurkha_olive.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 118,
@@ -336,11 +341,12 @@
     "fabric": "98% Egyptian Combed Cotton, 2% Elastane",
     "threadCount": "290 GSM Satin Chino Weave",
     "fit": "Modern Slim-Straight Fit",
-    "image": "/pant_navy_chinos.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/pant_navy_chinos.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 204,
@@ -363,11 +369,12 @@
     "fabric": "100% Super 130s Worsted Wool",
     "threadCount": "260 GSM All-Season Wool",
     "fit": "Tailored Straight Fit",
-    "image": "/pant_charcoal_dress.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/pant_charcoal_dress.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 88,
@@ -390,11 +397,12 @@
     "fabric": "100% European Normandy Flax",
     "threadCount": "240 GSM Slub Linen",
     "fit": "Relaxed Tapered Fit",
-    "image": "/pant_linen_oatmeal.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/pant_linen_oatmeal.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 79,
@@ -417,10 +425,12 @@
     "fabric": "100% American Supima Cotton",
     "threadCount": "260 GSM Heavyweight Interlock",
     "fit": "Relaxed Boxy Fit",
-    "image": "/tshirt_supima_cream.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/tshirt_supima_cream.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 230,
@@ -443,10 +453,12 @@
     "fabric": "70% Mulberry Silk, 30% Long-Staple Cotton",
     "threadCount": "16-Gauge Fine Knit",
     "fit": "Tailored Knit Fit",
-    "image": "/tshirt_knit_navy_polo.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/tshirt_knit_navy_polo.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 5,
     "reviewsCount": 142,
@@ -469,10 +481,12 @@
     "fabric": "100% Long-Staple Peruvian Pima",
     "threadCount": "220 GSM Single Jersey",
     "fit": "Custom Slim Fit",
-    "image": "/tshirt_black_minimal.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/tshirt_black_minimal.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 175,
@@ -495,10 +509,12 @@
     "fabric": "100% Organic Cotton Waffle",
     "threadCount": "250 GSM Micro-Honeycomb",
     "fit": "Classic Athletic Fit",
-    "image": "/tshirt_sage_waffle.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/tshirt_sage_waffle.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 4.7,
     "reviewsCount": 88,
@@ -521,10 +537,12 @@
     "fabric": "100% Extra-Fine Australian Merino",
     "threadCount": "18-Gauge Sartorial Knit",
     "fit": "Tailored Smart Fit",
-    "image": "/tshirt_espresso_polo.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/tshirt_espresso_polo.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 94,
@@ -547,11 +565,12 @@
     "fabric": "100% Super 130s Italian Wool",
     "threadCount": "280 GSM Structured Weave",
     "fit": "Tailored Neapolitan Cut",
-    "image": "/blazer_navy_wool.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/blazer_navy_wool.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 5,
     "reviewsCount": 189,
@@ -574,11 +593,12 @@
     "fabric": "85% Scottish Wool, 15% Silk",
     "threadCount": "340 GSM Autumn Tweed",
     "fit": "Classic British Silhouette",
-    "image": "/blazer_houndstooth.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/blazer_houndstooth.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 76,
@@ -601,11 +621,12 @@
     "fabric": "100% Super 150s Wool with Pure Silk Lapels",
     "threadCount": "290 GSM Evening Worsted",
     "fit": "Slim Sartorial Black-Tie",
-    "image": "/blazer_charcoal_tux.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/blazer_charcoal_tux.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 5,
     "reviewsCount": 120,
@@ -628,11 +649,12 @@
     "fabric": "100% Pure Irish Linen",
     "threadCount": "270 GSM Summer Weave",
     "fit": "Unstructured Neapolitan",
-    "image": "/blazer_sand_linen.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/blazer_sand_linen.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 95,
@@ -655,11 +677,12 @@
     "fabric": "60% Baby Camel Hair, 40% Virgin Wool",
     "threadCount": "360 GSM Heavy Sartorial",
     "fit": "Structured Double-Breasted",
-    "image": "/blazer_double_breasted.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/blazer_double_breasted.jpg",
-      "/dark_fabric.jpg",
-      "/tailoring_tools.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 64,
@@ -683,10 +706,12 @@
     "threadCount": "Artisanal Handloom Silk",
     "collar": "Royal Mandarin Collar",
     "cuff": "Straight Embroidered Cuff",
-    "image": "/ceremonial_kurta_silk.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/ceremonial_kurta_silk.jpg",
-      "/dark_fabric.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 165,
@@ -709,10 +734,12 @@
     "fabric": "70% Virgin Wool, 30% Cashmere",
     "threadCount": "350 GSM Regal Blend",
     "collar": "High Bandhgala Stand Collar",
-    "image": "/ceremonial_bandhgala.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/ceremonial_bandhgala.jpg",
-      "/dark_fabric.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 5,
     "reviewsCount": 198,
@@ -736,10 +763,12 @@
     "threadCount": "160s / 2-Ply Fine Poplin",
     "collar": "Classic Wing Collar",
     "cuff": "French Double Cuff",
-    "image": "/ceremonial_ivory_tux.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/ceremonial_ivory_tux.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 140,
@@ -761,10 +790,12 @@
     "description": "Subtle textured shimmer with unparalleled cultural heritage. Designed for luxury weddings, receptions, and red-carpet ceremonies.",
     "fabric": "100% Hand-Spun Matka Silk",
     "threadCount": "Handloom Luxury Weave",
-    "image": "/ceremonial_silk_blend.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/ceremonial_silk_blend.jpg",
-      "/dark_fabric.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 82,
@@ -786,10 +817,12 @@
     "description": "Decadent evening luxury. Deep ruby burgundy cotton velvet with quilted black satin shawl lapels and silk-braided frogging closure.",
     "fabric": "100% Italian Cotton Velvet",
     "threadCount": "420 GSM Rich Pile Velvet",
-    "image": "/ceremonial_velvet.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/ceremonial_velvet.jpg",
-      "/dark_fabric.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 5,
     "reviewsCount": 112,
@@ -813,12 +846,12 @@
     "threadCount": "120s / 2-Ply Crisp Poplin",
     "collar": "Classic London Cutaway Collar",
     "cuff": "Dual Button Mitred Cuff",
-    "image": "/bengal_stripe_royal_blue_model.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/bengal_stripe_royal_blue_model.jpg",
-      "/bengal_stripe_flatlay_macro.jpg",
-      "/shop_stripe_shirt.jpg",
-      "/formal_banker_stripe.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 96,
@@ -842,11 +875,12 @@
     "threadCount": "130s / 2-Ply Fine Twill",
     "collar": "English Spread Collar",
     "cuff": "Convertible Barrel Cuff",
-    "image": "/shop_bespoke_shirt.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/shop_bespoke_shirt.jpg",
-      "/formal_banker_stripe.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 78,
@@ -870,11 +904,12 @@
     "threadCount": "100s / 2-Ply Smooth Poplin",
     "collar": "Semi-Cutaway Collar",
     "cuff": "Single Button Rounded Cuff",
-    "image": "/formal_french_cuff_blue.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/formal_french_cuff_blue.jpg",
-      "/shop_stripe_shirt.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 64,
@@ -898,11 +933,12 @@
     "threadCount": "140s / 2-Ply Royal Twill",
     "collar": "Semi-Spread Formal Collar",
     "cuff": "French Double Cuff",
-    "image": "/formal_charcoal_boardroom.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/formal_charcoal_boardroom.jpg",
-      "/shop_bespoke_shirt.jpg",
-      "/dark_fabric.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 5,
     "reviewsCount": 110,
@@ -926,10 +962,12 @@
     "threadCount": "110s Luxury Weave",
     "collar": "Classic Button-Down Formal",
     "cuff": "Two-Button Mitred Cuff",
-    "image": "/shop_linen_shirt.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/shop_linen_shirt.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 58,
@@ -953,11 +991,12 @@
     "threadCount": "140s / 2-Ply Dobby Weave",
     "collar": "English Spread Collar",
     "cuff": "French Double Cuff",
-    "image": "/formal_ivory_herringbone.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/formal_ivory_herringbone.jpg",
-      "/shop_plain_shirt.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 142,
@@ -981,10 +1020,12 @@
     "threadCount": "130s / 2-Ply Heavy Twill",
     "collar": "Cutaway Formal Collar",
     "cuff": "Convertible French Cuff",
-    "image": "/shirt_charcoal_oxford.jpg",
+    "image": "/new_shirts/shirt_1.jpg",
     "gallery": [
-      "/shirt_charcoal_oxford.jpg",
-      "/dark_fabric.jpg"
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 88,
@@ -1008,11 +1049,12 @@
     "threadCount": "160s Ultra-Fine Poplin",
     "collar": "Milano Full Cutaway Collar",
     "cuff": "Dual-Use Mitred Cuff",
-    "image": "/shop_plain_shirt.jpg",
+    "image": "/new_shirts/shirt_2.jpg",
     "gallery": [
-      "/shop_plain_shirt.jpg",
-      "/shirt_classic_white.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg"
     ],
     "rating": 5,
     "reviewsCount": 164,
@@ -1036,11 +1078,12 @@
     "threadCount": "120s / 2-Ply Herringbone",
     "collar": "Semi-Spread Formal Collar",
     "cuff": "Mitred Two-Button Cuff",
-    "image": "/shirt_royal_blue.jpg",
+    "image": "/new_shirts/shirt_3.jpg",
     "gallery": [
-      "/shirt_royal_blue.jpg",
-      "/formal_french_cuff_blue.jpg",
-      "/detail_fabric_macro.jpg"
+      "/new_shirts/shirt_2.jpg",
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 74,
@@ -1064,10 +1107,12 @@
     "threadCount": "150s / 2-Ply Satin Twill",
     "collar": "Classic English Spread",
     "cuff": "French Double Cuff",
-    "image": "/shop_bespoke_shirt.jpg",
+    "image": "/new_shirts/shirt_4.jpg",
     "gallery": [
-      "/shop_bespoke_shirt.jpg",
-      "/detail_cuff_collar.jpg"
+      "/new_shirts/shirt_3.jpg",
+      "/new_shirts/shirt_4.jpg",
+      "/new_shirts/shirt_1.jpg",
+      "/new_shirts/shirt_2.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 120,

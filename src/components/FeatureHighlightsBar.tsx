@@ -5,52 +5,51 @@ import { useContent } from "@/context/SiteDataProvider";
 
 function CustomFitIcon() {
   return (
-    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
-      <ellipse cx="13.5" cy="12.5" rx="7.5" ry="3.8" />
-      <path d="M6 12.5V19C6 21.1 9.4 22.8 13.5 22.8C17.6 22.8 21 21.1 21 19V12.5" />
-      <ellipse cx="13.5" cy="12.5" rx="3.5" ry="1.7" />
-      <path d="M17.5 22.8H26C27.5 22.8 28.5 21.8 28.5 20.3C28.5 18.8 27.5 17.8 26 17.8H21" />
-      <line x1="22.5" y1="17.8" x2="22.5" y2="20.3" />
-      <line x1="24.8" y1="17.8" x2="24.8" y2="19.8" />
-      <line x1="27" y1="17.8" x2="27" y2="20.3" />
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      <path d="M7 11C7 8.23858 9.23858 6 12 6C14.7614 6 17 8.23858 17 11C17 13.7614 14.7614 16 12 16C9.23858 16 7 13.7614 7 11Z" />
+      <path d="M12 11C12 9.89543 12.8954 9 14 9" />
+      <path d="M12 16V22C12 24.2091 13.7909 26 16 26H25C26.6569 26 28 24.6569 28 23C28 21.3431 26.6569 20 25 20H17" />
+      <line x1="16" y1="20" x2="16" y2="23" />
+      <line x1="19" y1="20" x2="19" y2="22" />
+      <line x1="22" y1="20" x2="22" y2="23" />
+      <line x1="25" y1="20" x2="25" y2="22" />
     </svg>
   );
 }
 
 function FabricIcon() {
   return (
-    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
-      <rect x="5" y="5" width="22" height="22" rx="4" transform="rotate(45 16 16)" />
-      <line x1="16" y1="5" x2="16" y2="27" strokeDasharray="2 1.5" />
-      <line x1="5" y1="16" x2="27" y2="16" strokeDasharray="2 1.5" />
-      <circle cx="16" cy="16" r="3" fill="currentColor" fillOpacity="0.2" />
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      <rect x="6" y="6" width="20" height="20" rx="2" transform="rotate(45 16 16)" strokeWidth="1.7" />
+      <line x1="11" y1="11" x2="21" y2="21" strokeWidth="1.4" />
+      <line x1="21" y1="11" x2="11" y2="21" strokeWidth="1.4" />
+      <line x1="16" y1="7" x2="16" y2="25" strokeWidth="1.4" strokeDasharray="2 2" />
+      <line x1="7" y1="16" x2="25" y2="16" strokeWidth="1.4" strokeDasharray="2 2" />
     </svg>
   );
 }
 
 function DetailsIcon() {
   return (
-    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
-      <line x1="4" y1="24.5" x2="28" y2="24.5" />
-      <path d="M5.5 24.5L7.5 27.5H24.5L26.5 24.5" />
-      <path d="M8.5 24.5V14C8.5 11 10.5 9 13.5 9H23.5C25 9 26 10 26 11.5V24.5" />
-      <line x1="16.5" y1="5.5" x2="16.5" y2="9" />
-      <rect x="15" y="6" width="3" height="3" rx="0.5" fill="currentColor" fillOpacity="0.25" />
-      <line x1="11" y1="13.5" x2="11" y2="21" />
-      <path d="M9.5 21H12.5" />
-      <circle cx="26" cy="14" r="2.5" />
-      <path d="M5 24.5C8 23 11 25.5 14 24.5" strokeDasharray="1.5 1.5" />
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      <circle cx="16" cy="16" r="11" strokeWidth="1.7" />
+      <circle cx="16" cy="16" r="3" strokeWidth="1.7" fill="currentColor" fillOpacity="0.1" />
+      <line x1="16" y1="2" x2="16" y2="5" />
+      <line x1="16" y1="27" x2="16" y2="30" />
+      <line x1="2" y1="16" x2="5" y2="16" />
+      <line x1="27" y1="16" x2="30" y2="16" />
+      <path d="M11 11L21 21M21 11L11 21" strokeWidth="1" strokeDasharray="2 2" />
     </svg>
   );
 }
 
 function ReturnsIcon() {
   return (
-    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
-      <path d="M16 6L26 11V21L16 26L6 21V11L16 6Z" />
-      <path d="M16 6V16M26 11L16 16M6 11L16 16" />
-      <circle cx="16" cy="16" r="8.5" strokeDasharray="3 3" strokeOpacity="0.4" />
-      <path d="M22 13L25 10L22 7" strokeWidth="1.5" />
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      <path d="M16 4L27 9.5V22.5L16 28L5 22.5V9.5L16 4Z" strokeWidth="1.7" />
+      <path d="M16 4V16M27 9.5L16 16M5 9.5L16 16" strokeWidth="1.5" />
+      <circle cx="16" cy="16" r="10" strokeDasharray="3 2" strokeWidth="1.2" strokeOpacity="0.5" />
+      <path d="M21 12L24 9L21 6" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -75,29 +74,34 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
   if (items.length === 0) return null;
 
   return (
-    <section className={`w-full z-30 bg-[#EFE5D9]/95 backdrop-blur-md border-t border-b border-[#D8C7B7] py-3.5 sm:py-4 px-2 sm:px-4 shadow-[0_-2px_12px_rgba(0,0,0,0.04)] select-none transition-all ${className}`}>
-      <div className="w-full">
+    <section className={`w-full z-30 shrink-0 bg-[#EFE5D9] border-t border-b border-[#D8C7B7]/80 py-3.5 sm:py-4 px-4 sm:px-6 shadow-[0_-2px_12px_rgba(0,0,0,0.03)] select-none transition-all ${className}`}>
+      <div className="w-full max-w-7xl mx-auto">
 
-        {/* MOBILE VIEW: 2 Columns × 2 Rows with Vertical Divider between columns matching screenshot */}
-        <div className="grid grid-cols-2 gap-y-3.5 md:hidden">
-          {items.map((item, i) => (
-            <div
-              key={i}
-              className={`flex items-center space-x-2.5 ${i % 2 === 0 ? "pr-2 border-r border-[#D8C7B7]/70" : "pl-3"}`}
-            >
-              <div className="w-7 h-7 flex items-center justify-center shrink-0 text-[#14110E]">
-                {renderIcon(item.icon)}
+        {/* MOBILE VIEW: 2 Columns × 2 Rows with Center Vertical Divider matching screenshot */}
+        <div className="grid grid-cols-2 gap-y-4 sm:gap-y-5 md:hidden">
+          {items.map((item, i) => {
+            const leftColumn = i % 2 === 0;
+            return (
+              <div
+                key={i}
+                className={`flex items-center space-x-2.5 sm:space-x-3 ${leftColumn ? "pr-2.5 sm:pr-4 relative" : "pl-3 sm:pl-4"}`}
+              >
+                <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center shrink-0 text-[#14110E]">
+                  {renderIcon(item.icon)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-[10.5px] sm:text-xs font-bold tracking-[0.06em] text-[#14110E] uppercase leading-tight font-sans">
+                    {item.title}
+                  </h4>
+                  <p className="text-[9px] sm:text-[10px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
+                    {item.subtitle}
+                  </p>
+                </div>
+                {/* Center Vertical Divider Line */}
+                {leftColumn && <div className="absolute right-0 top-1 bottom-1 w-[1px] bg-[#D8C7B7]" />}
               </div>
-              <div className="min-w-0">
-                <h4 className="text-[10px] sm:text-[11px] font-bold tracking-[0.06em] text-[#14110E] uppercase leading-tight font-sans">
-                  {item.title}
-                </h4>
-                <p className="text-[9px] sm:text-[10px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
-                  {item.subtitle}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* DESKTOP VIEW: 1 Row 4 Columns with Vertical Dividers */}

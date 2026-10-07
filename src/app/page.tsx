@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import HeroVideoBanner from "@/components/HeroVideoBanner";
 import ModernCollectionSection from "@/components/ModernCollectionSection";
 import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase";
@@ -39,38 +38,39 @@ export default function Home() {
       {/* Header */}
       <Header />
 
-      {/* Main Interactive Hero Video Banner with 360 Rotating Shirt & Color Picker */}
+      {/* Main Interactive Hero Video Banner (Includes Bottom Feature Highlights Bar Docked at 100dvh) */}
       <HeroVideoBanner />
 
-      {/* Feature Highlights Bar (Full Width Edge to Edge) */}
-      <FeatureHighlightsBar />
-
-      {/* Split Feature Banners (PREMIUM FABRICS & CUSTOM FIT - BRIGHT LUXURY EDITORIAL CARDS) */}
-      <section id="fabrics" className="w-full py-2 sm:py-3.5 px-3.5 sm:px-6 lg:px-10 xl:px-12">
+      {/* Split Feature Banners (PREMIUM FABRICS & CUSTOM FIT - EDITORIAL CARDS MATCHING REFERENCE) */}
+      <section id="fabrics" className="w-full py-3 sm:py-4 px-3.5 sm:px-6 lg:px-10 xl:px-12">
         <div className="max-w-[1780px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-          
+
           {c.splitBanners.map((banner, i) => (
             <Link
               key={`${banner.href}-${i}`}
               href={banner.href}
-              className="relative overflow-hidden h-[165px] sm:h-[195px] lg:h-[225px] xl:h-[240px] rounded-xl sm:rounded-2xl flex flex-col justify-end p-3 sm:p-4 lg:p-5 group cursor-pointer shadow-md border border-[#D5C2AF]/80 transition-all duration-500 hover:shadow-2xl bg-[#F5EFE6]"
+              className="relative overflow-hidden h-[180px] sm:h-[220px] lg:h-[260px] xl:h-[280px] rounded-lg sm:rounded-xl flex flex-col justify-end p-5 sm:p-7 group cursor-pointer shadow-md transition-all duration-500 hover:shadow-2xl bg-[#14110E]"
             >
-              {/* Bright Natural High-Res Photography (No Blur) */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={banner.image}
                 alt={banner.alt}
-                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out opacity-85"
               />
-              {/* Subtle bottom shadow gradient to elevate card */}
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
+              {/* Ambient Dark Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
 
-              {/* Floating Luxury Glassmorphism Content Card */}
-              <div className="relative z-10 bg-[#FAF6F0]/95 backdrop-blur-md border border-white/80 rounded-lg sm:rounded-xl p-2.5 sm:p-3 sm:px-3.5 shadow-lg max-w-[190px] sm:max-w-[220px] transition-transform duration-300 group-hover:translate-y-[-2px]">
-                <h3 className="font-serif-luxury text-xs sm:text-sm lg:text-base font-bold uppercase tracking-tight text-[#14110E] leading-tight mb-0.5 sm:mb-1">
-                  {banner.title}
+              {/* Typography Overlay */}
+              <div className="relative z-10 flex flex-col items-start">
+                <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-[28px] font-normal uppercase tracking-wide text-[#FAF8F5] leading-tight mb-2">
+                  {banner.titleLines.map((line, j) => (
+                    <React.Fragment key={j}>
+                      {j > 0 && <br />}
+                      {line}
+                    </React.Fragment>
+                  ))}
                 </h3>
-                <div className="inline-flex items-center space-x-1.5 text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.16em] text-[#14110E] group-hover:text-[#9E774C] uppercase transition-colors">
+                <div className="inline-flex items-center space-x-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.16em] text-[#FAF8F5]/90 group-hover:text-white uppercase transition-colors">
                   <span>{banner.cta}</span>
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                 </div>

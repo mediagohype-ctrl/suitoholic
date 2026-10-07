@@ -20,6 +20,7 @@ const TAB_PATHS: Record<string, string> = {
   "custom-fit": "/custom-shirt",
   fabrics: "/fabrics",
   about: "/about",
+  contact: "/contact",
 };
 
 export default function Header({ activeTab, cartCount }: HeaderProps) {
@@ -80,30 +81,30 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
           ? "bg-white/90 backdrop-blur-md border-b border-gray-200"
           : "bg-transparent border-b border-transparent"
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between relative">
 
           {/* Mobile: Hamburger Button (Left) */}
-          <div className="flex items-center lg:hidden z-10">
+          <div className="flex items-center lg:hidden z-10 w-8">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1 text-[#1F1C18] hover:text-[#9E774C] transition-colors focus:outline-none"
               aria-label="Toggle mobile menu"
             >
-              {mobileMenuOpen ? <X size={23} strokeWidth={1.75} /> : <Menu size={23} strokeWidth={1.75} />}
+              {mobileMenuOpen ? <X size={22} strokeWidth={1.75} /> : <Menu size={22} strokeWidth={1.75} />}
             </button>
           </div>
 
-          {/* Brand Logo & Tagline */}
-          <div className="flex items-center z-10 shrink-0">
-            <Link href="/" className="flex items-center group py-1">
+          {/* Brand Logo & Tagline (Centered on Mobile, Left-aligned on Desktop) */}
+          <div className="flex items-center justify-center lg:justify-start flex-1 lg:flex-none z-10">
+            <Link href="/" className="flex items-center group py-0.5 select-none">
               <Image
                 src={c.logo}
                 alt={c.logoAlt}
                 unoptimized={/^https?:/.test(c.logo)}
                 width={280}
-                height={250}
+                height={220}
                 priority
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
+                className="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
               />
             </Link>
           </div>
@@ -125,15 +126,15 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
           </nav>
 
           {/* Header Right Icons */}
-          <div className="flex items-center space-x-3.5 sm:space-x-5 text-[#14110E]">
+          <div className="flex items-center space-x-2.5 sm:space-x-4 text-[#14110E] z-10">
             <button className="p-1 hover:text-[#9E774C] transition-colors" aria-label="Search">
-              <Search size={19} strokeWidth={1.75} />
+              <Search size={18} strokeWidth={1.75} />
             </button>
             <button className="p-1 hover:text-[#9E774C] transition-colors" aria-label="Account">
-              <User size={19} strokeWidth={1.75} />
+              <User size={18} strokeWidth={1.75} />
             </button>
             <Link href="/cart" className="relative p-1 hover:text-[#9E774C] transition-colors" aria-label={`Shopping bag, ${bagCount} items`}>
-              <ShoppingBag size={19} strokeWidth={1.75} />
+              <ShoppingBag size={18} strokeWidth={1.75} />
               <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#9E774C] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
                 {bagCount > 99 ? "99+" : bagCount}
               </span>

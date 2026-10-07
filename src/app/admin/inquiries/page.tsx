@@ -10,8 +10,23 @@ import { inputClass } from "@/components/admin/fields";
 import { Badge, Card, EmptyState, ErrorState, IconButton, PageHeader, Pagination, SkeletonRows, TableWrap, Tabs, Td, Th, cn, type BadgeTone } from "@/components/admin/ui";
 
 const LIMIT = 25;
-const TYPE_LABELS: Record<string, string> = { swatch_request: "Swatch Request", contact: "Contact", appointment: "Appointment", newsletter: "Newsletter" };
-const TYPE_TONES: Record<string, BadgeTone> = { swatch_request: "bronze", contact: "blue", appointment: "purple" };
+const TYPE_LABELS: Record<string, string> = {
+  swatch_request: "Swatch Request",
+  contact: "Contact",
+  appointment: "Appointment",
+  fitting_appointment: "Private Fitting",
+  custom_order: "Custom Shirt/Suit",
+  order_status: "Order Status",
+  newsletter: "Newsletter",
+};
+const TYPE_TONES: Record<string, BadgeTone> = {
+  swatch_request: "bronze",
+  contact: "blue",
+  appointment: "purple",
+  fitting_appointment: "purple",
+  custom_order: "green",
+  order_status: "amber",
+};
 const STATUS_OPTIONS: { value: InquiryStatus; label: string }[] = [
   { value: "new", label: "New" },
   { value: "in_progress", label: "In progress" },
