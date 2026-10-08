@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
+import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, X, Scissors } from "lucide-react";
 import confetti from "canvas-confetti";
 import { fillTemplate } from "@/content/merge";
@@ -15,6 +16,8 @@ interface CustomizationModalProps {
   isOpen: boolean;
   onClose: () => void;
   productName?: string;
+  /** The product being customised; its photo drives the fabric chip and the detail/review previews. */
+  product?: { name: string; image: string; gallery?: string[] } | null;
   initialChestSize?: number;
   /** Disables the final button while the bag request is in flight. */
   submitting?: boolean;
@@ -28,6 +31,7 @@ export default function CustomizationModal({
   isOpen,
   onClose,
   productName = "Royal Formal Crisp White Shirt",
+  product = null,
   initialChestSize,
   submitting = false,
   onConfirmCustomization,
@@ -246,7 +250,12 @@ export default function CustomizationModal({
                   bodyFit={asMannequinFit(customFit.bodyFit)}
                   height={customFit.height}
                   sleeveType={customFit.sleeveType === "half" ? "half" : "full"}
+                  collarStyle={customFit.collarStyle}
+                  cuffStyle={customFit.cuffStyle}
+                  initials={customFit.initials}
+                  threadColor={customFit.threadColor}
                   currentStep={currentStep}
+                  product={product}
                 />
               </div>
 
@@ -435,20 +444,38 @@ export default function CustomizationModal({
                         {c.collarLabel}
                       </label>
                       <div className="grid grid-cols-2 gap-2">
-                        {c.collarStyles.map((collar) => (
-                          <button
-                            key={collar}
-                            onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: collar }))}
-                            className={`p-2.5 rounded-xl text-left text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
-                              customFit.collarStyle === collar
-                                ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
-                                : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
-                            }`}
-                          >
-                            <span>{collar}</span>
-                            {customFit.collarStyle === collar && <Check size={13} />}
-                          </button>
-                        ))}
+                        {c.collarStyles.map((collar) => {
+                          const selected = customFit.collarStyle === collar.name;
+                          return (
+                            <button
+                              key={collar.name}
+                              onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: collar.name }))}
+                              className={`p-2.5 rounded-xl text-left transition-all flex items-center gap-2.5 cursor-pointer group ${
+                                selected
+                                  ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
+                                  : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
+                              }`}
+                            >
+                              <span className="w-10 h-8 shrink-0 flex items-center justify-center">
+                                {collar.image ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={collar.image} alt="" className="w-full h-full object-contain rounded" />
+                                ) : (
+                                  <CollarIllustration name={collar.name} className="w-full h-full" />
+                                )}
+                              </span>
+                              <span className="min-w-0 flex-1">
+                                <span className="block text-xs font-bold leading-tight">{collar.name}</span>
+                                {collar.description && (
+                                  <span className={`block text-[9.5px] leading-tight mt-0.5 ${selected ? "text-white/70" : "text-[#6B5A4A] group-hover:text-white/70"}`}>
+                                    {collar.description}
+                                  </span>
+                                )}
+                              </span>
+                              {selected && <Check size={13} className="shrink-0" />}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -458,19 +485,30 @@ export default function CustomizationModal({
                           {c.cuffLabel}
                         </label>
                         <div className="grid grid-cols-3 gap-2">
-                          {c.cuffStyles.map((cuff) => (
-                            <button
-                              key={cuff}
-                              onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff }))}
-                              className={`p-2.5 rounded-xl text-center text-[11px] font-bold transition-all cursor-pointer ${
-                                customFit.cuffStyle === cuff
-                                  ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
-                                  : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
-                              }`}
-                            >
-                              {cuff}
-                            </button>
-                          ))}
+                          {c.cuffStyles.map((cuff) => {
+                            const selected = customFit.cuffStyle === cuff.name;
+                            return (
+                              <button
+                                key={cuff.name}
+                                onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.name }))}
+                                className={`p-2 rounded-xl text-center text-[11px] font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                                  selected
+                                    ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
+                                    : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
+                                }`}
+                              >
+                                <span className="w-12 h-9 flex items-center justify-center">
+                                  {cuff.image ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={cuff.image} alt="" className="w-full h-full object-contain rounded" />
+                                  ) : (
+                                    <CuffIllustration name={cuff.name} className="w-full h-full" />
+                                  )}
+                                </span>
+                                <span className="leading-tight">{cuff.name}</span>
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
                     )}

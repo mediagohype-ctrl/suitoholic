@@ -1,5 +1,13 @@
 // Options and copy for the 6-step bespoke "Add to Bag" customizer.
 // Text tokens: {chest} is replaced with the chosen chest size; {chest+2} / {chest-4} add or subtract.
+//
+// The preview on the left changes with every step:
+//   steps 1–3  mannequin shirt (visuals.fullSleeveImage / halfSleeveImage) morphing with fit & height,
+//              with the selected product's photo shown as the "fabric" chip
+//   step 4     mannequin switches between full and half sleeve
+//   step 5     the product's own photo with collar, cuff and monogram previews
+//   step 6     the product's photo with the complete selection summary
+// collarStyles[].image / cuffStyles[].image are optional photos; when empty a line illustration is drawn.
 export const customizer = {
   eyebrow: "SUITOHOLIC BESPOKE ATELIER",
   titlePrefix: "CUSTOMIZE",
@@ -62,18 +70,41 @@ export const customizer = {
   halfSleeveLabel: "HALF SLEEVE",
   fullSleeveLabel: "FULL SLEEVE",
   collarLabel: "COLLAR STYLE",
-  collarStyles: ["CUTAWAY COLLAR", "CLASSIC SPREAD", "MANDARIN / BAND", "BUTTON DOWN"],
+  // Illustration is picked from the name: cutaway, spread, mandarin/band, button down. Upload an image to replace it.
+  collarStyles: [
+    { name: "CUTAWAY COLLAR", description: "Wide, modern points for larger tie knots", image: "" },
+    { name: "CLASSIC SPREAD", description: "The versatile boardroom standard", image: "" },
+    { name: "MANDARIN / BAND", description: "Minimal stand collar, no points", image: "" },
+    { name: "BUTTON DOWN", description: "Points fastened with buttons, smart-casual", image: "" },
+  ],
   cuffLabel: "CUFF DESIGN",
-  cuffStyles: ["CLASSIC CUFF", "FRENCH DOUBLE", "ROUNDED CUFF"],
+  // Illustration is picked from the name: classic/barrel, french/double, rounded. Upload an image to replace it.
+  cuffStyles: [
+    { name: "CLASSIC CUFF", description: "Single-button barrel cuff", image: "" },
+    { name: "FRENCH DOUBLE", description: "Folded double cuff for cufflinks", image: "" },
+    { name: "ROUNDED CUFF", description: "Barrel cuff with softened corners", image: "" },
+  ],
   monogramLabel: "MONOGRAM INITIALS",
   monogramPlaceholder: "E.G. A K",
   threadLabel: "THREAD COLOR",
+  // hex is used to preview the embroidered initials.
   threadColors: [
-    { value: "black", label: "BLACK THREAD" },
-    { value: "gold", label: "GOLD THREAD" },
-    { value: "navy", label: "NAVY THREAD" },
-    { value: "maroon", label: "MAROON THREAD" },
+    { value: "black", label: "BLACK THREAD", hex: "#14110E" },
+    { value: "gold", label: "GOLD THREAD", hex: "#B8860B" },
+    { value: "navy", label: "NAVY THREAD", hex: "#1F3A5F" },
+    { value: "maroon", label: "MAROON THREAD", hex: "#6B1F2A" },
   ],
+  visuals: {
+    fullSleeveImage: "/customizer/mannequin_full_sleeve.png",
+    halfSleeveImage: "/customizer/mannequin_half_sleeve.jpg",
+    // Shown on the detail steps when no product photo is available (e.g. the Custom Fit page).
+    fallbackDetailImage: "/customizer/detail_cuff_collar.jpg",
+    fabricChipLabel: "YOUR FABRIC",
+    collarPreviewLabel: "COLLAR",
+    cuffPreviewLabel: "CUFF",
+    monogramPreviewLabel: "MONOGRAM",
+    reviewLabel: "YOUR BESPOKE SHIRT",
+  },
   defaults: {
     chestSize: 38,
     bodyFit: "lean",

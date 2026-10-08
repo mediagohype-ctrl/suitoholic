@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
+import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
@@ -47,6 +48,8 @@ export default function CustomShirtConfigurator() {
   const opts = useContent("customizer");
   const { getProduct } = useCatalog();
   const { addItem, busy } = useCart();
+  // The catalog product this page configures (its photo is used in the preview and it goes in the bag).
+  const baseProduct = getProduct(c.bagProductSlug) ?? null;
 
   // Chest measurement mapping (chest -> collar/shoulder) from the customizer section
   const findChest = (size: number) => opts.chestSizes.find((s) => s.size === size);
@@ -121,7 +124,7 @@ export default function CustomShirtConfigurator() {
   const handleAddToBag = async () => {
     if (busy || orderSubmitted) return;
     setAddError(null);
-    const product = getProduct(c.bagProductSlug);
+    const product = baseProduct;
     if (!product) {
       setAddError(c.productNotFoundError);
       return;
@@ -230,7 +233,12 @@ export default function CustomShirtConfigurator() {
                   bodyFit={viewerBodyFit}
                   height={customFit.height}
                   sleeveType={viewerSleeve}
+                  collarStyle={customFit.collarStyle}
+                  cuffStyle={customFit.cuffStyle}
+                  initials={customFit.initials}
+                  threadColor={customFit.threadColor}
                   currentStep={currentStep}
+                  product={baseProduct}
                 />
               </div>
 
@@ -524,20 +532,31 @@ export default function CustomShirtConfigurator() {
                         {opts.collarLabel}
                       </label>
                       <div className="grid grid-cols-2 gap-2.5">
-                        {opts.collarStyles.map((collar, idx) => (
-                          <button
-                            key={`${collar}-${idx}`}
-                            onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: collar }))}
-                            className={`p-3 rounded-xl text-left text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
-                              customFit.collarStyle === collar
-                                ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
-                                : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
-                            }`}
-                          >
-                            <span>{collar}</span>
-                            {customFit.collarStyle === collar && <Check size={14} />}
-                          </button>
-                        ))}
+                        {opts.collarStyles.map((collar, idx) => {
+                          const selected = customFit.collarStyle === collar.name;
+                          return (
+                            <button
+                              key={`${collar.name}-${idx}`}
+                              onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: collar.name }))}
+                              className={`p-3 rounded-xl text-left text-xs font-bold transition-all flex items-center gap-2.5 cursor-pointer ${
+                                selected
+                                  ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
+                                  : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
+                              }`}
+                            >
+                              <span className="w-10 h-8 shrink-0 flex items-center justify-center">
+                                {collar.image ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={collar.image} alt="" className="w-full h-full object-contain rounded" />
+                                ) : (
+                                  <CollarIllustration name={collar.name} className="w-full h-full" />
+                                )}
+                              </span>
+                              <span className="flex-1">{collar.name}</span>
+                              {selected && <Check size={14} />}
+                            </button>
+                          );
+                        })}
                       </div>
 
                       {isFullSleeve && (
@@ -548,15 +567,23 @@ export default function CustomShirtConfigurator() {
                           <div className="grid grid-cols-3 gap-2.5">
                             {opts.cuffStyles.map((cuff, idx) => (
                               <button
-                                key={`${cuff}-${idx}`}
-                                onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff }))}
-                                className={`p-3 rounded-xl text-center text-xs font-bold transition-all cursor-pointer ${
-                                  customFit.cuffStyle === cuff
+                                key={`${cuff.name}-${idx}`}
+                                onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.name }))}
+                                className={`p-2.5 rounded-xl text-center text-xs font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                                  customFit.cuffStyle === cuff.name
                                     ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
                                     : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
                                 }`}
                               >
-                                {cuff}
+                                <span className="w-12 h-9 flex items-center justify-center">
+                                  {cuff.image ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={cuff.image} alt="" className="w-full h-full object-contain rounded" />
+                                  ) : (
+                                    <CuffIllustration name={cuff.name} className="w-full h-full" />
+                                  )}
+                                </span>
+                                <span className="leading-tight">{cuff.name}</span>
                               </button>
                             ))}
                           </div>

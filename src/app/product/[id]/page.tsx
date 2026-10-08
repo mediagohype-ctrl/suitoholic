@@ -615,6 +615,7 @@ export default function ProductDetailPage() {
         isOpen={isCustomizerOpen}
         onClose={() => setIsCustomizerOpen(false)}
         productName={activeProduct.name}
+        product={activeProduct}
         initialChestSize={selectedSize}
         submitting={busy}
         onConfirmCustomization={handleConfirmCustomization}
