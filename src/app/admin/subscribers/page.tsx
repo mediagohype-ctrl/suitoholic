@@ -68,9 +68,9 @@ export default function SubscribersPage() {
         }
       />
       <Card>
-        <div className="border-b border-[#EFE5D8] p-3 sm:p-4">
+        <div className="border-b border-[#EEF0F3] p-3 sm:p-4">
           <div className="relative max-w-md">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a8998a]" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
             <input className={cn(inputClass, "pl-9")} placeholder="Search email…" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function SubscribersPage() {
             </thead>
             <tbody>
               {data.items.map((s) => (
-                <tr key={s.id} className="hover:bg-[#FCF9F5]">
+                <tr key={s.id} className="hover:bg-[#F9FAFB]">
                   <Td>
                     <a href={`mailto:${s.email}`} className="font-medium hover:text-[#9E774C]">
                       {s.email}
@@ -101,7 +101,7 @@ export default function SubscribersPage() {
                   <Td>
                     <Badge>{humanize(s.source || "website")}</Badge>
                   </Td>
-                  <Td className="text-xs text-[#665749]">{formatDate(s.createdAt, true)}</Td>
+                  <Td className="text-xs text-[#6B7280]">{formatDate(s.createdAt, true)}</Td>
                   {isAdmin && (
                     <Td className="text-right">
                       <IconButton label="Remove" onClick={() => void remove(s)} className="hover:bg-[#FBE9E6] hover:text-[#B4402F]">

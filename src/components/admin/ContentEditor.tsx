@@ -109,10 +109,10 @@ function FieldNode({ name, value, def, onChange, depth, label }: { name: string;
 
   if (isObj(value)) {
     return (
-      <fieldset className={cn("min-w-0 rounded-xl border border-[#E2D4C3] p-4", depth % 2 === 0 ? "bg-[#FCF9F5]" : "bg-white")}>
+      <fieldset className={cn("min-w-0 rounded-xl border border-[#E5E7EB] p-4", depth % 2 === 0 ? "bg-[#F9FAFB]" : "bg-white")}>
         <legend className="px-1.5 text-xs font-semibold uppercase tracking-wider text-[#9E774C]">{title}</legend>
         {Object.keys(value).length === 0 ? (
-          <p className="text-xs text-[#8a7a6a]">No fields.</p>
+          <p className="text-xs text-[#8B93A1]">No fields.</p>
         ) : (
           <ObjectFields value={value} defaults={isObj(def) ? def : {}} onChange={onChange} depth={depth + 1} />
         )}
@@ -141,7 +141,7 @@ function ScalarField({ name, label, value, def, onChange }: { name: string; labe
   if (type !== "string" && value !== null && value !== undefined) {
     return (
       <FieldShell label={label} hint="This value can't be edited here.">
-        <pre className="overflow-x-auto rounded-md bg-[#FAF5EE] p-2 text-xs">{JSON.stringify(value, null, 2)}</pre>
+        <pre className="overflow-x-auto rounded-md bg-[#F9FAFB] p-2 text-xs">{JSON.stringify(value, null, 2)}</pre>
       </FieldShell>
     );
   }
@@ -224,7 +224,7 @@ function ListHeader({ label, count, onAdd, addDisabled }: { label: ReactNode; co
   return (
     <div className="mb-2 flex items-center justify-between gap-2">
       <p className="text-xs font-semibold uppercase tracking-wider text-[#9E774C]">
-        {label} <span className="font-normal normal-case tracking-normal text-[#8a7a6a]">({count})</span>
+        {label} <span className="font-normal normal-case tracking-normal text-[#8B93A1]">({count})</span>
       </p>
       {onAdd && (
         <Button size="sm" onClick={onAdd} disabled={addDisabled} icon={<Plus className="h-3.5 w-3.5" />}>
@@ -238,15 +238,15 @@ function ListHeader({ label, count, onAdd, addDisabled }: { label: ReactNode; co
 function PrimitiveList({ name, label, value, template, onChange }: { name: string; label: ReactNode; value: unknown[]; template: unknown; onChange: (v: unknown) => void }) {
   const add = () => onChange([...value, typeof template === "number" ? 0 : typeof template === "boolean" ? false : ""]);
   return (
-    <div className="min-w-0 rounded-xl border border-[#E2D4C3] bg-white p-4">
+    <div className="min-w-0 rounded-xl border border-[#E5E7EB] bg-white p-4">
       <ListHeader label={label} count={value.length} onAdd={add} />
       {value.length === 0 ? (
-        <p className="text-xs text-[#8a7a6a]">Empty list.</p>
+        <p className="text-xs text-[#8B93A1]">Empty list.</p>
       ) : (
         <ol className="space-y-2">
           {value.map((item, i) => (
             <li key={i} className="flex items-start gap-2">
-              <span className="mt-2.5 w-5 shrink-0 text-right text-[11px] text-[#a8998a]">{i + 1}</span>
+              <span className="mt-2.5 w-5 shrink-0 text-right text-[11px] text-[#9CA3AF]">{i + 1}</span>
               <div className="min-w-0 flex-1">
                 <ScalarField name={name} label={undefined} value={item} def={template} onChange={(nv) => onChange(value.map((x, idx) => (idx === i ? nv : x)))} />
               </div>
@@ -304,20 +304,20 @@ function ObjectList({ name, label, value, template, onChange, depth }: { name: s
   };
 
   return (
-    <div className="min-w-0 rounded-xl border border-[#E2D4C3] bg-white p-4">
+    <div className="min-w-0 rounded-xl border border-[#E5E7EB] bg-white p-4">
       <ListHeader label={label} count={value.length} onAdd={add} addDisabled={template === undefined} />
       {value.length === 0 ? (
-        <p className="text-xs text-[#8a7a6a]">Empty list.{template === undefined ? " There's no item template to add from." : ""}</p>
+        <p className="text-xs text-[#8B93A1]">Empty list.{template === undefined ? " There's no item template to add from." : ""}</p>
       ) : (
         <ol className="space-y-2">
           {value.map((item, i) => {
             const open = isOpen(i);
             return (
-              <li key={i} className="overflow-hidden rounded-lg border border-[#EFE5D8]">
-                <div className="flex items-center gap-1 bg-[#FAF5EE] px-2 py-1.5">
+              <li key={i} className="overflow-hidden rounded-lg border border-[#EEF0F3]">
+                <div className="flex items-center gap-1 bg-[#F9FAFB] px-2 py-1.5">
                   <button type="button" onClick={() => flip(i)} className="flex min-w-0 flex-1 items-center gap-1.5 text-left text-sm" aria-expanded={open}>
                     {open ? <ChevronDown className="h-4 w-4 shrink-0 text-[#9E774C]" /> : <ChevronRight className="h-4 w-4 shrink-0 text-[#9E774C]" />}
-                    <span className="shrink-0 text-[11px] text-[#a8998a]">{i + 1}.</span>
+                    <span className="shrink-0 text-[11px] text-[#9CA3AF]">{i + 1}.</span>
                     <span className="truncate font-medium">{itemTitle(item, i)}</span>
                   </button>
                   <RowControls

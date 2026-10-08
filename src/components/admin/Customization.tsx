@@ -96,18 +96,18 @@ export function CustomizationDetails({ customization, className }: { customizati
   const groups = customizationGroups(customization);
   if (!groups.length) return null;
   return (
-    <div className={cn("rounded-lg border border-[#E6CFB2] bg-[#FCF7F0] p-3 print:border-black print:bg-white", className)}>
+    <div className={cn("rounded-lg border border-[#E6CFB2] bg-[#F9FAFB] p-3 print:border-black print:bg-white", className)}>
       <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#9E774C] print:text-black">
         <Scissors className="h-3.5 w-3.5" /> Bespoke specification
       </p>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4 print:grid-cols-4">
         {groups.map((g) => (
           <div key={g.title}>
-            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-[#8a7a6a] print:text-black">{g.title}</p>
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-[#8B93A1] print:text-black">{g.title}</p>
             <dl className="space-y-0.5">
               {g.rows.map((r) => (
                 <div key={r.label} className="flex items-baseline justify-between gap-2 text-xs">
-                  <dt className="text-[#665749] print:text-black">{r.label}</dt>
+                  <dt className="text-[#6B7280] print:text-black">{r.label}</dt>
                   <dd className="flex items-center gap-1 text-right font-semibold text-[#14110E]">
                     {r.swatch && <span className="inline-block h-2.5 w-2.5 rounded-full border border-black/20" style={{ background: r.swatch }} />}
                     {r.value}

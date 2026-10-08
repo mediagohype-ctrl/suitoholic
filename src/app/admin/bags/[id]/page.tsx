@@ -96,7 +96,7 @@ export default function BagDetailPage() {
           {bag.items.length === 0 ? (
             <EmptyState title="This bag is empty" />
           ) : (
-            <ul className="divide-y divide-[#F3EBE0]">
+            <ul className="divide-y divide-[#EEF0F3]">
               {bag.items.map((item) => (
                 <li key={item.id} className="space-y-3 px-4 py-4 sm:px-5">
                   <div className="flex gap-3">
@@ -107,11 +107,11 @@ export default function BagDetailPage() {
                           <Link href={`/admin/products/${item.productId}`} className="font-semibold hover:text-[#9E774C]">
                             {item.name}
                           </Link>
-                          <p className="text-xs text-[#8a7a6a]">/{item.slug}</p>
+                          <p className="text-xs text-[#8B93A1]">/{item.slug}</p>
                         </div>
                         <p className="font-semibold">{item.lineTotalLabel || money(item.lineTotal)}</p>
                       </div>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#665749]">
+                      <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#6B7280]">
                         <span>
                           Qty <strong className="text-[#14110E]">{item.quantity}</strong>
                         </span>
@@ -144,13 +144,13 @@ export default function BagDetailPage() {
             <Row label="Subtotal" value={money(bag.subtotal)} />
             <Row label="Bespoke tailoring" value={money(bag.customizationTotal)} />
             <Row label="Shipping" value={bag.shippingFee ? money(bag.shippingFee) : "Free"} />
-            <div className="flex justify-between border-t border-[#E2D4C3] pt-2 text-base font-semibold">
+            <div className="flex justify-between border-t border-[#E5E7EB] pt-2 text-base font-semibold">
               <dt>Total</dt>
               <dd>{bag.totalLabel || money(bag.total)}</dd>
             </div>
           </dl>
           {bag.email && (
-            <div className="border-t border-[#EFE5D8] px-4 py-3 sm:px-5">
+            <div className="border-t border-[#EEF0F3] px-4 py-3 sm:px-5">
               <a href={`mailto:${bag.email}`} className="text-xs font-medium text-[#9E774C] hover:underline">
                 Email {bag.email}
               </a>
@@ -164,7 +164,7 @@ export default function BagDetailPage() {
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between text-[#665749]">
+    <div className="flex justify-between text-[#6B7280]">
       <dt>{label}</dt>
       <dd className="text-[#14110E]">{value}</dd>
     </div>

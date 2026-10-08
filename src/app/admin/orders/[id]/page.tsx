@@ -105,7 +105,7 @@ function OrderView({ order, onChange }: { order: AdminOrder; onChange: (o: Admin
               title={`Items (${items.reduce((s, i) => s + i.quantity, 0)})`}
               description={bespokeCount ? `${bespokeCount} bespoke line${bespokeCount === 1 ? "" : "s"} — measurements below` : undefined}
             />
-            <ul className="divide-y divide-[#F3EBE0]">
+            <ul className="divide-y divide-[#EEF0F3]">
               {items.map((item) => (
                 <li key={item.id} className="space-y-3 px-4 py-4 sm:px-5 print:break-inside-avoid">
                   <div className="flex gap-3">
@@ -120,11 +120,11 @@ function OrderView({ order, onChange }: { order: AdminOrder; onChange: (o: Admin
                           ) : (
                             <p className="font-semibold">{item.name}</p>
                           )}
-                          <p className="text-xs text-[#8a7a6a]">/{item.slug}</p>
+                          <p className="text-xs text-[#8B93A1]">/{item.slug}</p>
                         </div>
                         <p className="font-semibold">{money(item.lineTotal)}</p>
                       </div>
-                      <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#665749]">
+                      <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#6B7280]">
                         <span>
                           Qty <strong className="text-[#14110E]">{item.quantity}</strong>
                         </span>
@@ -142,14 +142,14 @@ function OrderView({ order, onChange }: { order: AdminOrder; onChange: (o: Admin
                   <CustomizationDetails customization={item.customization as Record<string, unknown> | null} />
                 </li>
               ))}
-              {items.length === 0 && <li className="px-5 py-6 text-sm text-[#665749]">No line items.</li>}
+              {items.length === 0 && <li className="px-5 py-6 text-sm text-[#6B7280]">No line items.</li>}
             </ul>
-            <dl className="space-y-1.5 border-t border-[#EFE5D8] bg-[#FCF9F5] px-4 py-4 text-sm sm:px-5 print:bg-white">
+            <dl className="space-y-1.5 border-t border-[#EEF0F3] bg-[#F9FAFB] px-4 py-4 text-sm sm:px-5 print:bg-white">
               <TotalRow label="Subtotal" value={money(order.subtotal)} />
               <TotalRow label="Bespoke tailoring" value={money(order.customizationTotal)} />
               <TotalRow label="Shipping" value={order.shippingFee ? money(order.shippingFee) : "Free"} />
               {order.discount > 0 && <TotalRow label="Discount" value={`− ${money(order.discount)}`} />}
-              <div className="flex justify-between border-t border-[#E2D4C3] pt-2 text-base font-semibold">
+              <div className="flex justify-between border-t border-[#E5E7EB] pt-2 text-base font-semibold">
                 <dt>Total</dt>
                 <dd>{order.totalLabel || money(order.total)}</dd>
               </div>
@@ -176,12 +176,12 @@ function OrderView({ order, onChange }: { order: AdminOrder; onChange: (o: Admin
             <div className="space-y-2 px-4 py-4 text-sm sm:px-5">
               <p className="font-semibold">{order.customer?.name}</p>
               {order.customer?.email && (
-                <a href={`mailto:${order.customer.email}`} className="flex items-center gap-2 text-[#665749] hover:text-[#9E774C]">
+                <a href={`mailto:${order.customer.email}`} className="flex items-center gap-2 text-[#6B7280] hover:text-[#9E774C]">
                   <Mail className="h-4 w-4 shrink-0 print:hidden" /> {order.customer.email}
                 </a>
               )}
               {order.customer?.phone && (
-                <a href={`tel:${order.customer.phone}`} className="flex items-center gap-2 text-[#665749] hover:text-[#9E774C]">
+                <a href={`tel:${order.customer.phone}`} className="flex items-center gap-2 text-[#6B7280] hover:text-[#9E774C]">
                   <Phone className="h-4 w-4 shrink-0 print:hidden" /> {order.customer.phone}
                 </a>
               )}
@@ -225,7 +225,7 @@ function OrderView({ order, onChange }: { order: AdminOrder; onChange: (o: Admin
 
 function TotalRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between text-[#665749]">
+    <div className="flex justify-between text-[#6B7280]">
       <dt>{label}</dt>
       <dd className="text-[#14110E]">{value}</dd>
     </div>
@@ -340,17 +340,17 @@ function History({ order }: { order: AdminOrder }) {
     <Card className="print:hidden">
       <CardHeader title="Status history" />
       {history.length === 0 ? (
-        <p className="px-5 py-4 text-sm text-[#665749]">No history yet.</p>
+        <p className="px-5 py-4 text-sm text-[#6B7280]">No history yet.</p>
       ) : (
         <ol className="relative space-y-4 px-4 py-4 sm:px-5">
           {history.map((h, i) => (
             <li key={i} className="relative flex gap-3">
-              {i < history.length - 1 && <span className="absolute left-[5px] top-4 h-[calc(100%+4px)] w-px bg-[#E2D4C3]" aria-hidden />}
+              {i < history.length - 1 && <span className="absolute left-[5px] top-4 h-[calc(100%+4px)] w-px bg-[#E5E7EB]" aria-hidden />}
               <span className="relative mt-1.5 h-[11px] w-[11px] shrink-0 rounded-full ring-2 ring-white" style={{ background: orderStatusColor[h.status] ?? "#9E774C" }} />
               <div className="min-w-0">
                 <p className="text-sm font-semibold">{orderStatusLabel(h.status)}</p>
-                {h.note && <p className="text-sm text-[#3d342b]">{h.note}</p>}
-                <p className="text-xs text-[#8a7a6a]">
+                {h.note && <p className="text-sm text-[#374151]">{h.note}</p>}
+                <p className="text-xs text-[#8B93A1]">
                   {formatDate(h.createdAt, true)}
                   {h.changedBy ? ` · ${h.changedBy}` : ""}
                 </p>

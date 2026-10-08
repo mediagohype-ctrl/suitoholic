@@ -163,9 +163,9 @@ function SettingsForm({ initial, onSaved }: { initial: AdminSettings; onSaved: (
       </fieldset>
 
       {!readOnly && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E2D4C3] bg-white/95 backdrop-blur lg:left-64">
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
-            <p className="text-xs text-[#665749]">{dirty ? <span className="font-medium text-[#8A5A00]">Unsaved changes</span> : "All changes saved"}</p>
+            <p className="text-xs text-[#6B7280]">{dirty ? <span className="font-medium text-[#8A5A00]">Unsaved changes</span> : "All changes saved"}</p>
             <div className="flex gap-2">
               {dirty && (
                 <Button onClick={() => setForm(baseline)} disabled={saving}>

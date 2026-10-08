@@ -131,7 +131,7 @@ export default function CategoriesPage() {
             </thead>
             <tbody>
               {sorted.map((c, i) => (
-                <tr key={c.id} className="hover:bg-[#FCF9F5]">
+                <tr key={c.id} className="hover:bg-[#F9FAFB]">
                   <Td>
                     <div className="flex items-center">
                       <IconButton label="Move up" disabled={i === 0} onClick={() => void move(i, -1)} className="h-7 w-7">
@@ -149,7 +149,7 @@ export default function CategoriesPage() {
                         <button type="button" onClick={() => setEditing({ category: c })} className="block truncate text-left font-medium hover:text-[#9E774C]">
                           {c.title}
                         </button>
-                        <p className="truncate text-xs text-[#8a7a6a]">
+                        <p className="truncate text-xs text-[#8B93A1]">
                           {c.id}
                           {c.shortTitle ? ` · ${c.shortTitle}` : ""}
                         </p>
@@ -299,14 +299,14 @@ function CategoryFormBody({
         <NumberField label="Sort order" value={form.sortOrder} onValue={(v) => set("sortOrder", v)} error={errors.sortOrder} step={1} />
       </section>
 
-      <fieldset className="space-y-4 rounded-xl border border-[#EFE5D8] p-4">
+      <fieldset className="space-y-4 rounded-xl border border-[#EEF0F3] p-4">
         <legend className="px-1 text-xs font-semibold uppercase tracking-wider text-[#9E774C]">Shop page</legend>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <TextField label="Short title" value={form.shortTitle} onChange={(e) => set("shortTitle", e.target.value)} error={errors.shortTitle} placeholder="FORMAL SHIRTS" />
           <TextField label="Subtitle" value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} error={errors.subtitle} />
         </div>
         <div>
-          <p className="mb-1.5 text-xs font-semibold text-[#3d342b]">Mobile title lines (up to 3)</p>
+          <p className="mb-1.5 text-xs font-semibold text-[#374151]">Mobile title lines (up to 3)</p>
           <div className="space-y-2">
             {form.mobileTitle.map((line, i) => (
               <div key={i} className="flex gap-2">
@@ -332,7 +332,7 @@ function CategoryFormBody({
         <ImageField label="Card image" value={form.image} onChange={(v) => set("image", v)} error={errors.image} />
       </fieldset>
 
-      <fieldset className="space-y-4 rounded-xl border border-[#EFE5D8] p-4">
+      <fieldset className="space-y-4 rounded-xl border border-[#EEF0F3] p-4">
         <legend className="px-1 text-xs font-semibold uppercase tracking-wider text-[#9E774C]">Homepage collection</legend>
         <Toggle checked={form.showOnHome} onChange={(v) => set("showOnHome", v)} label="Show on homepage" description="Adds a collection carousel for this category to the homepage." />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -345,7 +345,7 @@ function CategoryFormBody({
 
       <Toggle checked={form.active} onChange={(v) => set("active", v)} label="Visible in store" />
 
-      <div className="flex justify-end gap-2 border-t border-[#EFE5D8] pt-4">
+      <div className="flex justify-end gap-2 border-t border-[#EEF0F3] pt-4">
         <Button onClick={onClose}>Cancel</Button>
         <Button variant="primary" loading={saving} onClick={() => void save()}>
           {category ? "Save category" : "Create category"}

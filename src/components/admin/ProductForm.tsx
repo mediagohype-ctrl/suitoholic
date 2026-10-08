@@ -279,7 +279,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
               <ImageField label="Main image" value={form.image} onChange={(v) => set("image", v)} error={errors.image} previewClassName="h-28 w-24" />
               <div>
                 <div className="mb-2 flex items-center justify-between gap-2">
-                  <p className="text-xs font-semibold text-[#3d342b]">Gallery ({form.gallery.length}/20)</p>
+                  <p className="text-xs font-semibold text-[#374151]">Gallery ({form.gallery.length}/20)</p>
                   <div className="flex gap-2">
                     {form.image && !form.gallery.includes(form.image) && (
                       <Button size="sm" variant="ghost" onClick={() => set("gallery", [form.image, ...form.gallery])}>
@@ -293,14 +293,14 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                 </div>
                 {errors.gallery && <p className="mb-2 text-xs text-[#B4402F]">{errors.gallery}</p>}
                 {form.gallery.length === 0 ? (
-                  <p className="rounded-lg border border-dashed border-[#E2D4C3] px-3 py-6 text-center text-xs text-[#8a7a6a]">No gallery images yet.</p>
+                  <p className="rounded-lg border border-dashed border-[#E5E7EB] px-3 py-6 text-center text-xs text-[#8B93A1]">No gallery images yet.</p>
                 ) : (
                   <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                     {form.gallery.map((src, i) => (
-                      <li key={`${src}-${i}`} className="overflow-hidden rounded-lg border border-[#E2D4C3] bg-white">
+                      <li key={`${src}-${i}`} className="overflow-hidden rounded-lg border border-[#E5E7EB] bg-white">
                         <MediaPreview src={src} className="aspect-[4/5] rounded-none border-0" />
-                        <div className="flex items-center justify-between border-t border-[#EFE5D8] px-1 py-1">
-                          <span className="px-1 text-[11px] text-[#8a7a6a]">#{i + 1}</span>
+                        <div className="flex items-center justify-between border-t border-[#EEF0F3] px-1 py-1">
+                          <span className="px-1 text-[11px] text-[#8B93A1]">#{i + 1}</span>
                           <div className="flex">
                             <IconButton label="Move left" disabled={i === 0} onClick={() => moveGallery(i, -1)} className="h-7 w-7">
                               <ArrowUp className="h-3.5 w-3.5 -rotate-90" />
@@ -337,9 +337,9 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
               }
             />
             <div className="space-y-3 p-4 sm:p-5">
-              {form.colorways.length === 0 && <p className="text-xs text-[#8a7a6a]">No colourways. Add one to show colour swatches.</p>}
+              {form.colorways.length === 0 && <p className="text-xs text-[#8B93A1]">No colourways. Add one to show colour swatches.</p>}
               {form.colorways.map((c, i) => (
-                <div key={i} className="grid grid-cols-1 gap-3 rounded-lg border border-[#EFE5D8] bg-[#FCF9F5] p-3 sm:grid-cols-[1fr_180px_1fr_auto] sm:items-start">
+                <div key={i} className="grid grid-cols-1 gap-3 rounded-lg border border-[#EEF0F3] bg-[#F9FAFB] p-3 sm:grid-cols-[1fr_180px_1fr_auto] sm:items-start">
                   <TextField label="Name" value={c.name} onChange={(e) => setColorway(i, { name: e.target.value })} error={errors[`colorways.${i}.name`]} placeholder="Crisp Royal White" />
                   <ColorField label="Colour" value={c.hex} onChange={(v) => setColorway(i, { hex: v })} error={errors[`colorways.${i}.hex`]} />
                   <SelectField
@@ -394,9 +394,9 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
 
       <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => set("gallery", [...form.gallery, url])} />
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E2D4C3] bg-white/95 backdrop-blur lg:left-64 print:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64 print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
-          <p className="text-xs text-[#665749]">{dirty ? <span className="font-medium text-[#8A5A00]">Unsaved changes</span> : isNew ? "New product" : "All changes saved"}</p>
+          <p className="text-xs text-[#6B7280]">{dirty ? <span className="font-medium text-[#8A5A00]">Unsaved changes</span> : isNew ? "New product" : "All changes saved"}</p>
           <div className="flex gap-2">
             {!isNew && (
               <Button variant="ghost" onClick={() => void remove()} icon={<Trash2 className="h-4 w-4" />} className="text-[#B4402F] hover:text-[#B4402F]">
@@ -423,7 +423,7 @@ function PreviewCard({ form, categoryLabel }: { form: FormState; categoryLabel?:
   const compare = form.compareAtPrice === "" ? 0 : Number(form.compareAtPrice);
   const rating = form.rating === "" ? 0 : Number(form.rating);
   return (
-    <div className={cn("overflow-hidden rounded-xl border border-[#E2D4C3] bg-white", !form.active && "opacity-60")}>
+    <div className={cn("overflow-hidden rounded-xl border border-[#E5E7EB] bg-white", !form.active && "opacity-60")}>
       <div className="relative">
         <MediaPreview src={form.image} className="aspect-[4/5] rounded-none border-0" />
         {form.tag && <span className="absolute left-2 top-2 bg-[#14110E] px-2 py-1 text-[9px] font-semibold tracking-[0.15em] text-white">{form.tag}</span>}
@@ -435,23 +435,23 @@ function PreviewCard({ form, categoryLabel }: { form: FormState; categoryLabel?:
       </div>
       <div className="space-y-1.5 p-3">
         {categoryLabel && form.category && <p className="text-[10px] uppercase tracking-[0.2em] text-[#9E774C]">{categoryLabel}</p>}
-        <p className="font-serif-luxury text-lg font-semibold leading-tight">{form.name || "Product name"}</p>
-        {form.subtitle && <p className="line-clamp-2 text-xs text-[#665749]">{form.subtitle}</p>}
+        <p className="text-base font-semibold leading-tight">{form.name || "Product name"}</p>
+        {form.subtitle && <p className="line-clamp-2 text-xs text-[#6B7280]">{form.subtitle}</p>}
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-semibold">{formatMoney(price)}</span>
-          {compare > price && <span className="text-xs text-[#a8998a] line-through">{formatMoney(compare)}</span>}
+          {compare > price && <span className="text-xs text-[#9CA3AF] line-through">{formatMoney(compare)}</span>}
         </div>
-        <p className="text-[11px] text-[#665749]">
+        <p className="text-[11px] text-[#6B7280]">
           ★ {rating.toFixed(1)} · {form.reviewsCount || 0} reviews
         </p>
         {form.colorways.length > 0 && (
           <div className="flex flex-wrap gap-1.5 pt-1">
             {form.colorways.map((c, i) => (
-              <span key={i} title={c.name} className="h-4 w-4 rounded-full border border-[#D9CBB9]" style={{ background: /^#[0-9a-fA-F]{3,8}$/.test(c.hex) ? c.hex : "#fff" }} />
+              <span key={i} title={c.name} className="h-4 w-4 rounded-full border border-[#D1D5DB]" style={{ background: /^#[0-9a-fA-F]{3,8}$/.test(c.hex) ? c.hex : "#fff" }} />
             ))}
           </div>
         )}
-        <p className="pt-1 text-[11px] text-[#8a7a6a]">{form.madeToOrder ? "Made to order" : `${form.stock || 0} in stock`}</p>
+        <p className="pt-1 text-[11px] text-[#8B93A1]">{form.madeToOrder ? "Made to order" : `${form.stock || 0} in stock`}</p>
       </div>
     </div>
   );

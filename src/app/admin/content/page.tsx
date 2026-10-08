@@ -36,7 +36,7 @@ export default function ContentListPage() {
                   return (
                     <Link key={s.key} href={`/admin/content/${s.key}`} className="group block">
                       <Card className="flex h-full items-start gap-3 p-4 transition-colors group-hover:border-[#9E774C]">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F5EFE6] text-[#9E774C]">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F3F4F6] text-[#9E774C]">
                           <FileText className="h-4 w-4" />
                         </span>
                         <div className="min-w-0 flex-1">
@@ -44,15 +44,15 @@ export default function ContentListPage() {
                             <p className="font-semibold">{s.label}</p>
                             {!data ? <Skeleton className="h-4 w-16 rounded-full" /> : m ? <Badge tone="bronze">Customised</Badge> : <Badge>Default</Badge>}
                           </div>
-                          <p className="mt-1 text-xs leading-5 text-[#665749]">{s.description}</p>
+                          <p className="mt-1 text-xs leading-5 text-[#6B7280]">{s.description}</p>
                           {m && (
-                            <p className="mt-1.5 text-[11px] text-[#8a7a6a]">
+                            <p className="mt-1.5 text-[11px] text-[#8B93A1]">
                               Updated {formatDate(m.updatedAt, true)}
                               {m.updatedBy ? ` by ${m.updatedBy}` : ""}
                             </p>
                           )}
                         </div>
-                        <ChevronRight className="mt-2 h-4 w-4 shrink-0 text-[#c8b8a6] group-hover:text-[#9E774C]" />
+                        <ChevronRight className="mt-2 h-4 w-4 shrink-0 text-[#D1D5DB] group-hover:text-[#9E774C]" />
                       </Card>
                     </Link>
                   );

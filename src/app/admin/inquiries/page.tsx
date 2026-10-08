@@ -92,9 +92,9 @@ export default function InquiriesPage() {
         />
       </div>
       <Card>
-        <div className="flex flex-col gap-2 border-b border-[#EFE5D8] p-3 sm:flex-row sm:p-4">
+        <div className="flex flex-col gap-2 border-b border-[#EEF0F3] p-3 sm:flex-row sm:p-4">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a8998a]" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
             <input className={cn(inputClass, "pl-9")} placeholder="Search name, email, subject, message…" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
           <select
@@ -134,14 +134,14 @@ export default function InquiriesPage() {
             </thead>
             <tbody>
               {data.items.map((inq) => (
-                <tr key={inq.id} className={cn("align-top hover:bg-[#FCF9F5]", inq.status === "new" && "bg-[#FFFCF7]")}>
-                  <Td className="whitespace-nowrap align-top text-xs text-[#665749]">{formatDate(inq.createdAt, true)}</Td>
+                <tr key={inq.id} className={cn("align-top hover:bg-[#F9FAFB]", inq.status === "new" && "bg-[#F9FAFB]")}>
+                  <Td className="whitespace-nowrap align-top text-xs text-[#6B7280]">{formatDate(inq.createdAt, true)}</Td>
                   <Td className="align-top">
                     <Badge tone={TYPE_TONES[inq.type] ?? "neutral"}>{typeLabel(inq.type)}</Badge>
                   </Td>
                   <Td className="align-top">
                     <p className="font-medium">{inq.name || "—"}</p>
-                    <div className="mt-1 space-y-0.5 text-xs text-[#665749]">
+                    <div className="mt-1 space-y-0.5 text-xs text-[#6B7280]">
                       {inq.email && (
                         <a href={`mailto:${inq.email}`} className="flex items-center gap-1.5 hover:text-[#9E774C]">
                           <Mail className="h-3 w-3" /> {inq.email}
@@ -161,7 +161,7 @@ export default function InquiriesPage() {
                   </Td>
                   <Td className="max-w-md align-top">
                     {inq.subject && <p className="font-medium">{inq.subject}</p>}
-                    {inq.message ? <p className="mt-0.5 whitespace-pre-line text-xs leading-5 text-[#3d342b]">{inq.message}</p> : !inq.subject && <span className="text-xs text-[#a8998a]">No message</span>}
+                    {inq.message ? <p className="mt-0.5 whitespace-pre-line text-xs leading-5 text-[#374151]">{inq.message}</p> : !inq.subject && <span className="text-xs text-[#9CA3AF]">No message</span>}
                   </Td>
                   <Td className="align-top">
                     <select

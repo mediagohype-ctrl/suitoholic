@@ -69,10 +69,10 @@ export default function MediaPage() {
         />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="relative w-full sm:max-w-xs">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a8998a]" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
             <input className={cn(inputClass, "pl-9")} placeholder="Search by file name…" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
-          <p className="text-xs text-[#665749]">{total} files</p>
+          <p className="text-xs text-[#6B7280]">{total} files</p>
         </div>
 
         {error && !data ? (
@@ -94,13 +94,13 @@ export default function MediaPage() {
             {data.items.map((m) => (
               <Card key={m.id} className="group overflow-hidden">
                 <a href={m.url} target="_blank" rel="noreferrer" className="block">
-                  <MediaPreview src={m.url} kind={isVideoMedia(m) ? "video" : "image"} className="aspect-square rounded-none border-0 border-b border-[#EFE5D8]" />
+                  <MediaPreview src={m.url} kind={isVideoMedia(m) ? "video" : "image"} className="aspect-square rounded-none border-0 border-b border-[#EEF0F3]" />
                 </a>
                 <div className="p-2.5">
                   <p className="truncate text-xs font-medium" title={m.originalName}>
                     {m.originalName}
                   </p>
-                  <p className="mt-0.5 text-[10px] text-[#8a7a6a]">
+                  <p className="mt-0.5 text-[10px] text-[#8B93A1]">
                     {formatBytes(m.size)} · {m.mimeType.split("/")[1]?.toUpperCase()} · {formatDate(m.createdAt)}
                   </p>
                   <div className="mt-2 flex items-center justify-between">
@@ -108,7 +108,7 @@ export default function MediaPage() {
                       <IconButton label="Copy URL" onClick={() => void copy(m.url)}>
                         <Copy className="h-3.5 w-3.5" />
                       </IconButton>
-                      <a href={m.url} target="_blank" rel="noreferrer" title="Open" className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#665749] hover:bg-[#F5EFE6]">
+                      <a href={m.url} target="_blank" rel="noreferrer" title="Open" className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#6B7280] hover:bg-[#F3F4F6]">
                         <ExternalLink className="h-3.5 w-3.5" />
                       </a>
                     </div>

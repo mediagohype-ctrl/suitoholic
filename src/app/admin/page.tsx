@@ -132,12 +132,12 @@ export default function DashboardPage() {
                   </thead>
                   <tbody>
                     {data.recentOrders.map((o) => (
-                      <tr key={o.id} className="hover:bg-[#FCF9F5]">
+                      <tr key={o.id} className="hover:bg-[#F9FAFB]">
                         <Td>
                           <Link href={`/admin/orders/${o.id}`} className="font-medium text-[#14110E] hover:text-[#9E774C]">
                             {o.orderNumber}
                           </Link>
-                          <p className="text-xs text-[#665749]">{formatDate(o.createdAt, true)}</p>
+                          <p className="text-xs text-[#6B7280]">{formatDate(o.createdAt, true)}</p>
                         </Td>
                         <Td>{o.customerName}</Td>
                         <Td>
@@ -155,13 +155,13 @@ export default function DashboardPage() {
             <Card className="xl:col-span-2">
               <CardHeader title="Top products" description="By units sold" />
               {data.topProducts.length ? (
-                <ol className="divide-y divide-[#F3EBE0]">
+                <ol className="divide-y divide-[#EEF0F3]">
                   {data.topProducts.map((p, i) => (
                     <li key={p.slug + i} className="flex items-center gap-3 px-4 py-3 sm:px-5">
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#F5EFE6] text-xs font-semibold text-[#9E774C]">{i + 1}</span>
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#F3F4F6] text-xs font-semibold text-[#9E774C]">{i + 1}</span>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium">{p.name}</p>
-                        <p className="text-xs text-[#665749]">{p.units} units</p>
+                        <p className="text-xs text-[#6B7280]">{p.units} units</p>
                       </div>
                       <span className="text-sm font-medium">{money(p.revenue)}</span>
                     </li>
@@ -196,18 +196,18 @@ function Kpi({
   const body = (
     <Card className={cn("h-full p-4 transition-colors", href && "hover:border-[#9E774C]")}>
       <div className="flex items-start justify-between gap-2">
-        <p className="text-xs font-medium uppercase tracking-wider text-[#665749]">{label}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-[#6B7280]">{label}</p>
         <span
           className={cn(
             "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg [&_svg]:h-4 [&_svg]:w-4",
-            tone === "amber" ? "bg-[#FDF3DC] text-[#8A5A00]" : "bg-[#F5EFE6] text-[#9E774C]",
+            tone === "amber" ? "bg-[#FDF3DC] text-[#8A5A00]" : "bg-[#F3F4F6] text-[#9E774C]",
           )}
         >
           {icon}
         </span>
       </div>
-      <p className="mt-2 font-serif-luxury text-3xl font-semibold leading-none text-[#14110E]">{value}</p>
-      {sub && <p className="mt-2 text-xs text-[#665749]">{sub}</p>}
+      <p className="mt-2 text-2xl font-semibold leading-none tracking-tight text-[#14110E]">{value}</p>
+      {sub && <p className="mt-2 text-xs text-[#6B7280]">{sub}</p>}
     </Card>
   );
   return href ? (
@@ -234,7 +234,7 @@ function RevenueChart({ days, money }: { days: DashboardData["revenueByDay"]; mo
 
   return (
     <div>
-      <div className="mb-2 flex h-10 items-end justify-between gap-2 text-xs text-[#665749]">
+      <div className="mb-2 flex h-10 items-end justify-between gap-2 text-xs text-[#6B7280]">
         {active ? (
           <p>
             <span className="font-semibold text-[#14110E]">{shortDate(active.date)}</span> · {money(active.revenue)} · {active.orders} order
@@ -247,7 +247,7 @@ function RevenueChart({ days, money }: { days: DashboardData["revenueByDay"]; mo
       <div className="relative">
         <svg viewBox={`0 0 ${W} ${H}`} className="block h-48 w-full" preserveAspectRatio="none" role="img" aria-label="Daily revenue for the last 30 days">
           {[0.25, 0.5, 0.75, 1].map((f) => (
-            <line key={f} x1={0} x2={W} y1={H - f * (H - 4)} y2={H - f * (H - 4)} stroke="#EFE5D8" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+            <line key={f} x1={0} x2={W} y1={H - f * (H - 4)} y2={H - f * (H - 4)} stroke="#EEF0F3" strokeWidth={1} vectorEffect="non-scaling-stroke" />
           ))}
           {days.map((d, i) => {
             const h = d.revenue > 0 ? Math.max(3, (d.revenue / max) * (H - 4)) : 0;
@@ -275,10 +275,10 @@ function RevenueChart({ days, money }: { days: DashboardData["revenueByDay"]; mo
               </g>
             );
           })}
-          <line x1={0} x2={W} y1={H - 0.5} y2={H - 0.5} stroke="#D9CBB9" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+          <line x1={0} x2={W} y1={H - 0.5} y2={H - 0.5} stroke="#D1D5DB" strokeWidth={1} vectorEffect="non-scaling-stroke" />
         </svg>
       </div>
-      <div className="mt-1.5 flex justify-between text-[10px] text-[#8a7a6a]">
+      <div className="mt-1.5 flex justify-between text-[10px] text-[#8B93A1]">
         <span>{shortDate(days[0].date)}</span>
         <span>{shortDate(days[Math.floor(days.length / 2)].date)}</span>
         <span>{shortDate(days[days.length - 1].date)}</span>
@@ -292,7 +292,7 @@ function StatusBreakdown({ counts }: { counts: DashboardData["ordersByStatus"] }
   if (!total) return <EmptyState title="No orders yet" />;
   return (
     <div className="space-y-4">
-      <div className="flex h-2.5 w-full gap-[2px] overflow-hidden rounded-full bg-[#F5EFE6]">
+      <div className="flex h-2.5 w-full gap-[2px] overflow-hidden rounded-full bg-[#F3F4F6]">
         {ORDER_STATUSES.filter((s) => counts[s]).map((s) => (
           <div key={s} style={{ width: `${((counts[s] ?? 0) / total) * 100}%`, background: orderStatusColor[s] }} title={`${orderStatusLabel(s)}: ${counts[s]}`} />
         ))}
@@ -300,11 +300,11 @@ function StatusBreakdown({ counts }: { counts: DashboardData["ordersByStatus"] }
       <ul className="space-y-2">
         {ORDER_STATUSES.map((s) => (
           <li key={s}>
-            <Link href={`/admin/orders?status=${s}`} className="flex items-center gap-2.5 rounded-md px-1 py-1 text-sm hover:bg-[#FAF5EE]">
+            <Link href={`/admin/orders?status=${s}`} className="flex items-center gap-2.5 rounded-md px-1 py-1 text-sm hover:bg-[#F9FAFB]">
               <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: orderStatusColor[s] }} />
-              <span className="flex-1 text-[#3d342b]">{orderStatusLabel(s)}</span>
+              <span className="flex-1 text-[#374151]">{orderStatusLabel(s)}</span>
               <span className="font-semibold tabular-nums">{counts[s] ?? 0}</span>
-              <span className="w-10 text-right text-xs tabular-nums text-[#8a7a6a]">{Math.round(((counts[s] ?? 0) / total) * 100)}%</span>
+              <span className="w-10 text-right text-xs tabular-nums text-[#8B93A1]">{Math.round(((counts[s] ?? 0) / total) * 100)}%</span>
             </Link>
           </li>
         ))}

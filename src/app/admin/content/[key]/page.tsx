@@ -122,7 +122,7 @@ function Editor({ sectionKey, label, description, previewPath }: { sectionKey: C
             {description}
             <span className="mt-2 flex flex-wrap items-center gap-2">
               {stored ? customised ? <Badge tone="bronze">Customised</Badge> : <Badge>Using defaults</Badge> : null}
-              {stored?.updatedAt && <span className="text-xs text-[#8a7a6a]">Last saved {formatDate(stored.updatedAt, true)}</span>}
+              {stored?.updatedAt && <span className="text-xs text-[#8B93A1]">Last saved {formatDate(stored.updatedAt, true)}</span>}
             </span>
           </>
         }
@@ -143,15 +143,15 @@ function Editor({ sectionKey, label, description, previewPath }: { sectionKey: C
         </Card>
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E2D4C3] bg-white/95 backdrop-blur lg:left-64">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
-          <p className="text-xs text-[#665749]">{dirty ? <span className="font-medium text-[#8A5A00]">Unsaved changes</span> : "No unsaved changes"}</p>
+          <p className="text-xs text-[#6B7280]">{dirty ? <span className="font-medium text-[#8A5A00]">Unsaved changes</span> : "No unsaved changes"}</p>
           <div className="flex flex-wrap gap-2">
             <a
               href={previewPath}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-10 items-center gap-2 rounded-md px-3 text-sm text-[#665749] hover:bg-[#F5EFE6] hover:text-[#14110E]"
+              className="inline-flex h-10 items-center gap-2 rounded-md px-3 text-sm text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#14110E]"
             >
               <Eye className="h-4 w-4" /> <span className="hidden sm:inline">Preview on site</span>
             </a>

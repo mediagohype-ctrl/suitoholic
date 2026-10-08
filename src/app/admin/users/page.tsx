@@ -75,19 +75,19 @@ function UsersTable() {
             </thead>
             <tbody>
               {data.map((u) => (
-                <tr key={u.id} className="hover:bg-[#FCF9F5]">
+                <tr key={u.id} className="hover:bg-[#F9FAFB]">
                   <Td>
                     <p className="font-medium">
                       {u.name} {u.id === me?.id && <span className="text-xs font-normal text-[#9E774C]">(you)</span>}
                     </p>
-                    <p className="text-xs text-[#8a7a6a]">{u.email}</p>
+                    <p className="text-xs text-[#8B93A1]">{u.email}</p>
                   </Td>
                   <Td>
                     <Badge tone={u.role === "admin" ? "ink" : "bronze"}>{u.role === "admin" ? "Admin" : "Editor"}</Badge>
                   </Td>
                   <Td>{u.active ? <Badge tone="green">Active</Badge> : <Badge tone="red">Disabled</Badge>}</Td>
-                  <Td className="text-xs text-[#665749]">{u.lastLoginAt ? formatDate(u.lastLoginAt, true) : "Never"}</Td>
-                  <Td className="text-xs text-[#665749]">{formatDate(u.createdAt)}</Td>
+                  <Td className="text-xs text-[#6B7280]">{u.lastLoginAt ? formatDate(u.lastLoginAt, true) : "Never"}</Td>
+                  <Td className="text-xs text-[#6B7280]">{formatDate(u.createdAt)}</Td>
                   <Td className="text-right">
                     <div className="flex justify-end">
                       <IconButton label="Edit" onClick={() => setEditing({ user: u })}>
@@ -186,7 +186,7 @@ function UserForm({ user, isSelf, onClose, onSaved }: { user: AdminUser | null; 
         hint={user ? "Leave empty to keep the current password. At least 8 characters." : "At least 8 characters. Share it securely."}
       />
       {user && <Toggle checked={active} onChange={setActive} disabled={isSelf} label="Active" description={isSelf ? "You can't disable your own account." : "Disabled users can't sign in."} />}
-      <div className="flex justify-end gap-2 border-t border-[#EFE5D8] pt-4">
+      <div className="flex justify-end gap-2 border-t border-[#EEF0F3] pt-4">
         <Button onClick={onClose}>Cancel</Button>
         <Button variant="primary" loading={saving} onClick={() => void save()}>
           {user ? "Save changes" : "Add user"}

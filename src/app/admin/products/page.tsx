@@ -86,9 +86,9 @@ export default function ProductsPage() {
         }
       />
       <Card>
-        <div className="flex flex-col gap-2 border-b border-[#EFE5D8] p-3 sm:flex-row sm:items-center sm:p-4">
+        <div className="flex flex-col gap-2 border-b border-[#EEF0F3] p-3 sm:flex-row sm:items-center sm:p-4">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a8998a]" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
             <input className={cn(inputClass, "pl-9")} placeholder="Search name, slug, fabric…" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
           <select
@@ -141,7 +141,7 @@ export default function ProductsPage() {
             </thead>
             <tbody>
               {items.map((p) => (
-                <tr key={p.id} className={cn("hover:bg-[#FCF9F5]", !p.active && "bg-[#FCFAF7]")}>
+                <tr key={p.id} className={cn("hover:bg-[#F9FAFB]", !p.active && "bg-[#F9FAFB]")}>
                   <Td>
                     <div className="flex min-w-[220px] items-center gap-3">
                       <Thumb src={p.image} className={cn("h-12 w-12", !p.active && "opacity-50")} />
@@ -149,18 +149,18 @@ export default function ProductsPage() {
                         <Link href={`/admin/products/${p.id}`} className="block truncate font-medium hover:text-[#9E774C]">
                           {p.name}
                         </Link>
-                        <p className="truncate text-xs text-[#8a7a6a]">/{p.slug}</p>
+                        <p className="truncate text-xs text-[#8B93A1]">/{p.slug}</p>
                       </div>
                     </div>
                   </Td>
-                  <Td className="text-xs text-[#665749]">{catTitle(p.category)}</Td>
+                  <Td className="text-xs text-[#6B7280]">{catTitle(p.category)}</Td>
                   <Td className="text-right">
                     <span className="font-medium">{formatMoney(p.rawPrice)}</span>
-                    {p.compareAtPrice ? <p className="text-xs text-[#a8998a] line-through">{formatMoney(p.compareAtPrice)}</p> : null}
+                    {p.compareAtPrice ? <p className="text-xs text-[#9CA3AF] line-through">{formatMoney(p.compareAtPrice)}</p> : null}
                   </Td>
                   <Td className="text-right">
                     {p.stock === null ? (
-                      <span className="text-xs text-[#665749]">Made to order</span>
+                      <span className="text-xs text-[#6B7280]">Made to order</span>
                     ) : (
                       <span className={cn("font-medium tabular-nums", p.stock === 0 ? "text-[#B4402F]" : p.stock <= 5 ? "text-[#8A5A00]" : "")}>{p.stock}</span>
                     )}
@@ -181,7 +181,7 @@ export default function ProductsPage() {
                   </Td>
                   <Td className="text-right">
                     <div className="flex justify-end">
-                      <Link href={`/admin/products/${p.id}`} title="Edit" className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#665749] hover:bg-[#F5EFE6] hover:text-[#14110E]">
+                      <Link href={`/admin/products/${p.id}`} title="Edit" className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#14110E]">
                         <Pencil className="h-4 w-4" />
                       </Link>
                       <IconButton label="Delete" onClick={() => void remove(p)} className="hover:bg-[#FBE9E6] hover:text-[#B4402F]">

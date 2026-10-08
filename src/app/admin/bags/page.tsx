@@ -73,12 +73,12 @@ export default function BagsPage() {
         </Notice>
         <Link
           href="/admin/content/customizer"
-          className="flex items-center gap-3 rounded-lg border border-[#E2D4C3] bg-white px-4 py-2.5 text-sm transition-colors hover:border-[#9E774C]"
+          className="flex items-center gap-3 rounded-lg border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm transition-colors hover:border-[#9E774C]"
         >
           <SlidersHorizontal className="h-4 w-4 text-[#9E774C]" />
           <span>
             <span className="block font-semibold">Edit customizer options</span>
-            <span className="block text-xs text-[#665749]">Chest sizes, fits, collars, cuffs, threads</span>
+            <span className="block text-xs text-[#6B7280]">Chest sizes, fits, collars, cuffs, threads</span>
           </span>
           <ArrowRight className="ml-auto h-4 w-4 text-[#9E774C]" />
         </Link>
@@ -119,14 +119,14 @@ export default function BagsPage() {
             </thead>
             <tbody>
               {data.items.map((b) => (
-                <tr key={b.id} className="cursor-pointer hover:bg-[#FCF9F5]" onClick={() => router.push(`/admin/bags/${b.id}`)}>
+                <tr key={b.id} className="cursor-pointer hover:bg-[#F9FAFB]" onClick={() => router.push(`/admin/bags/${b.id}`)}>
                   <Td>
                     <Link href={`/admin/bags/${b.id}`} onClick={(e) => e.stopPropagation()} className="font-mono text-xs font-semibold hover:text-[#9E774C]">
                       {b.id.slice(0, 8)}
                     </Link>
-                    <p className="text-[11px] text-[#8a7a6a]">Created {formatDate(b.createdAt)}</p>
+                    <p className="text-[11px] text-[#8B93A1]">Created {formatDate(b.createdAt)}</p>
                   </Td>
-                  <Td className="text-xs">{b.email || <span className="text-[#a8998a]">Guest</span>}</Td>
+                  <Td className="text-xs">{b.email || <span className="text-[#9CA3AF]">Guest</span>}</Td>
                   <Td className="text-right tabular-nums">{b.itemCount}</Td>
                   <Td>
                     {Number(b.bespokeLines) > 0 ? (
@@ -134,15 +134,15 @@ export default function BagsPage() {
                         <Scissors className="h-3 w-3" /> {b.bespokeLines} line{Number(b.bespokeLines) === 1 ? "" : "s"}
                       </Badge>
                     ) : (
-                      <span className="text-xs text-[#a8998a]">—</span>
+                      <span className="text-xs text-[#9CA3AF]">—</span>
                     )}
                   </Td>
                   <Td className="whitespace-nowrap text-right font-medium">{formatMoney(Number(b.value), sym)}</Td>
-                  <Td className="whitespace-nowrap text-xs text-[#665749]">{formatDate(b.updatedAt, true)}</Td>
+                  <Td className="whitespace-nowrap text-xs text-[#6B7280]">{formatDate(b.updatedAt, true)}</Td>
                   <Td>
                     <div className="flex flex-col items-start gap-1">
                       <BagStatusBadge status={b.status} />
-                      {b.orderNumber && <span className="text-[11px] text-[#665749]">{b.orderNumber}</span>}
+                      {b.orderNumber && <span className="text-[11px] text-[#6B7280]">{b.orderNumber}</span>}
                     </div>
                   </Td>
                   <Td className="text-right" onClick={(e) => e.stopPropagation()}>
@@ -159,7 +159,7 @@ export default function BagsPage() {
         )}
         {data && Number(data.total) > 0 && <Pagination page={page} limit={LIMIT} total={Number(data.total)} onPage={setPage} />}
       </Card>
-      <p className="mt-3 text-xs text-[#8a7a6a]">Value is the current price of the items in the bag, before bespoke fees and shipping.</p>
+      <p className="mt-3 text-xs text-[#8B93A1]">Value is the current price of the items in the bag, before bespoke fees and shipping.</p>
     </>
   );
 }

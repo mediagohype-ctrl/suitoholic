@@ -94,12 +94,12 @@ function ShellInner({ children }: { children: ReactNode }) {
   }, [isLogin, status, router]);
 
   if (isLogin) {
-    return <div className="relative z-20 min-h-screen w-full bg-[#F5EFE6] text-[#14110E]">{children}</div>;
+    return <div className="relative z-20 min-h-screen w-full bg-white text-[#14110E]">{children}</div>;
   }
 
   if (status !== "authenticated") {
     return (
-      <div className="relative z-20 flex min-h-screen w-full items-center justify-center bg-[#F5EFE6]">
+      <div className="relative z-20 flex min-h-screen w-full items-center justify-center bg-white">
         <Spinner className="h-7 w-7" />
       </div>
     );
@@ -114,9 +114,9 @@ function Frame({ pathname, children }: { pathname: string; children: ReactNode }
   const drawerOpen = openFor === pathname;
 
   return (
-    <div className="relative z-20 min-h-screen w-full bg-[#F5EFE6] text-[#14110E] print:bg-white">
+    <div className="relative z-20 min-h-screen w-full bg-white text-[#14110E]">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-[#2a241e] bg-[#14110E] lg:flex print:hidden">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-[#262626] bg-[#14110E] lg:flex print:hidden">
         <SidebarContent pathname={pathname} />
       </aside>
 
@@ -135,8 +135,8 @@ function Frame({ pathname, children }: { pathname: string; children: ReactNode }
 
       <div className="flex min-h-screen min-w-0 flex-col lg:pl-64 print:pl-0">
         {/* Top bar (mobile) */}
-        <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-[#E2D4C3] bg-white/95 px-4 backdrop-blur lg:hidden print:hidden">
-          <button type="button" onClick={() => setOpenFor(pathname)} aria-label="Open menu" className="-ml-1 rounded-md p-1.5 text-[#14110E] hover:bg-[#F5EFE6]">
+        <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-[#E5E7EB] bg-white/95 px-4 backdrop-blur lg:hidden print:hidden">
+          <button type="button" onClick={() => setOpenFor(pathname)} aria-label="Open menu" className="-ml-1 rounded-md p-1.5 text-[#14110E] hover:bg-[#F3F4F6]">
             <Menu className="h-5 w-5" />
           </button>
           <Wordmark dark />
@@ -244,7 +244,7 @@ function UserMenu({ compact }: { compact?: boolean }) {
         onClick={() => setOpen((o) => !o)}
         className={cn(
           "flex w-full items-center gap-2.5 rounded-md text-left",
-          compact ? "p-1 hover:bg-[#F5EFE6]" : "px-2 py-2 text-white hover:bg-white/5",
+          compact ? "p-1 hover:bg-[#F3F4F6]" : "px-2 py-2 text-white hover:bg-white/5",
         )}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -264,19 +264,19 @@ function UserMenu({ compact }: { compact?: boolean }) {
         <div
           role="menu"
           className={cn(
-            "absolute z-50 w-56 overflow-hidden rounded-lg border border-[#E2D4C3] bg-white py-1 text-sm text-[#14110E] shadow-xl",
+            "absolute z-50 w-56 overflow-hidden rounded-lg border border-[#E5E7EB] bg-white py-1 text-sm text-[#14110E] shadow-xl",
             compact ? "right-0 top-full mt-2" : "bottom-full left-0 mb-2",
           )}
         >
-          <div className="border-b border-[#EFE5D8] px-3 py-2">
+          <div className="border-b border-[#EEF0F3] px-3 py-2">
             <p className="truncate font-medium">{user?.name}</p>
-            <p className="truncate text-xs text-[#665749]">{user?.email}</p>
+            <p className="truncate text-xs text-[#6B7280]">{user?.email}</p>
           </div>
-          <Link href="/admin/account" onClick={() => setOpen(false)} className="flex items-center gap-2 px-3 py-2 hover:bg-[#FAF5EE]" role="menuitem">
+          <Link href="/admin/account" onClick={() => setOpen(false)} className="flex items-center gap-2 px-3 py-2 hover:bg-[#F9FAFB]" role="menuitem">
             <UserCircle className="h-4 w-4 text-[#9E774C]" />
             My account
           </Link>
-          <button type="button" onClick={signOut} className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-[#FAF5EE]" role="menuitem">
+          <button type="button" onClick={signOut} className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-[#F9FAFB]" role="menuitem">
             <LogOut className="h-4 w-4 text-[#9E774C]" />
             Sign out
           </button>

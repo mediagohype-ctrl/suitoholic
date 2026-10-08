@@ -53,9 +53,9 @@ export default function OrdersPage() {
         />
       </div>
       <Card>
-        <div className="border-b border-[#EFE5D8] p-3 sm:p-4">
+        <div className="border-b border-[#EEF0F3] p-3 sm:p-4">
           <div className="relative max-w-md">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a8998a]" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
             <input className={cn(inputClass, "pl-9")} placeholder="Search order number, name, email, phone…" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
         </div>
@@ -80,23 +80,23 @@ export default function OrdersPage() {
             </thead>
             <tbody>
               {data.items.map((o) => (
-                <tr key={o.id} className="cursor-pointer hover:bg-[#FCF9F5]" onClick={() => router.push(`/admin/orders/${o.id}`)}>
+                <tr key={o.id} className="cursor-pointer hover:bg-[#F9FAFB]" onClick={() => router.push(`/admin/orders/${o.id}`)}>
                   <Td>
                     <Link href={`/admin/orders/${o.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold hover:text-[#9E774C]">
                       {o.orderNumber}
                     </Link>
                   </Td>
-                  <Td className="whitespace-nowrap text-xs text-[#665749]">{formatDate(o.createdAt, true)}</Td>
+                  <Td className="whitespace-nowrap text-xs text-[#6B7280]">{formatDate(o.createdAt, true)}</Td>
                   <Td>
                     <p className="font-medium">{o.customer?.name}</p>
-                    <p className="text-xs text-[#8a7a6a]">{o.customer?.email}</p>
+                    <p className="text-xs text-[#8B93A1]">{o.customer?.email}</p>
                   </Td>
                   <Td className="text-right tabular-nums">{o.itemCount ?? "—"}</Td>
                   <Td className="whitespace-nowrap text-right font-medium">{o.totalLabel || formatMoney(o.total)}</Td>
                   <Td>
                     <div className="flex flex-col items-start gap-1">
                       <PaymentBadge status={o.paymentStatus} />
-                      <span className="text-[10px] uppercase tracking-wider text-[#8a7a6a]">{paymentMethodLabel(o.paymentMethod)}</span>
+                      <span className="text-[10px] uppercase tracking-wider text-[#8B93A1]">{paymentMethodLabel(o.paymentMethod)}</span>
                     </div>
                   </Td>
                   <Td>

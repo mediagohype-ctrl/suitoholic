@@ -20,8 +20,8 @@ const buttonBase =
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: "bg-[#14110E] text-white hover:bg-[#2b241d]",
   bronze: "bg-[#9E774C] text-white hover:bg-[#8a6640]",
-  secondary: "bg-white text-[#14110E] border border-[#E2D4C3] hover:bg-[#FAF5EE]",
-  ghost: "text-[#665749] hover:bg-[#F5EFE6] hover:text-[#14110E]",
+  secondary: "bg-white text-[#14110E] border border-[#E5E7EB] hover:bg-[#F9FAFB]",
+  ghost: "text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#14110E]",
   danger: "bg-[#B4402F] text-white hover:bg-[#9a3527]",
 };
 const buttonSizes: Record<ButtonSize, string> = {
@@ -76,7 +76,7 @@ export function IconButton({ className, label, children, ...props }: ComponentPr
       aria-label={label}
       title={label}
       className={cn(
-        "inline-flex h-8 w-8 items-center justify-center rounded-md text-[#665749] hover:bg-[#F5EFE6] hover:text-[#14110E] disabled:opacity-40 disabled:cursor-not-allowed",
+        "inline-flex h-8 w-8 items-center justify-center rounded-md text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#14110E] disabled:opacity-40 disabled:cursor-not-allowed",
         className,
       )}
       {...props}
@@ -90,7 +90,7 @@ export function IconButton({ className, label, children, ...props }: ComponentPr
 
 export function Card({ className, children, ...props }: ComponentProps<"div">) {
   return (
-    <div className={cn("rounded-xl border border-[#E2D4C3] bg-white", className)} {...props}>
+    <div className={cn("rounded-xl border border-[#E5E7EB] bg-white", className)} {...props}>
       {children}
     </div>
   );
@@ -98,10 +98,10 @@ export function Card({ className, children, ...props }: ComponentProps<"div">) {
 
 export function CardHeader({ title, description, actions, className }: { title: ReactNode; description?: ReactNode; actions?: ReactNode; className?: string }) {
   return (
-    <div className={cn("flex flex-wrap items-start justify-between gap-3 border-b border-[#EFE5D8] px-4 py-3 sm:px-5", className)}>
+    <div className={cn("flex flex-wrap items-start justify-between gap-3 border-b border-[#EEF0F3] px-4 py-3 sm:px-5", className)}>
       <div className="min-w-0">
         <h2 className="text-sm font-semibold text-[#14110E]">{title}</h2>
-        {description && <p className="mt-0.5 text-xs text-[#665749]">{description}</p>}
+        {description && <p className="mt-0.5 text-xs text-[#6B7280]">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>
@@ -113,7 +113,7 @@ export function CardHeader({ title, description, actions, className }: { title: 
 export type BadgeTone = "neutral" | "bronze" | "green" | "amber" | "red" | "blue" | "purple" | "ink";
 
 const badgeTones: Record<BadgeTone, string> = {
-  neutral: "bg-[#F5EFE6] text-[#665749] border-[#E2D4C3]",
+  neutral: "bg-[#F3F4F6] text-[#6B7280] border-[#E5E7EB]",
   bronze: "bg-[#F6EBDD] text-[#7d5b35] border-[#E6CFB2]",
   green: "bg-[#E8F3EA] text-[#2F6B3B] border-[#C6E0CB]",
   amber: "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]",
@@ -159,8 +159,8 @@ export function PageHeader({
             {back.label}
           </Link>
         )}
-        <h1 className="font-serif-luxury text-3xl font-semibold leading-tight text-[#14110E]">{title}</h1>
-        {description && <p className="mt-1 max-w-2xl text-sm text-[#665749]">{description}</p>}
+        <h1 className="text-2xl font-semibold leading-tight tracking-tight text-[#14110E]">{title}</h1>
+        {description && <p className="mt-1 max-w-2xl text-sm text-[#6B7280]">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>
@@ -172,18 +172,18 @@ export function PageHeader({
 export function EmptyState({ icon, title, description, action }: { icon?: ReactNode; title: string; description?: ReactNode; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center justify-center px-4 py-12 text-center">
-      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#F5EFE6] text-[#9E774C]">
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#F3F4F6] text-[#9E774C]">
         {icon ?? <Inbox className="h-5 w-5" />}
       </div>
       <p className="text-sm font-semibold text-[#14110E]">{title}</p>
-      {description && <p className="mt-1 max-w-sm text-xs text-[#665749]">{description}</p>}
+      {description && <p className="mt-1 max-w-sm text-xs text-[#6B7280]">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   );
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("animate-pulse rounded-md bg-[#EFE5D8]", className)} />;
+  return <div className={cn("animate-pulse rounded-md bg-[#EEF0F3]", className)} />;
 }
 
 export function SkeletonRows({ rows = 5, className }: { rows?: number; className?: string }) {
@@ -216,9 +216,9 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 
 export function Notice({ tone = "bronze", children, className }: { tone?: "bronze" | "red" | "neutral"; children: ReactNode; className?: string }) {
   const tones = {
-    bronze: "border-[#E6CFB2] bg-[#FBF4EA] text-[#6b4f30]",
+    bronze: "border-[#E6CFB2] bg-[#F9FAFB] text-[#6b4f30]",
     red: "border-[#F0C6BF] bg-[#FBE9E6] text-[#8f2f25]",
-    neutral: "border-[#E2D4C3] bg-[#FAF5EE] text-[#665749]",
+    neutral: "border-[#E5E7EB] bg-[#F9FAFB] text-[#6B7280]",
   };
   return <div className={cn("rounded-lg border px-3 py-2 text-xs leading-5", tones[tone], className)}>{children}</div>;
 }
@@ -235,7 +235,7 @@ export function TableWrap({ children, className }: { children: ReactNode; classN
 
 export function Th({ children, className }: { children?: ReactNode; className?: string }) {
   return (
-    <th className={cn("border-b border-[#EFE5D8] bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-[#665749]", className)}>
+    <th className={cn("border-b border-[#EEF0F3] bg-[#F9FAFB] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]", className)}>
       {children}
     </th>
   );
@@ -243,7 +243,7 @@ export function Th({ children, className }: { children?: ReactNode; className?: 
 
 export function Td({ children, className, ...props }: ComponentProps<"td">) {
   return (
-    <td className={cn("border-b border-[#F3EBE0] px-4 py-3 align-middle text-[#14110E]", className)} {...props}>
+    <td className={cn("border-b border-[#EEF0F3] px-4 py-3 align-middle text-[#14110E]", className)} {...props}>
       {children}
     </td>
   );
@@ -256,7 +256,7 @@ export function Pagination({ page, limit, total, onPage }: { page: number; limit
   const from = total === 0 ? 0 : (page - 1) * limit + 1;
   const to = Math.min(total, page * limit);
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-xs text-[#665749]">
+    <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-xs text-[#6B7280]">
       <span>
         {from}–{to} of {total}
       </span>
@@ -295,7 +295,7 @@ export function Tabs<T extends string>({
           onClick={() => onChange(t.value)}
           className={cn(
             "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
-            value === t.value ? "border-[#14110E] bg-[#14110E] text-white" : "border-[#E2D4C3] bg-white text-[#665749] hover:border-[#9E774C] hover:text-[#14110E]",
+            value === t.value ? "border-[#14110E] bg-[#14110E] text-white" : "border-[#E5E7EB] bg-white text-[#6B7280] hover:border-[#9E774C] hover:text-[#14110E]",
           )}
         >
           {t.label}
@@ -310,9 +310,9 @@ export function Tabs<T extends string>({
 
 /** Image preview for storefront-relative ("/x.jpg") or absolute URLs. */
 export function Thumb({ src, alt = "", className }: { src?: string | null; alt?: string; className?: string }) {
-  if (!src) return <div className={cn("h-10 w-10 shrink-0 rounded-md border border-[#E2D4C3] bg-[#F5EFE6]", className)} />;
+  if (!src) return <div className={cn("h-10 w-10 shrink-0 rounded-md border border-[#E5E7EB] bg-[#F3F4F6]", className)} />;
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} loading="lazy" className={cn("h-10 w-10 shrink-0 rounded-md border border-[#E2D4C3] bg-[#F5EFE6] object-cover", className)} />
+    <img src={src} alt={alt} loading="lazy" className={cn("h-10 w-10 shrink-0 rounded-md border border-[#E5E7EB] bg-[#F3F4F6] object-cover", className)} />
   );
 }

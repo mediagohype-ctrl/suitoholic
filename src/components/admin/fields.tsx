@@ -4,7 +4,7 @@ import { useId, type ComponentProps, type ReactNode } from "react";
 import { cn } from "./ui";
 
 export const inputClass =
-  "w-full rounded-md border border-[#E2D4C3] bg-white px-3 py-2 text-sm text-[#14110E] placeholder:text-[#a8998a] focus:border-[#9E774C] focus:outline-none focus:ring-2 focus:ring-[#9E774C]/20 disabled:bg-[#FAF5EE] disabled:text-[#665749]";
+  "w-full rounded-md border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#14110E] placeholder:text-[#9CA3AF] focus:border-[#9E774C] focus:outline-none focus:ring-2 focus:ring-[#9E774C]/20 disabled:bg-[#F9FAFB] disabled:text-[#6B7280]";
 
 export function FieldShell({
   label,
@@ -28,7 +28,7 @@ export function FieldShell({
       {(label || aside) && (
         <div className="mb-1.5 flex items-center justify-between gap-2">
           {label && (
-            <label htmlFor={htmlFor} className="text-xs font-semibold text-[#3d342b]">
+            <label htmlFor={htmlFor} className="text-xs font-semibold text-[#374151]">
               {label}
             </label>
           )}
@@ -36,7 +36,7 @@ export function FieldShell({
         </div>
       )}
       {children}
-      {error ? <p className="mt-1 text-xs text-[#B4402F]">{error}</p> : hint ? <p className="mt-1 text-xs text-[#8a7a6a]">{hint}</p> : null}
+      {error ? <p className="mt-1 text-xs text-[#B4402F]">{error}</p> : hint ? <p className="mt-1 text-xs text-[#8B93A1]">{hint}</p> : null}
     </div>
   );
 }
@@ -130,7 +130,7 @@ export function Toggle({
         onClick={() => onChange(!checked)}
         className={cn(
           "relative mt-0.5 inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors",
-          checked ? "bg-[#9E774C]" : "bg-[#D9CBB9]",
+          checked ? "bg-[#9E774C]" : "bg-[#D1D5DB]",
         )}
       >
         <span className={cn("inline-block h-4 w-4 rounded-full bg-white shadow transition-transform", checked ? "translate-x-[18px]" : "translate-x-0.5")} />
@@ -138,7 +138,7 @@ export function Toggle({
       {(label || description) && (
         <span className="min-w-0">
           {label && <span className="block text-sm font-medium text-[#14110E]">{label}</span>}
-          {description && <span className="block text-xs text-[#665749]">{description}</span>}
+          {description && <span className="block text-xs text-[#6B7280]">{description}</span>}
         </span>
       )}
     </label>
@@ -156,7 +156,7 @@ export function ColorField({ label, value, onChange, error, className }: { label
           aria-label="Pick colour"
           value={valid ? value : "#000000"}
           onChange={(e) => onChange(e.target.value.toUpperCase())}
-          className="h-9 w-11 shrink-0 cursor-pointer rounded-md border border-[#E2D4C3] bg-white p-1"
+          className="h-9 w-11 shrink-0 cursor-pointer rounded-md border border-[#E5E7EB] bg-white p-1"
         />
         <input id={id} className={cn(inputClass, "font-mono", error && "border-[#B4402F]")} value={value} onChange={(e) => onChange(e.target.value)} placeholder="#RRGGBB" />
       </div>

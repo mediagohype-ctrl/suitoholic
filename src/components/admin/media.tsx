@@ -19,11 +19,11 @@ export const isVideoMedia = (m: MediaItem) => m.mimeType.startsWith("video/");
 export function MediaPreview({ src, kind = "image", className }: { src?: string; kind?: MediaKind; className?: string }) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const failed = !!src && failedSrc === src;
-  const base = cn("flex items-center justify-center overflow-hidden rounded-lg border border-[#E2D4C3] bg-[#F5EFE6]", className);
+  const base = cn("flex items-center justify-center overflow-hidden rounded-lg border border-[#E5E7EB] bg-[#F3F4F6]", className);
   if (!src || failed) {
     return (
       <div className={base}>
-        <div className="flex flex-col items-center gap-1 text-[#a8998a]">
+        <div className="flex flex-col items-center gap-1 text-[#9CA3AF]">
           {kind === "video" ? <Film className="h-5 w-5" /> : <ImageIcon className="h-5 w-5" />}
           {failed && <span className="px-1 text-center text-[10px]">Preview unavailable</span>}
         </div>
@@ -107,27 +107,27 @@ export function MediaUploader({
       className={cn(
         "relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed text-center transition-colors",
         compact ? "px-4 py-4" : "px-4 py-8",
-        drag ? "border-[#9E774C] bg-[#FBF4EA]" : "border-[#E2D4C3] bg-[#FCF9F5]",
+        drag ? "border-[#9E774C] bg-[#F9FAFB]" : "border-[#E5E7EB] bg-[#F9FAFB]",
       )}
     >
       <input ref={inputRef} type="file" multiple accept={accept} className="hidden" onChange={(e) => void upload(e.target.files)} />
       {busy ? (
         <div className="w-full max-w-xs">
           <p className="mb-2 text-sm font-medium">Uploading… {Math.round((progress ?? 0) * 100)}%</p>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#EFE5D8]">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#EEF0F3]">
             <div className="h-full rounded-full bg-[#9E774C] transition-all" style={{ width: `${Math.round((progress ?? 0) * 100)}%` }} />
           </div>
         </div>
       ) : (
         <>
           {!compact && <Upload className="mb-2 h-6 w-6 text-[#9E774C]" />}
-          <p className="text-sm text-[#3d342b]">
+          <p className="text-sm text-[#374151]">
             {children ?? "Drag & drop images or videos here, or"}{" "}
             <button type="button" onClick={() => inputRef.current?.click()} className="font-semibold text-[#9E774C] underline-offset-2 hover:underline">
               browse files
             </button>
           </p>
-          <p className="mt-1 text-xs text-[#8a7a6a]">JPG, PNG, WEBP, GIF, SVG, AVIF, MP4, WEBM · up to 8 MB each · max 10 at once</p>
+          <p className="mt-1 text-xs text-[#8B93A1]">JPG, PNG, WEBP, GIF, SVG, AVIF, MP4, WEBM · up to 8 MB each · max 10 at once</p>
         </>
       )}
     </div>
@@ -194,7 +194,7 @@ function PickerBody({ kind, onSelect, onClose }: { kind: MediaKind; onSelect: (u
 
       <div className="flex flex-col gap-2 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#a8998a]" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
           <input className={cn(inputClass, "pl-9")} placeholder="Search library…" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
         <form
@@ -228,14 +228,14 @@ function PickerBody({ kind, onSelect, onClose }: { kind: MediaKind; onSelect: (u
               key={m.id}
               type="button"
               onClick={() => pick(m.url, m)}
-              className="group overflow-hidden rounded-lg border border-[#E2D4C3] bg-white text-left transition hover:border-[#9E774C] hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9E774C]"
+              className="group overflow-hidden rounded-lg border border-[#E5E7EB] bg-white text-left transition hover:border-[#9E774C] hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9E774C]"
             >
               <MediaPreview src={m.url} kind={isVideoMedia(m) ? "video" : "image"} className="aspect-square rounded-none border-0" />
               <div className="px-2 py-1.5">
                 <p className="truncate text-[11px] font-medium" title={m.originalName}>
                   {m.originalName}
                 </p>
-                <p className="text-[10px] text-[#8a7a6a]">{formatBytes(m.size)}</p>
+                <p className="text-[10px] text-[#8B93A1]">{formatBytes(m.size)}</p>
               </div>
             </button>
           ))}
@@ -286,7 +286,7 @@ export function ImageField({
             </Button>
             {value && (
               <>
-                <a href={value} target="_blank" rel="noreferrer" className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs text-[#665749] hover:bg-[#F5EFE6]">
+                <a href={value} target="_blank" rel="noreferrer" className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs text-[#6B7280] hover:bg-[#F3F4F6]">
                   <ExternalLink className="h-3.5 w-3.5" /> Open
                 </a>
                 <Button size="sm" variant="ghost" onClick={() => onChange("")} icon={<X className="h-3.5 w-3.5" />}>

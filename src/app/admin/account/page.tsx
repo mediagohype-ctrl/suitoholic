@@ -51,17 +51,17 @@ export default function AccountPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="lg:self-start">
           <CardHeader title="Profile" description="Ask an admin to change your name, email or role." />
-          <dl className="divide-y divide-[#F3EBE0] text-sm">
+          <dl className="divide-y divide-[#EEF0F3] text-sm">
             <div className="flex justify-between gap-4 px-4 py-3 sm:px-5">
-              <dt className="text-[#665749]">Name</dt>
+              <dt className="text-[#6B7280]">Name</dt>
               <dd className="font-medium">{user?.name}</dd>
             </div>
             <div className="flex justify-between gap-4 px-4 py-3 sm:px-5">
-              <dt className="text-[#665749]">Email</dt>
+              <dt className="text-[#6B7280]">Email</dt>
               <dd className="truncate font-medium">{user?.email}</dd>
             </div>
             <div className="flex justify-between gap-4 px-4 py-3 sm:px-5">
-              <dt className="text-[#665749]">Role</dt>
+              <dt className="text-[#6B7280]">Role</dt>
               <dd>
                 <Badge tone={user?.role === "admin" ? "ink" : "bronze"}>{user?.role === "admin" ? "Admin" : "Editor"}</Badge>
               </dd>
