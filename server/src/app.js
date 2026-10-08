@@ -21,6 +21,8 @@ export function createApp() {
       origin(origin, cb) {
         // Allow same-origin/server-to-server requests (no Origin header) and configured origins.
         if (!origin || env.corsOrigins.includes("*") || env.corsOrigins.includes(origin)) return cb(null, true);
+        // In development, accept the site on any localhost port (next dev moves to 3001 if 3000 is busy).
+        if (!env.isProd && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return cb(null, true);
         cb(null, false);
       },
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
