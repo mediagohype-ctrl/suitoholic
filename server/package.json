@@ -15,7 +15,8 @@
     "seed": "node src/seed/run.js",
     "seed:reset": "node src/seed/run.js --reset",
     "db:local": "node -e \"require('fs').mkdirSync('.data',{recursive:true})\" && pglite-server --db=.data/pglite --port=54329 --max-connections=1",
-    "test:api": "node scripts/smoke-test.js"
+    "test:api": "node scripts/smoke-test.js",
+    "test:cleanup": "node scripts/cleanup-test-data.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

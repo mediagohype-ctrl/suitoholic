@@ -70,9 +70,31 @@ DB_SSL=false
 | `npm run migrate` | Apply pending SQL migrations in `src/db/migrations/` |
 | `npm run seed` | Migrate, create the first admin, load the catalog if the database is empty |
 | `npm run seed:reset` | Wipe products, categories, bags and orders, then reload the original catalog |
-| `npm run test:api` | End-to-end API test (46 checks). Creates temporary data and leaves cancelled test orders, so run it on a dev database or Neon branch |
 
 To change the schema, add a new numbered file such as `003_add_coupons.sql`. Never edit a migration that has already run.
+
+## Testing
+
+Start the API and the site first (two terminals: `npm run dev:api` and `npm run dev`). Then, from the project root:
+
+| Command | What it does |
+| --- | --- |
+| `npm run test:api` | 46 backend checks: login and roles, catalog CRUD, bag maths and stock limits, checkout, order tracking, status history, content, media, inquiries, newsletter, settings, users. About 1 minute. |
+| `npm run test:e2e` | 22 browser steps in real Chrome: shopping, the 6-step customizer, bag, checkout, order tracking, Custom Fit, forms, then the admin (login, order update, bags, inquiries, content and price edits appearing on the site). Screenshots land in `scripts/e2e-shots/`. About 2 minutes. Set `HEADED=1` to watch it. |
+| `npm run test:cleanup` | Deletes the records the tests leave behind (test orders, bags, subscribers, inquiries). Real customer data is kept. |
+| `npm run lint` · `npx tsc --noEmit` · `npm run build` | Code checks: lint, types, production build. |
+
+The tests write to whatever database `server/.env` points at, so point it at a development database or a Neon branch rather than the live shop. Admin login for the browser test is read from `server/.env`.
+
+### Manual checks worth doing before launch
+
+1. **Shop as a customer**: product page → ADD TO BAG → all 6 steps → bag → checkout → confirmation → Track Order. Try Buy Now too (goes straight to checkout).
+2. **Admin → Orders**: open the order, read the bespoke measurements, print the job sheet, change the status and check it on the tracking page.
+3. **Admin → Page Content**: edit a heading, Save, reload the site. Then "Reset to default".
+4. **Admin → Products**: change a price and an image (upload via Media), check the product page.
+5. **Admin → Settings**: set a shipping fee and a bespoke tailoring fee, then look at the bag totals.
+6. **Forms**: newsletter, fabric swatch request, contact page → check Admin → Subscribers / Inquiries.
+7. **Mobile**: open the site on a phone (or browser device mode); the admin works on a phone too.
 
 ## Admin dashboard (`/admin`)
 

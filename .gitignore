@@ -44,3 +44,6 @@ next-env.d.ts
 # scratch
 /scratch/
 
+
+# browser test output
+/scripts/e2e-shots/
