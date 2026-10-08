@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useContent } from "@/context/SiteDataProvider";
-import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
+import ShirtRender from "@/components/customizer/ShirtRender";
 
 export interface MannequinShirtViewerProps {
   chestSize: number;
@@ -26,6 +26,7 @@ export default function MannequinShirtViewer({
   sleeveType = "full",
   collarStyle = "",
   cuffStyle = "",
+  pocket = "pocket",
   initials = "",
   threadColor = "black",
   currentStep = 4,
@@ -81,8 +82,6 @@ export default function MannequinShirtViewer({
     : { scaleY: 1.0, label: heightOption?.shortTitle ?? "Tall Height" };
 
   const isHalfSleeve = sleeveType === "half";
-  const collarOption = c.collarStyles.find((s) => s.name === collarStyle);
-  const cuffOption = c.cuffStyles.find((s) => s.name === cuffStyle);
   const threadHex = c.threadColors.find((t) => t.value === threadColor)?.hex ?? "#14110E";
 
   const shirtFilter =
@@ -209,100 +208,72 @@ export default function MannequinShirtViewer({
         )}
 
         {/* ============================================================ */}
-        {/* STEP 5: Product photo with collar, cuff & monogram previews   */}
+        {/* STEPS 5–6: Drawn shirt that redraws with every selection      */}
         {/* ============================================================ */}
-        {stage === "details" && (
-          <div key="details" className="absolute inset-0 animate-in fade-in duration-300 rounded-2xl overflow-hidden bg-[#241D17] shadow-xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={productPhoto} alt={product?.name ?? "Shirt fabric"} className="absolute inset-0 w-full h-full object-cover object-top" loading="eager" />
-            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/75 via-black/30 to-transparent pointer-events-none" />
+        {(stage === "details" || stage === "review") && (
+          <div key={stage} className="absolute inset-0 animate-in fade-in duration-300 flex flex-col">
+            {/* Studio glow */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] rounded-full bg-[#FAF5EC]/70 blur-2xl -translate-y-6" />
+            </div>
 
+            <div className="relative flex-1 min-h-0 flex items-center justify-center">
+              <ShirtRender
+                fabricSrc={product ? productPhoto : undefined}
+                bodyFit={bodyFit}
+                heightScale={heightConfig.scaleY}
+                sleeve={isHalfSleeve ? "half" : "full"}
+                collarStyle={collarStyle}
+                cuffStyle={cuffStyle}
+                pocket={pocket !== "no-pocket"}
+                initials={initials}
+                threadHex={threadHex}
+                className="w-full h-full max-h-[400px]"
+              />
+            </div>
+
+            {/* Fabric chip: the product being customised */}
             {product && (
-              <div className="absolute top-3 left-3 bg-black/55 backdrop-blur-sm text-white text-[9px] font-bold tracking-[0.18em] uppercase px-2.5 py-1 rounded-full">
-                {product.name}
+              <div className="absolute top-1 left-0 z-30 flex items-center gap-2 bg-white/90 backdrop-blur-sm border border-[#D0BDA9] rounded-xl p-1.5 pr-3 shadow-md max-w-[220px]">
+                <div className="w-11 h-11 rounded-lg overflow-hidden bg-[#241D17] shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={productPhoto} alt="" className="w-full h-full object-cover" />
+                </div>
+                <div className="min-w-0">
+                  <span className="block text-[8.5px] font-bold tracking-[0.2em] text-[#9E774C] uppercase">{v.fabricChipLabel}</span>
+                  <span className="block text-[10.5px] font-bold text-[#14110E] uppercase leading-tight line-clamp-2">{product.name}</span>
+                </div>
               </div>
             )}
 
-            {/* Selected detail previews */}
-            <div className="absolute inset-x-3 bottom-3 grid grid-cols-3 gap-2">
-              {/* Collar */}
-              <div className="bg-white/92 backdrop-blur-sm rounded-xl p-2 text-center border border-white/60 shadow-md">
-                <span className="block text-[8px] font-bold tracking-[0.2em] text-[#9E774C] uppercase">{v.collarPreviewLabel}</span>
-                <div className="h-14 sm:h-16 flex items-center justify-center text-[#14110E] my-0.5">
-                  {collarOption?.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={collarOption.image} alt="" className="h-full w-full object-contain" />
-                  ) : (
-                    <CollarIllustration key={collarStyle} name={collarStyle} className="h-full w-full animate-in zoom-in-95 duration-300" />
-                  )}
-                </div>
-                <span className="block text-[9px] font-bold text-[#14110E] uppercase leading-tight line-clamp-2">{collarStyle || "—"}</span>
-              </div>
-
-              {/* Cuff (full sleeve only) */}
-              <div className={`bg-white/92 backdrop-blur-sm rounded-xl p-2 text-center border border-white/60 shadow-md transition-opacity ${isHalfSleeve ? "opacity-50" : ""}`}>
-                <span className="block text-[8px] font-bold tracking-[0.2em] text-[#9E774C] uppercase">{v.cuffPreviewLabel}</span>
-                <div className="h-14 sm:h-16 flex items-center justify-center text-[#14110E] my-0.5">
-                  {isHalfSleeve ? (
-                    <span className="text-[9px] font-semibold text-[#8C6D47] uppercase">{c.halfSleeveLabel}</span>
-                  ) : cuffOption?.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={cuffOption.image} alt="" className="h-full w-full object-contain" />
-                  ) : (
-                    <CuffIllustration key={cuffStyle} name={cuffStyle} className="h-full w-full animate-in zoom-in-95 duration-300" />
-                  )}
-                </div>
-                <span className="block text-[9px] font-bold text-[#14110E] uppercase leading-tight line-clamp-2">{isHalfSleeve ? "—" : cuffStyle || "—"}</span>
-              </div>
-
-              {/* Monogram */}
-              <div className="bg-white/92 backdrop-blur-sm rounded-xl p-2 text-center border border-white/60 shadow-md">
-                <span className="block text-[8px] font-bold tracking-[0.2em] text-[#9E774C] uppercase">{v.monogramPreviewLabel}</span>
-                <div className="h-14 sm:h-16 flex items-center justify-center my-0.5">
-                  <span
-                    key={`${initials}-${threadColor}`}
-                    className="font-serif-luxury italic text-3xl sm:text-4xl leading-none tracking-[0.12em] animate-in zoom-in-95 duration-300"
-                    style={{ color: threadHex, textShadow: "0 1px 0 rgba(255,255,255,0.6)" }}
-                  >
-                    {initials?.trim() || "—"}
-                  </span>
-                </div>
-                <span className="block text-[9px] font-bold text-[#14110E] uppercase leading-tight">
-                  {c.threadColors.find((t) => t.value === threadColor)?.label ?? threadColor}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ============================================================ */}
-        {/* STEP 6: Product photo with the complete selection summary     */}
-        {/* ============================================================ */}
-        {stage === "review" && (
-          <div key="review" className="absolute inset-0 animate-in fade-in duration-300 rounded-2xl overflow-hidden bg-[#241D17] shadow-xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={productPhoto} alt={product?.name ?? "Shirt fabric"} className="absolute inset-0 w-full h-full object-cover object-top" loading="eager" />
-            <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 via-black/35 to-transparent pointer-events-none" />
-            <div className="absolute inset-x-4 bottom-4 text-white">
-              <span className="block text-[9px] font-bold tracking-[0.22em] text-[#D9B98A] uppercase mb-1">{v.reviewLabel}</span>
-              {product && <span className="block font-serif-luxury text-lg sm:text-xl uppercase leading-tight mb-2">{product.name}</span>}
-              <div className="flex flex-wrap gap-1.5">
+            {/* Review: every selection as tags */}
+            {stage === "review" && (
+              <div className="relative z-20 flex flex-wrap justify-center gap-1.5 px-2 pb-1">
                 {[
                   `${chestSize}" ${fitConfig.label}`,
                   heightConfig.label,
                   isHalfSleeve ? c.halfSleeveLabel : c.fullSleeveLabel,
                   collarStyle,
                   !isHalfSleeve && cuffStyle,
-                  initials?.trim() ? `${initials.trim().toUpperCase()} · ${threadColor}` : null,
+                  initials?.trim() ? `${initials.trim().toUpperCase()} · ${c.threadColors.find((t) => t.value === threadColor)?.label ?? threadColor}` : null,
                 ]
                   .filter(Boolean)
                   .map((tag, i) => (
-                    <span key={i} className="bg-white/15 border border-white/30 backdrop-blur-sm rounded-full px-2.5 py-1 text-[9.5px] font-bold tracking-wider uppercase">
+                    <span key={i} className="bg-[#14110E] text-white rounded-full px-2.5 py-1 text-[9px] font-bold tracking-wider uppercase shadow-sm">
                       {tag}
                     </span>
                   ))}
               </div>
-            </div>
+            )}
+
+            {/* Details: what to look at */}
+            {stage === "details" && (
+              <div className="relative z-20 flex flex-wrap justify-center gap-1.5 px-2 pb-1 text-[9px] font-bold tracking-wider uppercase">
+                <span className="bg-white/90 border border-[#D0BDA9] rounded-full px-2.5 py-1 text-[#14110E]">{v.collarPreviewLabel}: {collarStyle || "—"}</span>
+                {!isHalfSleeve && <span className="bg-white/90 border border-[#D0BDA9] rounded-full px-2.5 py-1 text-[#14110E]">{v.cuffPreviewLabel}: {cuffStyle || "—"}</span>}
+                <span className="bg-white/90 border border-[#D0BDA9] rounded-full px-2.5 py-1" style={{ color: threadHex }}>{v.monogramPreviewLabel}: {initials?.trim() || "—"}</span>
+              </div>
+            )}
           </div>
         )}
       </div>

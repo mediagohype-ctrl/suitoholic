@@ -235,6 +235,7 @@ export default function CustomShirtConfigurator() {
                   sleeveType={viewerSleeve}
                   collarStyle={customFit.collarStyle}
                   cuffStyle={customFit.cuffStyle}
+                  pocket={customFit.pocket === "no-pocket" ? "no-pocket" : "pocket"}
                   initials={customFit.initials}
                   threadColor={customFit.threadColor}
                   currentStep={currentStep}

@@ -252,6 +252,7 @@ export default function CustomizationModal({
                   sleeveType={customFit.sleeveType === "half" ? "half" : "full"}
                   collarStyle={customFit.collarStyle}
                   cuffStyle={customFit.cuffStyle}
+                  pocket={customFit.pocket === "no-pocket" ? "no-pocket" : "pocket"}
                   initials={customFit.initials}
                   threadColor={customFit.threadColor}
                   currentStep={currentStep}
