@@ -10,6 +10,12 @@ import adminRoutes from "./routes/admin.routes.js";
 import publicRoutes from "./routes/public.routes.js";
 import { invalidateOnWrite } from "./services/siteCache.js";
 
+// "https://*.vercel.app" → /^https:\/\/[^/]*\.vercel\.app$/ (everything except * is matched literally)
+const wildcardToRegex = (pattern) => {
+  const escaped = pattern.replace(/[.+?^${}()|[\]\\/]/g, (ch) => `\\${ch}`).replace(/\*/g, "[^/]*");
+  return new RegExp(`^${escaped}$`, "i");
+};
+
 export function createApp() {
   const app = express();
   app.set("trust proxy", 1);
@@ -20,7 +26,10 @@ export function createApp() {
     cors({
       origin(origin, cb) {
         // Allow same-origin/server-to-server requests (no Origin header) and configured origins.
-        if (!origin || env.corsOrigins.includes("*") || env.corsOrigins.includes(origin)) return cb(null, true);
+        // Entries may use "*" as a wildcard, e.g. https://*.vercel.app for Vercel preview deployments.
+        if (!origin || env.corsOrigins.some((o) => o === "*" || o === origin || (o.includes("*") && wildcardToRegex(o).test(origin)))) {
+          return cb(null, true);
+        }
         // In development, accept the site on any localhost port (next dev moves to 3001 if 3000 is busy).
         if (!env.isProd && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return cb(null, true);
         cb(null, false);
