@@ -23,230 +23,55 @@ import {
   Layers,
   Shirt,
   Crown,
+  type LucideIcon,
 } from "lucide-react";
+import { useContent } from "@/context/SiteDataProvider";
+import { fillTemplate } from "@/content/merge";
 
-// =========================================================================
-// 1. Core Services / Product Categories Data
-// =========================================================================
-const companyServices = [
-  {
-    id: "custom-shirts",
-    title: "Bespoke & Custom Shirts",
-    tagline: "100% Egyptian Giza 140s Cotton",
-    description:
-      "Individually cut to your posture with 22 stitches per inch, split yoke construction, and hand-shanked Australian mother-of-pearl buttons. Choose from over 15 collar, cuff, and monogram styles.",
-    image: "/prod_classic_white.jpg",
-    link: "/custom-shirt",
-    buttonText: "CUSTOMIZE SHIRT",
-    highlights: ["Split 45° Yoke", "Mother-of-Pearl", "22 SPI Single-Needle"],
-  },
-  {
-    id: "tailored-suits",
-    title: "Made-to-Measure Suits & Blazers",
-    tagline: "Biella Super 130s–150s Worsted Wool",
-    description:
-      "Hand-crafted with natural floating horsehair canvas that molds to your chest. Available in single-breasted, double-breasted, and formal tuxedo silhouettes with full custom linings.",
-    image: "/blazer_navy_wool.jpg",
-    link: "/shop",
-    buttonText: "VIEW SUITS",
-    highlights: ["Floating Canvas", "Italian Worsted Wool", "Hand-Rolled Lapels"],
-  },
-  {
-    id: "sartorial-trousers",
-    title: "Sartorial Trousers & Gurkhas",
-    tagline: "Pure Linen, Wool & Cotton Twill",
-    description:
-      "Engineered with classic Gurkha waistband tabs, side adjusters, deep pleats, and clean straight drapes. Cut to eliminate waistband pinching and provide all-day comfort.",
-    image: "/pant_gurkha_olive.jpg",
-    link: "/shop",
-    buttonText: "VIEW TROUSERS",
-    highlights: ["Gurkha Waistbands", "Side Adjusters", "Reinforced Crotch"],
-  },
-  {
-    id: "ceremonial-wear",
-    title: "Ceremonial & Evening Wear",
-    tagline: "Bandhgalas, Tuxedos & Silk Ensembles",
-    description:
-      "Exquisite ceremonial garments for black-tie galas, weddings, and formal banquets. Features structured stand collars, satin lapels, and opulent silk-blend textures.",
-    image: "/ceremonial_bandhgala.jpg",
-    link: "/shop",
-    buttonText: "EXPLORE CEREMONIAL",
-    highlights: ["Stand Collar Structure", "Silk-Blend Luster", "Bespoke Finishing"],
-  },
-];
+// Icon keys usable in the CMS (documented in src/content/sections/aboutPage.ts).
+const conciergeIcons: Record<string, LucideIcon> = {
+  scissors: Scissors,
+  crown: Crown,
+  shieldCheck: ShieldCheck,
+  ruler: Ruler,
+  award: Award,
+  globe: Globe2,
+  truck: Truck,
+  layers: Layers,
+  shirt: Shirt,
+  clock: Clock,
+  phone: Phone,
+  mail: Mail,
+  calendar: Calendar,
+  mapPin: MapPin,
+  check: CheckCircle2,
+};
 
-// =========================================================================
-// 2. The 4-Step Tailoring Process Data
-// =========================================================================
-const tailoringProcessSteps = [
-  {
-    step: "01",
-    title: "Cloth & Styling Selection",
-    subtitle: "Over 200+ Luxury Fabrics",
-    description:
-      "Select your preferred fabric from our curated library of Italian Super 150s wools, Egyptian Giza cottons, and Belgian linens. Choose collar shape, cuff architecture, button style, and custom embroidery.",
-  },
-  {
-    step: "02",
-    title: "40-Point Fit Algorithm",
-    subtitle: "2-Minute Digital Fitting",
-    description:
-      "Enter your simple height, weight, and fit preferences. Our proprietary 40-point measurement vector system calculates your precise chest, shoulder slope, arm pitch, and waist dimensions without a tailor visit.",
-  },
-  {
-    step: "03",
-    title: "Master Atelier Handcraft",
-    subtitle: "Individual 1-of-1 Pattern Drafting",
-    description:
-      "Your order is never pulled from stock. A bespoke paper pattern is drafted specifically for your posture, hand-cut by master cutters, and sewn using single-needle 22 SPI construction.",
-  },
-  {
-    step: "04",
-    title: "Insured Delivery & 100% Fit Guarantee",
-    subtitle: "Complimentary Alterations Included",
-    description:
-      "Your garment arrives steamed in our luxury packaging. If any adjustment is needed, we cover full alteration costs or provide a complimentary remake within 30 days.",
-  },
-];
-
-// =========================================================================
-// 3. Interactive Craftsmanship Hallmarks
-// =========================================================================
-const anatomyFeatures = [
-  {
-    id: "split-yoke",
-    number: "01",
-    title: "Split Yoke Construction",
-    subtitle: "Ergonomic 45° Diagonal Bias Cut",
-    description:
-      "Unlike mass-market shirts with a single flat piece of fabric across the upper back, our master cutters divide the yoke into two symmetrical halves cut at a 45-degree diagonal bias. This allows the natural weave of the cotton to stretch and move with your shoulder blades, preventing tightness across the back during movement.",
-    image: "/about_craft_split_yoke.jpg",
-    metric: "45° Diagonal Bias",
-    detailBadge: "ERGONOMIC DRAPE",
-  },
-  {
-    id: "floating-canvas",
-    number: "02",
-    title: "Hand-Basted Floating Canvas",
-    subtitle: "Natural Horsehair & Linen Architecture",
-    description:
-      "We strictly reject thermal chemical glues and fused synthetic backings. Instead, our tailors hand-stitch loose layers of natural horsehair and linen canvas between the cloth layers. Over time, your natural body heat molds the floating canvas to your exact chest contours for a bespoke silhouette that only improves with age.",
-    image: "/about_craft_floating_canvas.jpg",
-    metric: "100% Natural Canvas",
-    detailBadge: "BREATHABLE MEMORY",
-  },
-  {
-    id: "stitch-density",
-    number: "03",
-    title: "22 Stitches-Per-Inch Seaming",
-    subtitle: "Ultra-Fine Single-Needle French Seams",
-    description:
-      "Standard industrial dress shirts settle for 12 to 14 loose stitches per inch. Suitoholic enforces an exacting 22 SPI standard executed with single-needle French seams. The outcome is an exceptionally strong, wafer-thin seam line that lays perfectly flat against the skin and resists puckering after laundering.",
-    image: "/about_craft_buttons_shell.jpg",
-    metric: "22 SPI Micro-Stitch",
-    detailBadge: "SINGLE-NEEDLE CRAFT",
-  },
-  {
-    id: "mop-buttons",
-    number: "04",
-    title: "Australian Mother-of-Pearl",
-    subtitle: "Hand Cross-Stitched with Thread Shanks",
-    description:
-      "Every button is precision-carved from genuine deep-sea Australian mother-of-pearl oyster shell, characterized by its natural iridescence and cool tactile weight. Each button is hand cross-stitched with a raised thread shank, allowing it to glide smoothly through buttonholes without pulling the fabric.",
-    image: "/about_craft_buttons_shell.jpg",
-    metric: "4.0mm Genuine Shell",
-    detailBadge: "PACIFIC PEARL",
-  },
-  {
-    id: "french-cuff",
-    number: "05",
-    title: "Dual-Use Convertible Cuffs",
-    subtitle: "Precision Mitered Edges & Swiss Interlining",
-    description:
-      "Constructed with lightweight floating Swiss interlining that retains a crisp, elegant roll without ever feeling stiff or cardboard-like. Designed with convertible dual buttonholes so you can wear them with mother-of-pearl buttons for daytime business or insert formal cufflinks for black-tie galas.",
-    image: "/about_craft_cuff_link.jpg",
-    metric: "Dual Convertible",
-    detailBadge: "FORMAL VERSATILITY",
-  },
-];
-
-// =========================================================================
-// 4. Heritage Milestones Data
-// =========================================================================
-const heritageMilestones = [
-  {
-    year: "2003",
-    tag: "THE INCEPTION",
-    location: "New Delhi Atelier",
-    title: "The First Cutting Bench",
-    subtitle: "Reclaiming the uncompromising art of individual pattern drafting.",
-    story:
-      "Suitoholic was founded by master bespoke cutters trained in heritage tailoring. Frustrated by the shortcuts of industrial ready-to-wear sizing, they committed to a singular standard: every single garment must begin from a fresh individual paper pattern drafted by hand to the client's unique physique and shoulder pitch.",
-    image: "/about_heritage_2003_archive.jpg",
-    photoCaption: "Master Tailor Bespoke Cutting Bench • Est. 2003",
-    metricLabel: "ESTABLISHED",
-    metricValue: "NEW DELHI, INDIA",
-  },
-  {
-    year: "2009",
-    tag: "PROVENANCE",
-    location: "Biella, Italy & Nile Delta",
-    title: "Direct Textile Mill Alliances",
-    subtitle: "Securing exclusive access to the world's purest natural fibers.",
-    story:
-      "To guarantee uncompromising cloth quality, we bypassed commercial fabric wholesalers to establish direct procurement agreements with multi-generational weaving mills in Biella, Northern Italy (for Super 150s worsted wool) and agricultural cooperatives in Egypt's Nile Delta (for authentic 140s Extra-Long Staple Giza cotton).",
-    image: "/about_heritage_mill_loom.jpg",
-    photoCaption: "Historic Biella Woolen Looms • Piedmont, Italy",
-    metricLabel: "TEXTILE INTEGRITY",
-    metricValue: "100% TRACEABLE",
-  },
-  {
-    year: "2016",
-    tag: "DIGITAL BESPOKE",
-    location: "Research & Design Atelier",
-    title: "40-Point Anatomical Master Fit",
-    subtitle: "Savile Row precision engineered into an intuitive digital fitting room.",
-    story:
-      "Drawing from over a decade of bespoke cutting records, our tailors mapped 40 individual body measurement vectors. This allowed clients across the globe to achieve true Savile Row drape and proportion online in under two minutes, eliminating the requirement for multiple in-person fittings.",
-    image: "/about_hero_cutting_table.jpg",
-    photoCaption: "40-Point Vector Pattern Architecture",
-    metricLabel: "FIT PRECISION",
-    metricValue: "40 VECTORS",
-  },
-  {
-    year: "2023",
-    tag: "20-YEAR MILESTONE",
-    location: "Global Sartorial Presence",
-    title: "Two Decades of Craftsmanship",
-    subtitle: "Over 150,000 bespoke garments delivered across 42 countries.",
-    story:
-      "Celebrating twenty years of sartorial leadership, Suitoholic has dressed heads of state, corporate leaders, and menswear connoisseurs worldwide. Maintaining a 99.4% first-fit accuracy rate, we cemented our reputation as one of the world's most trusted bespoke institutions.",
-    image: "/about_craft_floating_canvas.jpg",
-    photoCaption: "Hand-Basted Floating Canvas Craftsmanship",
-    metricLabel: "GLOBAL CLIENTELE",
-    metricValue: "42 COUNTRIES",
-  },
-  {
-    year: "Today",
-    tag: "SUSTAINABLE LUXURY",
-    location: "Flagship Salons Worldwide",
-    title: "The Zero-Waste Sartorial House",
-    subtitle: "100% on-demand garment creation with zero warehouse overproduction.",
-    story:
-      "We remain fiercely dedicated to ethical on-demand craft. We manufacture zero mass-market stock, produce zero deadstock fabric waste, and craft exclusively with biodegradable natural fibers—demonstrating that true luxury is sustainable by design.",
-    image: "/about_atelier_salon_cta.jpg",
-    photoCaption: "Bespoke Flagship Fitting Salon & Atelier",
-    metricLabel: "PRODUCTION MODEL",
-    metricValue: "100% ON-DEMAND",
-  },
-];
+// Renders `text`, wrapping the first occurrence of `phrase` in <strong>.
+function withHighlight(text: string, phrase: string) {
+  const at = phrase ? text.indexOf(phrase) : -1;
+  if (at < 0) return text;
+  return (
+    <>
+      {text.slice(0, at)}
+      <strong>{phrase}</strong>
+      {text.slice(at + phrase.length)}
+    </>
+  );
+}
 
 export default function AboutPage() {
+  const c = useContent("aboutPage");
   const [activeBlueprintIndex, setActiveBlueprintIndex] = useState(0);
   const [activeMilestoneIndex, setActiveMilestoneIndex] = useState(0);
 
-  const activeBlueprint = anatomyFeatures[activeBlueprintIndex];
-  const activeMilestone = heritageMilestones[activeMilestoneIndex];
+  const anatomyFeatures = c.anatomy.features;
+  const heritageMilestones = c.heritage.milestones;
+  // Clamp in case the CMS list is shorter than the remembered index (or empty).
+  const blueprintIdx = Math.max(0, Math.min(activeBlueprintIndex, anatomyFeatures.length - 1));
+  const milestoneIdx = Math.max(0, Math.min(activeMilestoneIndex, heritageMilestones.length - 1));
+  const activeBlueprint = anatomyFeatures[blueprintIdx] as (typeof anatomyFeatures)[number] | undefined;
+  const activeMilestone = heritageMilestones[milestoneIdx] as (typeof heritageMilestones)[number] | undefined;
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-transparent text-[#14110E] antialiased">
@@ -267,71 +92,46 @@ export default function AboutPage() {
 
               {/* Main Luxury Serif Heading */}
               <h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-[52px] xl:text-[60px] font-normal uppercase leading-[1.04] tracking-tight text-[#14110E]">
-                BESPOKE TAILORING. <br />
+                {c.hero.titleLine} <br />
                 <span className="italic font-light text-[#8C6D47]">
-                  ENGINEERED FOR YOUR INDIVIDUAL SILHOUETTE.
+                  {c.hero.titleAccent}
                 </span>
               </h1>
 
               {/* Company Summary */}
               <p className="text-xs sm:text-sm lg:text-[15.5px] text-[#55473A] leading-relaxed font-sans font-normal max-w-xl">
-                Suitoholic is an authentic bespoke and made-to-measure tailoring house. We craft custom dress shirts, canvas-constructed suits, precision trousers, and ceremonial wear—cut from pure natural fibers and individually drafted to your exact measurements with a <strong>100% Fit Guarantee</strong>.
+                {withHighlight(c.hero.summary, c.hero.summaryHighlight)}
               </p>
 
               {/* 4 Core Operational Pillars */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 border-t border-[#D5C2AF]">
-                <div className="space-y-1">
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-[#14110E] block leading-none">
-                    40+
-                  </span>
-                  <span className="text-[9.5px] sm:text-[10.5px] text-[#8C6D47] uppercase font-bold tracking-wider block font-sans">
-                    Fit Data Vectors
-                  </span>
-                </div>
-
-                <div className="space-y-1">
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-[#14110E] block leading-none">
-                    100%
-                  </span>
-                  <span className="text-[9.5px] sm:text-[10.5px] text-[#8C6D47] uppercase font-bold tracking-wider block font-sans">
-                    Fit Guarantee
-                  </span>
-                </div>
-
-                <div className="space-y-1">
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-[#14110E] block leading-none">
-                    140s
-                  </span>
-                  <span className="text-[9.5px] sm:text-[10.5px] text-[#8C6D47] uppercase font-bold tracking-wider block font-sans">
-                    Egyptian Giza
-                  </span>
-                </div>
-
-                <div className="space-y-1">
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-[#14110E] block leading-none">
-                    22 SPI
-                  </span>
-                  <span className="text-[9.5px] sm:text-[10.5px] text-[#8C6D47] uppercase font-bold tracking-wider block font-sans">
-                    Single-Needle
-                  </span>
-                </div>
+                {c.hero.stats.map((stat, idx) => (
+                  <div key={idx} className="space-y-1">
+                    <span className="font-serif text-2xl sm:text-3xl font-bold text-[#14110E] block leading-none">
+                      {stat.value}
+                    </span>
+                    <span className="text-[9.5px] sm:text-[10.5px] text-[#8C6D47] uppercase font-bold tracking-wider block font-sans">
+                      {stat.label}
+                    </span>
+                  </div>
+                ))}
               </div>
 
               {/* Action Buttons */}
               <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
                 <Link
-                  href="/custom-shirt"
+                  href={c.hero.primaryButtonHref}
                   className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md flex items-center gap-2 group whitespace-nowrap"
                 >
-                  <span>3D CUSTOM FIT CONFIGURATOR</span>
+                  <span>{c.hero.primaryButtonLabel}</span>
                   <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                 </Link>
                 
                 <Link
-                  href="/shop"
+                  href={c.hero.secondaryButtonHref}
                   className="bg-transparent hover:bg-black/5 text-[#14110E] border border-[#14110E]/40 hover:border-[#14110E] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-7 sm:px-8 py-4 transition-all duration-300 uppercase whitespace-nowrap"
                 >
-                  READY-TO-WEAR
+                  {c.hero.secondaryButtonLabel}
                 </Link>
               </div>
 
@@ -341,8 +141,8 @@ export default function AboutPage() {
             <div className="lg:col-span-6 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-[#D5C2AF] h-[360px] sm:h-[480px] lg:h-[540px] bg-[#1E1915] group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/about_hero_cutting_table.jpg"
-                alt="Suitoholic Master Bespoke Cutting Table"
+                src={c.hero.image}
+                alt={c.hero.imageAlt}
                 className="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
                 loading="eager"
               />
@@ -359,16 +159,16 @@ export default function AboutPage() {
           {/* Section Header */}
           <div className="space-y-2">
             <h2 className="font-serif-luxury text-2xl sm:text-4xl lg:text-5xl font-normal uppercase leading-tight text-[#14110E]">
-              WHAT WE CRAFT <br />
-              <span className="italic font-light text-[#8C6D47]">FOR DISCERNING GENTLEMEN.</span>
+              {c.services.titleLine} <br />
+              <span className="italic font-light text-[#8C6D47]">{c.services.titleAccent}</span>
             </h2>
           </div>
 
           {/* 4 Garment Offering Cards Grid matching Home Page Formation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7 items-stretch">
-            {companyServices.map((srv) => (
+            {c.services.items.map((srv, idx) => (
               <div
-                key={srv.id}
+                key={`${srv.id}-${idx}`}
                 className="group flex flex-col w-full justify-between space-y-3"
               >
                 {/* Upper Tall Rounded Image Container - Clean Pure Photography */}
@@ -420,19 +220,19 @@ export default function AboutPage() {
           {/* Section Header */}
           <div className="max-w-2xl space-y-2.5">
             <h2 className="font-serif-luxury text-2xl sm:text-4xl lg:text-5xl font-normal uppercase leading-tight text-[#14110E]">
-              HOW OUR TAILORING <br />
-              <span className="italic font-light text-[#8C6D47]">PROCESS WORKS.</span>
+              {c.process.titleLine} <br />
+              <span className="italic font-light text-[#8C6D47]">{c.process.titleAccent}</span>
             </h2>
             <p className="text-xs sm:text-sm text-[#5C4D40] font-sans">
-              From choosing your Italian cloth to receiving a master-tailored garment at your doorstep in four seamless steps.
+              {c.process.intro}
             </p>
           </div>
 
           {/* 4 Process Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 pt-2">
-            {tailoringProcessSteps.map((st) => (
+            {c.process.steps.map((st, idx) => (
               <div
-                key={st.step}
+                key={`${st.step}-${idx}`}
                 className="bg-[#EFE5D9] border border-[#D5C2AF] rounded-2xl p-6 space-y-4 flex flex-col justify-between hover:shadow-md transition-shadow relative group"
               >
                 <div className="space-y-3">
@@ -441,7 +241,7 @@ export default function AboutPage() {
                       {st.step}
                     </span>
                     <span className="text-[9px] font-bold text-[#8C6D47] uppercase tracking-widest bg-white/80 px-2 py-0.5 rounded border border-[#D5C2AF]">
-                      PHASE {st.step}
+                      {fillTemplate(c.process.phaseLabel, { step: st.step })}
                     </span>
                   </div>
                   <h3 className="font-bold text-sm sm:text-[15px] uppercase tracking-wide text-[#14110E]">
@@ -457,7 +257,7 @@ export default function AboutPage() {
 
                 <div className="pt-3 border-t border-[#D5C2AF] flex items-center gap-1.5 text-[10px] font-bold text-[#14110E] uppercase">
                   <CheckCircle2 size={13} className="text-[#8C6D47]" />
-                  <span>Precision Guaranteed</span>
+                  <span>{c.process.footerLabel}</span>
                 </div>
               </div>
             ))}
@@ -473,11 +273,11 @@ export default function AboutPage() {
           {/* Section Header */}
           <div className="max-w-2xl space-y-2.5">
             <h2 className="font-serif-luxury text-2xl sm:text-4xl lg:text-5xl font-normal uppercase leading-tight text-[#14110E]">
-              ANATOMY OF A <br />
-              <span className="italic font-light text-[#8C6D47]">SUITOHOLIC GARMENT.</span>
+              {c.anatomy.titleLine} <br />
+              <span className="italic font-light text-[#8C6D47]">{c.anatomy.titleAccent}</span>
             </h2>
             <p className="text-xs sm:text-sm text-[#5C4D40] font-sans">
-              Select any hallmark below to inspect the micro-tailoring standards enforced across every bespoke shirt and suit.
+              {c.anatomy.intro}
             </p>
           </div>
 
@@ -487,10 +287,10 @@ export default function AboutPage() {
             {/* Left Column: 5 Interactive Feature Selectors */}
             <div className="lg:col-span-5 space-y-2.5 flex flex-col justify-between">
               {anatomyFeatures.map((feat, idx) => {
-                const isActive = activeBlueprintIndex === idx;
+                const isActive = blueprintIdx === idx;
                 return (
                   <button
-                    key={feat.id}
+                    key={`${feat.id}-${idx}`}
                     onClick={() => setActiveBlueprintIndex(idx)}
                     className={`w-full text-left p-3.5 sm:p-4 rounded-xl sm:rounded-2xl transition-all duration-300 border flex items-center justify-between cursor-pointer group ${
                       isActive
@@ -534,6 +334,7 @@ export default function AboutPage() {
             </div>
 
             {/* Right Column: Active Blueprint Deep-Dive Display Card */}
+            {activeBlueprint && (
             <div className="lg:col-span-7 bg-[#FAF5EF] border border-[#D5C0AB] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6 shadow-sm relative overflow-hidden">
               
               {/* Top Row: Metric & Badge */}
@@ -542,7 +343,7 @@ export default function AboutPage() {
                   {activeBlueprint.detailBadge}
                 </span>
                 <span className="font-serif font-bold text-sm sm:text-base text-[#14110E]">
-                  STANDARD: {activeBlueprint.metric}
+                  {fillTemplate(c.anatomy.metricTemplate, { metric: activeBlueprint.metric })}
                 </span>
               </div>
 
@@ -567,6 +368,7 @@ export default function AboutPage() {
               </div>
 
             </div>
+            )}
 
           </div>
 
@@ -581,22 +383,22 @@ export default function AboutPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#D5C2AF]">
             <div className="space-y-2">
               <h2 className="font-serif-luxury text-2xl sm:text-4xl lg:text-5xl font-normal uppercase leading-tight text-[#14110E]">
-                TWO DECADES OF <br />
-                <span className="italic font-light text-[#8C6D47]">SARTORIAL LEADERSHIP.</span>
+                {c.heritage.titleLine} <br />
+                <span className="italic font-light text-[#8C6D47]">{c.heritage.titleAccent}</span>
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-[#5C4D40] max-w-md font-sans">
-              From our first bespoke cutting table to dressing leaders across 42 countries. Select a milestone below to explore our historical archives.
+              {c.heritage.intro}
             </p>
           </div>
 
           {/* Interactive Era Milestone Nav Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 sm:gap-3">
             {heritageMilestones.map((ms, idx) => {
-              const isActive = activeMilestoneIndex === idx;
+              const isActive = milestoneIdx === idx;
               return (
                 <button
-                  key={ms.year}
+                  key={`${ms.year}-${idx}`}
                   onClick={() => setActiveMilestoneIndex(idx)}
                   className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl transition-all duration-300 border text-left cursor-pointer group flex flex-col justify-between space-y-2 ${
                     isActive
@@ -629,6 +431,7 @@ export default function AboutPage() {
           </div>
 
           {/* Active Era Deep-Dive Card with Archival Photo & Historical Story */}
+          {activeMilestone && (
           <div className="bg-[#FAF5EF] border border-[#DAC8B6] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               
@@ -665,7 +468,7 @@ export default function AboutPage() {
                 {/* Archive Metric Badge */}
                 <div className="pt-3 border-t border-[#DAC8B6] flex items-center justify-between text-xs">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-[#8C6D47]">
-                    ARCHIVAL BENCHMARK: {activeMilestone.metricLabel}
+                    {fillTemplate(c.heritage.benchmarkTemplate, { label: activeMilestone.metricLabel })}
                   </span>
                   <span className="font-bold text-[#14110E] tracking-wider uppercase">
                     {activeMilestone.metricValue}
@@ -687,12 +490,13 @@ export default function AboutPage() {
                 {/* Photo Caption Plate (Below image, not on top) */}
                 <div className="flex items-center justify-between text-[10.5px] text-[#55473A] px-1">
                   <span>{activeMilestone.photoCaption}</span>
-                  <span className="font-mono text-[9.5px] text-[#8C6D47] uppercase font-bold">Suitoholic Archive</span>
+                  <span className="font-mono text-[9.5px] text-[#8C6D47] uppercase font-bold">{c.heritage.archiveLabel}</span>
                 </div>
               </div>
 
             </div>
           </div>
+          )}
 
         </section>
 
@@ -702,60 +506,30 @@ export default function AboutPage() {
         <section className="bg-[#FAF5EF] border border-[#DAC8B6] rounded-2xl sm:rounded-3xl lg:rounded-[36px] p-6 sm:p-10 lg:p-12 space-y-6">
           <div className="max-w-2xl space-y-2">
             <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-normal uppercase text-[#14110E]">
-              TAILORING CONCIERGE &amp; APPOINTMENTS
+              {c.concierge.title}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-2">
-            
-            {/* Service 1: Flagship Bespoke Fitting */}
-            <div className="bg-[#EFE5D9] border border-[#D5C2AF] rounded-2xl p-6 space-y-3">
-              <div className="w-9 h-9 rounded-xl bg-[#14110E] text-[#FAF8F5] flex items-center justify-center">
-                <Scissors size={18} className="text-[#C5A069]" />
-              </div>
-              <h4 className="font-bold text-sm uppercase text-[#14110E] tracking-wider">
-                Flagship Studio Fitting
-              </h4>
-              <p className="text-xs text-[#55473A] leading-relaxed">
-                Experience personal one-on-one master draper consultations at our flagship studio. Try fabric swatches, drape sample canvases, and configure your bespoke wardrobe.
-              </p>
-              <div className="text-[11px] font-medium text-[#8C6D47] pt-1">
-                Mon–Sat: 10:00 AM – 8:30 PM
-              </div>
-            </div>
-
-            {/* Service 2: Corporate & Wedding Concierge */}
-            <div className="bg-[#EFE5D9] border border-[#D5C2AF] rounded-2xl p-6 space-y-3">
-              <div className="w-9 h-9 rounded-xl bg-[#14110E] text-[#FAF8F5] flex items-center justify-center">
-                <Crown size={18} className="text-[#C5A069]" />
-              </div>
-              <h4 className="font-bold text-sm uppercase text-[#14110E] tracking-wider">
-                Wedding &amp; Executive Ensembles
-              </h4>
-              <p className="text-xs text-[#55473A] leading-relaxed">
-                Dedicated sartorial wardrobe curation for grooms, black-tie celebrations, and executive leadership teams with private group fitting sessions.
-              </p>
-              <div className="text-[11px] font-medium text-[#8C6D47] pt-1">
-                Custom Monograms &amp; Silk Linings
-              </div>
-            </div>
-
-            {/* Service 3: 100% Fit Guarantee & Alterations */}
-            <div className="bg-[#EFE5D9] border border-[#D5C2AF] rounded-2xl p-6 space-y-3">
-              <div className="w-9 h-9 rounded-xl bg-[#14110E] text-[#FAF8F5] flex items-center justify-center">
-                <ShieldCheck size={18} className="text-[#C5A069]" />
-              </div>
-              <h4 className="font-bold text-sm uppercase text-[#14110E] tracking-wider">
-                30-Day Fit Guarantee
-              </h4>
-              <p className="text-xs text-[#55473A] leading-relaxed">
-                Every online custom order is backed by our full fit pledge. If any adjustment is needed, we cover local alteration costs or remake the garment free of charge.
-              </p>
-              <div className="text-[11px] font-medium text-[#8C6D47] pt-1">
-                Zero Risk • Doorstep Remake
-              </div>
-            </div>
-
+            {c.concierge.services.map((svc, idx) => {
+              const Icon = conciergeIcons[svc.icon] ?? Scissors;
+              return (
+                <div key={idx} className="bg-[#EFE5D9] border border-[#D5C2AF] rounded-2xl p-6 space-y-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#14110E] text-[#FAF8F5] flex items-center justify-center">
+                    <Icon size={18} className="text-[#C5A069]" />
+                  </div>
+                  <h4 className="font-bold text-sm uppercase text-[#14110E] tracking-wider">
+                    {svc.title}
+                  </h4>
+                  <p className="text-xs text-[#55473A] leading-relaxed">
+                    {svc.description}
+                  </p>
+                  <div className="text-[11px] font-medium text-[#8C6D47] pt-1">
+                    {svc.note}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
@@ -768,27 +542,27 @@ export default function AboutPage() {
             {/* Left Column: CTA Pitch */}
             <div className="lg:col-span-6 space-y-6">
               <h2 className="font-serif-luxury text-3xl sm:text-5xl lg:text-[54px] font-normal uppercase leading-[1.06] text-[#14110E]">
-                EXPERIENCE TRUE <br />
-                <span className="italic font-light text-[#8C6D47]">BESPOKE LUXURY.</span>
+                {c.cta.titleLine} <br />
+                <span className="italic font-light text-[#8C6D47]">{c.cta.titleAccent}</span>
               </h2>
               <p className="text-xs sm:text-sm lg:text-[15px] text-[#55473A] leading-relaxed font-sans max-w-xl">
-                Step into our digital fitting room. Customize your collar shape, cuff style, pocket architecture, and bespoke monogram in under two minutes — tailored by master artisans and delivered with our 100% Fit Guarantee.
+                {c.cta.description}
               </p>
               
               <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
                 <Link
-                  href="/custom-shirt"
+                  href={c.cta.primaryButtonHref}
                   className="bg-[#14110E] hover:bg-black text-[#FAF8F5] text-xs font-bold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md flex items-center gap-2 group whitespace-nowrap"
                 >
-                  <span>START YOUR CUSTOM FIT</span>
+                  <span>{c.cta.primaryButtonLabel}</span>
                   <ArrowRight size={15} className="transform group-hover:translate-x-1 transition-transform" />
                 </Link>
                 
                 <Link
-                  href="/shop"
+                  href={c.cta.secondaryButtonHref}
                   className="bg-[#14110E] hover:bg-black text-white border border-[#14110E] text-xs font-bold tracking-[0.2em] px-7 sm:px-9 py-4 transition-all duration-300 uppercase whitespace-nowrap shadow-md"
                 >
-                  EXPLORE COLLECTION
+                  {c.cta.secondaryButtonLabel}
                 </Link>
               </div>
             </div>
@@ -797,8 +571,8 @@ export default function AboutPage() {
             <div className="lg:col-span-6 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-[#D5C2AF] h-[320px] sm:h-[400px] lg:h-[440px] bg-[#221B16] group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/about_atelier_salon_cta.jpg"
-                alt="Suitoholic Bespoke Sartorial Salon & Fitting Lounge"
+                src={c.cta.image}
+                alt={c.cta.imageAlt}
                 className="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
               />
             </div>

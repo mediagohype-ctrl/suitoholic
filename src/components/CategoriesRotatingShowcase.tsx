@@ -3,75 +3,30 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-export interface CategoryCardItem {
-  id: string;
-  title: string;
-  subtitle: string;
-  image: string;
-  link: string;
-}
-
-const categoriesData: CategoryCardItem[] = [
-  {
-    id: "formal-shirts",
-    title: "SHIRTS",
-    subtitle: "Egyptian Giza Twill & Sea Island Poplins",
-    image: "/shop_bespoke_shirt.jpg",
-    link: "/shop?category=formal_shirts",
-  },
-  {
-    id: "suits-blazers",
-    title: "CO-ORD SETS",
-    subtitle: "Italian Super 130s Worsted Wool & Double-Breasted",
-    image: "/blazer_navy_wool.jpg",
-    link: "/shop?category=blazers",
-  },
-  {
-    id: "tailored-trousers",
-    title: "DENIM EDIT & PANTS",
-    subtitle: "Sartorial Pleated Gurkha & Wool Dress Pants",
-    image: "/pant_pleated_beige.jpg",
-    link: "/shop?category=trousers",
-  },
-  {
-    id: "ceremonial-atelier",
-    title: "CEREMONIAL ATELIER",
-    subtitle: "Royal Bandhgalas & Italian Velvet Smoking Jackets",
-    image: "/ceremonial_bandhgala.jpg",
-    link: "/shop?category=ceremonial",
-  },
-  {
-    id: "luxury-polos",
-    title: "LUXURY KNIT POLOS",
-    subtitle: "Silk-Blend Knitwear & Pima Cotton Essentials",
-    image: "/tshirt_knit_navy_polo.jpg",
-    link: "/shop?category=tshirts",
-  },
-  {
-    id: "custom-fit",
-    title: "BESPOKE CONFIGURATOR",
-    subtitle: "Tailored to Your Exact Body Measurements & Monogram",
-    image: "/tailoring_tools.jpg",
-    link: "/custom-shirt",
-  },
-];
+import { useContent } from "@/context/SiteDataProvider";
 
 export default function CategoriesRotatingShowcase() {
-  const [activeIndex, setActiveIndex] = useState(1); // Default to CO-ORD SETS matching reference
+  const c = useContent("categoriesShowcase");
+  const categoriesData = c.items ?? [];
+  const total = categoriesData.length;
+
+  const [rawActiveIndex, setActiveIndex] = useState(() => Number(c.defaultActiveIndex) || 0); // Default to CO-ORD SETS matching reference
   const [isHovered, setIsHovered] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  const total = categoriesData.length;
+  // Keep the index in range even if the admin removes items.
+  const activeIndex = total > 0 ? ((Math.trunc(rawActiveIndex) % total) + total) % total : 0;
 
   // Clockwise rotation (Next category on right button click)
   const rotateClockwise = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % total);
+    if (total === 0) return;
+    setActiveIndex((prev) => (((prev % total) + total) % total + 1) % total);
   }, [total]);
 
   // Anti-Clockwise rotation (Previous category on left button click)
   const rotateAntiClockwise = useCallback(() => {
-    setActiveIndex((prev) => (prev - 1 + total) % total);
+    if (total === 0) return;
+    setActiveIndex((prev) => (((prev % total) + total) % total - 1 + total) % total);
   }, [total]);
 
   // Touch Swipe Handlers for Mobile
@@ -101,6 +56,8 @@ export default function CategoriesRotatingShowcase() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isHovered, rotateClockwise, rotateAntiClockwise]);
 
+  if (total === 0) return null;
+
   return (
     <section 
       className="w-full py-8 sm:py-12 lg:py-14 px-4 sm:px-8 lg:px-12 max-w-[1720px] mx-auto relative select-none overflow-hidden"
@@ -112,7 +69,7 @@ export default function CategoriesRotatingShowcase() {
       {/* Top Heading matching reference image: CATEGORIES */}
       <div className="text-center mb-6 sm:mb-8 lg:mb-10">
         <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl text-[#14110E] tracking-[0.22em] uppercase font-medium">
-          CATEGORIES
+          {c.heading}
         </h2>
         <div className="w-12 sm:w-16 h-[1.5px] bg-[#9E774C]/60 mx-auto mt-2 sm:mt-3" />
       </div>
@@ -123,7 +80,7 @@ export default function CategoriesRotatingShowcase() {
         {/* Anti-Clockwise Left Button */}
         <button
           onClick={rotateAntiClockwise}
-          aria-label="Rotate Anti-Clockwise (Previous Category)"
+          aria-label={c.previousAriaLabel}
           type="button"
           className="absolute left-2 sm:left-6 lg:left-12 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#9E774C] hover:bg-[#7A4B1A] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 border border-[#D5C2AF]/60 group cursor-pointer"
         >
@@ -133,7 +90,7 @@ export default function CategoriesRotatingShowcase() {
         {/* Clockwise Right Button */}
         <button
           onClick={rotateClockwise}
-          aria-label="Rotate Clockwise (Next Category)"
+          aria-label={c.nextAriaLabel}
           type="button"
           className="absolute right-2 sm:right-6 lg:right-12 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#9E774C] hover:bg-[#7A4B1A] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 border border-[#D5C2AF]/60 group cursor-pointer"
         >
@@ -183,7 +140,7 @@ export default function CategoriesRotatingShowcase() {
 
             return (
               <div
-                key={category.id}
+                key={index}
                 onClick={() => {
                   if (isLeft) rotateAntiClockwise();
                   if (isRight) rotateClockwise();
@@ -198,7 +155,7 @@ export default function CategoriesRotatingShowcase() {
                   isCenter ? "border-white/50 ring-2 ring-[#9E774C]/30" : "border-white/20 brightness-90 hover:brightness-100"
                 }`}
               >
-                <Link href={category.link} className="block w-full h-full relative group">
+                <Link href={category.href || "/shop"} className="block w-full h-full relative group">
                   {/* Background Luxury Category Image */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -236,7 +193,7 @@ export default function CategoriesRotatingShowcase() {
               key={i}
               onClick={() => setActiveIndex(i)}
               type="button"
-              aria-label={`Go to category ${i + 1}`}
+              aria-label={(c.dotAriaLabelTemplate || "Go to category {n}").replace("{n}", String(i + 1))}
               className={`h-1 rounded-full transition-all duration-300 ${
                 isActive
                   ? "w-8 sm:w-10 bg-[#9E774C] shadow-xs"

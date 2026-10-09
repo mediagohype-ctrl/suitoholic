@@ -6,80 +6,107 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
+import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check } from "lucide-react";
 import confetti from "canvas-confetti";
+import { useCatalog, useContent } from "@/context/SiteDataProvider";
+import { useCart } from "@/context/CartProvider";
+import { fillTemplate } from "@/content/merge";
+import type { CustomFit } from "@/lib/types";
 
-export interface CustomFitState {
-  chestSize: number;
-  collarSize: number;
-  shoulderSize: number;
-  bodyFit: "lean" | "regular" | "tummy";
-  height: string;
-  sleeveType: "full" | "half";
-  collarStyle: string;
-  cuffStyle: string;
-  pocket: "pocket" | "no-pocket";
-  initials: string;
-  threadColor: string;
-  shirtColor: string;
+export type CustomFitState = CustomFit;
+
+type ViewerBodyFit = "lean" | "regular" | "tummy";
+type ViewerSleeve = "full" | "half";
+const VIEWER_BODY_FITS: string[] = ["lean", "regular", "tummy"];
+
+// Renders `text`, wrapping the first occurrence of `phrase` in a lighter span.
+function withHighlight(text: string, phrase: string) {
+  const at = phrase ? text.indexOf(phrase) : -1;
+  if (at < 0) return text;
+  return (
+    <>
+      {text.slice(0, at)}
+      <span className="text-[#726254]">{phrase}</span>
+      {text.slice(at + phrase.length)}
+    </>
+  );
+}
+
+// Renders lines separated by <br />.
+function withLineBreaks(items: string[]) {
+  return items.map((line, i) => (
+    <React.Fragment key={i}>
+      {i > 0 && <br />}
+      {line}
+    </React.Fragment>
+  ));
 }
 
 export default function CustomShirtConfigurator() {
+  const c = useContent("customShirtPage");
+  const opts = useContent("customizer");
+  const { getProduct } = useCatalog();
+  const { addItem, busy } = useCart();
+  // The catalog product this page configures (its photo is used in the preview and it goes in the bag).
+  const baseProduct = getProduct(c.bagProductSlug) ?? null;
+
+  // Chest measurement mapping (chest -> collar/shoulder) from the customizer section
+  const findChest = (size: number) => opts.chestSizes.find((s) => s.size === size);
+
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [customFit, setCustomFit] = useState<CustomFitState>({
-    chestSize: 38,
-    collarSize: 15,
-    shoulderSize: 17.5,
-    bodyFit: "lean",
-    height: "TALL HEIGHT (5.8 - 5.10\")",
-    sleeveType: "full",
-    collarStyle: "CUTAWAY COLLAR",
-    cuffStyle: "CLASSIC CUFF",
-    pocket: "pocket",
-    initials: "A K",
-    threadColor: "black",
-    shirtColor: "white",
+  const [customFit, setCustomFit] = useState<CustomFitState>(() => {
+    const d = opts.defaults;
+    const chest = findChest(d.chestSize);
+    return {
+      chestSize: d.chestSize,
+      collarSize: chest?.collar ?? 15,
+      shoulderSize: chest?.shoulder ?? 17.5,
+      bodyFit: d.bodyFit,
+      height: d.height,
+      sleeveType: d.sleeveType,
+      collarStyle: d.collarStyle,
+      cuffStyle: d.cuffStyle,
+      pocket: c.defaults.pocket,
+      initials: d.initials,
+      threadColor: d.threadColor,
+      shirtColor: c.defaults.shirtColor,
+    };
   });
 
   const [orderSubmitted, setOrderSubmitted] = useState(false);
-
-  // Chest measurement mapping matching authentic luxury bespoke proportions
-  const chestMeasurementsMap: Record<number, { collar: number; shoulder: number }> = {
-    38: { collar: 15, shoulder: 17.5 },
-    39: { collar: 15.25, shoulder: 17.75 },
-    40: { collar: 15.5, shoulder: 18 },
-    41: { collar: 15.75, shoulder: 18.25 },
-    42: { collar: 16, shoulder: 18.5 },
-    44: { collar: 16.5, shoulder: 19 },
-    46: { collar: 17, shoulder: 19.5 },
-    48: { collar: 17.5, shoulder: 20 },
-  };
+  const [addError, setAddError] = useState<string | null>(null);
 
   const handleChestSelect = (size: number) => {
-    const calculated = chestMeasurementsMap[size] || { collar: 15, shoulder: 17.5 };
+    const calculated = findChest(size);
     setCustomFit((prev) => ({
       ...prev,
       chestSize: size,
-      collarSize: calculated.collar,
-      shoulderSize: calculated.shoulder,
+      collarSize: calculated?.collar ?? prev.collarSize,
+      shoulderSize: calculated?.shoulder ?? prev.shoulderSize,
     }));
   };
 
   const isFullSleeve = customFit.sleeveType === "full";
   const totalSteps = 6;
+  const stepCopy = c.steps[currentStep - 1] as (typeof c.steps)[number] | undefined;
+  const stepVars = { step: currentStep, total: totalSteps, breadcrumb: stepCopy?.breadcrumb ?? "" };
 
   const handleNextStep = () => {
     if (currentStep < totalSteps) {
       setCurrentStep((prev) => prev + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      triggerCelebration();
+      void handleAddToBag();
     }
   };
 
   const handlePrevStep = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => prev - 1);
+      // Going back to change the configuration allows adding a new shirt afterwards.
+      setOrderSubmitted(false);
+      setAddError(null);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -93,21 +120,34 @@ export default function CustomShirtConfigurator() {
     });
   };
 
-  const stepBreadcrumbs = [
-    "CHEST SIZE",
-    "BODY TYPE",
-    "HEIGHT",
-    "SLEEVES",
-    "COLLAR & DETAILS",
-    "REVIEW"
-  ];
-
-  // Helper for height clean title
-  const getHeightCleanTitle = (h: string) => {
-    if (h.toLowerCase().includes("extra")) return "Extra Tall";
-    if (h.toLowerCase().includes("regular") || h.toLowerCase().includes("5.5") || h.toLowerCase().includes("standard")) return "Regular Height";
-    return "Tall Height";
+  // Final step: add the configured shirt (base catalog product + custom fit) to the bag.
+  const handleAddToBag = async () => {
+    if (busy || orderSubmitted) return;
+    setAddError(null);
+    const product = baseProduct;
+    if (!product) {
+      setAddError(c.productNotFoundError);
+      return;
+    }
+    try {
+      await addItem({
+        productId: product.id,
+        quantity: 1,
+        size: String(customFit.chestSize),
+        customization: customFit,
+      });
+      triggerCelebration();
+    } catch (err) {
+      setAddError(err instanceof Error && err.message ? err.message : c.addToBagError);
+    }
   };
+
+  // Short height title for the selection panel / review, from the customizer heights
+  const getHeightCleanTitle = (h: string) => opts.heights.find((opt) => opt.id === h)?.shortTitle ?? h;
+
+  // The 3D mannequin only knows these shapes; fall back if the CMS holds something else.
+  const viewerBodyFit = (VIEWER_BODY_FITS.includes(customFit.bodyFit) ? customFit.bodyFit : "lean") as ViewerBodyFit;
+  const viewerSleeve: ViewerSleeve = customFit.sleeveType === "half" ? "half" : "full";
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
@@ -129,9 +169,7 @@ export default function CustomShirtConfigurator() {
                 {/* Top Left Inscription */}
                 <div className="select-none">
                   <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#14110E] tracking-[0.06em] uppercase leading-[1.12]">
-                    A SHIRT <br />
-                    MADE <br />
-                    FOR YOU.
+                    {withLineBreaks(c.inscriptionLines)}
                   </h2>
                   <div className="w-12 sm:w-16 h-[1.5px] bg-[#9E774C] mt-2 sm:mt-2.5 opacity-90" />
                 </div>
@@ -139,48 +177,48 @@ export default function CustomShirtConfigurator() {
                 {/* Top Right Floating "Your Selection" Panel matching Reference */}
                 <div className="select-none text-left min-w-[130px] sm:min-w-[145px] bg-[#EFE2D4]/70 sm:bg-transparent p-2.5 sm:p-0 rounded-xl sm:rounded-none backdrop-blur-xs sm:backdrop-blur-none border border-[#D0BDA9]/50 sm:border-0">
                   <h5 className="text-[11.5px] sm:text-[12px] font-bold tracking-[0.14em] text-[#C68A4C] uppercase mb-1.5">
-                    Your Selection
+                    {opts.selectionTitle}
                   </h5>
                   <div className="space-y-1 text-[11px] sm:text-[11.5px]">
                     <div className="flex justify-between items-center gap-3 sm:gap-4">
-                      <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">Chest Size</span>
+                      <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">{c.selectionLabels.chestSize}</span>
                       <strong className="text-[#14110E] font-bold">{customFit.chestSize}&quot;</strong>
                     </div>
                     {currentStep >= 2 && (
                       <div className="flex justify-between items-center gap-3 sm:gap-4">
-                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">Body Type</span>
-                        <strong className="text-[#14110E] font-bold capitalize">{customFit.bodyFit} Fit</strong>
+                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">{c.selectionLabels.bodyType}</span>
+                        <strong className="text-[#14110E] font-bold capitalize">{customFit.bodyFit} {c.fitSuffix}</strong>
                       </div>
                     )}
                     {currentStep >= 3 && (
                       <div className="flex justify-between items-center gap-3 sm:gap-4">
-                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">Height</span>
+                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">{c.selectionLabels.height}</span>
                         <strong className="text-[#14110E] font-bold">{getHeightCleanTitle(customFit.height)}</strong>
                       </div>
                     )}
                     {currentStep >= 4 && (
                       <div className="flex justify-between items-center gap-3 sm:gap-4">
-                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">Sleeve</span>
+                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">{c.selectionLabels.sleeve}</span>
                         <strong className="text-[#14110E] font-bold capitalize">
-                          {customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve"}
+                          {customFit.sleeveType === "half" ? c.selectionLabels.halfSleeve : c.selectionLabels.fullSleeve}
                         </strong>
                       </div>
                     )}
                     {currentStep >= 5 && customFit.collarStyle && (
                       <div className="flex justify-between items-center gap-3 sm:gap-4">
-                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">Collar</span>
+                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">{c.selectionLabels.collar}</span>
                         <strong className="text-[#14110E] font-bold">{customFit.collarStyle.split(" ")[0]}</strong>
                       </div>
                     )}
                     {currentStep >= 5 && isFullSleeve && customFit.cuffStyle && (
                       <div className="flex justify-between items-center gap-3 sm:gap-4">
-                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">Cuff</span>
+                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">{c.selectionLabels.cuff}</span>
                         <strong className="text-[#14110E] font-bold">{customFit.cuffStyle.split(" ")[0]}</strong>
                       </div>
                     )}
                     {currentStep >= 5 && customFit.initials && (
                       <div className="flex justify-between items-center gap-3 sm:gap-4">
-                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">Monogram</span>
+                        <span className="text-[#4A3E33] text-[10.5px] sm:text-[11px] font-medium">{c.selectionLabels.monogram}</span>
                         <strong className="text-[#14110E] font-bold uppercase">{customFit.initials}</strong>
                       </div>
                     )}
@@ -192,16 +230,22 @@ export default function CustomShirtConfigurator() {
               <div className="relative w-full">
                 <MannequinShirtViewer
                   chestSize={customFit.chestSize}
-                  bodyFit={customFit.bodyFit}
+                  bodyFit={viewerBodyFit}
                   height={customFit.height}
-                  sleeveType={customFit.sleeveType}
+                  sleeveType={viewerSleeve}
+                  collarStyle={customFit.collarStyle}
+                  cuffStyle={customFit.cuffStyle}
+                  pocket={customFit.pocket === "no-pocket" ? "no-pocket" : "pocket"}
+                  initials={customFit.initials}
+                  threadColor={customFit.threadColor}
                   currentStep={currentStep}
+                  product={baseProduct}
                 />
               </div>
 
               {/* Mobile Step Indicator helper */}
               <div className="lg:hidden text-center text-xs text-[#5C5247] italic mt-2">
-                Step {currentStep} of {totalSteps}: {stepBreadcrumbs[currentStep - 1]}
+                {fillTemplate(c.mobileStepTemplate, stepVars)}
               </div>
             </div>
 
@@ -216,30 +260,18 @@ export default function CustomShirtConfigurator() {
                   {/* Centered Step Indicator with Gold Accent Lines */}
                   <div className="flex items-center justify-center space-x-3 text-[11px] font-bold tracking-[0.24em] text-[#9E774C] uppercase mb-2.5 select-none">
                     <div className="w-12 sm:w-20 h-[1px] bg-[#CBB49E]" />
-                    <span>STEP {currentStep} OF {totalSteps}</span>
+                    <span>{fillTemplate(c.stepCounterTemplate, stepVars)}</span>
                     <div className="w-12 sm:w-20 h-[1px] bg-[#CBB49E]" />
                   </div>
 
                   {/* Title */}
                   <h3 className="font-serif-luxury text-2xl sm:text-[32px] lg:text-[36px] font-normal text-[#14110E] tracking-tight uppercase leading-[1.1] text-center sm:text-left">
-                    {currentStep === 1 && "SELECT YOUR CHEST SIZE"}
-                    {currentStep === 2 && "CHOOSE YOUR BODY TYPE"}
-                    {currentStep === 3 && "SELECT YOUR HEIGHT"}
-                    {currentStep === 4 && "SELECT YOUR SLEEVES"}
-                    {currentStep === 5 && "COLLAR, CUFFS & DETAILS"}
-                    {currentStep === 6 && "FINAL FIT REVIEW"}
+                    {stepCopy?.title}
                   </h3>
 
                   {/* Subtitle */}
                   <p className="text-[12.5px] sm:text-[13.5px] text-[#42372E] font-normal mt-1.5 leading-relaxed text-center sm:text-left">
-                    {currentStep === 1 && "Choose your chest size for the perfect fit."}
-                    {currentStep === 2 && "Find the fit that matches your body shape and comfort preference."}
-                    {currentStep === 3 && "Choose the height option that fits you."}
-                    {currentStep === 4 && (
-                      <>Choose <span className="text-[#726254]">the sleeve type</span> that you prefer.</>
-                    )}
-                    {currentStep === 5 && "Customize collar style, wrist cuffs, and personalized monogram initials."}
-                    {currentStep === 6 && "Verify your bespoke specifications before tailor dispatch."}
+                    {stepCopy && withHighlight(stepCopy.subtitle, stepCopy.subtitleHighlight)}
                   </p>
                 </div>
 
@@ -250,12 +282,12 @@ export default function CustomShirtConfigurator() {
                   <div className="space-y-4 animate-in fade-in duration-200">
                     <div className="pt-1">
                       <label className="text-[10.5px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#1B1713] block mb-2.5">
-                        CHEST SIZE (IN INCHES)
+                        {opts.chestLabel}
                       </label>
 
                       {/* 2 Rows × 4 Columns Size Buttons */}
                       <div className="grid grid-cols-4 gap-2 sm:gap-3">
-                        {[38, 39, 40, 41, 42, 44, 46, 48].map((size) => {
+                        {opts.chestSizes.map(({ size }) => {
                           const isSelected = customFit.chestSize === size;
                           return (
                             <button
@@ -277,19 +309,19 @@ export default function CustomShirtConfigurator() {
                     {/* Measurement Pill Box (Chest, Collar, Shoulder) */}
                     <div className="bg-[#F5EBE1]/95 border border-[#D8C6B3] rounded-xl p-3 sm:p-4 my-4 grid grid-cols-3 divide-x divide-[#D8C6B3] text-center shadow-xs">
                       <div className="px-1">
-                        <span className="text-[10px] font-semibold text-[#665749] tracking-wider block">Chest Size</span>
+                        <span className="text-[10px] font-semibold text-[#665749] tracking-wider block">{c.measurementLabels.chest}</span>
                         <strong className="font-serif-luxury text-base sm:text-xl font-bold text-[#14110E] block mt-0.5">
                           {customFit.chestSize}&quot;
                         </strong>
                       </div>
                       <div className="px-1">
-                        <span className="text-[10px] font-semibold text-[#665749] tracking-wider block">Collar Size</span>
+                        <span className="text-[10px] font-semibold text-[#665749] tracking-wider block">{c.measurementLabels.collar}</span>
                         <strong className="font-serif-luxury text-base sm:text-xl font-bold text-[#14110E] block mt-0.5">
                           {customFit.collarSize}&quot;
                         </strong>
                       </div>
                       <div className="px-1">
-                        <span className="text-[10px] font-semibold text-[#665749] tracking-wider block">Shoulder</span>
+                        <span className="text-[10px] font-semibold text-[#665749] tracking-wider block">{c.measurementLabels.shoulder}</span>
                         <strong className="font-serif-luxury text-base sm:text-xl font-bold text-[#14110E] block mt-0.5">
                           {customFit.shoulderSize}&quot;
                         </strong>
@@ -304,78 +336,34 @@ export default function CustomShirtConfigurator() {
                 {currentStep === 2 && (
                   <div className="space-y-3 pt-1 animate-in fade-in duration-200">
                     
-                    {/* 1. LEAN FIT */}
-                    <button
-                      onClick={() => setCustomFit((prev) => ({ ...prev, bodyFit: "lean" }))}
-                      className={`w-full p-4 rounded-xl text-left transition-all duration-300 flex items-center space-x-4 border cursor-pointer ${
-                        customFit.bodyFit === "lean"
-                          ? "bg-[#EAE0D3] border-[#8C6D47] shadow-sm ring-1 ring-[#8C6D47]"
-                          : "bg-[#E3D2C1]/75 hover:bg-[#EAE0D3] border-[#CBBAA8] text-[#1F1C18]"
-                      }`}
-                    >
-                      <div className="w-5 h-5 rounded-full border-2 border-[#7A4B1A] flex items-center justify-center shrink-0">
-                        {customFit.bodyFit === "lean" && (
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#7A4B1A]" />
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-xs sm:text-[13px] tracking-wider uppercase text-[#14110E]">
-                          LEAN FIT
-                        </h4>
-                        <p className="text-[11.5px] text-[#55473B] mt-0.5">
-                          Your chest is {customFit.chestSize}&quot; and your stomach is {customFit.chestSize - 4}&quot;.
-                        </p>
-                      </div>
-                    </button>
-
-                    {/* 2. REGULAR FIT */}
-                    <button
-                      onClick={() => setCustomFit((prev) => ({ ...prev, bodyFit: "regular" }))}
-                      className={`w-full p-4 rounded-xl text-left transition-all duration-300 flex items-center space-x-4 border cursor-pointer ${
-                        customFit.bodyFit === "regular"
-                          ? "bg-[#EAE0D3] border-[#8C6D47] shadow-sm ring-1 ring-[#8C6D47]"
-                          : "bg-[#E3D2C1]/75 hover:bg-[#EAE0D3] border-[#CBBAA8] text-[#1F1C18]"
-                      }`}
-                    >
-                      <div className="w-5 h-5 rounded-full border-2 border-[#7A4B1A] flex items-center justify-center shrink-0">
-                        {customFit.bodyFit === "regular" && (
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#7A4B1A]" />
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-xs sm:text-[13px] tracking-wider uppercase text-[#14110E]">
-                          REGULAR FIT
-                        </h4>
-                        <p className="text-[11.5px] text-[#55473B] mt-0.5">
-                          Your chest is {customFit.chestSize}&quot; and your stomach is {customFit.chestSize - 2}&quot;.
-                        </p>
-                      </div>
-                    </button>
-
-                    {/* 3. TUMMY COMFORT FIT */}
-                    <button
-                      onClick={() => setCustomFit((prev) => ({ ...prev, bodyFit: "tummy" }))}
-                      className={`w-full p-4 rounded-xl text-left transition-all duration-300 flex items-center space-x-4 border cursor-pointer ${
-                        customFit.bodyFit === "tummy"
-                          ? "bg-[#EAE0D3] border-[#8C6D47] shadow-sm ring-1 ring-[#8C6D47]"
-                          : "bg-[#E3D2C1]/75 hover:bg-[#EAE0D3] border-[#CBBAA8] text-[#1F1C18]"
-                      }`}
-                    >
-                      <div className="w-5 h-5 rounded-full border-2 border-[#7A4B1A] flex items-center justify-center shrink-0">
-                        {customFit.bodyFit === "tummy" && (
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#7A4B1A]" />
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-xs sm:text-[13px] tracking-wider uppercase text-[#14110E]">
-                          TUMMY COMFORT FIT
-                        </h4>
-                        <p className="text-[11.5px] text-[#55473B] mt-0.5 leading-tight">
-                          Your chest is {customFit.chestSize}&quot; <br />
-                          Stomach size is {customFit.chestSize + 1}&quot; – {customFit.chestSize + 2}&quot;.
-                        </p>
-                      </div>
-                    </button>
+                    {opts.bodyFits.map((fit) => {
+                      const isSelected = customFit.bodyFit === fit.id;
+                      return (
+                        <button
+                          key={fit.id}
+                          onClick={() => setCustomFit((prev) => ({ ...prev, bodyFit: fit.id }))}
+                          className={`w-full p-4 rounded-xl text-left transition-all duration-300 flex items-center space-x-4 border cursor-pointer ${
+                            isSelected
+                              ? "bg-[#EAE0D3] border-[#8C6D47] shadow-sm ring-1 ring-[#8C6D47]"
+                              : "bg-[#E3D2C1]/75 hover:bg-[#EAE0D3] border-[#CBBAA8] text-[#1F1C18]"
+                          }`}
+                        >
+                          <div className="w-5 h-5 rounded-full border-2 border-[#7A4B1A] flex items-center justify-center shrink-0">
+                            {isSelected && (
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#7A4B1A]" />
+                            )}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-xs sm:text-[13px] tracking-wider uppercase text-[#14110E]">
+                              {fit.title}
+                            </h4>
+                            <p className={`text-[11.5px] text-[#55473B] mt-0.5${fit.id === "tummy" ? " leading-tight" : ""}`}>
+                              {fillTemplate(fit.description, { chest: customFit.chestSize })}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
 
                   </div>
                 )}
@@ -385,27 +373,8 @@ export default function CustomShirtConfigurator() {
                 {/* ======================================================== */}
                 {currentStep === 3 && (
                   <div className="space-y-3 pt-1 animate-in fade-in duration-200">
-                    {[
-                      {
-                        id: "REGULAR HEIGHT (5.5 - 5.7\")",
-                        title: "REGULAR HEIGHT",
-                        heightRange: "Height: 5.5 – 5.7\"",
-                        details: "Shirt Length: 27.5\" | Sleeve Length: 23.75\"",
-                      },
-                      {
-                        id: "TALL HEIGHT (5.8 - 5.10\")",
-                        title: "TALL HEIGHT",
-                        heightRange: "Height: 5.8 – 5.10\"",
-                        details: "Shirt Length: 29\" | Sleeve Length: 24.5\"",
-                      },
-                      {
-                        id: "EXTRA TALL (5.11\" & ABOVE)",
-                        title: "EXTRA TALL HEIGHT",
-                        heightRange: "Height: 5.11 – 6.2\"",
-                        details: "Shirt Length: 30.5\" | Sleeve Length: 26.5\"",
-                      },
-                    ].map((opt) => {
-                      const isSelected = customFit.height === opt.id || (opt.title === "TALL HEIGHT" && customFit.height.includes("5.8"));
+                    {opts.heights.map((opt) => {
+                      const isSelected = customFit.height === opt.id;
 
                       return (
                         <button
@@ -501,7 +470,7 @@ export default function CustomShirtConfigurator() {
 
                         {/* Title */}
                         <h4 className="font-bold text-xs sm:text-[13px] tracking-wider uppercase text-[#14110E] mt-1">
-                          HALF SLEEVE
+                          {opts.halfSleeveLabel}
                         </h4>
                       </button>
 
@@ -546,7 +515,7 @@ export default function CustomShirtConfigurator() {
 
                         {/* Title */}
                         <h4 className="font-bold text-xs sm:text-[13px] tracking-wider uppercase text-[#14110E] mt-1">
-                          FULL SLEEVE
+                          {opts.fullSleeveLabel}
                         </h4>
                       </button>
 
@@ -561,47 +530,61 @@ export default function CustomShirtConfigurator() {
                   <div className="space-y-4 animate-in fade-in duration-200">
                     <div className="space-y-3 pt-1">
                       <label className="text-[10.5px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#1B1713] block">
-                        COLLAR STYLE
+                        {opts.collarLabel}
                       </label>
                       <div className="grid grid-cols-2 gap-2.5">
-                        {[
-                          "CUTAWAY COLLAR",
-                          "CLASSIC SPREAD",
-                          "MANDARIN / BAND",
-                          "BUTTON DOWN"
-                        ].map((c) => (
-                          <button
-                            key={c}
-                            onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: c }))}
-                            className={`p-3 rounded-xl text-left text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
-                              customFit.collarStyle === c
-                                ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
-                                : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
-                            }`}
-                          >
-                            <span>{c}</span>
-                            {customFit.collarStyle === c && <Check size={14} />}
-                          </button>
-                        ))}
+                        {opts.collarStyles.map((collar, idx) => {
+                          const selected = customFit.collarStyle === collar.name;
+                          return (
+                            <button
+                              key={`${collar.name}-${idx}`}
+                              onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: collar.name }))}
+                              className={`p-3 rounded-xl text-left text-xs font-bold transition-all flex items-center gap-2.5 cursor-pointer ${
+                                selected
+                                  ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
+                                  : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
+                              }`}
+                            >
+                              <span className="w-10 h-8 shrink-0 flex items-center justify-center">
+                                {collar.image ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={collar.image} alt="" className="w-full h-full object-contain rounded" />
+                                ) : (
+                                  <CollarIllustration name={collar.name} className="w-full h-full" />
+                                )}
+                              </span>
+                              <span className="flex-1">{collar.name}</span>
+                              {selected && <Check size={14} />}
+                            </button>
+                          );
+                        })}
                       </div>
 
                       {isFullSleeve && (
                         <>
                           <label className="text-[10.5px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#1B1713] block pt-2">
-                            CUFF DESIGN
+                            {opts.cuffLabel}
                           </label>
                           <div className="grid grid-cols-3 gap-2.5">
-                            {["CLASSIC CUFF", "FRENCH DOUBLE", "ROUNDED CUFF"].map((cuff) => (
+                            {opts.cuffStyles.map((cuff, idx) => (
                               <button
-                                key={cuff}
-                                onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff }))}
-                                className={`p-3 rounded-xl text-center text-xs font-bold transition-all cursor-pointer ${
-                                  customFit.cuffStyle === cuff
+                                key={`${cuff.name}-${idx}`}
+                                onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.name }))}
+                                className={`p-2.5 rounded-xl text-center text-xs font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                                  customFit.cuffStyle === cuff.name
                                     ? "bg-[#120F0D] text-white shadow-md ring-1 ring-[#120F0D]"
                                     : "bg-[#E2D0BE]/90 hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-[#C6B09B]"
                                 }`}
                               >
-                                {cuff}
+                                <span className="w-12 h-9 flex items-center justify-center">
+                                  {cuff.image ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={cuff.image} alt="" className="w-full h-full object-contain rounded" />
+                                  ) : (
+                                    <CuffIllustration name={cuff.name} className="w-full h-full" />
+                                  )}
+                                </span>
+                                <span className="leading-tight">{cuff.name}</span>
                               </button>
                             ))}
                           </div>
@@ -609,17 +592,12 @@ export default function CustomShirtConfigurator() {
                       )}
 
                       <label className="text-[10.5px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#1B1713] block pt-2">
-                        CHEST POCKET
+                        {c.pocketLabel}
                       </label>
                       <div className="grid grid-cols-2 gap-3">
-                        {(
-                          [
-                            { id: "pocket", label: "WITH POCKET" },
-                            { id: "no-pocket", label: "NO POCKET" },
-                          ] as const
-                        ).map((p) => (
+                        {c.pocketOptions.map((p, idx) => (
                           <button
-                            key={p.id}
+                            key={`${p.id}-${idx}`}
                             onClick={() => setCustomFit((prev) => ({ ...prev, pocket: p.id }))}
                             className={`py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
                               customFit.pocket === p.id
@@ -633,7 +611,7 @@ export default function CustomShirtConfigurator() {
                       </div>
 
                       <label className="text-[10.5px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#1B1713] block pt-2">
-                        YOUR INITIALS (MAX 3 CHARACTERS)
+                        {c.initialsLabel}
                       </label>
                       <input
                         type="text"
@@ -641,16 +619,16 @@ export default function CustomShirtConfigurator() {
                         value={customFit.initials}
                         onChange={(e) => setCustomFit((prev) => ({ ...prev, initials: e.target.value.toUpperCase() }))}
                         className="w-full bg-[#F5EBE1]/90 border border-[#D0BDA9] rounded-xl px-4 py-3 text-lg font-bold tracking-widest uppercase text-[#14110E] focus:outline-none focus:ring-2 focus:ring-[#9E774C]"
-                        placeholder="E.G. A K"
+                        placeholder={opts.monogramPlaceholder}
                       />
 
                       <label className="text-[10.5px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#1B1713] block pt-2">
-                        EMBROIDERY THREAD COLOR
+                        {c.threadLabel}
                       </label>
                       <div className="grid grid-cols-4 gap-2.5">
-                        {["black", "gold", "navy", "maroon"].map((clr) => (
+                        {opts.threadColors.map(({ value: clr }, idx) => (
                           <button
-                            key={clr}
+                            key={`${clr}-${idx}`}
                             onClick={() => setCustomFit((prev) => ({ ...prev, threadColor: clr }))}
                             className={`p-3 rounded-xl text-center text-xs font-bold uppercase transition-all cursor-pointer ${
                               customFit.threadColor === clr
@@ -673,36 +651,50 @@ export default function CustomShirtConfigurator() {
                   <div className="space-y-4 animate-in fade-in duration-200">
                     <div className="bg-[#F5EBE1]/95 border border-[#D8C6B3] rounded-xl p-4 space-y-2.5 text-xs shadow-xs">
                       <div className="flex justify-between border-b border-[#D8C6B3]/60 pb-2">
-                        <span className="text-[#665749]">Chest / Collar / Shoulder:</span>
+                        <span className="text-[#665749]">{opts.reviewLabels.measurements}</span>
                         <strong className="text-[#14110E]">{customFit.chestSize}&quot; / {customFit.collarSize}&quot; / {customFit.shoulderSize}&quot;</strong>
                       </div>
                       <div className="flex justify-between border-b border-[#D8C6B3]/60 pb-2">
-                        <span className="text-[#665749]">Body Fit:</span>
-                        <strong className="text-[#14110E] uppercase">{customFit.bodyFit} Fit</strong>
+                        <span className="text-[#665749]">{opts.reviewLabels.bodyFit}</span>
+                        <strong className="text-[#14110E] uppercase">{customFit.bodyFit} {c.fitSuffix}</strong>
                       </div>
                       <div className="flex justify-between border-b border-[#D8C6B3]/60 pb-2">
-                        <span className="text-[#665749]">Height:</span>
+                        <span className="text-[#665749]">{opts.reviewLabels.height}</span>
                         <strong className="text-[#14110E]">{getHeightCleanTitle(customFit.height)}</strong>
                       </div>
                       <div className="flex justify-between border-b border-[#D8C6B3]/60 pb-2">
-                        <span className="text-[#665749]">Sleeves &amp; Collar:</span>
-                        <strong className="text-[#14110E] uppercase">{customFit.sleeveType} Sleeve | {customFit.collarStyle}</strong>
+                        <span className="text-[#665749]">{opts.reviewLabels.sleevesCollar}</span>
+                        <strong className="text-[#14110E] uppercase">{customFit.sleeveType} {c.sleeveSuffix} | {customFit.collarStyle}</strong>
                       </div>
                       {isFullSleeve && (
                         <div className="flex justify-between border-b border-[#D8C6B3]/60 pb-2">
-                          <span className="text-[#665749]">Cuff &amp; Pocket:</span>
+                          <span className="text-[#665749]">{opts.reviewLabels.cuffPocket}</span>
                           <strong className="text-[#14110E] uppercase">{customFit.cuffStyle} | {customFit.pocket}</strong>
                         </div>
                       )}
                       <div className="flex justify-between">
-                        <span className="text-[#665749]">Bespoke Monogram:</span>
-                        <strong className="text-[#14110E] uppercase">{customFit.initials || "None"} ({customFit.threadColor})</strong>
+                        <span className="text-[#665749]">{opts.reviewLabels.monogram}</span>
+                        <strong className="text-[#14110E] uppercase">{customFit.initials || c.noInitialsLabel} ({customFit.threadColor})</strong>
                       </div>
                     </div>
 
                     {orderSubmitted && (
-                      <div className="bg-[#2D6A4F] text-white p-3.5 rounded-xl text-center text-xs font-bold tracking-wider animate-bounce shadow-md">
-                        BESPOKE SHIRT CONFIGURED SUCCESSFULLY! TAILOR DISPATCH NOTIFIED.
+                      <>
+                        <div className="bg-[#2D6A4F] text-white p-3.5 rounded-xl text-center text-xs font-bold tracking-wider animate-bounce shadow-md">
+                          {c.successMessage}
+                        </div>
+                        <Link
+                          href={c.viewBagHref}
+                          className="block w-full text-center bg-[#E2D0BE] hover:bg-[#120F0D] text-[#332B24] hover:text-white border border-[#C6B09B] rounded-xl py-3 text-xs font-bold tracking-[0.18em] uppercase transition-all"
+                        >
+                          {c.viewBagLabel}
+                        </Link>
+                      </>
+                    )}
+
+                    {addError && (
+                      <div role="alert" className="bg-[#8B2E2E]/10 border border-[#8B2E2E]/40 text-[#7A2424] p-3.5 rounded-xl text-center text-xs font-bold tracking-wider">
+                        {addError}
                       </div>
                     )}
                   </div>
@@ -718,16 +710,26 @@ export default function CustomShirtConfigurator() {
                       className="px-4 py-3.5 bg-[#14110E] hover:bg-black text-white border border-[#14110E] rounded-xl text-xs font-bold tracking-wider uppercase transition-all flex items-center space-x-1.5 cursor-pointer shadow-md"
                     >
                       <ArrowLeft size={14} />
-                      <span>BACK</span>
+                      <span>{opts.backLabel}</span>
                     </button>
                   )}
 
                   <button
                     onClick={handleNextStep}
-                    className="flex-1 bg-[#120F0D] hover:bg-[#2A231D] text-white py-3.5 sm:py-4 px-6 rounded-xl text-xs font-bold tracking-[0.18em] uppercase transition-all flex items-center justify-between shadow-lg cursor-pointer"
+                    disabled={currentStep === totalSteps && (busy || orderSubmitted)}
+                    aria-busy={currentStep === totalSteps && busy}
+                    className="flex-1 bg-[#120F0D] hover:bg-[#2A231D] text-white py-3.5 sm:py-4 px-6 rounded-xl text-xs font-bold tracking-[0.18em] uppercase transition-all flex items-center justify-between shadow-lg cursor-pointer disabled:cursor-not-allowed disabled:opacity-80"
                   >
-                    <span>{currentStep === totalSteps ? "CONFIRM & PROCEED →" : "CONTINUE →"}</span>
-                    <span className="text-[10.5px] opacity-80 font-normal tracking-widest">{currentStep} OF {totalSteps}</span>
+                    <span>
+                      {currentStep < totalSteps
+                        ? opts.continueLabel
+                        : busy
+                          ? c.addingLabel
+                          : orderSubmitted
+                            ? c.addedLabel
+                            : c.confirmLabel}
+                    </span>
+                    <span className="text-[10.5px] opacity-80 font-normal tracking-widest">{fillTemplate(c.buttonCounterTemplate, stepVars)}</span>
                   </button>
                 </div>
 
@@ -737,9 +739,7 @@ export default function CustomShirtConfigurator() {
                 {/* Bottom Right Inscription */}
                 <div className="text-right -mt-5 select-none opacity-90">
                   <p className="font-serif-luxury text-[13px] sm:text-[14px] text-[#9E774C] font-normal tracking-[0.14em] uppercase leading-tight">
-                    TAILORED <br />
-                    FOR A BETTER <br />
-                    YOU.
+                    {withLineBreaks(c.taglineLines)}
                   </p>
                   <div className="w-10 h-[1px] bg-[#9E774C] mt-1.5 ml-auto" />
                 </div>

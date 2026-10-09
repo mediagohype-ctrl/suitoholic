@@ -3,52 +3,15 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
+import { useContent } from "@/context/SiteDataProvider";
 
-interface ShirtVariant {
-  id: string;
-  name: string;
-  shortLabel: string;
-  colorHex: string;
-  swatchGradient: string;
-  startTime: number;
-}
-
-const SHIRT_VARIANTS: ShirtVariant[] = [
-  {
-    id: "blue_stripe",
-    name: "Royal Steel Blue Stripe",
-    shortLabel: "Royal Blue Stripe",
-    colorHex: "#3A5276",
-    swatchGradient: "linear-gradient(135deg, #2E456A 0%, #4F6A8F 100%)",
-    startTime: 0.0,
-  },
-  {
-    id: "dark_brown",
-    name: "Dark Espresso Brown",
-    shortLabel: "Espresso Brown",
-    colorHex: "#3D2820",
-    swatchGradient: "linear-gradient(135deg, #251712 0%, #4D3329 100%)",
-    startTime: 7.5,
-  },
-  {
-    id: "sand_linen",
-    name: "Sand Beige Linen",
-    shortLabel: "Sand Linen",
-    colorHex: "#CBBBA9",
-    swatchGradient: "linear-gradient(135deg, #B5A28E 0%, #D4C4B3 100%)",
-    startTime: 15.5,
-  },
-  {
-    id: "terracotta_stripe",
-    name: "Terracotta Rust Stripe",
-    shortLabel: "Terracotta Stripe",
-    colorHex: "#A85A48",
-    swatchGradient: "linear-gradient(135deg, #8E4434 0%, #B86755 100%)",
-    startTime: 24.5,
-  },
-];
+const swatchGradient = (from: string, to: string) => `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
 
 export default function HeroVideoBanner() {
+  const c = useContent("homeHero");
+  const variants = c.variants;
+  // Position of a variant on the vertical tracker (0–100%).
+  const lastIndex = Math.max(variants.length - 1, 1);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -56,7 +19,7 @@ export default function HeroVideoBanner() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const isSeekingRef = useRef<boolean>(false);
 
-  const currentVariant = SHIRT_VARIANTS[activeIndex];
+  const currentVariant = variants[Math.min(activeIndex, variants.length - 1)];
 
   // Apply slow-motion luxury playback rate (0.75x)
   const applyPlaybackRate = useCallback(() => {
@@ -72,34 +35,29 @@ export default function HeroVideoBanner() {
     if (videoRef.current) {
       isSeekingRef.current = true;
       videoRef.current.playbackRate = 0.75;
-      videoRef.current.currentTime = SHIRT_VARIANTS[index].startTime;
+      videoRef.current.currentTime = variants[index]?.startTime ?? 0;
       videoRef.current.play().catch(() => {});
       setTimeout(() => {
         isSeekingRef.current = false;
       }, 150);
     }
-  }, []);
+  }, [variants]);
 
   // Single Synchronized Controller for Real-Time Video Timestamp & Color Swatch Sync
   const handleTimeUpdate = useCallback(() => {
     if (!videoRef.current || isSeekingRef.current) return;
     const ct = videoRef.current.currentTime;
 
+    // The active variant is the last one whose start time has been reached.
     let currentIdx = 0;
-    if (ct >= 24.5) {
-      currentIdx = 3; // Terracotta Rust Stripe
-    } else if (ct >= 15.5) {
-      currentIdx = 2; // Sand Beige Linen
-    } else if (ct >= 7.5) {
-      currentIdx = 1; // Dark Espresso Brown
-    } else {
-      currentIdx = 0; // Royal Steel Blue Stripe
-    }
+    variants.forEach((v, i) => {
+      if (ct >= v.startTime) currentIdx = i;
+    });
 
     if (activeIndex !== currentIdx) {
       setActiveIndex(currentIdx);
     }
-  }, [activeIndex]);
+  }, [activeIndex, variants]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -126,7 +84,7 @@ export default function HeroVideoBanner() {
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
           ref={videoRef}
-          src="/video/Suitoholic.mp4"
+          src={c.video}
           autoPlay
           loop
           muted
@@ -145,7 +103,7 @@ export default function HeroVideoBanner() {
         {/* Soft natural ambient gradient on left for crystal clear readability */}
         <div
           className={`absolute inset-0 bg-gradient-to-r from-[#DDD1C3]/85 via-[#DDD1C3]/35 to-transparent pointer-events-none transition-all duration-700 ${
-            activeIndex === 3
+            variants.length > 1 && activeIndex === variants.length - 1
               ? "w-[45%] sm:w-[40%] md:w-[35%] lg:w-[32%] opacity-60"
               : "w-[85%] sm:w-[70%] md:w-[58%] lg:w-[48%] opacity-100"
           }`}
@@ -162,34 +120,34 @@ export default function HeroVideoBanner() {
           {/* Golden/Tan Eyebrow Subtitle */}
           <div className="mb-1.5 sm:mb-3 flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="text-[#A57545] text-[10px] sm:text-xs md:text-[13px] font-bold tracking-[0.22em] sm:tracking-[0.28em] uppercase inline-block">
-              EFFORTLESSLY ELEGANT
+              {c.eyebrow}
             </span>
             <span className="hidden sm:inline text-[#A57545]/40 font-mono text-xs">|</span>
             <span className="text-[#4A3F35] text-[11px] font-semibold tracking-wider transition-all duration-300">
-              {currentVariant.name}
+              {currentVariant?.name}
             </span>
           </div>
 
           {/* Main Luxury High-Contrast Heading */}
           <h1 className="font-serif-luxury font-medium text-[22px] sm:text-[30px] md:text-4xl lg:text-[48px] xl:text-[54px] leading-[1.1] sm:leading-[1.08] text-[#14110E] tracking-tight uppercase mb-3 sm:mb-5 md:mb-8">
-            NOT EVERY BODY <br />
-            IS THE SAME SIZE.
+            {c.headingLine1} <br />
+            {c.headingLine2}
           </h1>
 
           {/* Action Buttons: Stacked on Mobile, Side-by-Side on Desktop */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 md:gap-4 w-full sm:w-auto">
             <Link
-              href="/shop"
+              href={c.primaryCtaHref}
               className="bg-[#14110E] hover:bg-[#2A241F] text-[#FAF8F5] text-[10px] sm:text-xs lg:text-[12px] font-bold tracking-[0.16em] px-4 sm:px-8 lg:px-9 py-2.5 sm:py-3.5 md:py-4 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[130px] sm:w-auto"
             >
-              SHOP SHIRTS
+              {c.primaryCtaLabel}
             </Link>
             
             <Link
-              href="/custom-shirt"
+              href={c.secondaryCtaHref}
               className="bg-[#14110E] hover:bg-black text-[#FAF8F5] border border-[#14110E] text-[10px] sm:text-xs lg:text-[12px] font-bold tracking-[0.16em] px-3.5 sm:px-7 lg:px-8 py-2.5 sm:py-3.5 md:py-4 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md active:scale-98 whitespace-nowrap w-[130px] sm:w-auto"
             >
-              <span>CUSTOM FIT</span>
+              <span>{c.secondaryCtaLabel}</span>
               <span className="transform group-hover:translate-x-1 transition-transform duration-200 text-xs sm:text-sm leading-none">→</span>
             </Link>
           </div>
@@ -199,7 +157,7 @@ export default function HeroVideoBanner() {
             {/* 01 ... 05 Vertical Range Tracker for Mobile */}
             <div className="flex flex-col items-center select-none">
               <span className="text-[9.5px] font-semibold text-[#14110E] tracking-wider mb-0.5 font-mono">
-                01
+                {c.trackerStartLabel}
               </span>
               
               <div className="relative w-3 h-14 sm:h-18 my-0.5">
@@ -207,12 +165,12 @@ export default function HeroVideoBanner() {
                 <div
                   className="absolute top-0 w-[1.5px] bg-[#14110E] left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
                   style={{
-                    height: `${(activeIndex / 3) * 100}%`,
+                    height: `${(activeIndex / lastIndex) * 100}%`,
                   }}
                 />
-                {[0, 1, 2, 3].map((stepIdx) => {
+                {variants.map((_, stepIdx) => {
                   const isPastOrActive = activeIndex >= stepIdx;
-                  const topPercent = (stepIdx / 3) * 100;
+                  const topPercent = (stepIdx / lastIndex) * 100;
                   return (
                     <button
                       key={stepIdx}
@@ -234,7 +192,7 @@ export default function HeroVideoBanner() {
                 <div
                   className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-[1.5px] border-[#14110E] bg-[#FAF5EE]/70 pointer-events-none transition-all duration-500 ease-out z-20 flex items-center justify-center"
                   style={{
-                    top: `${(activeIndex / 3) * 100}%`,
+                    top: `${(activeIndex / lastIndex) * 100}%`,
                   }}
                 >
                   <div className="w-1 h-1 rounded-full bg-[#14110E]" />
@@ -242,17 +200,17 @@ export default function HeroVideoBanner() {
               </div>
 
               <span className="text-[9.5px] font-semibold text-[#14110E] tracking-wider mt-0.5 font-mono">
-                05
+                {c.trackerEndLabel}
               </span>
             </div>
 
             {/* 4 Interactive Color Swatches on Mobile (Navy, Terracotta, Rose, Trio) */}
             <div className="flex flex-col items-center gap-1.5 bg-transparent p-0 ml-1">
-              {SHIRT_VARIANTS.map((variant, idx) => {
+              {variants.map((variant, idx) => {
                 const isActive = activeIndex === idx;
                 return (
                   <div
-                    key={variant.id}
+                    key={`${variant.name}-${idx}`}
                     className={`rounded-full p-0.5 transition-all duration-300 flex items-center justify-center ${
                       isActive
                         ? "ring-1.5 ring-[#14110E] ring-offset-2 ring-offset-transparent scale-110 shadow-xs"
@@ -266,7 +224,7 @@ export default function HeroVideoBanner() {
                         isActive ? "opacity-100" : "opacity-75 hover:opacity-100"
                       }`}
                       style={{
-                        background: variant.swatchGradient,
+                        background: swatchGradient(variant.swatchFrom, variant.swatchTo),
                       }}
                       aria-label={`Select ${variant.name}`}
                       title={variant.name}
@@ -284,7 +242,7 @@ export default function HeroVideoBanner() {
       {/* 3. Bottom Left: "SCROLL DOWN" Indicator */}
       <div className="absolute bottom-24 sm:bottom-20 left-4 sm:left-10 lg:left-16 xl:left-20 z-20 flex flex-col items-start pointer-events-none">
         <span className="text-[#3D352E] text-[8.5px] sm:text-[9.5px] font-semibold tracking-[0.22em] uppercase">
-          SCROLL DOWN
+          {c.scrollLabel}
         </span>
         <div className="w-[1.5px] h-3 sm:h-4 bg-[#3D352E]/90 mt-1 ml-0.5" />
       </div>
@@ -296,12 +254,12 @@ export default function HeroVideoBanner() {
         <div className="flex flex-col items-center gap-3.5 bg-transparent p-0">
           
           {/* Swatch items */}
-          {SHIRT_VARIANTS.map((variant, idx) => {
+          {variants.map((variant, idx) => {
             const isActive = activeIndex === idx;
             const isHovered = hoveredIndex === idx;
 
             return (
-              <div key={variant.id} className="relative flex items-center justify-center group">
+              <div key={`${variant.name}-${idx}`} className="relative flex items-center justify-center group">
                 {/* Floating tooltip with color name */}
                 <div
                   className={`absolute right-full mr-3.5 px-2.5 py-1 bg-[#14110E] text-[#FAF8F5] text-[10.5px] font-medium tracking-wider uppercase rounded shadow-lg whitespace-nowrap pointer-events-none transition-all duration-200 ${
@@ -330,7 +288,7 @@ export default function HeroVideoBanner() {
                         : "opacity-75 hover:opacity-100 hover:scale-105"
                     }`}
                     style={{
-                      background: variant.swatchGradient,
+                      background: swatchGradient(variant.swatchFrom, variant.swatchTo),
                     }}
                     aria-label={`Select ${variant.name}`}
                     title={variant.name}
@@ -345,7 +303,7 @@ export default function HeroVideoBanner() {
         {/* 01 ... 05 Vertical Range Dynamic Tracker (Tracks downward as color changes) */}
         <div className="flex flex-col items-center select-none py-1">
           <span className="text-[11px] sm:text-xs font-semibold text-[#14110E] tracking-wider mb-2.5 font-mono">
-            01
+            {c.trackerStartLabel}
           </span>
           
           {/* Vertical Track with Exact Absolute Coordinates */}
@@ -357,14 +315,14 @@ export default function HeroVideoBanner() {
             <div
               className="absolute top-0 w-[1.5px] bg-[#14110E] left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
               style={{
-                height: `${(activeIndex / 3) * 100}%`,
+                height: `${(activeIndex / lastIndex) * 100}%`,
               }}
             />
 
             {/* Step guide dots located at exact 0%, 33.33%, 66.66%, 100% */}
-            {[0, 1, 2, 3].map((stepIdx) => {
+            {variants.map((_, stepIdx) => {
               const isPastOrActive = activeIndex >= stepIdx;
-              const topPercent = (stepIdx / 3) * 100;
+              const topPercent = (stepIdx / lastIndex) * 100;
               return (
                 <button
                   key={stepIdx}
@@ -387,7 +345,7 @@ export default function HeroVideoBanner() {
             <div
               className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-[1.5px] border-[#14110E] bg-[#FAF5EE]/70 pointer-events-none transition-all duration-500 ease-out z-20 shadow-xs flex items-center justify-center"
               style={{
-                top: `${(activeIndex / 3) * 100}%`,
+                top: `${(activeIndex / lastIndex) * 100}%`,
               }}
             >
               <div className="w-1.5 h-1.5 rounded-full bg-[#14110E]" />
@@ -395,7 +353,7 @@ export default function HeroVideoBanner() {
           </div>
 
           <span className="text-[11px] sm:text-xs font-semibold text-[#14110E] tracking-wider mt-2.5 font-mono">
-            05
+            {c.trackerEndLabel}
           </span>
         </div>
 

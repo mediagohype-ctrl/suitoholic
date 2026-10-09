@@ -1,0 +1,63 @@
+// Site footer.
+// socialLinks[].platform: "instagram" | "facebook" | "pinterest" | "youtube" | "x" (unknown → generic link icon).
+// paymentMethods[].brand: "visa" | "paytm" | "mastercard" | "amex" | "upi" (unknown → the title is shown as text).
+// address is optional — leave empty to hide it. copyrightText: "{year}" is replaced with the current year.
+export const footer = {
+  watermarkText: "SUITOHOLIC",
+  logo: "/logo/suitoholic-logo-dark.png",
+  logoAlt: "Suitoholic Logo",
+  logoHref: "/",
+  conciergeHeading: "Direct Concierge",
+  phoneLabel: "Hotline",
+  phone: "+91 (0) 129 415 8890",
+  emailLabel: "Private Appointments",
+  email: "support@suitoholic.com",
+  hoursLabel: "Studio Hours",
+  hours: "10:00 AM – 8:30 PM (Mon – Sat)",
+  addressLabel: "Atelier Address",
+  address: "",
+  customerServiceHeading: "Customer Service",
+  customerServiceLinks: [
+    { label: "Contact", href: "/contact" },
+    { label: "Track Order", href: "/track-order" },
+    { label: "Return/Exchange", href: "/returns" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Shipping Policy", href: "/shipping" },
+    { label: "Fabric Care", href: "/fabric-care" },
+    { label: "Terms & Conditions", href: "/terms" },
+    { label: "FAQ", href: "/faq" },
+  ],
+  companyHeading: "Company",
+  companyLinks: [
+    { label: "About Us", href: "/about" },
+    { label: "Fabric Archives", href: "/fabrics" },
+    { label: "Custom Fit Configurator", href: "/custom-shirt" },
+    { label: "Bespoke Shop", href: "/shop" },
+  ],
+  followHeading: "Follow Us",
+  followText: "Stay updated with our latest bespoke collections, craftsmanship journals, and style lookbooks.",
+  socialLinks: [
+    { platform: "instagram", label: "Instagram", href: "https://instagram.com" },
+    { platform: "facebook", label: "Facebook", href: "https://facebook.com" },
+    { platform: "pinterest", label: "Pinterest", href: "https://pinterest.com" },
+    { platform: "youtube", label: "YouTube", href: "https://youtube.com" },
+  ],
+  securePaymentLabel: "Secure Payment",
+  paymentMethods: [
+    { brand: "visa", title: "Visa" },
+    { brand: "paytm", title: "Paytm" },
+    { brand: "mastercard", title: "Mastercard" },
+    { brand: "amex", title: "American Express" },
+    { brand: "upi", title: "UPI" },
+  ],
+  copyrightText: "© 2003–{year}",
+  copyrightBrand: "SUITOHOLIC ATELIER.",
+  rightsText: "All rights reserved.",
+  craftNote: "Handcrafted with Savile Row precision.",
+  legalLinks: [
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Shipping", href: "/shipping" },
+  ],
+  backToTopLabel: "TOP",
+};

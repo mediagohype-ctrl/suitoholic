@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev:api": "npm --prefix server run dev",
+    "db:local": "npm --prefix server run db:local",
+    "setup:api": "npm --prefix server install",
+    "test:api": "npm --prefix server run test:api",
+    "test:e2e": "node scripts/e2e.mjs",
+    "test:cleanup": "npm --prefix server run test:cleanup"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
@@ -15,6 +21,7 @@
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
@@ -25,6 +32,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "playwright-core": "^1.64.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

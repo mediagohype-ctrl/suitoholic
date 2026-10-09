@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Express API has its own package and conventions.
+    "server/**",
+    // Standalone Node test script (not part of the Next.js app).
+    "scripts/**",
   ]),
 ]);
 

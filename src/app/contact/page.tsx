@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
+import { apiFetch, ApiError } from "@/lib/api";
 import {
   Phone,
   Mail,
@@ -22,6 +23,19 @@ import {
   ChevronDown,
   Globe2,
 } from "lucide-react";
+
+// Inquiry categories → inquiry type stored by the API (shown in Admin → Inquiries)
+const INQUIRY_TYPES: Record<string, string> = {
+  fitting: "fitting_appointment",
+  custom: "custom_order",
+  fabric: "swatch_request",
+  order: "order_status",
+};
+const CONTACT_METHODS: Record<string, string> = {
+  email: "Email",
+  phone: "Phone call",
+  whatsapp: "WhatsApp",
+};
 
 // =========================================================================
 // FAQ Data for Bespoke Concierge
@@ -67,6 +81,7 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [ticketId, setTicketId] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // FAQ Accordion Toggle
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -75,18 +90,37 @@ export default function ContactPage() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !email || !message) return;
 
     setIsSubmitting(true);
-    // Simulate high-end concierge submission
-    setTimeout(() => {
-      const generatedId = `SUI-${Math.floor(100000 + Math.random() * 900000)}`;
-      setTicketId(generatedId);
-      setIsSubmitting(false);
+    setSubmitError(null);
+    try {
+      const details = [
+        `Preferred response: ${CONTACT_METHODS[contactMethod] ?? contactMethod}`,
+        tailorConsult ? "Requested a 1-on-1 Master Tailor pattern review" : "",
+      ].filter(Boolean);
+      const res = await apiFetch<{ ok: boolean; id: number }>("/inquiries", {
+        method: "POST",
+        body: {
+          type: INQUIRY_TYPES[inquiryType] ?? "contact",
+          name: fullName.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          subject: subject.trim(),
+          message: [message.trim(), "", ...details].join("\n"),
+        },
+      });
+      // The reference matches the inquiry number in the admin dashboard.
+      setTicketId(`SUI-${String(res.id).padStart(6, "0")}`);
       setSubmitted(true);
-    }, 1200);
+    } catch (err) {
+      const apiErr = err as ApiError;
+      setSubmitError(apiErr.details?.[0]?.message || apiErr.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleResetForm = () => {
@@ -387,6 +421,12 @@ export default function ContactPage() {
                       </span>
                     </div>
                   </label>
+
+                  {submitError && (
+                    <p role="alert" className="text-xs sm:text-sm font-medium text-[#9B2C2C] bg-[#9B2C2C]/5 border border-[#9B2C2C]/20 rounded-xl px-4 py-3">
+                      {submitError}
+                    </p>
+                  )}
 
                   {/* Submit Button */}
                   <div className="pt-2">
