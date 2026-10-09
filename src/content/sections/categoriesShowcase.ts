@@ -9,40 +9,40 @@ export const categoriesShowcase = {
   dotAriaLabelTemplate: "Go to category {n}",
   items: [
     {
-      title: "SHIRTS",
+      title: "FORMAL SHIRTS",
       subtitle: "Egyptian Giza Twill & Sea Island Poplins",
       image: "/shop_bespoke_shirt.jpg",
       href: "/shop?category=formal_shirts",
     },
     {
-      title: "CO-ORD SETS",
+      title: "LUXURY SHIRTS",
       subtitle: "Italian Super 130s Worsted Wool & Double-Breasted",
-      image: "/blazer_navy_wool.jpg",
-      href: "/shop?category=blazers",
+      image: "/fabric_cat_coord_sets.jpg",
+      href: "/shop?category=co_ord_sets",
     },
     {
-      title: "DENIM EDIT & PANTS",
+      title: "LINEN COLLECTION",
+      subtitle: "Pure French Flax & Breathable Summer Weaves",
+      image: "/shirt_linen_french.jpg",
+      href: "/shop?category=linen_collection",
+    },
+    {
+      title: "CEREMONIAL SUITS",
+      subtitle: "Royal Bandhgalas & Velvet Smoking Jackets",
+      image: "/ceremonial_bandhgala.jpg",
+      href: "/shop?category=ceremonial",
+    },
+    {
+      title: "TROUSERS & PANTS",
       subtitle: "Sartorial Pleated Gurkha & Wool Dress Pants",
       image: "/pant_pleated_beige.jpg",
       href: "/shop?category=trousers",
     },
     {
-      title: "CEREMONIAL ATELIER",
-      subtitle: "Royal Bandhgalas & Italian Velvet Smoking Jackets",
-      image: "/ceremonial_bandhgala.jpg",
-      href: "/shop?category=ceremonial",
-    },
-    {
-      title: "LUXURY KNIT POLOS",
+      title: "KNIT POLOS & TEES",
       subtitle: "Silk-Blend Knitwear & Pima Cotton Essentials",
       image: "/tshirt_knit_navy_polo.jpg",
       href: "/shop?category=tshirts",
-    },
-    {
-      title: "BESPOKE CONFIGURATOR",
-      subtitle: "Tailored to Your Exact Body Measurements & Monogram",
-      image: "/tailoring_tools.jpg",
-      href: "/custom-shirt",
     },
   ],
 };

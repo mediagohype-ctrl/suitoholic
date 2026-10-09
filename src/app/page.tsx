@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroVideoBanner from "@/components/HeroVideoBanner";
+import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import ModernCollectionSection from "@/components/ModernCollectionSection";
 import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase";
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
@@ -38,8 +39,11 @@ export default function Home() {
       {/* Header */}
       <Header />
 
-      {/* Main Interactive Hero Video Banner (Includes Bottom Feature Highlights Bar Docked at 100dvh) */}
+      {/* Main Interactive Hero Video Banner */}
       <HeroVideoBanner />
+
+      {/* Feature Highlights Bar (Positioned below the 1st Full Screen Hero Video) */}
+      <FeatureHighlightsBar />
 
       {/* Split Feature Banners (PREMIUM FABRICS & CUSTOM FIT - EDITORIAL CARDS MATCHING REFERENCE) */}
       <section id="fabrics" className="w-full py-3 sm:py-4 px-3.5 sm:px-6 lg:px-10 xl:px-12">

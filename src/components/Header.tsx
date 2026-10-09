@@ -26,20 +26,32 @@ const TAB_PATHS: Record<string, string> = {
 export default function Header({ activeTab, cartCount }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
   const pathname = usePathname();
   const c = useContent("header");
   const { itemCount } = useCart();
   const bagCount = cartCount ?? itemCount;
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
+      const currentScrollY = window.scrollY;
+
+      // Update background style state
+      setScrolled(currentScrollY > 20);
+
+      // Hide navbar on scroll down, reveal on scroll up
+      if (currentScrollY > 80 && currentScrollY > lastScrollY) {
+        setVisible(false);
       } else {
-        setScrolled(false);
+        setVisible(true);
       }
+
+      lastScrollY = currentScrollY;
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -50,10 +62,12 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
 
   return (
     <header
-      className={`w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-transform duration-300 ease-in-out ${
+        visible ? "translate-y-0" : "-translate-y-full"
+      } ${
         scrolled
-          ? "fixed top-0 left-0 right-0 shadow-md bg-white/95 backdrop-blur-md"
-          : "absolute top-0 left-0 right-0 bg-transparent"
+          ? "shadow-md bg-white/95 backdrop-blur-md"
+          : "bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
       }`}
     >
       {/* Top Announcement Bar */}

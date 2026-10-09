@@ -11,12 +11,10 @@
     "threadCount": "140s / 2-Ply Fine Formal Twill",
     "collar": "Classic English Spread Collar",
     "cuff": "Dual-Use Convertible French Cuff",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/prod_maroon_stripe.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
+      "/prod_maroon_stripe.jpg",
+      "/formal_white_twill.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 184,
@@ -66,12 +64,10 @@
     "threadCount": "120s / 2-Ply Pinpoint Weave",
     "collar": "Semi-Spread Formal Collar",
     "cuff": "Double French Cuff (For Cufflinks)",
-    "image": "/new_shirts/shirt_3.jpg",
+    "image": "/formal_charcoal_boardroom.jpg",
     "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
+      "/formal_charcoal_boardroom.jpg",
+      "/formal_french_cuff_blue.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 128,
@@ -121,12 +117,10 @@
     "threadCount": "140s High-Density Poplin",
     "collar": "Wide Cutaway Formal Collar",
     "cuff": "Mitred Dual-Button Cuff",
-    "image": "/new_shirts/shirt_4.jpg",
+    "image": "/formal_banker_stripe.jpg",
     "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
+      "/formal_banker_stripe.jpg",
+      "/prod_navy_stripe.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 145,
@@ -176,12 +170,10 @@
     "threadCount": "130s Micro-Herringbone Weave",
     "collar": "Semi-Spread Formal Collar",
     "cuff": "Beveled Button Cuff",
-    "image": "/new_shirts/shirt_1.jpg",
+    "image": "/formal_ivory_herringbone.jpg",
     "gallery": [
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg"
+      "/formal_ivory_herringbone.jpg",
+      "/prod_beige_stripe.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 96,
@@ -231,12 +223,10 @@
     "threadCount": "120s Fine Micro-Twill",
     "collar": "English Point Collar",
     "cuff": "Single Button Barrel Cuff",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/prod_charcoal_stripe.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
+      "/prod_charcoal_stripe.jpg",
+      "/formal_charcoal_boardroom.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 110,

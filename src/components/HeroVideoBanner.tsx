@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import { useContent } from "@/context/SiteDataProvider";
 
 const swatchGradient = (from: string, to: string) => `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
@@ -94,7 +93,7 @@ export default function HeroVideoBanner() {
           preload="auto"
           onLoadedData={() => setIsVideoLoaded(true)}
           onTimeUpdate={handleTimeUpdate}
-          className="absolute inset-0 w-full h-full object-contain object-center pointer-events-none transition-all duration-700 ease-out scale-[0.85] sm:scale-[0.78] md:scale-[0.74] lg:scale-[0.70] pt-12 sm:pt-14 lg:pt-16 pb-10 sm:pb-14"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-700 ease-out"
           style={{
             opacity: isVideoLoaded ? 1 : 0.85,
           }}
@@ -112,62 +111,99 @@ export default function HeroVideoBanner() {
       </div>
 
       {/* 2. Hero Content Container (flex-1 centers content) */}
-      <div className="relative z-20 w-full max-w-[1780px] mx-auto px-4 sm:px-10 lg:px-16 xl:px-20 flex-1 min-h-0 flex flex-col justify-center">
+      <div className="relative z-20 w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 flex-1 min-h-0 flex flex-col justify-center">
         
-        {/* Left Column: Eyebrow + Main Heading + Action Buttons (+ Mobile Range Tracker) */}
-        <div className="max-w-[280px] sm:max-w-md md:max-w-xl lg:max-w-[560px] xl:max-w-[620px] flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
-
-          {/* Golden/Tan Eyebrow Subtitle */}
-          <div className="mb-1.5 sm:mb-3 flex items-center gap-2 sm:gap-3 flex-wrap">
-            <span className="text-[#A57545] text-[10px] sm:text-xs md:text-[13px] font-bold tracking-[0.22em] sm:tracking-[0.28em] uppercase inline-block">
-              {c.eyebrow}
-            </span>
-            <span className="hidden sm:inline text-[#A57545]/40 font-mono text-xs">|</span>
-            <span className="text-[#4A3F35] text-[11px] font-semibold tracking-wider transition-all duration-300">
-              {currentVariant?.name}
-            </span>
-          </div>
+        {/* Left Column: Main Heading + Action Buttons (+ Mobile Range Tracker) */}
+        <div className="max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-[440px] xl:max-w-[480px] flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
 
           {/* Main Luxury High-Contrast Heading */}
-          <h1 className="font-serif-luxury font-medium text-[22px] sm:text-[30px] md:text-4xl lg:text-[48px] xl:text-[54px] leading-[1.1] sm:leading-[1.08] text-[#14110E] tracking-tight uppercase mb-3 sm:mb-5 md:mb-8">
+          <h1 className="font-serif-luxury font-normal text-[16px] sm:text-[20px] md:text-[24px] lg:text-[30px] xl:text-[34px] leading-[1.1] sm:leading-[1.08] text-[#14110E] tracking-normal uppercase mb-2.5 sm:mb-4 md:mb-5">
             {c.headingLine1} <br />
             {c.headingLine2}
           </h1>
 
           {/* Action Buttons: Stacked on Mobile, Side-by-Side on Desktop */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 md:gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2.5 md:gap-3 w-full sm:w-auto">
             <Link
               href={c.primaryCtaHref}
-              className="bg-[#14110E] hover:bg-[#2A241F] text-[#FAF8F5] text-[10px] sm:text-xs lg:text-[12px] font-bold tracking-[0.16em] px-4 sm:px-8 lg:px-9 py-2.5 sm:py-3.5 md:py-4 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[130px] sm:w-auto"
+              className="bg-[#14110E] hover:bg-[#2A241F] text-[#FAF8F5] text-[9px] sm:text-[10px] lg:text-[11px] font-bold tracking-[0.14em] px-3.5 sm:px-6 lg:px-7 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[115px] sm:w-auto"
             >
               {c.primaryCtaLabel}
             </Link>
             
             <Link
               href={c.secondaryCtaHref}
-              className="bg-[#14110E] hover:bg-black text-[#FAF8F5] border border-[#14110E] text-[10px] sm:text-xs lg:text-[12px] font-bold tracking-[0.16em] px-3.5 sm:px-7 lg:px-8 py-2.5 sm:py-3.5 md:py-4 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md active:scale-98 whitespace-nowrap w-[130px] sm:w-auto"
+              className="bg-[#14110E] hover:bg-black text-[#FAF8F5] border border-[#14110E] text-[9px] sm:text-[10px] lg:text-[11px] font-bold tracking-[0.14em] px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md active:scale-98 whitespace-nowrap w-[115px] sm:w-auto"
             >
               <span>{c.secondaryCtaLabel}</span>
               <span className="transform group-hover:translate-x-1 transition-transform duration-200 text-xs sm:text-sm leading-none">→</span>
             </Link>
           </div>
 
-          {/* MOBILE ONLY: 01-05 Range Tracker + 4 Interactive Color Swatches */}
-          <div className="flex md:hidden items-center gap-3 mt-3.5 sm:mt-5 select-none">
-            {/* 01 ... 05 Vertical Range Tracker for Mobile */}
-            <div className="flex flex-col items-center select-none">
-              <span className="text-[9.5px] font-semibold text-[#14110E] tracking-wider mb-0.5 font-mono">
+          {/* Color Swatches & 01-05 Range Tracker (Positioned on the Left under Buttons) */}
+          <div className="flex items-center gap-3.5 sm:gap-4 mt-4 sm:mt-5 md:mt-6 select-none">
+            
+            {/* Color Swatches */}
+            <div className="flex flex-col items-center gap-2 sm:gap-2.5 bg-transparent p-0">
+              {variants.map((variant, idx) => {
+                const isActive = activeIndex === idx;
+                const isHovered = hoveredIndex === idx;
+
+                return (
+                  <div key={`${variant.name}-${idx}`} className="relative flex items-center justify-center group">
+                    {/* Tooltip on right side of swatch */}
+                    <div
+                      className={`absolute left-full ml-3 px-2.5 py-1 bg-[#14110E] text-[#FAF8F5] text-[10px] font-medium tracking-wider uppercase rounded shadow-lg whitespace-nowrap pointer-events-none transition-all duration-200 z-30 ${
+                        isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+                      }`}
+                    >
+                      {variant.shortLabel}
+                    </div>
+
+                    <div
+                      className={`rounded-full p-0.5 transition-all duration-300 flex items-center justify-center ${
+                        isActive
+                          ? "ring-1 ring-[#14110E] ring-offset-1.5 ring-offset-transparent scale-105 shadow-xs"
+                          : "ring-0 ring-transparent ring-offset-0"
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => selectVariant(idx)}
+                        onMouseEnter={() => setHoveredIndex(idx)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                        className={`w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full transition-all duration-300 cursor-pointer relative shadow-xs ${
+                          isActive
+                            ? "opacity-100"
+                            : "opacity-75 hover:opacity-100 hover:scale-105"
+                        }`}
+                        style={{
+                          background: swatchGradient(variant.swatchFrom, variant.swatchTo),
+                        }}
+                        aria-label={`Select ${variant.name}`}
+                        title={variant.name}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 01 ... 05 Vertical Range Dynamic Tracker */}
+            <div className="flex flex-col items-center select-none py-0.5">
+              <span className="text-[9px] sm:text-[9.5px] font-normal text-[#5A4E42]/80 tracking-wider mb-1 font-mono">
                 {c.trackerStartLabel}
               </span>
               
-              <div className="relative w-3 h-14 sm:h-18 my-0.5">
-                <div className="absolute top-0 bottom-0 w-[1px] bg-[#14110E]/30 left-1/2 -translate-x-1/2" />
+              <div className="relative w-3 h-16 sm:h-20 my-0.5">
+                <div className="absolute top-0 bottom-0 w-[1px] bg-[#5A4E42]/20 left-1/2 -translate-x-1/2" />
                 <div
-                  className="absolute top-0 w-[1.5px] bg-[#14110E] left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
+                  className="absolute top-0 w-[1px] bg-[#5A4E42]/70 left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
                   style={{
                     height: `${(activeIndex / lastIndex) * 100}%`,
                   }}
                 />
+
                 {variants.map((_, stepIdx) => {
                   const isPastOrActive = activeIndex >= stepIdx;
                   const topPercent = (stepIdx / lastIndex) * 100;
@@ -176,13 +212,13 @@ export default function HeroVideoBanner() {
                       key={stepIdx}
                       type="button"
                       onClick={() => selectVariant(stepIdx)}
-                      className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 p-0.5 focus:outline-none"
+                      className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer p-0.5 group flex items-center justify-center focus:outline-none"
                       style={{ top: `${topPercent}%` }}
-                      aria-label={`Step 0${stepIdx + 1}`}
+                      aria-label={`Go to step 0${stepIdx + 1}`}
                     >
                       <span
-                        className={`w-1.5 h-1.5 rounded-full block transition-all duration-300 ${
-                          isPastOrActive ? "bg-[#14110E]" : "bg-[#14110E]/35"
+                        className={`w-0.5 h-0.5 rounded-full transition-all duration-300 ${
+                          isPastOrActive ? "bg-[#5A4E42]" : "bg-[#5A4E42]/30"
                         }`}
                       />
                     </button>
@@ -190,177 +226,25 @@ export default function HeroVideoBanner() {
                 })}
 
                 <div
-                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-[1.5px] border-[#14110E] bg-[#FAF5EE]/70 pointer-events-none transition-all duration-500 ease-out z-20 flex items-center justify-center"
+                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full border border-[#5A4E42] bg-[#FAF5EE]/90 pointer-events-none transition-all duration-500 ease-out z-20 flex items-center justify-center"
                   style={{
                     top: `${(activeIndex / lastIndex) * 100}%`,
                   }}
                 >
-                  <div className="w-1 h-1 rounded-full bg-[#14110E]" />
+                  <div className="w-0.5 h-0.5 rounded-full bg-[#5A4E42]" />
                 </div>
               </div>
 
-              <span className="text-[9.5px] font-semibold text-[#14110E] tracking-wider mt-0.5 font-mono">
+              <span className="text-[9px] sm:text-[9.5px] font-normal text-[#5A4E42]/80 tracking-wider mt-1 font-mono">
                 {c.trackerEndLabel}
               </span>
             </div>
 
-            {/* 4 Interactive Color Swatches on Mobile (Navy, Terracotta, Rose, Trio) */}
-            <div className="flex flex-col items-center gap-1.5 bg-transparent p-0 ml-1">
-              {variants.map((variant, idx) => {
-                const isActive = activeIndex === idx;
-                return (
-                  <div
-                    key={`${variant.name}-${idx}`}
-                    className={`rounded-full p-0.5 transition-all duration-300 flex items-center justify-center ${
-                      isActive
-                        ? "ring-1.5 ring-[#14110E] ring-offset-2 ring-offset-transparent scale-110 shadow-xs"
-                        : "ring-0 ring-transparent ring-offset-0"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => selectVariant(idx)}
-                      className={`w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full transition-all duration-300 cursor-pointer shadow-xs ${
-                        isActive ? "opacity-100" : "opacity-75 hover:opacity-100"
-                      }`}
-                      style={{
-                        background: swatchGradient(variant.swatchFrom, variant.swatchTo),
-                      }}
-                      aria-label={`Select ${variant.name}`}
-                      title={variant.name}
-                    />
-                  </div>
-                );
-              })}
-            </div>
           </div>
 
         </div>
 
       </div>
-
-      {/* 3. Bottom Left: "SCROLL DOWN" Indicator */}
-      <div className="absolute bottom-24 sm:bottom-20 left-4 sm:left-10 lg:left-16 xl:left-20 z-20 flex flex-col items-start pointer-events-none">
-        <span className="text-[#3D352E] text-[8.5px] sm:text-[9.5px] font-semibold tracking-[0.22em] uppercase">
-          {c.scrollLabel}
-        </span>
-        <div className="w-[1.5px] h-3 sm:h-4 bg-[#3D352E]/90 mt-1 ml-0.5" />
-      </div>
-
-      {/* 4. DESKTOP ONLY: Right Side Interactive Color Swatches + 01-05 Range Tracker */}
-      <div className="hidden md:flex absolute right-4 sm:right-7 lg:right-10 xl:right-14 top-1/2 -translate-y-1/2 z-30 items-center gap-4 sm:gap-6 select-none">
-        
-        {/* Transparent Atelier Color Swatches with Active Indicator Circle */}
-        <div className="flex flex-col items-center gap-3.5 bg-transparent p-0">
-          
-          {/* Swatch items */}
-          {variants.map((variant, idx) => {
-            const isActive = activeIndex === idx;
-            const isHovered = hoveredIndex === idx;
-
-            return (
-              <div key={`${variant.name}-${idx}`} className="relative flex items-center justify-center group">
-                {/* Floating tooltip with color name */}
-                <div
-                  className={`absolute right-full mr-3.5 px-2.5 py-1 bg-[#14110E] text-[#FAF8F5] text-[10.5px] font-medium tracking-wider uppercase rounded shadow-lg whitespace-nowrap pointer-events-none transition-all duration-200 ${
-                    isHovered ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"
-                  }`}
-                >
-                  {variant.shortLabel}
-                </div>
-
-                {/* Circular Color Swatch Button with Active Indicator Circle */}
-                <div
-                  className={`rounded-full p-0.5 transition-all duration-300 flex items-center justify-center ${
-                    isActive
-                      ? "ring-1.5 ring-[#14110E] ring-offset-2 ring-offset-transparent scale-110 shadow-sm"
-                      : "ring-0 ring-transparent ring-offset-0"
-                  }`}
-                >
-                  <button
-                    type="button"
-                    onClick={() => selectVariant(idx)}
-                    onMouseEnter={() => setHoveredIndex(idx)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full transition-all duration-300 cursor-pointer relative shadow-sm ${
-                      isActive
-                        ? "opacity-100"
-                        : "opacity-75 hover:opacity-100 hover:scale-105"
-                    }`}
-                    style={{
-                      background: swatchGradient(variant.swatchFrom, variant.swatchTo),
-                    }}
-                    aria-label={`Select ${variant.name}`}
-                    title={variant.name}
-                  />
-                </div>
-              </div>
-            );
-          })}
-
-        </div>
-
-        {/* 01 ... 05 Vertical Range Dynamic Tracker (Tracks downward as color changes) */}
-        <div className="flex flex-col items-center select-none py-1">
-          <span className="text-[11px] sm:text-xs font-semibold text-[#14110E] tracking-wider mb-2.5 font-mono">
-            {c.trackerStartLabel}
-          </span>
-          
-          {/* Vertical Track with Exact Absolute Coordinates */}
-          <div className="relative w-4 h-24 sm:h-28 my-1">
-            {/* Background static connecting line */}
-            <div className="absolute top-0 bottom-0 w-[1px] bg-[#14110E]/30 left-1/2 -translate-x-1/2" />
-
-            {/* Active connecting progress line flowing down */}
-            <div
-              className="absolute top-0 w-[1.5px] bg-[#14110E] left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
-              style={{
-                height: `${(activeIndex / lastIndex) * 100}%`,
-              }}
-            />
-
-            {/* Step guide dots located at exact 0%, 33.33%, 66.66%, 100% */}
-            {variants.map((_, stepIdx) => {
-              const isPastOrActive = activeIndex >= stepIdx;
-              const topPercent = (stepIdx / lastIndex) * 100;
-              return (
-                <button
-                  key={stepIdx}
-                  type="button"
-                  onClick={() => selectVariant(stepIdx)}
-                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer p-1 group flex items-center justify-center focus:outline-none"
-                  style={{ top: `${topPercent}%` }}
-                  aria-label={`Go to step 0${stepIdx + 1}`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                      isPastOrActive ? "bg-[#14110E]" : "bg-[#14110E]/35"
-                    }`}
-                  />
-                </button>
-              );
-            })}
-
-            {/* Active Moving Tracker Ring - Perfectly Centers on Active Dot */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-[1.5px] border-[#14110E] bg-[#FAF5EE]/70 pointer-events-none transition-all duration-500 ease-out z-20 shadow-xs flex items-center justify-center"
-              style={{
-                top: `${(activeIndex / lastIndex) * 100}%`,
-              }}
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-[#14110E]" />
-            </div>
-          </div>
-
-          <span className="text-[11px] sm:text-xs font-semibold text-[#14110E] tracking-wider mt-2.5 font-mono">
-            {c.trackerEndLabel}
-          </span>
-        </div>
-
-      </div>
-
-      {/* 5. Feature Highlights Bar (Docked at the Bottom of Hero Section) */}
-      <FeatureHighlightsBar />
 
     </section>
   );

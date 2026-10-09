@@ -98,16 +98,16 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
                   </p>
                 </div>
                 {/* Center Vertical Divider Line */}
-                {leftColumn && <div className="absolute right-0 top-1 bottom-1 w-[1px] bg-[#D8C7B7]" />}
+                {leftColumn && <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-[#8C6D47]" />}
               </div>
             );
           })}
         </div>
 
         {/* DESKTOP VIEW: 1 Row 4 Columns with Vertical Dividers */}
-        <div className="hidden md:grid grid-cols-4 w-full divide-x divide-[#D8C7B7]">
+        <div className="hidden md:grid grid-cols-4 w-full">
           {items.map((item, i) => (
-            <div key={i} className="flex items-center space-x-3.5 px-3 lg:px-6 justify-center lg:justify-start">
+            <div key={i} className="relative flex items-center space-x-3.5 px-3 lg:px-6 justify-center lg:justify-start">
               <div className="w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center shrink-0 text-[#14110E]">
                 {renderIcon(item.icon)}
               </div>
@@ -119,6 +119,10 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
                   {item.subtitle}
                 </p>
               </div>
+              {/* Taller Vertical Separation Line */}
+              {i < items.length - 1 && (
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 sm:h-11 lg:h-12 w-[1px] bg-[#8C6D47]" />
+              )}
             </div>
           ))}
         </div>

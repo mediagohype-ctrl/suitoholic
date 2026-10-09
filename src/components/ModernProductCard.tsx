@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Bookmark, ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
+import { Heart, ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
 import { ProductItem } from "@/data/products";
 
 interface ModernProductCardProps {
@@ -49,7 +49,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   return (
     <div className="group flex flex-col w-full">
       {/* Upper Tall Rounded Image Container */}
-      <div className="relative w-full aspect-[3/4.2] min-h-[380px] sm:min-h-[440px] lg:min-h-[500px] xl:min-h-[540px] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#1E1914] shadow-sm transition-all duration-300 group-hover:shadow-md">
+      <div className="relative w-full aspect-[3/4.2] min-h-[380px] sm:min-h-[440px] lg:min-h-[500px] xl:min-h-[540px] rounded-[8px] overflow-hidden bg-[#1E1914] shadow-sm transition-all duration-300 group-hover:shadow-md">
         
         {/* Main Product Image */}
         <Link href={`/product/${product.slug}`} className="block w-full h-full">
@@ -62,19 +62,21 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           />
         </Link>
 
-        {/* Top Right Bookmark Ribbon Icon */}
+        {/* Top Right Heart Wishlist Icon - Only Visible On Hover */}
         <button
           onClick={handleToggleSave}
           type="button"
           aria-label={isSaved ? "Remove from wishlist" : "Save to wishlist"}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 p-1.5 rounded-full transition-transform duration-200 hover:scale-110 active:scale-95 drop-shadow-md"
+          className={`absolute top-3 right-3 sm:top-4 sm:right-4 z-10 p-2 rounded-full bg-black/30 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md ${
+            isSaved ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+          }`}
         >
-          <Bookmark
-            size={18}
+          <Heart
+            size={17}
             className={
               isSaved
                 ? "text-[#C5A069] fill-[#C5A069]"
-                : "text-white fill-white/90 stroke-white/90"
+                : "text-white fill-white/20 stroke-white stroke-[2]"
             }
           />
         </button>
