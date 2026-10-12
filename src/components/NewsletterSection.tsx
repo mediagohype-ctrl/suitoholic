@@ -42,17 +42,17 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section className="w-full max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-14 xl:px-20 my-10 sm:my-14 lg:my-16 select-none">
-      <div className="relative w-full bg-[#EDE4DB] rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 xl:p-20 border border-[#D6C5B5] shadow-[0_10px_30px_rgba(20,17,14,0.05)] overflow-hidden min-h-[240px] sm:min-h-[280px] lg:min-h-[320px] flex items-center">
+    <section className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 my-12 sm:my-16 lg:my-20 select-none">
+      <div className="relative w-full bg-[#EDE4DB] rounded-[12px] p-8 sm:p-12 lg:p-16 xl:p-20 border border-[#D6C5B5] shadow-[0_12px_36px_rgba(20,17,14,0.06)] overflow-hidden min-h-[280px] sm:min-h-[320px] lg:min-h-[360px] flex items-center">
 
-        <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 py-2 sm:py-4">
+        <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 py-3 sm:py-6">
 
           {/* Left Column: Title & Subtitle Information */}
-          <div className="w-full lg:w-5/12 space-y-3 text-left">
-            <h3 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#3B222E] tracking-tight leading-tight">
+          <div className="w-full lg:w-5/12 space-y-3.5 text-left">
+            <h3 className="text-2xl sm:text-3xl lg:text-[38px] xl:text-[42px] font-bold text-[#3B222E] tracking-tight leading-tight">
               {c.heading}
             </h3>
-            <p className="text-sm sm:text-base text-[#523B47] leading-relaxed font-normal">
+            <p className="text-sm sm:text-base lg:text-[17px] text-[#523B47] leading-relaxed font-normal">
               {c.subtitle}
             </p>
           </div>
@@ -60,17 +60,17 @@ export default function NewsletterSection() {
           {/* Right Column: Form & Confirmation */}
           <div className="w-full lg:w-7/12 flex-1">
             {submitted ? (
-              <div className="bg-[#2D6A4F]/15 border border-[#2D6A4F]/40 p-4 sm:p-5 rounded-xl flex items-center space-x-3 text-[#1B4332] shadow-xs">
+              <div className="bg-[#2D6A4F]/15 border border-[#2D6A4F]/40 p-4 sm:p-5 rounded-[8px] flex items-center space-x-3 text-[#1B4332] shadow-xs">
                 <CheckCircle2 size={22} className="shrink-0 text-[#2D6A4F]" />
                 <span className="text-xs sm:text-sm font-semibold">
                   {c.successMessage}
                 </span>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="w-full space-y-3">
+              <form onSubmit={handleSubmit} className="w-full space-y-3.5">
 
                 {/* Input + Subscribe Button Row */}
-                <div className="flex flex-col sm:flex-row items-stretch gap-2.5 sm:gap-3 w-full">
+                <div className="flex flex-col sm:flex-row items-stretch gap-2.5 sm:gap-3.5 w-full">
                   <div className="relative flex-1">
                     <input
                       type="email"
@@ -82,7 +82,7 @@ export default function NewsletterSection() {
                       placeholder={c.emailPlaceholder}
                       disabled={loading}
                       required
-                      className="w-full bg-white border border-[#C5B3A0] focus:border-[#3B222E] focus:ring-2 focus:ring-[#3B222E]/10 text-sm sm:text-base px-4 sm:px-5 py-3.5 rounded-xl text-[#2C1822] placeholder:text-[#917B87] focus:outline-hidden transition-all shadow-xs"
+                      className="w-full bg-white border border-[#C5B3A0] focus:border-[#3B222E] focus:ring-2 focus:ring-[#3B222E]/10 text-sm sm:text-base px-5 py-4 rounded-[8px] text-[#2C1822] placeholder:text-[#917B87] focus:outline-hidden transition-all shadow-xs"
                     />
                   </div>
 
@@ -90,14 +90,14 @@ export default function NewsletterSection() {
                   <button
                     type="submit"
                     disabled={!isFormValid}
-                    className={`text-sm sm:text-base font-bold tracking-wide px-7 sm:px-9 py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shrink-0 ${
+                    className={`text-sm sm:text-base font-bold tracking-wide px-7 sm:px-9 py-4 rounded-[8px] transition-all duration-300 flex items-center justify-center gap-2 shrink-0 ${
                       isFormValid
                         ? "bg-[#14110E] hover:bg-black text-white shadow-md cursor-pointer group scale-100"
                         : "bg-[#14110E]/40 text-white/60 cursor-not-allowed shadow-none"
                     }`}
                   >
                     <span>{loading ? c.subscribingLabel : c.subscribeLabel}</span>
-                    <Send size={15} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-white" : "text-[#8C7684]"}`} />
+                    <Send size={16} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-white" : "text-[#8C7684]"}`} />
                   </button>
                 </div>
 

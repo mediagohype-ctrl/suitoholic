@@ -12,10 +12,9 @@ export default function ShopByCategoryGrid() {
     <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12 my-10 sm:my-14 lg:my-18 select-none">
       {/* Title */}
       <div className="text-center mb-8 sm:mb-12">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-normal text-[#14110E] tracking-[0.18em] uppercase">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-bold text-[#4A202A] tracking-[0.18em] uppercase">
           {c.heading}
         </h2>
-        <div className="w-16 h-[1.5px] bg-[#9E774C] mx-auto mt-3" />
       </div>
 
       {/* 4-Column Editorial Portrait Grid (2 rows of 4 cards) */}
@@ -27,7 +26,7 @@ export default function ShopByCategoryGrid() {
             className="group flex flex-col items-center cursor-pointer"
           >
             {/* Portrait Image Container */}
-            <div className="relative w-full aspect-[3/4] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#F2E8DF] shadow-xs group-hover:shadow-xl border border-black/5 transition-all duration-500">
+            <div className="relative w-full aspect-[3/4.2] rounded-[9px] overflow-hidden bg-[#1E1914] shadow-xs group-hover:shadow-md transition-all duration-500">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={item.image}

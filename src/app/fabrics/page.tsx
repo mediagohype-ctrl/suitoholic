@@ -188,7 +188,7 @@ export default function FabricsPage() {
         <div className="space-y-4 border-b border-[#D5C2AF] pb-5">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
             <div>
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-normal uppercase leading-tight text-[#14110E]">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-bold tracking-[0.18em] uppercase leading-tight text-[#4A202A]">
                 {studio?.heading}
               </h2>
               <p className="text-xs sm:text-sm text-[#55473A] font-sans mt-0.5 max-w-xl">

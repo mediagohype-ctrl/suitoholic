@@ -46,7 +46,13 @@ export function useCatalog(): Catalog {
       categories,
       homeCollections: categories
         .filter((c) => c.showOnHome)
-        .map((c) => ({ id: c.id, title: c.homeTitle || c.title, subtitle: c.description || c.subtitle, tag: c.tag, bgImage: c.bgImage || c.image })),
+        .map((c) => ({
+          id: c.id || (c as any).key,
+          title: c.homeTitle || c.title,
+          subtitle: c.description || c.subtitle,
+          tag: c.tag,
+          bgImage: c.bgImage || c.image,
+        })),
       getProduct: (idOrSlug) => products.find((p) => String(p.id) === String(idOrSlug) || p.slug === idOrSlug),
       getCategory: (id) => byKey.get(id),
     };

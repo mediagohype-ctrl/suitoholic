@@ -1,131 +1,58 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import {
-  ArrowRight,
-  ShieldCheck,
-  Ruler,
-  Scissors,
-  Award,
-  CheckCircle2,
-  Sparkles,
-  Truck,
-  Star,
-  type LucideIcon,
-} from "lucide-react";
+import React, { useRef, useEffect } from "react";
 import { useContent } from "@/context/SiteDataProvider";
-
-const PILLAR_ICONS: Record<string, LucideIcon> = {
-  ruler: Ruler,
-  scissors: Scissors,
-  shield: ShieldCheck,
-  award: Award,
-  check: CheckCircle2,
-  sparkles: Sparkles,
-  truck: Truck,
-  star: Star,
-};
-
-function renderPillarIcon(key: string) {
-  const Icon = PILLAR_ICONS[key] ?? CheckCircle2;
-  return <Icon size={15} className="text-[#C5A069] shrink-0" />;
-}
 
 export default function AtelierEditorialBanner() {
   const c = useContent("atelierBanner");
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const videoSource = c.video || "/video/create_a_second_premium_shirt_video.mp4";
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      video.playbackRate = 1.0;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    }
+  }, [videoSource]);
+
   return (
-    <section className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-6 sm:my-10 lg:my-14 select-none">
-      <div className="relative w-full min-h-[420px] sm:min-h-[480px] lg:min-h-[540px] rounded-2xl sm:rounded-3xl lg:rounded-[32px] overflow-hidden shadow-[0_20px_60px_rgba(20,17,14,0.18)] border border-white/30 flex items-center group">
-        
-        {/* Background High-Resolution Studio Imagery */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={c.image}
-          alt={c.imageAlt}
-          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
-          loading="lazy"
-        />
+    <section className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-8 sm:my-12 lg:my-16 select-none">
+      {/* Heading: Behind the scenes */}
+      <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-bold text-[#4A202A] tracking-[0.18em] uppercase leading-tight">
+          Behind the scenes
+        </h2>
+      </div>
 
-        {/* Dramatic Multi-Stop Luxury Gradient Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/70 to-black/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30" />
-
-        {/* Banner Inner Content Grid */}
-        <div className="relative z-10 w-full p-6 sm:p-10 lg:p-14 xl:p-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-white">
-          
-          {/* Left Column: Editorial Suiting Copy & Actions */}
-          <div className="lg:col-span-7 xl:col-span-8 space-y-4 sm:space-y-6 max-w-2xl">
-            {/* Heading */}
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-normal uppercase leading-[1.08] tracking-tight">
-              {c.headingLine1} <br />
-              <span className="italic font-light text-[#E5D2BE]">{c.headingAccent}</span>
-            </h2>
-
-            {/* Description */}
-            <p className="text-xs sm:text-sm lg:text-[15px] text-[#D8C9B9] leading-relaxed font-sans font-normal max-w-xl">
-              {c.description}
-            </p>
-
-            {/* 3 Pillars Highlight Bar */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-1 sm:pt-2 border-t border-white/15 max-w-xl">
-              {(c.pillars ?? []).map((pillar, i) => (
-                <div key={i} className="flex items-center space-x-1.5 sm:space-x-2">
-                  {renderPillarIcon(pillar.icon)}
-                  <span className="text-[10px] sm:text-xs font-semibold text-[#EFE5D8] tracking-wide">
-                    {pillar.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3 sm:gap-4">
-              <Link
-                href={c.primaryCtaHref}
-                className="bg-[#14110E] hover:bg-black text-white border border-[#C5A069]/60 hover:border-[#C5A069] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase shadow-lg flex items-center gap-2 group/btn"
-              >
-                <span>{c.primaryCtaLabel}</span>
-                <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform text-[#C5A069]" />
-              </Link>
-
-              <Link
-                href={c.secondaryCtaHref}
-                className="bg-[#14110E] hover:bg-black text-white border border-white/30 hover:border-white/60 text-[11px] sm:text-xs font-bold tracking-[0.2em] px-6 sm:px-8 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase shadow-md"
-              >
-                {c.secondaryCtaLabel}
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Column: Glassmorphic Atelier Seal Card (Visible on lg+ screens) */}
-          <div className="hidden lg:flex lg:col-span-5 xl:col-span-4 justify-end">
-            <div className="bg-black/55 backdrop-blur-xl border border-white/20 p-6 xl:p-8 rounded-2xl sm:rounded-3xl shadow-2xl max-w-sm w-full space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-white/15">
-                <span className="text-[10px] font-bold tracking-[0.22em] text-[#C5A069] uppercase">
-                  {c.sealHeading}
-                </span>
-                <Award size={18} className="text-[#C5A069]" />
-              </div>
-
-              <div className="space-y-3 text-xs sm:text-[13px] text-[#E5D2BE]">
-                {(c.sealPoints ?? []).map((point, i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <CheckCircle2 size={16} className="text-[#C5A069] shrink-0 mt-0.5" />
-                    <span>{point.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-2 border-t border-white/15 flex items-center justify-between text-[11px] text-[#B8A490]">
-                <span>{c.sealFooterLeft}</span>
-                <span className="font-semibold text-white">{c.sealFooterRight}</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
+      {/* Pure, Clean, Ultra-Smooth Cinema Video Player */}
+      <div
+        className="relative w-[90%] mx-auto aspect-[16/9] sm:aspect-[21/9] min-h-[350px] sm:min-h-[440px] lg:min-h-[530px] rounded-[12px] overflow-hidden shadow-[0_20px_60px_rgba(20,17,14,0.14)] bg-[#0E0C0A] flex items-center justify-center pointer-events-none"
+      >
+        <video
+          ref={videoRef}
+          playsInline
+          muted
+          loop
+          autoPlay
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          style={{
+            transform: "translate3d(0, 0, 0)",
+            willChange: "transform",
+            backfaceVisibility: "hidden",
+          }}
+        >
+          <source src={videoSource} type="video/mp4" />
+          <source src="/video/create_a_second_premium_shirt_video.mp4" type="video/mp4" />
+        </video>
       </div>
     </section>
   );

@@ -25,4 +25,8 @@ export const atelierBanner = {
   ],
   sealFooterLeft: "Global Free Shipping",
   sealFooterRight: "Rated 4.98 / 5.0",
+  video: "/video/create_a_second_premium_shirt_video.mp4",
+  videoBadge: "ATELIER FILM • 4K ULTRA-SMOOTH",
+  videoTitle: "BESPOKE CRAFTSMANSHIP IN MOTION",
+  videoSubtitle: "Hand-finished stitches & pure luxury drape",
 };

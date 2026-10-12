@@ -168,7 +168,7 @@ export default function CustomShirtConfigurator() {
               <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 sm:mb-4">
                 {/* Top Left Inscription */}
                 <div className="select-none">
-                  <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#14110E] tracking-[0.06em] uppercase leading-[1.12]">
+                  <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#4A202A] tracking-[0.18em] uppercase leading-[1.12]">
                     {withLineBreaks(c.inscriptionLines)}
                   </h2>
                   <div className="w-12 sm:w-16 h-[1.5px] bg-[#9E774C] mt-2 sm:mt-2.5 opacity-90" />

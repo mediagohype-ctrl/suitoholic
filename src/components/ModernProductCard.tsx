@@ -49,7 +49,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   return (
     <div className="group flex flex-col w-full">
       {/* Upper Tall Rounded Image Container */}
-      <div className="relative w-full aspect-[3/4.2] min-h-[380px] sm:min-h-[440px] lg:min-h-[500px] xl:min-h-[540px] rounded-[8px] overflow-hidden bg-[#1E1914] shadow-sm transition-all duration-300 group-hover:shadow-md">
+      <div className="relative w-full aspect-[3/4.1] min-h-[350px] sm:min-h-[410px] lg:min-h-[470px] xl:min-h-[510px] rounded-[9px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/70 shadow-2xs transition-all duration-300 group-hover:shadow-md">
         
         {/* Main Product Image */}
         <Link href={`/product/${product.slug}`} className="block w-full h-full">
@@ -61,6 +61,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
             loading="lazy"
           />
         </Link>
+
 
         {/* Top Right Heart Wishlist Icon - Only Visible On Hover */}
         <button
@@ -126,17 +127,17 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
       </div>
 
       {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
-      <div className="mt-2 sm:mt-2.5 flex items-start justify-between gap-2 px-0.5">
+      <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-0.5">
         
-        {/* Left: Product Name & Price */}
+        {/* Left: Product Name & Price matching reference layout */}
         <div className="min-w-0 flex-1 space-y-0.5">
           <Link href={`/product/${product.slug}`} className="block">
-            <h3 className="text-[11.5px] sm:text-[13px] font-medium text-[#14110E] hover:text-[#7A5428] transition-colors truncate tracking-tight uppercase">
+            <h3 className="text-[11px] sm:text-[12px] font-bold text-[#14110E] hover:text-[#9E774C] transition-colors truncate tracking-tight uppercase leading-snug">
               {product.name}
             </h3>
           </Link>
-          <div className="text-[11px] sm:text-[12px] font-medium text-[#4A3E33] tracking-normal">
-            {product.price.replace("₹", "RS.")}
+          <div className="text-[10.5px] sm:text-[11.5px] font-normal text-[#665749] tracking-normal uppercase">
+            RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : product.price.replace("₹", "").trim()}
           </div>
         </div>
 
@@ -145,7 +146,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           href={`/product/${product.slug}`}
           aria-label={`View details and customize ${product.name}`}
           title="Customize Fit & Product Details"
-          className="shrink-0 p-1 text-[#14110E] hover:text-[#9E774C] transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
+          className="shrink-0 p-0.5 text-[#14110E] hover:text-[#9E774C] transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
         >
           <Plus size={16} className="stroke-[2]" />
         </Link>

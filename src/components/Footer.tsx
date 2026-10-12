@@ -94,12 +94,7 @@ export default function Footer() {
   return (
     <footer className="w-full bg-gradient-to-b from-[#FAF5EF] via-[#F2E7DC] to-[#E3D4C4] text-[#36212B] rounded-t-[28px] sm:rounded-t-[42px] lg:rounded-t-[52px] border-t border-[#D8C5B3] font-sans antialiased relative z-20 shadow-[0_-20px_50px_rgba(20,17,14,0.06)] overflow-hidden mt-8 sm:mt-12 select-none flex flex-col justify-between">
 
-      {/* Background Architectural Subtle Watermark */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.045] flex items-center justify-center select-none overflow-hidden px-4">
-        <span className="font-serif-luxury text-[10vw] sm:text-[11vw] lg:text-[11.5vw] xl:text-[150px] 2xl:text-[180px] font-black tracking-[0.08em] sm:tracking-[0.1em] text-[#14110E] uppercase whitespace-nowrap leading-none text-center select-none">
-          {c.watermarkText}
-        </span>
-      </div>
+
 
 
 
@@ -236,10 +231,17 @@ export default function Footer() {
       {/* ========================================================================= */}
       {/* 3. BOTTOM TIER: HORIZONTAL SECURE PAYMENT STRIP & COPYRIGHT / LEGAL LINKS */}
       {/* ========================================================================= */}
-      <div className="relative z-10 w-full bg-[#D4C4B3] border-t border-[#C7B5A3] py-5 px-5 sm:px-8 lg:px-12 xl:px-16 space-y-4">
+      <div className="relative z-10 w-full bg-[#D4C4B3] border-t border-[#C7B5A3] py-5 px-5 sm:px-8 lg:px-12 xl:px-16 space-y-4 overflow-hidden">
+
+        {/* Background Architectural Subtle Watermark in Bottom Tier */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.07] flex items-center justify-center select-none overflow-hidden px-4 z-0">
+          <span className="font-serif-luxury text-[13vw] sm:text-[10vw] lg:text-[8vw] xl:text-[105px] 2xl:text-[125px] font-black tracking-[0.1em] text-[#14110E] uppercase whitespace-nowrap leading-none text-center select-none">
+            {c.watermarkText || "SUITOHOLIC"}
+          </span>
+        </div>
 
         {/* Horizontal Secure Payment Strip */}
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 pb-4 border-b border-[#C7B5A3]/80">
+        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 pb-4 border-b border-[#C7B5A3]/80">
           <div className="flex items-center space-x-2">
             <span className="text-xs font-semibold text-[#2C1822] tracking-wide uppercase">
               {c.securePaymentLabel}
@@ -255,7 +257,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright & Estd Note & Legal Links */}
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-[#4E3A47] font-normal">
+        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-[#4E3A47] font-normal">
 
           {/* Copyright */}
           <div className="text-center md:text-left flex flex-wrap items-center justify-center md:justify-start gap-1.5">

@@ -22,17 +22,17 @@ export const fallbackCategories: Category[] = [
   },
   {
     "id": "formal_stripes",
-    "title": "EXECUTIVE STRIPED FORMAL SHIRTS",
-    "shortTitle": "STRIPED FORMAL SHIRTS",
+    "title": "BEST SELLERS",
+    "shortTitle": "BEST SELLERS",
     "mobileTitle": [
-      "STRIPED",
-      "FORMAL SHIRTS"
+      "BEST",
+      "SELLERS"
     ],
     "subtitle": "Italian banker stripes, pinstripes & micro-checks.",
     "image": "/formal_banker_stripe.jpg",
-    "homeTitle": "Executive Striped Formal Shirts",
+    "homeTitle": "Best Sellers",
     "description": "Double-ply Italian banker stripes, micro-checks, and precision office pinstripes.",
-    "tag": "COLLECTION 02 • PATTERNED FORMAL SHIRTS",
+    "tag": "COLLECTION 02 • BEST SELLERS",
     "bgImage": "/new_shirts/shirt_2.jpg",
     "showOnHome": true,
     "sortOrder": 2,
@@ -48,7 +48,7 @@ export const fallbackCategories: Category[] = [
     ],
     "subtitle": "Sea Island cotton, royal dobbies & herringbone weaves.",
     "image": "/formal_ivory_herringbone.jpg",
-    "homeTitle": "Luxury Textured & Twill Shirts",
+    "homeTitle": "SHOP BY FABRICS",
     "description": "Pure Sea Island cotton, French cuffs, royal dobbies, and Austrian herringbone weaves.",
     "tag": "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
     "bgImage": "/new_shirts/shirt_3.jpg",
@@ -70,7 +70,7 @@ export const fallbackCategories: Category[] = [
     "description": "Italian pleated wool dress pants, sartorial Gurkha trousers, and premium stretch chinos.",
     "tag": "COLLECTION 04 • TAILORED PANTS",
     "bgImage": "/new_shirts/shirt_4.jpg",
-    "showOnHome": true,
+    "showOnHome": false,
     "sortOrder": 4,
     "active": true
   },
@@ -88,7 +88,7 @@ export const fallbackCategories: Category[] = [
     "description": "Heavyweight Supima cotton tees, silk-blend knit polos, and fine-gauge textured casuals.",
     "tag": "COLLECTION 05 • LUXURY CASUALS",
     "bgImage": "/new_shirts/shirt_1.jpg",
-    "showOnHome": true,
+    "showOnHome": false,
     "sortOrder": 5,
     "active": true
   },

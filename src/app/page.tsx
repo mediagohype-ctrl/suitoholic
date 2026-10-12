@@ -11,6 +11,8 @@ import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase"
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
 import ShopByCategoryGrid from "@/components/ShopByCategoryGrid";
 import NewsletterSection from "@/components/NewsletterSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import FaqSection from "@/components/FaqSection";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 
 const Divider = ({ wide = false }: { wide?: boolean }) =>
@@ -24,15 +26,17 @@ const Divider = ({ wide = false }: { wide?: boolean }) =>
     </div>
   );
 
-// Showcase blocks interleaved after the 1st, 2nd and 3rd collection carousels.
-const INTERLUDES = [CategoriesRotatingShowcase, ShopByCategoryGrid, AtelierEditorialBanner];
+// Showcase blocks interleaved: rotating showcase after collection 1,
+// and ShopByCategoryGrid followed immediately by the video banner after collection 2.
+const INTERLUDES: React.ComponentType[][] = [
+  [CategoriesRotatingShowcase],
+  [ShopByCategoryGrid, AtelierEditorialBanner],
+];
 
 export default function Home() {
   const { products, homeCollections } = useCatalog();
   const c = useContent("homePage");
-  // If there are fewer collections than interludes, the remaining ones follow the last collection.
-  const interludesAfter = (index: number) =>
-    index === homeCollections.length - 1 ? INTERLUDES.slice(index) : INTERLUDES.slice(index, index + 1);
+  const interludesAfter = (index: number) => INTERLUDES[index] ?? [];
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-transparent text-[#14110E] antialiased">
@@ -66,7 +70,7 @@ export default function Home() {
 
               {/* Typography Overlay */}
               <div className="relative z-10 flex flex-col items-start">
-                <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-[28px] font-normal uppercase tracking-wide text-[#FAF8F5] leading-tight mb-2">
+                <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-[28px] font-bold uppercase tracking-wide text-[#FAF8F5] leading-tight mb-2">
                   {banner.titleLines.map((line, j) => (
                     <React.Fragment key={j}>
                       {j > 0 && <br />}
@@ -91,24 +95,58 @@ export default function Home() {
       {/* 5 BESPOKE CLOTHING SHOWCASE SECTIONS (WITH 3D REVOLVING & ATELIER BANNER) */}
       {/* ========================================================================= */}
       <div className="space-y-2 sm:space-y-4 py-2 sm:py-3">
-        {homeCollections.map((collection, index) => (
-          <React.Fragment key={collection.id}>
-            {index > 0 && <Divider />}
-            <ModernCollectionSection
-              collection={collection}
-              products={products.filter((p) => p.category === collection.id)}
-              headerTitle={index === 0 ? c.firstCollectionTitle : collection.title}
-            />
+        {homeCollections
+          .filter((col) => {
+            const id = col.id || (col as unknown as { key?: string })?.key;
+            return id !== "trousers" && id !== "tshirts";
+          })
+          .map((collection, index) => {
+            const colId = collection.id || (collection as unknown as { key?: string })?.key;
+            const isShopByFabrics =
+              colId === "formal_bespoke" ||
+              index === 2 ||
+              (collection.title && collection.title.toLowerCase().includes("fabric"));
 
-            {/* Rotating categories, shop-by-category grid and atelier banner follow the first three collections */}
-            {interludesAfter(index).map((Interlude, i) => (
-              <React.Fragment key={i}>
-                <Divider />
-                <Interlude />
+            const collectionProducts = products.filter(
+              (p) => p.category === colId || (isShopByFabrics && (p.category === "formal_bespoke" || p.category === "fabrics"))
+            );
+
+            return (
+              <React.Fragment key={colId || index}>
+                {index > 0 && <Divider />}
+                <ModernCollectionSection
+                  collection={collection}
+                  products={collectionProducts}
+                  headerTitle={
+                    index === 0
+                      ? c.firstCollectionTitle
+                      : isShopByFabrics
+                      ? "SHOP BY FABRICS"
+                      : collection.title
+                  }
+                  cardsPerView={isShopByFabrics ? 3 : 4}
+                />
+
+                {/* Testimonial / Reviews Section followed by FAQ Section */}
+                {isShopByFabrics && (
+                  <React.Fragment key="testimonials-and-faq-block">
+                    <Divider />
+                    <TestimonialsSection />
+                    <Divider />
+                    <FaqSection />
+                  </React.Fragment>
+                )}
+
+                {/* Rotating categories, shop-by-category grid and atelier banner follow the first three collections */}
+                {interludesAfter(index).map((Interlude, i) => (
+                  <React.Fragment key={i}>
+                    <Divider />
+                    <Interlude />
+                  </React.Fragment>
+                ))}
               </React.Fragment>
-            ))}
-          </React.Fragment>
-        ))}
+            );
+          })}
       </div>
 
       {/* Standalone Compact Newsletter Section */}

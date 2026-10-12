@@ -53,14 +53,14 @@ export const collectionCategories: CollectionCategory[] = [
   },
   {
     id: "formal_stripes",
-    title: "Executive Striped Formal Shirts",
+    title: "Best Sellers",
     subtitle: "Double-ply Italian banker stripes, micro-checks, and precision office pinstripes.",
-    tag: "COLLECTION 02 • PATTERNED FORMAL SHIRTS",
+    tag: "COLLECTION 02 • BEST SELLERS",
     bgImage: "/new_shirts/shirt_2.jpg",
   },
   {
     id: "formal_bespoke",
-    title: "Luxury Textured & Twill Shirts",
+    title: "SHOP BY FABRICS",
     subtitle: "Pure Sea Island cotton, French cuffs, royal dobbies, and Austrian herringbone weaves.",
     tag: "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
     bgImage: "/new_shirts/shirt_3.jpg",
@@ -558,7 +558,7 @@ export const allProducts: ProductItem[] = [
   },
 
   // ==========================================
-  // 6. EXECUTIVE STRIPED FORMAL SHIRTS (5 ITEMS)
+  // 6. BEST SELLERS (5 ITEMS)
   // ==========================================
   {
     id: 26,

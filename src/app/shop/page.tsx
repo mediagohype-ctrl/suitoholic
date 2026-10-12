@@ -113,7 +113,7 @@ function ShopContent() {
               <span className="h-[1px] w-8 sm:w-12 bg-[#9E774C]" />
             </div>
 
-            <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] font-normal text-[#14110E] tracking-tight uppercase leading-tight">
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] font-bold text-[#4A202A] tracking-[0.18em] uppercase leading-tight">
               {c.title}
             </h1>
 
