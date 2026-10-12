@@ -115,16 +115,16 @@ export default function CustomizationModal({
       <div className="relative w-full max-w-[1240px] bg-[#D7C2AD] border border-[#C6B09B] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         
         {/* Modal Top Header Bar */}
-        <div className="bg-[#120F0D] text-white px-5 sm:px-8 py-3.5 flex items-center justify-between border-b border-[#3A332C]">
+        <div className="bg-[#D7C2AD] text-[#14110E] px-5 sm:px-8 py-3.5 flex items-center justify-between border-b border-[#C6B09B]">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-full bg-[#9E774C]/20 border border-[#9E774C] flex items-center justify-center text-[#D7C2AD]">
-              <Scissors size={16} />
+            <div className="w-8 h-8 rounded-full bg-[#14110E] text-[#D7C2AD] flex items-center justify-center shadow-xs">
+              <Scissors size={15} />
             </div>
             <div>
-              <span className="text-[10px] font-bold tracking-[0.24em] text-[#9E774C] uppercase block">
+              <span className="text-[10px] font-extrabold tracking-[0.24em] text-[#8C6436] uppercase block">
                 {c.eyebrow}
               </span>
-              <h2 className="font-serif-luxury text-sm sm:text-base font-normal text-white tracking-wider uppercase">
+              <h2 className="font-serif-luxury text-sm sm:text-base font-normal text-[#14110E] tracking-wider uppercase">
                 {c.titlePrefix} {productName}
               </h2>
             </div>
@@ -133,7 +133,7 @@ export default function CustomizationModal({
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer"
+            className="w-9 h-9 rounded-full bg-[#14110E]/10 hover:bg-[#14110E] text-[#14110E] hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs"
             aria-label="Close customization modal"
           >
             <X size={18} />
@@ -141,7 +141,7 @@ export default function CustomizationModal({
         </div>
 
         {/* Modal Scrollable Content Body */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-5 lg:p-7 space-y-4 sm:space-y-6">
           
           {/* Breadcrumb Steps Header */}
           <div className="flex items-center justify-between border-b border-[#C6B09B]/60 pb-3">
@@ -150,101 +150,78 @@ export default function CustomizationModal({
               <span className="text-[#966839] text-xs font-normal">&gt;</span>
               <span className="text-[#8C6D47] font-bold">{stepCopy(currentStep).breadcrumb}</span>
             </div>
-
-            {/* Quick Step Switcher Pills */}
-            <div className="hidden sm:flex items-center space-x-1.5">
-              {[1, 2, 3, 4, 5, 6].map((stepNum) => (
-                <button
-                  key={stepNum}
-                  onClick={() => setCurrentStep(stepNum)}
-                  className={`w-6 h-6 rounded-full text-[10px] font-bold flex items-center justify-center transition-all cursor-pointer ${
-                    currentStep === stepNum
-                      ? "bg-[#120F0D] text-white shadow-sm ring-1 ring-[#120F0D]"
-                      : currentStep > stepNum
-                      ? "bg-[#8A6E48] text-white"
-                      : "bg-[#E2D0BE] text-[#55473B] hover:bg-[#C6B09B]"
-                  }`}
-                >
-                  {stepNum}
-                </button>
-              ))}
-            </div>
           </div>
 
-          {/* Main 2-Column Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+          {/* Main 2-Column Grid with Equal Height Columns & Increased Height */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch min-h-[580px] sm:min-h-[640px] lg:min-h-[680px]">
             
             {/* LEFT COLUMN: 3D Interactive Mannequin Shirt Viewer & Selection Panel */}
-            <div className="lg:col-span-6 flex flex-col justify-between relative min-h-[360px] sm:min-h-[460px] bg-[#EFE2D4]/50 border border-[#D0BDA9]/60 rounded-2xl p-4">
+            <div className="lg:col-span-6 flex flex-col justify-center relative h-full min-h-[560px] sm:min-h-[620px]">
               
-              {/* Top Row: Inscription & Selection Summary */}
-              <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2">
-                <div className="select-none">
-                  <h3 className="font-serif-luxury text-xl sm:text-2xl font-normal text-[#14110E] tracking-[0.06em] uppercase leading-tight">
-                    {c.studioTitleLines.map((line, i) => (
-                      <React.Fragment key={i}>
-                        {i > 0 && <br />}
-                        {line}
-                      </React.Fragment>
-                    ))}
-                  </h3>
-                  <div className="w-12 h-[1.5px] bg-[#9E774C] mt-2 opacity-90" />
-                </div>
+              {/* Top Row: Inscription & Selection Summary (Shown only on Step 6 Review) */}
+              {currentStep >= 6 && (
+                <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
+                  <div className="select-none">
+                    <h3 className="font-serif-luxury text-xl sm:text-2xl font-normal text-[#14110E] tracking-[0.06em] uppercase leading-tight">
+                      {c.studioTitleLines.map((line, i) => (
+                        <React.Fragment key={i}>
+                          {i > 0 && <br />}
+                          {line}
+                        </React.Fragment>
+                      ))}
+                    </h3>
+                    <div className="w-12 h-[1.5px] bg-[#9E774C] mt-2 opacity-90" />
+                  </div>
 
-                {/* Floating "Your Selection" Box */}
-                <div className="select-none text-left min-w-[130px] bg-[#EFE2D4]/90 p-2.5 rounded-xl border border-[#D0BDA9] shadow-xs">
-                  <h5 className="text-[11px] font-bold tracking-[0.14em] text-[#C68A4C] uppercase mb-1">
-                    {c.selectionTitle}
-                  </h5>
-                  <div className="space-y-1 text-[11px]">
-                    <div className="flex justify-between items-center gap-3">
-                      <span className="text-[#4A3E33] font-medium">Chest Size</span>
-                      <strong className="text-[#14110E] font-bold">{customFit.chestSize}&quot;</strong>
-                    </div>
-                    {currentStep >= 2 && (
+                  {/* Floating "Your Selection" Box */}
+                  <div className="select-none text-left min-w-[130px] bg-[#EFE2D4]/90 p-2.5 rounded-xl border border-[#D0BDA9] shadow-xs">
+                    <h5 className="text-[11px] font-bold tracking-[0.14em] text-[#C68A4C] uppercase mb-1">
+                      {c.selectionTitle}
+                    </h5>
+                    <div className="space-y-1 text-[11px]">
+                      <div className="flex justify-between items-center gap-3">
+                        <span className="text-[#4A3E33] font-medium">Chest Size</span>
+                        <strong className="text-[#14110E] font-bold">{customFit.chestSize}&quot;</strong>
+                      </div>
                       <div className="flex justify-between items-center gap-3">
                         <span className="text-[#4A3E33] font-medium">Body Type</span>
                         <strong className="text-[#14110E] font-bold capitalize">{customFit.bodyFit} Fit</strong>
                       </div>
-                    )}
-                    {currentStep >= 3 && (
                       <div className="flex justify-between items-center gap-3">
                         <span className="text-[#4A3E33] font-medium">Height</span>
                         <strong className="text-[#14110E] font-bold">{getHeightCleanTitle(customFit.height)}</strong>
                       </div>
-                    )}
-                    {currentStep >= 4 && (
                       <div className="flex justify-between items-center gap-3">
                         <span className="text-[#4A3E33] font-medium">Sleeve</span>
                         <strong className="text-[#14110E] font-bold capitalize">
                           {customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve"}
                         </strong>
                       </div>
-                    )}
-                    {currentStep >= 5 && customFit.collarStyle && (
-                      <div className="flex justify-between items-center gap-3">
-                        <span className="text-[#4A3E33] font-medium">Collar</span>
-                        <strong className="text-[#14110E] font-bold">{customFit.collarStyle.split(" ")[0]}</strong>
-                      </div>
-                    )}
-                    {currentStep >= 5 && isFullSleeve && customFit.cuffStyle && (
-                      <div className="flex justify-between items-center gap-3">
-                        <span className="text-[#4A3E33] font-medium">Cuff</span>
-                        <strong className="text-[#14110E] font-bold">{customFit.cuffStyle.split(" ")[0]}</strong>
-                      </div>
-                    )}
-                    {currentStep >= 5 && customFit.initials && (
-                      <div className="flex justify-between items-center gap-3">
-                        <span className="text-[#4A3E33] font-medium">Monogram</span>
-                        <strong className="text-[#14110E] font-bold uppercase">{customFit.initials}</strong>
-                      </div>
-                    )}
+                      {customFit.collarStyle && (
+                        <div className="flex justify-between items-center gap-3">
+                          <span className="text-[#4A3E33] font-medium">Collar</span>
+                          <strong className="text-[#14110E] font-bold">{customFit.collarStyle.split(" ")[0]}</strong>
+                        </div>
+                      )}
+                      {isFullSleeve && customFit.cuffStyle && (
+                        <div className="flex justify-between items-center gap-3">
+                          <span className="text-[#4A3E33] font-medium">Cuff</span>
+                          <strong className="text-[#14110E] font-bold">{customFit.cuffStyle.split(" ")[0]}</strong>
+                        </div>
+                      )}
+                      {customFit.initials && (
+                        <div className="flex justify-between items-center gap-3">
+                          <span className="text-[#4A3E33] font-medium">Monogram</span>
+                          <strong className="text-[#14110E] font-bold uppercase">{customFit.initials}</strong>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {/* Center: 3D Interactive Mannequin Shirt */}
-              <div className="relative w-full">
+              <div className="relative w-full h-full flex flex-col items-center justify-center flex-1">
                 <MannequinShirtViewer
                   chestSize={customFit.chestSize}
                   bodyFit={asMannequinFit(customFit.bodyFit)}
@@ -263,9 +240,9 @@ export default function CustomizationModal({
             </div>
 
             {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
-            <div className="lg:col-span-6 relative">
+            <div className="lg:col-span-6 relative flex flex-col h-full min-h-[560px] sm:min-h-[620px]">
               
-              <div className="bg-[#EFE2D4]/90 border border-[#D0BDA9] rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-[0_12px_36px_rgba(0,0,0,0.08)] backdrop-blur-md relative z-10">
+              <div className="bg-[#EFE2D4]/90 border border-[#D0BDA9] rounded-[15px] p-5 sm:p-7 shadow-[0_12px_36px_rgba(0,0,0,0.08)] backdrop-blur-md relative z-10 flex-1 flex flex-col justify-between h-full">
                 
                 {/* Stepper Header */}
                 <div className="mb-4 sm:mb-5">

@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
+import ModernProductCard from "@/components/ModernProductCard";
 import {
   ArrowRight,
   Plus,
@@ -81,6 +82,36 @@ function ShopContent() {
 
   const currentCategoryName = categories.find((cat) => cat.id === selectedCategory)?.title || c.allCategoryName;
 
+  // Starting 3 Editorial Showcase Sections matching the user's reference design
+  const showcaseSections = useMemo(() => {
+    const latestDrop = products.filter((p) => p.category === "formal_shirts").slice(0, 4);
+    const bestSellers = products.filter((p) => p.category === "formal_stripes").slice(0, 4);
+    const texturedShirts = products
+      .filter((p) => p.category === "formal_bespoke" || p.category === "fabrics")
+      .slice(0, 4);
+
+    return [
+      {
+        id: "latest-drop",
+        title: "LATEST DROP",
+        categoryId: "formal_shirts",
+        products: latestDrop.length >= 4 ? latestDrop : products.slice(0, 4),
+      },
+      {
+        id: "best-sellers",
+        title: "BEST SELLERS",
+        categoryId: "formal_stripes",
+        products: bestSellers.length >= 4 ? bestSellers : products.slice(4, 8),
+      },
+      {
+        id: "textured-shirts",
+        title: "TEXTURED SHIRTS",
+        categoryId: "formal_bespoke",
+        products: texturedShirts.length >= 4 ? texturedShirts : products.slice(8, 12),
+      },
+    ];
+  }, [products]);
+
   const filterGroups = [
     {
       id: "fabric",
@@ -121,7 +152,7 @@ function ShopContent() {
           </div>
 
           {/* Category Quick Selector Filter Pills Bar (Centered Luxury Tabs) */}
-          <div className="mb-10 flex items-center justify-center">
+          <div className="mb-10 sm:mb-12 flex items-center justify-center">
             <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none max-w-full px-2">
               <button
                 onClick={() => handleCategorySelect("all")}
@@ -152,8 +183,60 @@ function ShopContent() {
             </div>
           </div>
 
+          {/* Top 3 Showcase Sections Matching Reference Screenshot (Visible when browsing All Shirts) */}
+          {selectedCategory === "all" && (
+            <div className="space-y-12 sm:space-y-16 lg:space-y-20 mb-16 sm:mb-20">
+              {showcaseSections.map((sec, sIdx) => (
+                <section key={sec.id} id={sec.id} className="w-full flex flex-col items-center select-none">
+                  {/* Centered Heading in Luxury Serif Uppercase matching screenshot */}
+                  <div className="text-center mb-7 sm:mb-9 lg:mb-11">
+                    <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[40px] font-normal tracking-[0.22em] text-[#4A202A] uppercase leading-tight">
+                      {sec.title}
+                    </h2>
+                  </div>
+
+                  {/* 4-Column Product Cards Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
+                    {sec.products.map((product) => (
+                      <div key={product.id} className="w-full">
+                        <ModernProductCard product={product} />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Centered VIEW ALL Button */}
+                  <div className="flex items-center justify-center mt-8 sm:mt-10 lg:mt-12">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleCategorySelect(sec.categoryId);
+                        const catalogEl = document.getElementById("catalog-section");
+                        if (catalogEl) {
+                          catalogEl.scrollIntoView({ behavior: "smooth" });
+                        }
+                      }}
+                      className="inline-flex items-center justify-center border border-[#7A6B5D]/60 hover:border-[#14110E] bg-transparent hover:bg-[#14110E] text-[#14110E] hover:text-[#FAF8F5] text-xs font-bold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase rounded-full shadow-xs hover:shadow-md cursor-pointer active:scale-98"
+                    >
+                      VIEW ALL
+                    </button>
+                  </div>
+
+                  {/* Hairline Divider between sections */}
+                  {sIdx < showcaseSections.length - 1 && (
+                    <div className="w-full mt-12 sm:mt-16 lg:mt-20 h-[1px] bg-gradient-to-r from-[#8C6944]/20 via-[#6E4822]/45 to-[#8C6944]/20" />
+                  )}
+                </section>
+              ))}
+
+              {/* Major Section Divider before Full Catalog */}
+              <div className="w-full pt-4">
+                <div className="w-full h-[1.5px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+              </div>
+            </div>
+          )}
+
           {/* Catalog Layout: Left Sidebar + Right Product Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div id="catalog-section" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
 
             {/* Left Sidebar (Desktop Only) */}
             <aside className="hidden lg:block lg:col-span-3 space-y-6 select-none sticky top-32">
@@ -299,120 +382,13 @@ function ShopContent() {
                 </div>
               )}
 
-              {/* MOBILE VIEW (< lg:): 1 Horizontal Shirt Card Per Row */}
-              <div className="lg:hidden space-y-3 mb-6">
+              {/* Product Cards Grid: Exactly matching ModernProductCard format */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
                 {displayProducts.map((p) => (
-                  <Link
-                    key={p.id}
-                    href={`/product/${p.slug}`}
-                    className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-3 shadow-xs hover:shadow-md flex items-center group transition-all"
-                  >
-                    <div className="w-[125px] h-[140px] rounded-xl overflow-hidden shrink-0 relative bg-[#241D17] shadow-xs">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                        loading="eager"
-                      />
-                    </div>
-
-                    <div className="flex-1 min-w-0 pl-4 pr-1 py-1">
-                      <span className="text-[9.5px] font-bold tracking-[0.16em] text-[#9E774C] uppercase block mb-0.5">
-                        {p.fabric}
-                      </span>
-                      <h3 className="font-serif-luxury text-sm font-bold tracking-[0.03em] text-[#14110E] uppercase leading-snug">
-                        {p.name}
-                      </h3>
-                      <p className="text-[11px] text-[#55473B] font-sans mt-0.5 leading-tight line-clamp-1">
-                        {p.subtitle}
-                      </p>
-                      <p className="text-xs font-bold text-[#14110E] mt-2 font-sans tracking-tight">
-                        {p.price}
-                      </p>
-                    </div>
-
-                    <div className="shrink-0 pr-2 pl-1 text-[#14110E] group-hover:text-[#9E774C] group-hover:translate-x-1 transition-all">
-                      <ArrowRight size={20} strokeWidth={1.5} />
-                    </div>
-                  </Link>
+                  <div key={p.id} className="w-full">
+                    <ModernProductCard product={p} />
+                  </div>
                 ))}
-              </div>
-
-              {/* DESKTOP VIEW (lg:+): Ultra-Sleek Editorial 3-Column Product Grid */}
-              <div className="hidden lg:grid grid-cols-3 gap-6">
-                {displayProducts.map((p) => {
-                  const isFavorited = wishlist.includes(p.id);
-                  return (
-                    <div
-                      key={p.id}
-                      className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-4 shadow-xs hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between group relative overflow-hidden"
-                    >
-                      {/* Product Thumbnail Container with Wishlist Heart */}
-                      <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-[#241D17] flex items-center justify-center shadow-xs">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={p.image}
-                          alt={p.name}
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
-                          loading="eager"
-                        />
-
-                        {/* Tag Pill Overlay */}
-                        {p.tag && (
-                          <div className="absolute top-3.5 left-3.5 bg-[#14110E]/90 backdrop-blur-md text-white text-[9px] font-bold tracking-[0.18em] uppercase px-3 py-1.5 rounded-full border border-white/20 shadow-md">
-                            {p.tag}
-                          </div>
-                        )}
-
-                        {/* Wishlist Heart Button */}
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            toggleWishlist(p.id);
-                          }}
-                          className="absolute top-3.5 right-3.5 w-9 h-9 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-md flex items-center justify-center text-white transition-all shadow-md cursor-pointer"
-                          aria-label="Add to wishlist"
-                        >
-                          <Heart
-                            size={15}
-                            className={isFavorited ? "fill-[#E04B4B] text-[#E04B4B]" : "text-white/90"}
-                          />
-                        </button>
-                      </div>
-
-                      {/* Product Details */}
-                      <div className="pt-4 pb-1 text-left flex flex-col flex-1 justify-between">
-                        <div>
-                          <span className="text-[10px] font-bold tracking-[0.18em] text-[#9E774C] uppercase block mb-1">
-                            {p.fabric}
-                          </span>
-                          <h4 className="font-serif-luxury text-sm font-bold tracking-[0.04em] text-[#14110E] uppercase leading-snug group-hover:text-[#9E774C] transition-colors">
-                            {p.name}
-                          </h4>
-                          <p className="text-[11.5px] text-[#55473B] font-sans mt-1 line-clamp-1 leading-snug">
-                            {p.subtitle}
-                          </p>
-                        </div>
-
-                        {/* Bottom Row: Price & Customize Button */}
-                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#E8DACB]">
-                          <p className="text-sm font-bold text-[#14110E] font-sans tracking-tight">
-                            {p.price}
-                          </p>
-                          <Link
-                            href={`/product/${p.slug}`}
-                            className="inline-flex items-center space-x-1.5 bg-[#14110E] hover:bg-black text-white px-4 py-2 rounded-xl text-[10.5px] font-bold uppercase tracking-[0.14em] transition-all shadow-sm cursor-pointer"
-                          >
-                            <span>{c.customizeLabel}</span>
-                            <span>→</span>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
 
             </div>

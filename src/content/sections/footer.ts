@@ -50,7 +50,7 @@ export const footer = {
     { brand: "amex", title: "American Express" },
     { brand: "upi", title: "UPI" },
   ],
-  copyrightText: "© 2003–{year}",
+  copyrightText: "© {year}",
   copyrightBrand: "SUITOHOLIC ATELIER.",
   rightsText: "All rights reserved.",
   craftNote: "Handcrafted with Savile Row precision.",

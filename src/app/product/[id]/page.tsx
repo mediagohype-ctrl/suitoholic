@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import ShopByCategoryGrid from "@/components/ShopByCategoryGrid";
-import MannequinShirtViewer from "@/components/MannequinShirtViewer";
+import ModernProductCard from "@/components/ModernProductCard";
 import { useCart } from "@/context/CartProvider";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import { fillTemplate } from "@/content/merge";
@@ -69,9 +69,17 @@ export default function ProductDetailPage() {
   const router = useRouter();
 
   const [activeProduct, setActiveProduct] = useState<ProductItem | undefined>(() => getProduct(idOrSlug));
+
+  useEffect(() => {
+    const target = getProduct(idOrSlug);
+    if (target) {
+      setActiveProduct(target);
+      setSelectedImageIndex(0);
+    }
+  }, [idOrSlug, getProduct]);
+
   const selectedSize = 38;
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
-  const [viewMode, setViewMode] = useState<"photo" | "3d_mannequin">("photo");
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
@@ -167,7 +175,7 @@ export default function ProductDetailPage() {
 
       {/* Main Studio Content */}
       <div className="relative flex-1 w-full">
-        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-8 sm:pb-16 space-y-10 sm:space-y-14">
+        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-28 sm:pt-32 lg:pt-36 pb-8 sm:pb-16 space-y-8 sm:space-y-10">
 
           {/* Top Bar Navigation */}
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -186,61 +194,15 @@ export default function ProductDetailPage() {
             {/* LEFT COLUMN: Visual Showcase Gallery & Interactive 3D View Switcher */}
             <div className="lg:col-span-6 space-y-4">
 
-              {/* Mode Switcher Tabs (High-Res Photo vs. 3D Mannequin Fit) */}
-              <div className="flex items-center justify-between bg-white border border-gray-200 p-1.5 rounded-2xl shadow-xs">
-                <button
-                  onClick={() => setViewMode("photo")}
-                  className={`flex-1 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider flex items-center justify-center space-x-2 transition-all cursor-pointer ${viewMode === "photo"
-                    ? "bg-[#120F0D] text-white shadow-md"
-                    : "text-[#55473B] hover:text-[#120F0D]"
-                    }`}
-                >
-                  <Eye size={15} />
-                  <span>{c.galleryTabLabel}</span>
-                </button>
-
-                <button
-                  onClick={() => setViewMode("3d_mannequin")}
-                  className={`flex-1 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider flex items-center justify-center space-x-2 transition-all cursor-pointer ${viewMode === "3d_mannequin"
-                    ? "bg-[#120F0D] text-white shadow-md"
-                    : "text-[#55473B] hover:text-[#120F0D]"
-                    }`}
-                >
-                  <Layers size={15} className="text-[#C68A4C]" />
-                  <span>{c.mannequinTabLabel}</span>
-                </button>
-              </div>
-
               {/* Main Display Box */}
-              <div className="relative w-full aspect-[4/3.8] sm:aspect-[4/3.6] rounded-3xl overflow-hidden bg-[#241D17] border border-[#C6B09B] shadow-xl flex items-center justify-center group">
-
-                {viewMode === "photo" ? (
-                  <>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={gallery[selectedImageIndex] || activeProduct.image}
-                      alt={activeProduct.name}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                      loading="eager"
-                    />
-
-                    {/* Zoom Overlay Indicator */}
-                    <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md text-white px-3 py-1.5 rounded-xl text-[10px] font-bold tracking-widest uppercase flex items-center space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ZoomIn size={14} />
-                      <span>{c.zoomHint}</span>
-                    </div>
-                  </>
-                ) : (
-                  <div className="w-full h-full p-4 flex items-center justify-center bg-gradient-to-b from-[#F3E8DC] to-[#DFD0C0]">
-                    <MannequinShirtViewer
-                      chestSize={selectedSize}
-                      bodyFit="lean"
-                      height='TALL HEIGHT (5.8 - 5.10")'
-                      sleeveType="full"
-                      currentStep={1}
-                    />
-                  </div>
-                )}
+              <div className="relative w-full aspect-[4/4.1] sm:aspect-[4/4.1] lg:aspect-[4/4] max-h-[485px] sm:max-h-[520px] lg:max-h-[540px] rounded-[13px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/80 shadow-md flex items-center justify-center group">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={gallery[selectedImageIndex] || activeProduct.image}
+                  alt={activeProduct.name}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  loading="eager"
+                />
 
                 {/* Wishlist Button */}
                 <button
@@ -253,19 +215,18 @@ export default function ProductDetailPage() {
                     className={isWishlisted ? "fill-[#E04B4B] text-[#E04B4B]" : "text-white"}
                   />
                 </button>
-
               </div>
 
-              {/* Thumbnail Strip (For Photo Mode) */}
-              {viewMode === "photo" && (
+              {/* Thumbnail Strip */}
+              {gallery.length > 1 && (
                 <div className="grid grid-cols-4 gap-3">
                   {gallery.map((imgUrl, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImageIndex(idx)}
-                      className={`aspect-[4/3.2] rounded-2xl overflow-hidden border-2 transition-all relative cursor-pointer ${selectedImageIndex === idx
-                        ? "border-[#120F0D] ring-2 ring-[#C68A4C] shadow-md scale-102"
-                        : "border-[#C6B09B] opacity-75 hover:opacity-100"
+                      className={`aspect-[4/3.2] rounded-[13px] overflow-hidden transition-all relative cursor-pointer ${selectedImageIndex === idx
+                        ? "ring-2 ring-[#120F0D] shadow-sm opacity-100"
+                        : "opacity-60 hover:opacity-100"
                         }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -478,21 +439,30 @@ export default function ProductDetailPage() {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                 {c.macroCards.map((card, i) => (
-                  <div key={i} className="bg-transparent border border-[#C6B09B]/60 rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all group">
-                    <div className="aspect-[4/3] overflow-hidden bg-[#241D17]">
+                  <div key={i} className="group flex flex-col w-full">
+                    {/* Portrait Image Container matching site-wide format */}
+                    <div className="relative w-full aspect-[3/4.1] rounded-[9px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/70 shadow-2xs group-hover:shadow-md transition-all duration-300">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={card.image}
                         alt={card.alt}
-                        className={`w-full h-full ${card.contain ? "object-contain p-2" : "object-cover"} group-hover:scale-105 transition-transform duration-700`}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                        loading="lazy"
                       />
                     </div>
-                    <div className="p-4 sm:p-5 space-y-1 text-left">
-                      <span className="text-[10px] font-bold text-[#9E774C] uppercase tracking-widest block">{card.eyebrow}</span>
-                      <h3 className="font-serif-luxury text-base font-bold text-[#14110E] uppercase">{card.title}</h3>
-                      <p className="text-xs text-[#665749] leading-relaxed">{card.text}</p>
+                    {/* Card Content underneath image */}
+                    <div className="pt-3.5 space-y-1 text-left">
+                      <span className="text-[10.5px] font-extrabold text-[#9E774C] uppercase tracking-[0.2em] block">
+                        {card.eyebrow}
+                      </span>
+                      <h3 className="font-serif-luxury text-base font-bold text-[#14110E] uppercase tracking-wide">
+                        {card.title}
+                      </h3>
+                      <p className="text-xs text-[#665749] leading-relaxed">
+                        {card.text}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -517,37 +487,10 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 pt-2">
                 {completeLookItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="bg-transparent border border-[#C6B09B]/60 rounded-2xl p-3 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
-                  >
-                    <Link href={`/product/${item.slug}`} className="block">
-                      <div className="aspect-[4/3.5] rounded-xl overflow-hidden bg-[#241D17] mb-2.5">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <span className="text-[9.5px] font-extrabold text-[#9E774C] uppercase tracking-wider block mb-0.5">
-                        {item.category.replace(/_/g, " ")}
-                      </span>
-                      <h4 className="font-serif-luxury text-xs font-bold text-[#14110E] uppercase line-clamp-1">
-                        {item.name}
-                      </h4>
-                      <p className="text-xs font-bold text-[#14110E] mt-1">{item.price}</p>
-                    </Link>
-
-                    <button
-                      onClick={() => handleAddToOutfit(item)}
-                      disabled={busy || item.stock === 0}
-                      className="w-full mt-3 disabled:opacity-50 bg-[#120F0D] hover:bg-[#C68A4C] text-white py-2 rounded-xl text-[10.5px] font-bold uppercase tracking-wider transition-all flex items-center justify-center space-x-1 cursor-pointer"
-                    >
-                      <span>{c.addToOutfitLabel}</span>
-                    </button>
+                  <div key={item.id} className="w-full">
+                    <ModernProductCard product={item} />
                   </div>
                 ))}
               </div>
@@ -572,26 +515,10 @@ export default function ProductDetailPage() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 pt-2">
                 {moreColorways.map((p) => (
-                  <div
-                    key={p.id}
-                    className="bg-transparent border border-[#C6B09B]/60 rounded-2xl p-3 shadow-xs hover:shadow-md transition-all text-left group block"
-                  >
-                    <Link href={`/product/${p.slug}`}>
-                      <div className="aspect-[4/3.5] rounded-xl overflow-hidden bg-[#241D17] mb-2.5">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={p.image}
-                          alt={p.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <h4 className="font-serif-luxury text-xs font-bold text-[#14110E] uppercase line-clamp-1">
-                        {p.name}
-                      </h4>
-                      <p className="text-xs font-bold text-[#9E774C] mt-1">{p.price}</p>
-                    </Link>
+                  <div key={p.id} className="w-full">
+                    <ModernProductCard product={p} />
                   </div>
                 ))}
               </div>
@@ -615,7 +542,10 @@ export default function ProductDetailPage() {
         isOpen={isCustomizerOpen}
         onClose={() => setIsCustomizerOpen(false)}
         productName={activeProduct.name}
-        product={activeProduct}
+        product={{
+          ...activeProduct,
+          image: gallery[selectedImageIndex] || activeProduct.image,
+        }}
         initialChestSize={selectedSize}
         submitting={busy}
         onConfirmCustomization={handleConfirmCustomization}

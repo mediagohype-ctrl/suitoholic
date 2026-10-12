@@ -31,7 +31,7 @@ function renderPaymentBadge(brand: string, title: string) {
     case "visa":
       return (
         <div className={PAYMENT_BADGE_CLASS} title={title}>
-          <svg className="h-3.5 w-auto" viewBox="0 0 48 16" fill="none">
+          <svg className="h-3.5 w-auto overflow-visible" viewBox="0 0 52 17" fill="none">
             <path d="M19.14 0.68L12.55 15.32H8.22L5.03 3.86C4.83 3.08 4.67 2.8 4.07 2.47C3.1 1.95 1.45 1.47 0 1.15L0.1 0.68H7.13C8.03 0.68 8.84 1.28 9.03 2.31L10.77 11.5L14.99 0.68H19.14ZM36.03 10.45C36.05 6.47 30.5 6.25 30.54 4.47C30.55 3.93 31.07 3.35 32.22 3.2C32.79 3.12 34.36 3.07 36.08 3.86L36.77 0.67C35.83 0.33 34.62 0 33.1 0C29.06 0 26.22 2.15 26.2 5.22C26.17 7.5 28.21 8.78 29.77 9.54C31.37 10.32 31.91 10.82 31.9 11.51C31.89 12.57 30.63 13.04 29.46 13.06C27.4 13.09 26.2 12.5 25.26 12.06L24.54 15.42C25.5 15.86 27.27 16.24 29.1 16.27C33.39 16.27 36.01 14.15 36.03 10.45ZM46.66 15.32H50.33L47.14 0.68H43.76C42.99 0.68 42.34 1.12 42.06 1.79L35.92 15.32H40.26L41.12 12.94H46.42L46.66 15.32ZM42.32 9.62L44.5 3.65L45.75 9.62H42.32ZM25.04 0.68L21.68 15.32H17.56L20.92 0.68H25.04Z" fill="#1A1F71" />
           </svg>
         </div>
@@ -119,12 +119,7 @@ export default function Footer() {
             </div>
 
             {/* Direct Studio Concierge */}
-            <div className="space-y-3 pt-2 border-t border-[#D6C5B5]/60">
-              <div className="pb-1 border-b border-[#D6C5B5]/40">
-                <span className="text-[11px] sm:text-xs font-semibold tracking-[0.2em] text-[#8C5A28] uppercase block">
-                  {c.conciergeHeading}
-                </span>
-              </div>
+            <div className="space-y-3 pt-1">
 
               <div className="space-y-2 text-xs text-[#38222E]">
                 <div className="flex items-center space-x-2.5">
@@ -169,7 +164,7 @@ export default function Footer() {
 
           {/* Column 2: Customer Service (lg:col-span-3) */}
           <div className="lg:col-span-3 space-y-3 sm:space-y-4">
-            <h3 className="text-sm sm:text-base font-semibold text-[#3B222E] tracking-tight pb-1.5 border-b border-[#D6C5B5]">
+            <h3 className="text-sm sm:text-base font-semibold text-[#3B222E] tracking-tight">
               {c.customerServiceHeading}
             </h3>
             <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#4A3842] font-normal">
@@ -186,7 +181,7 @@ export default function Footer() {
 
           {/* Column 3: Company (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-3 sm:space-y-4">
-            <h3 className="text-sm sm:text-base font-semibold text-[#3B222E] tracking-tight pb-1.5 border-b border-[#D6C5B5]">
+            <h3 className="text-sm sm:text-base font-semibold text-[#3B222E] tracking-tight">
               {c.companyHeading}
             </h3>
             <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#4A3842] font-normal">
@@ -203,7 +198,7 @@ export default function Footer() {
 
           {/* Column 4: FOLLOW US (Rightmost Column) */}
           <div className="lg:col-span-3 space-y-4">
-            <h3 className="text-sm sm:text-base font-semibold text-[#3B222E] tracking-tight pb-1.5 border-b border-[#D6C5B5]">
+            <h3 className="text-sm sm:text-base font-semibold text-[#3B222E] tracking-tight">
               {c.followHeading}
             </h3>
             <p className="text-xs text-[#5A4552] leading-relaxed">
@@ -264,8 +259,6 @@ export default function Footer() {
             <span suppressHydrationWarning>{(c.copyrightText || "").replace("{year}", String(new Date().getFullYear()))}</span>
             <span className="font-semibold text-[#2C1822] tracking-wide uppercase">{c.copyrightBrand}</span>
             <span>{c.rightsText}</span>
-            <span className="hidden sm:inline text-[#8C5A28]">•</span>
-            <span className="hidden sm:inline text-[11px] text-[#6B5663]">{c.craftNote}</span>
           </div>
 
           {/* Quick Legal Links & Smooth Back to Top */}
