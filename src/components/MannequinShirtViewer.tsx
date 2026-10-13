@@ -20,85 +20,198 @@ export interface MannequinShirtViewerProps {
 
 /**
  * Resolves the complete made shirt model based on the chosen product, fabric, or colorway.
- * Ensures the shirt displayed on the ghost mannequin is tailored in the exact selected color & pattern.
+ * Ensures the shirt displayed on the ghost mannequin is tailored in the exact selected color, pattern, and sleeve length.
  */
-function getMatchingShirtModel(product?: { name?: string; image?: string; slug?: string } | null): string {
-  if (!product) return "/customizer/shirt_model_white.jpg";
+function getMatchingShirtModel(
+  product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null,
+  isHalfSleeve: boolean = false
+): string {
+  const suffix = isHalfSleeve ? "_half.png" : ".png";
+  if (!product) return `/customizer/shirt_model_white${suffix}`;
 
-  const img = (product.image || "").toLowerCase();
+  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
   const name = (product.name || "").toLowerCase();
   const slug = (product.slug || "").toLowerCase();
 
-  // 1. Coral / Rose / Terracotta Stripes (e.g. prod_maroon_stripe.jpg)
+  // 1. DIRECT IMAGE MATCHING (Highest priority - reflects the exact visual shirt the customer clicked)
+  // 1.1 Coral / Rose / Terracotta / Maroon Stripes (matches shirt_1.jpg and prod_maroon_stripe.jpg)
   if (
+    img.includes("shirt_1.jpg") ||
+    img.includes("shirt_1.png") ||
+    img.includes("prod_maroon_stripe") ||
+    img.includes("rose_stripe") ||
+    img.includes("terracotta_stripe") ||
+    img.includes("st16974_terracotta") ||
+    img.includes("sh403_rose") ||
     img.includes("maroon") ||
     img.includes("coral") ||
-    img.includes("rose") ||
+    img.includes("terracotta")
+  ) {
+    return `/customizer/shirt_model_coral_stripe${suffix}`;
+  }
+
+  // 1.2 Rich Dark Chocolate / Espresso Brown (matches shirt_2.jpg, formal_charcoal_boardroom.jpg, prod_charcoal_stripe.jpg)
+  if (
+    img.includes("shirt_2.jpg") ||
+    img.includes("shirt_2.png") ||
+    img.includes("formal_charcoal_boardroom") ||
+    img.includes("prod_charcoal_stripe") ||
+    img.includes("charcoal_oxford") ||
+    img.includes("black_minimal") ||
+    img.includes("espresso_polo") ||
+    img.includes("espresso") ||
+    img.includes("dark_fabric") ||
+    img.includes("charcoal") ||
+    img.includes("obsidian")
+  ) {
+    return `/customizer/shirt_model_espresso${suffix}`;
+  }
+
+  // 1.3 Blue Bengal Stripe / Executive Navy Banker Pinstripe (matches shirt_3.jpg, prod_navy_stripe.jpg, formal_banker_stripe.jpg)
+  if (
+    img.includes("shirt_3.jpg") ||
+    img.includes("shirt_3.png") ||
+    img.includes("prod_navy_stripe") ||
+    img.includes("formal_banker_stripe") ||
+    img.includes("bengal_stripe") ||
+    img.includes("banker_stripe") ||
+    img.includes("luxury_pinstripe")
+  ) {
+    return `/customizer/shirt_model_bengal_blue${suffix}`;
+  }
+
+  // 1.4 Fine Sandstone / Oatmeal Linen / Ivory (matches shirt_4.jpg, formal_ivory_herringbone.jpg, prod_beige_stripe.jpg)
+  if (
+    img.includes("shirt_4.jpg") ||
+    img.includes("shirt_4.png") ||
+    img.includes("formal_ivory_herringbone") ||
+    img.includes("prod_beige_stripe") ||
+    img.includes("dove_grey_linen") ||
+    img.includes("sand_linen") ||
+    img.includes("linen_oatmeal") ||
+    img.includes("supima_cream") ||
+    img.includes("sandstone") ||
+    img.includes("oatmeal") ||
+    img.includes("linen") ||
+    img.includes("beige") ||
+    img.includes("ivory")
+  ) {
+    return `/customizer/shirt_model_sandstone_linen${suffix}`;
+  }
+
+  // 1.5 Executive Sky Blue / French Cuff Blue (matches formal_french_cuff_blue.jpg, prod_skyblue_stripe.jpg)
+  if (
+    img.includes("french_cuff_blue") ||
+    img.includes("prod_skyblue_stripe") ||
+    img.includes("sky_blue_model") ||
+    img.includes("iceblue") ||
+    img.includes("skyblue") ||
+    img.includes("sky_blue")
+  ) {
+    return `/customizer/shirt_model_skyblue${suffix}`;
+  }
+
+  // 1.6 Solid Navy (matches blazer_navy_wool.jpg, navy apparel)
+  if (
+    img.includes("blazer_navy") ||
+    img.includes("navy_wool") ||
+    img.includes("navy_chinos") ||
+    img.includes("knit_navy_polo") ||
+    img.includes("navy_solid")
+  ) {
+    return `/customizer/shirt_model_navy_solid${suffix}`;
+  }
+
+  // 1.7 Pure Crisp White (matches formal_white_twill.jpg, prod_classic_white.jpg, shirt_classic_white.jpg)
+  if (
+    img.includes("white_twill") ||
+    img.includes("prod_classic_white") ||
+    img.includes("shirt_classic_white") ||
+    img.includes("oxford_white") ||
+    img.includes("white")
+  ) {
+    return `/customizer/shirt_model_white${suffix}`;
+  }
+
+  // 2. PRODUCT SLUG & NAME FALLBACK (Used if image path is an external or unspecified URL)
+  // 2.1 Coral / Rose / Terracotta
+  if (
+    slug.includes("coral") ||
+    slug.includes("rose") ||
+    slug.includes("terracotta") ||
+    slug.includes("maroon") ||
     name.includes("rose") ||
     name.includes("coral") ||
-    name.includes("terracotta") ||
-    (slug.includes("royal-formal-crisp-white-shirt") && img.includes("maroon"))
+    name.includes("terracotta")
   ) {
-    return "/customizer/shirt_model_coral_stripe.jpg";
+    return `/customizer/shirt_model_coral_stripe${suffix}`;
   }
 
-  // 2. Executive Sky Blue
+  // 2.2 Rich Dark Chocolate / Espresso / Obsidian
   if (
-    img.includes("blue") ||
-    img.includes("sky") ||
-    name.includes("sky") ||
-    name.includes("french cuff") ||
-    name.includes("blue")
-  ) {
-    return "/customizer/shirt_model_skyblue.jpg";
-  }
-
-  // 3. Banker Navy / Executive Pinstripe
-  if (
-    img.includes("banker") ||
-    img.includes("pinstripe") ||
-    name.includes("pinstripe") ||
-    name.includes("banker") ||
-    name.includes("stripes")
-  ) {
-    return "/customizer/shirt_model_navy_pinstripe.jpg";
-  }
-
-  // 4. Fine Ivory / Cream / Linen Herringbone
-  if (
-    img.includes("ivory") ||
-    img.includes("beige") ||
-    img.includes("linen") ||
-    name.includes("ivory") ||
-    name.includes("herringbone") ||
-    name.includes("linen") ||
-    name.includes("oatmeal")
-  ) {
-    return "/customizer/shirt_model_ivory.jpg";
-  }
-
-  // 5. Midnight Charcoal / Black Twill
-  if (
-    img.includes("charcoal") ||
-    img.includes("black") ||
+    slug.includes("charcoal") ||
+    slug.includes("espresso") ||
+    slug.includes("midnight") ||
+    slug.includes("obsidian") ||
+    slug.includes("black") ||
     name.includes("charcoal") ||
-    name.includes("black") ||
+    name.includes("espresso") ||
+    name.includes("obsidian") ||
     name.includes("midnight")
   ) {
-    return "/customizer/shirt_model_charcoal.jpg";
+    return `/customizer/shirt_model_espresso${suffix}`;
   }
 
-  // 6. Solid Navy
-  if (img.includes("navy") || name.includes("navy")) {
-    return "/customizer/shirt_model_navy_solid.jpg";
+  // 2.3 Bengal / Banker / Pinstripe
+  if (
+    slug.includes("bengal") ||
+    slug.includes("banker") ||
+    slug.includes("pinstripe") ||
+    name.includes("bengal") ||
+    name.includes("banker") ||
+    name.includes("pinstripe")
+  ) {
+    return `/customizer/shirt_model_bengal_blue${suffix}`;
   }
 
-  // 7. Pure Crisp White
-  if (img.includes("white") || name.includes("white")) {
-    return "/customizer/shirt_model_white.jpg";
+  // 2.4 Sandstone / Oatmeal Linen / Ivory
+  if (
+    slug.includes("ivory") ||
+    slug.includes("linen") ||
+    slug.includes("sandstone") ||
+    slug.includes("oatmeal") ||
+    slug.includes("beige") ||
+    slug.includes("taupe") ||
+    name.includes("ivory") ||
+    name.includes("linen") ||
+    name.includes("sandstone") ||
+    name.includes("oatmeal") ||
+    name.includes("herringbone")
+  ) {
+    return `/customizer/shirt_model_sandstone_linen${suffix}`;
   }
 
-  return "/customizer/shirt_model_white.jpg";
+  // 2.5 Sky Blue
+  if (
+    slug.includes("sky-blue") ||
+    slug.includes("french-cuff") ||
+    name.includes("sky blue") ||
+    name.includes("french cuff")
+  ) {
+    return `/customizer/shirt_model_skyblue${suffix}`;
+  }
+
+  // 2.6 Solid Navy
+  if (slug.includes("navy") || name.includes("navy")) {
+    return `/customizer/shirt_model_navy_solid${suffix}`;
+  }
+
+  // 2.7 Pure Crisp White
+  if (slug.includes("white") || name.includes("white")) {
+    return `/customizer/shirt_model_white${suffix}`;
+  }
+
+  return `/customizer/shirt_model_white${suffix}`;
 }
 
 export default function MannequinShirtViewer({
@@ -117,8 +230,11 @@ export default function MannequinShirtViewer({
   const c = useContent("customizer");
   const v = c.visuals;
 
-  // Complete bespoke tailored made-shirt photo dynamically resolved to the chosen product/colorway
-  const fullShirtPhoto = getMatchingShirtModel(product);
+  const isHalfSleeve = sleeveType === "half";
+
+  // Complete bespoke tailored made-shirt photo dynamically resolved to the chosen product/colorway & sleeve length
+  const fullShirtPhoto = getMatchingShirtModel(product, false);
+  const halfShirtPhoto = getMatchingShirtModel(product, true);
 
   // Calculated stomach measurement values
   const stomachSizeLean = chestSize - 4;
@@ -162,7 +278,6 @@ export default function MannequinShirtViewer({
     ? { scaleY: 0.965, label: heightOption?.shortTitle ?? "Regular Height" }
     : { scaleY: 1.0, label: heightOption?.shortTitle ?? "Tall Height" };
 
-  const isHalfSleeve = sleeveType === "half";
   const threadHex = c.threadColors.find((t) => t.value === threadColor)?.hex ?? "#14110E";
 
   const shirtFilter =
@@ -175,19 +290,8 @@ export default function MannequinShirtViewer({
   return (
     <div className="relative w-full max-w-[520px] h-full mx-auto flex flex-col items-center justify-center select-none py-1 flex-1">
 
-      {/* Main Bespoke Preview Stage */}
-      <div className="relative w-full h-full min-h-[480px] sm:min-h-[540px] lg:min-h-[600px] rounded-[15px] overflow-hidden flex items-center justify-center flex-1">
-
-        {/* Soft Ambient Studio Lighting Behind the Shirt */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.65)_0%,transparent_70%)] pointer-events-none" />
-
-        {/* Dynamic Studio Ambient Glow matching bodyFit */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div
-            className="w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] rounded-full bg-[#FAF5EC]/60 blur-3xl transform -translate-y-4 transition-all duration-700"
-            style={{ transform: `scale(${bodyFit === "tummy" ? 1.08 : bodyFit === "regular" ? 1.03 : 1.0})` }}
-          />
-        </div>
+      {/* Main Bespoke Preview Stage - Free-standing without box container */}
+      <div className="relative w-full h-full min-h-[420px] sm:min-h-[470px] lg:min-h-[510px] flex items-center justify-center flex-1">
 
         {/* ============================================================ */}
         {/* CORE SHIRT PHOTO: FULL MADE SHIRT IN MATCHING CHOSEN COLOR   */}
@@ -200,11 +304,26 @@ export default function MannequinShirtViewer({
               transformOrigin: "center 48%",
             }}
           >
+            {/* Full Sleeve Shirt Photo */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={fullShirtPhoto}
-              alt={product?.name ?? "Custom Bespoke Made Shirt"}
-              className="w-full h-full object-contain object-top transition-all duration-500 ease-out"
+              alt={product?.name ?? "Custom Bespoke Made Shirt (Full Sleeve)"}
+              className={`w-full h-full object-contain object-top transition-all duration-500 ease-out ${
+                isHalfSleeve ? "opacity-0 pointer-events-none absolute inset-0" : "opacity-100 relative"
+              }`}
+              style={{ filter: shirtFilter }}
+              loading="eager"
+            />
+
+            {/* Half Sleeve Shirt Photo */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={halfShirtPhoto}
+              alt={product?.name ?? "Custom Bespoke Made Shirt (Half Sleeve)"}
+              className={`w-full h-full object-contain object-top transition-all duration-500 ease-out ${
+                isHalfSleeve ? "opacity-100 relative" : "opacity-0 pointer-events-none absolute inset-0"
+              }`}
               style={{ filter: shirtFilter }}
               loading="eager"
             />

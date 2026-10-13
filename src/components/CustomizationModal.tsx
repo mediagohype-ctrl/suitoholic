@@ -112,10 +112,10 @@ export default function CustomizationModal({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 lg:p-6 animate-in fade-in duration-200">
       
       {/* Modal Container */}
-      <div className="relative w-full max-w-[1240px] bg-[#D7C2AD] border border-[#C6B09B] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-[1480px] bg-[#D7C2AD] border border-[#C6B09B] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh]">
         
         {/* Modal Top Header Bar */}
-        <div className="bg-[#D7C2AD] text-[#14110E] px-5 sm:px-8 py-3.5 flex items-center justify-between border-b border-[#C6B09B]">
+        <div className="bg-[#D7C2AD] text-[#14110E] px-5 sm:px-8 lg:px-10 py-3.5 sm:py-4 flex items-center justify-between border-b border-[#C6B09B]">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-full bg-[#14110E] text-[#D7C2AD] flex items-center justify-center shadow-xs">
               <Scissors size={15} />
@@ -141,22 +141,23 @@ export default function CustomizationModal({
         </div>
 
         {/* Modal Scrollable Content Body */}
-        <div className="flex-1 overflow-y-auto p-3 sm:p-5 lg:p-7 space-y-4 sm:space-y-6">
-          
-          {/* Breadcrumb Steps Header */}
-          <div className="flex items-center justify-between border-b border-[#C6B09B]/60 pb-3">
-            <div className="flex items-center text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.2em] uppercase space-x-2 text-[#332B24]">
-              <span>{c.breadcrumbRoot}</span>
-              <span className="text-[#966839] text-xs font-normal">&gt;</span>
-              <span className="text-[#8C6D47] font-bold">{stepCopy(currentStep).breadcrumb}</span>
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10 space-y-4 sm:space-y-6">
+          <div className="w-full max-w-[1184px] mx-auto space-y-4 sm:space-y-6">
+            
+            {/* Breadcrumb Steps Header */}
+            <div className="flex items-center justify-between border-b border-[#C6B09B]/60 pb-3">
+              <div className="flex items-center text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.2em] uppercase space-x-2 text-[#332B24]">
+                <span>{c.breadcrumbRoot}</span>
+                <span className="text-[#966839] text-xs font-normal">&gt;</span>
+                <span className="text-[#8C6D47] font-bold">{stepCopy(currentStep).breadcrumb}</span>
+              </div>
             </div>
-          </div>
 
-          {/* Main 2-Column Grid with Equal Height Columns & Increased Height */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch min-h-[580px] sm:min-h-[640px] lg:min-h-[680px]">
+            {/* Main 2-Column Grid with Equal Height Columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch min-h-[490px] sm:min-h-[530px] lg:min-h-[560px]">
             
             {/* LEFT COLUMN: 3D Interactive Mannequin Shirt Viewer & Selection Panel */}
-            <div className="lg:col-span-6 flex flex-col justify-center relative h-full min-h-[560px] sm:min-h-[620px]">
+            <div className="lg:col-span-6 flex flex-col justify-center relative h-full min-h-[470px] sm:min-h-[520px]">
               
               {/* Top Row: Inscription & Selection Summary (Shown only on Step 6 Review) */}
               {currentStep >= 6 && (
@@ -240,9 +241,9 @@ export default function CustomizationModal({
             </div>
 
             {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
-            <div className="lg:col-span-6 relative flex flex-col h-full min-h-[560px] sm:min-h-[620px]">
+            <div className="lg:col-span-6 relative flex flex-col h-full min-h-[470px] sm:min-h-[520px]">
               
-              <div className="bg-[#EFE2D4]/90 border border-[#D0BDA9] rounded-[15px] p-5 sm:p-7 shadow-[0_12px_36px_rgba(0,0,0,0.08)] backdrop-blur-md relative z-10 flex-1 flex flex-col justify-between h-full">
+              <div className="bg-[#EFE2D4]/90 border border-[#D0BDA9] rounded-[15px] p-5 sm:p-6 shadow-[0_12px_36px_rgba(0,0,0,0.08)] backdrop-blur-md relative z-10 flex-1 flex flex-col justify-between h-full">
                 
                 {/* Stepper Header */}
                 <div className="mb-4 sm:mb-5">
@@ -589,6 +590,8 @@ export default function CustomizationModal({
               </div>
 
             </div>
+
+          </div>
 
           </div>
 
