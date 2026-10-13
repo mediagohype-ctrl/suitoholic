@@ -70,7 +70,7 @@ export default function Home() {
 
               {/* Typography Overlay */}
               <div className="relative z-10 flex flex-col items-start">
-                <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-[28px] font-bold uppercase tracking-wide text-[#FAF8F5] leading-tight mb-2">
+                <h3 className="text-xl sm:text-2xl lg:text-[28px] font-bold uppercase tracking-wide text-[#FAF8F5] leading-tight mb-2">
                   {banner.titleLines.map((line, j) => (
                     <React.Fragment key={j}>
                       {j > 0 && <br />}

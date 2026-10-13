@@ -87,8 +87,8 @@ export default function FaqSection() {
   return (
     <section className="py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-10 xl:px-14 w-full max-w-[1400px] mx-auto relative z-10 flex flex-col justify-center select-none overflow-x-clip">
       {/* Header: Title Only (Single Line) */}
-      <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 w-full max-w-5xl mx-auto px-2">
-        <h2 className="font-serif-luxury text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[40px] font-bold tracking-[0.10em] sm:tracking-[0.16em] lg:tracking-[0.18em] text-[#4A202A] uppercase leading-tight whitespace-nowrap">
+      <div className="flex flex-col items-center justify-center text-center mb-7 sm:mb-10 w-full max-w-5xl mx-auto px-2">
+        <h2 className="text-base sm:text-lg md:text-xl lg:text-[22px] font-semibold tracking-[0.12em] sm:tracking-[0.18em] text-[#4A202A] uppercase leading-tight whitespace-nowrap">
           FREQUENTLY ASKED QUESTIONS
         </h2>
       </div>

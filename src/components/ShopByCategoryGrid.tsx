@@ -11,8 +11,8 @@ export default function ShopByCategoryGrid() {
   return (
     <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12 my-10 sm:my-14 lg:my-18 select-none">
       {/* Title */}
-      <div className="text-center mb-8 sm:mb-12">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-bold text-[#4A202A] tracking-[0.18em] uppercase">
+      <div className="text-center mb-7 sm:mb-10">
+        <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold text-[#4A202A] tracking-[0.2em] uppercase">
           {c.heading}
         </h2>
       </div>

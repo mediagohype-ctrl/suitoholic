@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
+import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check } from "lucide-react";
@@ -752,6 +753,9 @@ export default function CustomShirtConfigurator() {
 
         </main>
       </div>
+
+      {/* Common Atelier Showcase: Video Banner, Shop By Fabrics & Customer Testimonials */}
+      <CommonAtelierShowcase />
 
       {/* Bottom Feature Highlights Bar */}
       <FeatureHighlightsBar />

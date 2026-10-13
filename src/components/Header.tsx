@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
-import { useContent } from "@/context/SiteDataProvider";
+import { Search, User, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
+import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import { useCart } from "@/context/CartProvider";
 
 interface HeaderProps {
@@ -29,6 +29,7 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
   const [visible, setVisible] = useState(true);
   const pathname = usePathname();
   const c = useContent("header");
+  const { categories } = useCatalog();
   const { itemCount } = useCart();
   const bagCount = cartCount ?? itemCount;
 
@@ -101,7 +102,7 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
           <div className="flex items-center lg:hidden z-10 w-8">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1 text-[#1F1C18] hover:text-[#9E774C] transition-colors focus:outline-none"
+              className="p-1 text-[#1F1C18] hover:text-[#9E774C] transition-colors focus:outline-none cursor-pointer"
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? <X size={22} strokeWidth={1.75} /> : <Menu size={22} strokeWidth={1.75} />}
@@ -125,26 +126,95 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
 
           {/* Desktop Navigation Links (Center) */}
           <nav className="hidden lg:flex items-center space-x-9 text-[11px] font-semibold tracking-[0.2em] uppercase">
-            {c.navLinks.map((link, i) => (
-              <Link
-                key={`${link.href}-${i}`}
-                href={link.href}
-                className={`transition-colors duration-200 pb-1 relative ${isActive(link.href)
-                  ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
-                  : "text-[#554A3F] hover:text-[#14110E]"
+            {c.navLinks.map((link, i) => {
+              const isShop = link.href === "/shop" || link.label.toLowerCase() === "shop";
+              const active = isActive(link.href);
+
+              if (isShop) {
+                return (
+                  <div key={`${link.href}-${i}`} className="relative group py-2">
+                    <Link
+                      href={link.href}
+                      className={`transition-colors duration-200 pb-1 flex items-center gap-1.5 relative ${
+                        active
+                          ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
+                          : "text-[#554A3F] hover:text-[#14110E]"
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      <ChevronDown
+                        size={12}
+                        className="transition-transform duration-200 group-hover:rotate-180 text-[#9E774C]"
+                      />
+                    </Link>
+
+                    {/* Shop Category Hover Dropdown */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50">
+                      <div className="w-[340px] bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl shadow-2xl p-4 space-y-1.5 backdrop-blur-md">
+                        <div className="px-3 py-1.5 border-b border-[#E8DACB] flex items-center justify-between">
+                          <span className="text-[10px] font-bold tracking-[0.22em] text-[#9E774C] uppercase">
+                            SHOP CATEGORIES
+                          </span>
+                          <span className="text-[9px] text-[#7A6B5D] tracking-wider uppercase font-semibold">
+                            SUITOHOLIC
+                          </span>
+                        </div>
+
+                        <div className="pt-1.5 space-y-1">
+                          <Link
+                            href="/shop"
+                            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[11px] font-bold tracking-[0.16em] uppercase text-[#14110E] hover:bg-[#14110E] hover:text-[#FAF8F5] transition-all group/item"
+                          >
+                            <span>ALL SHIRTS &amp; PRODUCTS</span>
+                            <span className="text-xs text-[#9E774C] group-hover/item:text-white transition-colors">→</span>
+                          </Link>
+
+                          {categories.map((cat) => (
+                            <Link
+                              key={cat.id}
+                              href={`/shop?category=${cat.id}`}
+                              className="flex items-center justify-between px-3.5 py-2 rounded-xl text-[10.5px] font-semibold tracking-[0.14em] uppercase text-[#4A3E33] hover:text-[#14110E] hover:bg-[#F2E5D5] transition-all group/item"
+                            >
+                              <span className="truncate pr-2">{cat.title}</span>
+                              <span className="text-xs text-[#9E774C] opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                            </Link>
+                          ))}
+                        </div>
+
+                        <div className="pt-2 border-t border-[#E8DACB] mt-2 px-3 flex items-center justify-between text-[9.5px] font-bold tracking-[0.18em] uppercase text-[#7A6B5D]">
+                          <span>BESPOKE ATELIER</span>
+                          <Link href="/custom-shirt" className="text-[#9E774C] hover:text-[#14110E] transition-colors">
+                            CUSTOM CONFIGURATOR →
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={`${link.href}-${i}`}
+                  href={link.href}
+                  className={`transition-colors duration-200 pb-1 relative ${
+                    active
+                      ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
+                      : "text-[#554A3F] hover:text-[#14110E]"
                   }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Header Right Icons */}
           <div className="flex items-center space-x-2.5 sm:space-x-4 text-[#14110E] z-10">
-            <button className="p-1 hover:text-[#9E774C] transition-colors" aria-label="Search">
+            <button className="p-1 hover:text-[#9E774C] transition-colors cursor-pointer" aria-label="Search">
               <Search size={18} strokeWidth={1.75} />
             </button>
-            <button className="p-1 hover:text-[#9E774C] transition-colors" aria-label="Account">
+            <button className="p-1 hover:text-[#9E774C] transition-colors cursor-pointer" aria-label="Account">
               <User size={18} strokeWidth={1.75} />
             </button>
             <Link href="/cart" className="relative p-1 hover:text-[#9E774C] transition-colors" aria-label={`Shopping bag, ${bagCount} items`}>
@@ -160,16 +230,53 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 px-6 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
-          {c.navLinks.map((link, i) => (
-            <Link
-              key={`${link.href}-${i}`}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block text-xs font-bold tracking-[0.2em] uppercase py-2 ${i < c.navLinks.length - 1 ? "border-b border-[#DAC2AB]/60" : ""} ${link.highlight ? "text-[#8A6E48]" : "text-[#1F1C18]"}`}
-            >
-              {link.mobileLabel || link.label}
-            </Link>
-          ))}
+          {c.navLinks.map((link, i) => {
+            const isShop = link.href === "/shop" || link.label.toLowerCase() === "shop";
+            if (isShop) {
+              return (
+                <div key={`${link.href}-${i}`} className="border-b border-[#DAC2AB]/60 pb-2">
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block text-xs font-bold tracking-[0.2em] uppercase py-2 text-[#1F1C18]"
+                  >
+                    {link.mobileLabel || link.label}
+                  </Link>
+                  <div className="pl-3 space-y-1 pt-1">
+                    <Link
+                      href="/shop"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block text-[11px] font-bold tracking-wider uppercase text-[#14110E] py-1"
+                    >
+                      • ALL PRODUCTS
+                    </Link>
+                    {categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/shop?category=${cat.id}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block text-[11px] font-semibold tracking-wider uppercase text-[#6E5D4F] hover:text-[#14110E] py-1"
+                      >
+                        • {cat.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+            return (
+              <Link
+                key={`${link.href}-${i}`}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block text-xs font-bold tracking-[0.2em] uppercase py-2 ${
+                  i < c.navLinks.length - 1 ? "border-b border-[#DAC2AB]/60" : ""
+                } ${link.highlight ? "text-[#8A6E48]" : "text-[#1F1C18]"}`}
+              >
+                {link.mobileLabel || link.label}
+              </Link>
+            );
+          })}
 
           <div className="pt-2 border-t border-[#DAC2AB]/60 flex justify-between text-[10px] tracking-wider text-[#5C5247] uppercase">
             {c.topLinks.map((link, i) => (

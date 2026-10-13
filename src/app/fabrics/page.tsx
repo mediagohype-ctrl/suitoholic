@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import FabricCategoryQuickRow from "@/components/FabricCategoryQuickRow";
 import MensFabricShowcaseGrid from "@/components/MensFabricShowcaseGrid";
 import { 
@@ -618,6 +619,9 @@ export default function FabricsPage() {
           </div>
         </div>
       )}
+
+      {/* Common Atelier Showcase: Video Banner, Shop By Fabrics & Customer Testimonials */}
+      <CommonAtelierShowcase />
 
       {/* Global Footer */}
       <Footer />

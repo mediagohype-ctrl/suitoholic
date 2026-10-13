@@ -128,7 +128,7 @@ export default function FabricShowcaseSection() {
         {/* Section Header: Luxury Enterprise Architectural Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 border-b border-[#D5C2AF] pb-6">
           <div className="space-y-2">
-            <h2 className="font-serif-luxury text-2xl sm:text-4xl lg:text-5xl font-bold uppercase leading-tight text-[#4A202A] tracking-[0.18em]">
+            <h2 className="text-xl sm:text-2xl lg:text-[26px] font-semibold uppercase leading-tight text-[#4A202A] tracking-[0.18em]">
               THE ATELIER FABRIC ARCHIVE
             </h2>
             <p className="text-xs sm:text-sm text-[#55473A] font-sans max-w-xl">

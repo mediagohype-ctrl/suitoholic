@@ -27,8 +27,9 @@ export const productPage = {
     cuff: "Cuff Construction:",
   },
   descriptionHeading: "DESCRIPTION",
-  macroEyebrow: "MACRO DETAIL GALLERY",
-  macroTitle: "Uncompromising Fabric & Finish",
+  macroEyebrow: "EXECUTIVE ATELIER • SIGNATURE EDIT",
+  macroTitle: "BEST SELLERS",
+  macroSubtitle: "Architectural Pinstripes & Italian Poplin Weaves",
   macroCards: [
     {
       image: "/detail_fabric_macro.jpg",

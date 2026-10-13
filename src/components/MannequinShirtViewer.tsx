@@ -278,6 +278,25 @@ export default function MannequinShirtViewer({
     ? { scaleY: 0.965, label: heightOption?.shortTitle ?? "Regular Height" }
     : { scaleY: 1.0, label: heightOption?.shortTitle ?? "Tall Height" };
 
+  // Responsive Chest Scale Calculations (Base = 40")
+  // 38" -> 0.960, 39" -> 0.980, 40" -> 1.000, 41" -> 1.018, 42" -> 1.036, 44" -> 1.072, 46" -> 1.108, 48" -> 1.144
+  const chestDiff = chestSize - 40;
+  const chestScaleX = Number((1 + (chestDiff >= 0 ? chestDiff * 0.018 : chestDiff * 0.020)).toFixed(3));
+  const chestScaleY = Number((1 + chestDiff * 0.005).toFixed(3));
+
+  // Combined scale for the shirt model container (chest size + body fit + height)
+  const totalScaleX = Number((fitConfig.waistScaleX * chestScaleX).toFixed(3));
+  const totalScaleY = Number((heightConfig.scaleY * chestScaleY).toFixed(3));
+
+  // Dynamic chest measurement arrow span (Center is X=200)
+  const chestHalfSpan = Math.round(115 * chestScaleX);
+  const chestLeftX = 200 - chestHalfSpan;
+  const chestRightX = 200 + chestHalfSpan;
+  const chestBadgeWidth = 88;
+  const chestBadgeX = 200 - chestBadgeWidth / 2; // 156
+  const chestLeftLineEnd = chestBadgeX - 4; // 152
+  const chestRightLineStart = chestBadgeX + chestBadgeWidth + 4; // 248
+
   const threadHex = c.threadColors.find((t) => t.value === threadColor)?.hex ?? "#14110E";
 
   const shirtFilter =
@@ -298,10 +317,10 @@ export default function MannequinShirtViewer({
         {/* ============================================================ */}
         <div className="relative w-full h-full flex items-center justify-center z-10 pt-1 sm:pt-2">
           <div
-            className="relative w-full h-full flex items-center justify-center transition-all duration-700 ease-out"
+            className="relative w-full h-full flex items-center justify-center transition-all duration-500 ease-out"
             style={{
-              transform: `scaleX(${fitConfig.waistScaleX}) scaleY(${heightConfig.scaleY})`,
-              transformOrigin: "center 48%",
+              transform: `scaleX(${totalScaleX}) scaleY(${totalScaleY})`,
+              transformOrigin: "center 42%",
             }}
           >
             {/* Full Sleeve Shirt Photo */}
@@ -360,24 +379,24 @@ export default function MannequinShirtViewer({
               {/* Chest Measurement (Steps 1, 2, 3) */}
               <g filter="url(#badgeShadow)">
                 {/* Contrast under-line */}
-                <line x1="85" y1="172" x2="152" y2="172" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-                <line x1="85" y1="172" x2="152" y2="172" stroke="#14110E" strokeWidth="2.2" markerStart="url(#arrowLeft)" strokeLinecap="round" />
+                <line x1={chestLeftX} y1="172" x2={chestLeftLineEnd} y2="172" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" className="transition-all duration-500 ease-out" />
+                <line x1={chestLeftX} y1="172" x2={chestLeftLineEnd} y2="172" stroke="#14110E" strokeWidth="2.2" markerStart="url(#arrowLeft)" strokeLinecap="round" className="transition-all duration-500 ease-out" />
 
                 {/* Chest Pill Badge */}
-                <rect x="156" y="156" width="88" height="32" rx="16" fill="#14110E" stroke="#C68A4C" strokeWidth="1.75" />
+                <rect x={chestBadgeX} y="156" width={chestBadgeWidth} height="32" rx="16" fill="#14110E" stroke="#C68A4C" strokeWidth="1.75" className="transition-all duration-500 ease-out" />
                 <text x="200" y="177" textAnchor="middle" fontSize="17" fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" fill="#FFFFFF">
                   {chestSize}&quot;
                 </text>
 
                 {/* Right Arrow */}
-                <line x1="248" y1="172" x2="315" y2="172" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-                <line x1="248" y1="172" x2="315" y2="172" stroke="#14110E" strokeWidth="2.2" markerEnd="url(#arrowRight)" strokeLinecap="round" />
+                <line x1={chestRightLineStart} y1="172" x2={chestRightX} y2="172" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" className="transition-all duration-500 ease-out" />
+                <line x1={chestRightLineStart} y1="172" x2={chestRightX} y2="172" stroke="#14110E" strokeWidth="2.2" markerEnd="url(#arrowRight)" strokeLinecap="round" className="transition-all duration-500 ease-out" />
               </g>
 
               {/* Stomach / Waist Measurement (Steps 2 & 3) */}
               {currentStep >= 2 && (() => {
-                const halfWidth = fitConfig.stomachArrowWidth / 2;
-                const stomachY = 278 * heightConfig.scaleY;
+                const halfWidth = (fitConfig.stomachArrowWidth * chestScaleX) / 2;
+                const stomachY = 278 * heightConfig.scaleY * chestScaleY;
                 const isTummy = bodyFit === "tummy";
                 const badgeWidth = isTummy ? 124 : 92;
                 const badgeX = 200 - badgeWidth / 2;
@@ -387,11 +406,11 @@ export default function MannequinShirtViewer({
                 return (
                   <g filter="url(#badgeShadow)">
                     {/* Contrast under-line */}
-                    <line x1={leftArrowX} y1={stomachY} x2={badgeX - 6} y2={stomachY} stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+                    <line x1={leftArrowX} y1={stomachY} x2={badgeX - 6} y2={stomachY} stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" className="transition-all duration-500 ease-out" />
                     <line x1={leftArrowX} y1={stomachY} x2={badgeX - 6} y2={stomachY} stroke="#14110E" strokeWidth="2.2" markerStart="url(#arrowLeft)" strokeLinecap="round" className="transition-all duration-500 ease-out" />
 
                     {/* Stomach Pill Badge */}
-                    <rect x={badgeX} y={stomachY - 16} width={badgeWidth} height="32" rx="16" fill="#14110E" stroke="#C68A4C" strokeWidth="1.75" />
+                    <rect x={badgeX} y={stomachY - 16} width={badgeWidth} height="32" rx="16" fill="#14110E" stroke="#C68A4C" strokeWidth="1.75" className="transition-all duration-500 ease-out" />
                     <text x="200" y={stomachY + 5} textAnchor="middle" fontSize={isTummy ? "13.5" : "17"} fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" fill="#FFFFFF">
                       {currentStomachValue}
                     </text>

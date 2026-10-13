@@ -146,9 +146,9 @@ export default function ModernCollectionSection({
           : "px-4 sm:px-6 lg:px-10 xl:px-14"
       }`}
     >
-      {/* Centered Heading in serif luxury font matching screenshot: SHOP BY FABRICS */}
-      <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-bold tracking-[0.18em] text-[#4A202A] uppercase leading-tight">
+      {/* Centered Heading matching product heading format */}
+      <div className="flex flex-col items-center justify-center text-center mb-7 sm:mb-10">
+        <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold tracking-[0.2em] text-[#4A202A] uppercase leading-tight">
           {headerTitle || collection.title}
         </h2>
       </div>

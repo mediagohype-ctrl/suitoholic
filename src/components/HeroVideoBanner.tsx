@@ -117,7 +117,7 @@ export default function HeroVideoBanner() {
         <div className="max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-[440px] xl:max-w-[480px] flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
 
           {/* Main Luxury High-Contrast Heading */}
-          <h1 className="font-serif-luxury font-normal text-[16px] sm:text-[20px] md:text-[24px] lg:text-[30px] xl:text-[34px] leading-[1.1] sm:leading-[1.08] text-[#14110E] tracking-normal uppercase mb-2.5 sm:mb-4 md:mb-5">
+          <h1 className="font-semibold text-[16px] sm:text-[19px] md:text-[22px] lg:text-[26px] xl:text-[30px] leading-[1.12] sm:leading-[1.1] text-[#14110E] tracking-normal uppercase mb-2.5 sm:mb-4 md:mb-5">
             {c.headingLine1} <br />
             {c.headingLine2}
           </h1>

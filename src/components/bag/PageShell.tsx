@@ -2,8 +2,20 @@ import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
+
 /** Shared frame for the bag, checkout and order pages. */
-export default function PageShell({ eyebrow, title, children }: { eyebrow: string; title: string; children: React.ReactNode }) {
+export default function PageShell({
+  eyebrow,
+  title,
+  showShowcase = true,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  showShowcase?: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
       <Header />
@@ -15,6 +27,7 @@ export default function PageShell({ eyebrow, title, children }: { eyebrow: strin
         </div>
         {children}
       </main>
+      {showShowcase && <CommonAtelierShowcase />}
       <Footer />
     </div>
   );

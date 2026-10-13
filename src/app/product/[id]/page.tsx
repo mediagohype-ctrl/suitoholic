@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import CustomizationModal from "@/components/CustomizationModal";
+import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 
 // Icon keys usable in the productPage.badges content
 const BADGE_ICONS: Record<string, LucideIcon> = {
@@ -167,6 +168,9 @@ export default function ProductDetailPage() {
   const moreColorways = products
     .filter((p) => p.category === activeProduct.category && p.id !== activeProduct.id)
     .slice(0, 8);
+  const macroProducts = products
+    .filter((p) => p.category === "formal_stripes")
+    .slice(0, 4);
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
@@ -264,7 +268,7 @@ export default function ProductDetailPage() {
                 <span className="text-[10.5px] font-extrabold tracking-[0.26em] uppercase text-[#9E774C] block mb-1">
                   {c.brandEyebrow}
                 </span>
-                <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#14110E] tracking-tight uppercase leading-tight">
+                <h1 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#14110E] tracking-tight uppercase leading-tight">
                   {activeProduct.name}
                 </h1>
 
@@ -427,48 +431,36 @@ export default function ProductDetailPage() {
 
           </div>
 
-          {/* SECTION 2: VISUAL MACRO TEXTURE & CRAFTSMANSHIP SHOWCASE (IMAGE CARDS) */}
-          {c.macroCards.length > 0 && (
-            <div className="w-full space-y-6 pt-4">
-              <div className="text-center max-w-xl mx-auto">
-                <span className="text-[10.5px] font-extrabold tracking-[0.28em] text-[#9E774C] uppercase block mb-1">
-                  {c.macroEyebrow}
-                </span>
-                <h2 className="font-serif-luxury text-2xl sm:text-3xl font-normal text-[#14110E] uppercase tracking-wider">
-                  {c.macroTitle}
-                </h2>
+          {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES (SHOP PAGE STYLING) */}
+          <div className="w-full space-y-6 pt-6 sm:pt-8 select-none">
+            <div className="text-center max-w-2xl mx-auto space-y-2">
+              <div className="inline-flex items-center justify-center space-x-2 text-[10px] sm:text-[11px] font-extrabold tracking-[0.28em] text-[#9E774C] uppercase">
+                <span className="h-[1px] w-8 sm:w-14 bg-[#9E774C]" />
+                <span>EXECUTIVE ATELIER</span>
+                <span>•</span>
+                <span>SIGNATURE EDIT</span>
+                <span className="h-[1px] w-8 sm:w-14 bg-[#9E774C]" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-                {c.macroCards.map((card, i) => (
-                  <div key={i} className="group flex flex-col w-full">
-                    {/* Portrait Image Container matching site-wide format */}
-                    <div className="relative w-full aspect-[3/4.1] rounded-[9px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/70 shadow-2xs group-hover:shadow-md transition-all duration-300">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={card.image}
-                        alt={card.alt}
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                        loading="lazy"
-                      />
-                    </div>
-                    {/* Card Content underneath image */}
-                    <div className="pt-3.5 space-y-1 text-left">
-                      <span className="text-[10.5px] font-extrabold text-[#9E774C] uppercase tracking-[0.2em] block">
-                        {card.eyebrow}
-                      </span>
-                      <h3 className="font-serif-luxury text-base font-bold text-[#14110E] uppercase tracking-wide">
-                        {card.title}
-                      </h3>
-                      <p className="text-xs text-[#665749] leading-relaxed">
-                        {card.text}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold tracking-[0.2em] text-[#4A202A] uppercase leading-tight">
+                {c.macroTitle || "BEST SELLERS"}
+              </h2>
+
+              {c.macroSubtitle && (
+                <p className="text-[11px] sm:text-xs text-[#665749] tracking-wider uppercase font-medium pt-0.5">
+                  {c.macroSubtitle}
+                </p>
+              )}
             </div>
-          )}
+
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 pt-2">
+              {(macroProducts.length >= 4 ? macroProducts : products.slice(0, 4)).map((item) => (
+                <div key={item.id} className="w-full">
+                  <ModernProductCard product={item} />
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* SECTION 3: "COMPLETE THE LOOK" E-COMMERCE OUTFIT GRID */}
           {completeLookItems.length > 0 && (
@@ -478,7 +470,7 @@ export default function ProductDetailPage() {
                   <span className="text-[10.5px] font-extrabold tracking-[0.28em] text-[#9E774C] uppercase block mb-1">
                     {c.completeLookEyebrow}
                   </span>
-                  <h2 className="font-serif-luxury text-2xl sm:text-3xl font-normal text-[#14110E] uppercase tracking-wider">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-[#14110E] uppercase tracking-wider">
                     {c.completeLookTitle}
                   </h2>
                 </div>
@@ -505,7 +497,7 @@ export default function ProductDetailPage() {
                   <span className="text-[10.5px] font-extrabold tracking-[0.28em] text-[#9E774C] uppercase block mb-1">
                     {c.moreEyebrow}
                   </span>
-                  <h3 className="font-serif-luxury text-xl sm:text-2xl font-normal text-[#14110E] uppercase tracking-wider">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#14110E] uppercase tracking-wider">
                     {c.moreTitle}
                   </h3>
                 </div>
@@ -530,6 +522,9 @@ export default function ProductDetailPage() {
 
         </main>
       </div>
+
+      {/* Common Atelier Showcase: Video Banner, Shop By Fabrics & Customer Testimonials */}
+      <CommonAtelierShowcase />
 
       {/* Bottom Feature Highlights Bar */}
       <FeatureHighlightsBar />
