@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Scissors } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import { useCart } from "@/context/CartProvider";
 import { fillTemplate } from "@/content/merge";
-import type { CustomFit } from "@/lib/types";
+import type { CustomFit, ProductItem } from "@/lib/types";
 
 export type CustomFitState = CustomFit;
 
@@ -44,13 +45,47 @@ function withLineBreaks(items: string[]) {
   ));
 }
 
-export default function CustomShirtConfigurator() {
+function CustomShirtConfiguratorContent() {
+  const searchParams = useSearchParams();
   const c = useContent("customShirtPage");
   const opts = useContent("customizer");
-  const { getProduct } = useCatalog();
+  const { products, getProduct } = useCatalog();
   const { addItem, busy } = useCart();
-  // The catalog product this page configures (its photo is used in the preview and it goes in the bag).
-  const baseProduct = getProduct(c.bagProductSlug) ?? null;
+
+  const productParam = searchParams?.get("product") || searchParams?.get("slug") || searchParams?.get("id");
+  const fabricParam = searchParams?.get("fabric");
+
+  const [activeProduct, setActiveProduct] = useState<ProductItem | null>(() => {
+    if (productParam) {
+      const found = getProduct(productParam);
+      if (found) return found;
+    }
+    if (fabricParam) {
+      const found = products.find(
+        (p) =>
+          p.category === "formal_bespoke" ||
+          p.category === "fabrics" ||
+          (p.slug && p.slug.toLowerCase().includes(fabricParam.toLowerCase())),
+      );
+      if (found) return found;
+    }
+    return getProduct(c.bagProductSlug) || products[0] || null;
+  });
+
+  useEffect(() => {
+    if (productParam) {
+      const found = getProduct(productParam);
+      if (found) setActiveProduct(found);
+    } else if (fabricParam) {
+      const found = products.find(
+        (p) =>
+          p.category === "formal_bespoke" ||
+          p.category === "fabrics" ||
+          (p.slug && p.slug.toLowerCase().includes(fabricParam.toLowerCase())),
+      );
+      if (found) setActiveProduct(found);
+    }
+  }, [productParam, fabricParam, getProduct, products]);
 
   // Chest measurement mapping (chest -> collar/shoulder) from the customizer section
   const findChest = (size: number) => opts.chestSizes.find((s) => s.size === size);
@@ -121,11 +156,11 @@ export default function CustomShirtConfigurator() {
     });
   };
 
-  // Final step: add the configured shirt (base catalog product + custom fit) to the bag.
+  // Final step: add the configured shirt (active catalog product + custom fit) to the bag.
   const handleAddToBag = async () => {
     if (busy || orderSubmitted) return;
     setAddError(null);
-    const product = baseProduct;
+    const product = activeProduct;
     if (!product) {
       setAddError(c.productNotFoundError);
       return;
@@ -159,6 +194,72 @@ export default function CustomShirtConfigurator() {
       <div className="relative flex-1 w-full overflow-hidden flex flex-col justify-center">
         <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-6 sm:pb-12">
           
+          {/* Top Header: Atelier Title & Shirt Selector */}
+          <div className="mb-6 sm:mb-8 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#D5C2AF]/70 pb-3">
+              <div>
+                <span className="text-[10px] font-extrabold tracking-[0.26em] uppercase text-[#9E774C] block mb-1">
+                  ATELIER BESPOKE CONFIGURATOR
+                </span>
+                <h1 className="text-xl sm:text-2xl font-bold uppercase text-[#14110E] tracking-tight">
+                  CUSTOMIZING: <span className="text-[#9E774C]">{activeProduct?.name || "BESPOKE DRESS SHIRT"}</span>
+                </h1>
+              </div>
+
+              {/* Price & Current Selection Pill */}
+              <div className="flex items-center gap-3">
+                <span className="font-serif-luxury text-xl sm:text-2xl font-bold text-[#14110E]">
+                  {activeProduct?.price || "₹ 2,999"}
+                </span>
+                <Link
+                  href="/shop"
+                  className="text-[11px] font-bold text-[#9E774C] hover:underline uppercase tracking-wider flex items-center gap-1"
+                >
+                  Browse Catalog →
+                </Link>
+              </div>
+            </div>
+
+            {/* Horizontal Shirt & Fabric Swatch Selector */}
+            <div className="space-y-1.5">
+              <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-[#665749] block">
+                SELECT A SHIRT / FABRIC TO CUSTOMIZE:
+              </span>
+              <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
+                {products.slice(0, 16).map((item) => {
+                  const isSelected = activeProduct?.id === item.id || activeProduct?.slug === item.slug;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveProduct(item)}
+                      type="button"
+                      className={`shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl border transition-all cursor-pointer ${
+                        isSelected
+                          ? "bg-[#14110E] text-white border-[#14110E] ring-2 ring-[#C68A4C] shadow-md"
+                          : "bg-white/80 hover:bg-white text-[#14110E] border-[#D5C2AF] hover:border-[#9E774C]"
+                      }`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-7 h-7 rounded-lg object-cover border border-[#D5C2AF]/50"
+                      />
+                      <div className="text-left">
+                        <span className="text-[11px] font-bold uppercase block truncate max-w-[130px]">
+                          {item.name}
+                        </span>
+                        <span className={`text-[9.5px] block ${isSelected ? "text-white/70" : "text-[#7A6B5D]"}`}>
+                          {item.price}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
           {/* Main 2-Column Grid: Left 3D Mannequin & Right Configurator Box */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative">
             
@@ -240,7 +341,7 @@ export default function CustomShirtConfigurator() {
                   initials={customFit.initials}
                   threadColor={customFit.threadColor}
                   currentStep={currentStep}
-                  product={baseProduct}
+                  product={activeProduct}
                 />
               </div>
 
@@ -650,6 +751,29 @@ export default function CustomShirtConfigurator() {
                 {/* ======================================================== */}
                 {currentStep === 6 && (
                   <div className="space-y-4 animate-in fade-in duration-200">
+                    {/* Selected Garment Summary Strip */}
+                    <div className="flex items-center gap-3 bg-[#FAF5EE] border border-[#D8C6B3] rounded-xl p-2.5">
+                      {activeProduct?.image && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={activeProduct.image}
+                          alt={activeProduct.name}
+                          className="w-12 h-12 rounded-lg object-cover border border-[#D5C2AF] shrink-0"
+                        />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#9E774C] block">
+                          Tailoring Garment
+                        </span>
+                        <h4 className="text-xs font-bold uppercase text-[#14110E] truncate">
+                          {activeProduct?.name}
+                        </h4>
+                        <span className="text-[11px] font-serif-luxury font-bold text-[#9E774C]">
+                          {activeProduct?.price}
+                        </span>
+                      </div>
+                    </div>
+
                     <div className="bg-[#F5EBE1]/95 border border-[#D8C6B3] rounded-xl p-4 space-y-2.5 text-xs shadow-xs">
                       <div className="flex justify-between border-b border-[#D8C6B3]/60 pb-2">
                         <span className="text-[#665749]">{opts.reviewLabels.measurements}</span>
@@ -763,5 +887,13 @@ export default function CustomShirtConfigurator() {
       {/* Comprehensive Luxury E-Commerce Footer */}
       <Footer />
     </div>
+  );
+}
+
+export default function CustomShirtConfigurator() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#FAF8F5]" />}>
+      <CustomShirtConfiguratorContent />
+    </Suspense>
   );
 }

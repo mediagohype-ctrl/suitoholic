@@ -1,13 +1,10 @@
 export const fabricsPage = {
   hero: {
-    slides: [
-      { title: "Atelier Textile Vault & Rolls", image: "/about_fabric_rolls.jpg" },
-      { title: "Royal Emerald Velvet", image: "/fabric_roll_emerald_velvet.jpg" },
-      { title: "Bordeaux Silk Jacquard", image: "/fabric_roll_bordeaux_silk.jpg" },
-      { title: "Camel Cashmere Flannel", image: "/fabric_roll_camel_flannel.jpg" },
-    ],
-    prevAriaLabel: "Previous Fabric",
-    nextAriaLabel: "Next Fabric",
+    badge: "SUITOHOLIC BESPOKE ATELIER",
+    title: "LUXURY BESPOKE FABRICS",
+    subtitle: "Finest Italian, English & Egyptian weaves tailored to your exact fit.",
+    primaryCtaLabel: "EXPLORE SWATCHES",
+    image: "/fabrics_hero_banner.jpg",
   },
   categoryQuickRow: {
     items: [

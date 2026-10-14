@@ -12,8 +12,6 @@ import {
   Check, 
   ZoomIn, 
   Bookmark, 
-  ChevronLeft, 
-  ChevronRight, 
   Plus, 
   Scissors, 
   Maximize2, 
@@ -22,7 +20,11 @@ import {
 } from "lucide-react";
 
 import { apiFetch, ApiError } from "@/lib/api";
-import { useContent } from "@/context/SiteDataProvider";
+import { useContent, useCatalog } from "@/context/SiteDataProvider";
+import { useCart } from "@/context/CartProvider";
+import CustomizationModal from "@/components/CustomizationModal";
+import confetti from "canvas-confetti";
+import type { CustomFit } from "@/lib/types";
 
 export default function FabricsPage() {
   const c = useContent("fabricsPage");
@@ -69,7 +71,7 @@ export default function FabricsPage() {
   }, []);
 
   const fabrics = liveFabrics && liveFabrics.length > 0 ? liveFabrics : (c.fabrics ?? []);
-  const heroSlides = c.hero?.slides ?? [];
+  const hero = c.hero;
   const studio = c.studio;
   const editorial = c.editorial;
   const zoom = c.zoomModal;
@@ -77,7 +79,6 @@ export default function FabricsPage() {
 
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [activeFabricId, setActiveFabricId] = useState<string | null>(null);
-  const [activeHeroSlide, setActiveHeroSlide] = useState<number>(0);
   const [zoomModalOpen, setZoomModalOpen] = useState<boolean>(false);
   const [swatchModalOpen, setSwatchModalOpen] = useState<boolean>(false);
   const [swatchRequested, setSwatchRequested] = useState<boolean>(false);
@@ -91,10 +92,38 @@ export default function FabricsPage() {
   const [swatchSubmitting, setSwatchSubmitting] = useState(false);
   const [swatchError, setSwatchError] = useState<string | null>(null);
 
+  const { products } = useCatalog();
+  const { addItem, busy } = useCart();
+  const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   // Falls back to the first fabric; undefined only if the CMS list is empty.
   const activeFabric = fabrics.find((f) => f.id === activeFabricId) ?? fabrics[0];
-  const heroSlide = heroSlides.length > 0 ? heroSlides[activeHeroSlide % heroSlides.length] : undefined;
   const customizeBase = studio?.customizeLink || "/custom-shirt";
+
+  const handleConfirmFabricCustomization = async (customFit: CustomFit) => {
+    const baseProduct = products.find((p) => p.category === "formal_bespoke" || p.category === "fabrics") || products[0];
+    if (!baseProduct || !activeFabric) return;
+    try {
+      await addItem({
+        productId: baseProduct.id,
+        quantity: 1,
+        size: String(customFit.chestSize),
+        customization: {
+          ...customFit,
+          shirtColor: activeFabric.name,
+        },
+      });
+      setIsCustomizerOpen(false);
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.7 } });
+      setToastMessage(`${activeFabric.name} (Bespoke Tailored) added to bag!`);
+      setTimeout(() => setToastMessage(null), 5000);
+    } catch (err) {
+      setIsCustomizerOpen(false);
+      setToastMessage((err as Error).message);
+      setTimeout(() => setToastMessage(null), 5000);
+    }
+  };
 
   const filteredFabrics = selectedCategory === "all"
     ? fabrics
@@ -168,43 +197,72 @@ export default function FabricsPage() {
       <Header activeTab="fabrics" />
 
       {/* ========================================================================= */}
-      {/* 1. 100% PURE VISUAL FABRIC HERO BANNER (ZERO TEXT OVERLAYS ON IMAGE)      */}
+      {/* 1. LUXURY LIGHT THEME FULL-WIDTH SUITOHOLIC HERO BANNER                   */}
       {/* ========================================================================= */}
-      <section className="relative w-full pt-36 sm:pt-44 lg:pt-48 pb-4 sm:pb-6 px-4 sm:px-8 lg:px-12 xl:px-16">
-        <div className="max-w-[1780px] w-full mx-auto space-y-4">
-          
-          {/* Main Pure Visual Fabric Showcase Frame (100% Clean Image, No Text) */}
-          <div className="relative w-full h-[320px] sm:h-[420px] md:h-[480px] lg:h-[540px] xl:h-[580px] rounded-2xl sm:rounded-3xl lg:rounded-[36px] overflow-hidden bg-[#1E1914] shadow-xl border border-white/60 group">
-            
-            {/* Active Hero Image */}
-            {heroSlide && (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={heroSlide.image}
-                alt={heroSlide.title}
-                className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-[1.02]"
-                loading="eager"
-              />
-            )}
+      <section className="relative w-full h-[460px] sm:h-[520px] md:h-[560px] lg:h-[620px] overflow-hidden bg-[#FAF8F5] select-none pt-24 sm:pt-28 flex items-center group">
+        {/* Full Bleed Visual Fabric Showcase Background */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={hero?.image || "/fabrics_hero_banner.jpg"}
+            alt="Suitoholic Bespoke Fabrics"
+            className="w-full h-full object-cover object-[center_35%] transition-transform duration-1000 ease-out group-hover:scale-[1.02]"
+            loading="eager"
+          />
 
-            {/* Left & Right Hero Navigation Arrows */}
-            <button
-              onClick={() => setActiveHeroSlide((prev) => { const n = heroSlides.length; if (n === 0) return 0; const cur = prev % n; return cur === 0 ? n - 1 : cur - 1; })}
-              className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-xs flex items-center justify-center transition-all duration-200 border border-white/20 hover:scale-110 active:scale-95 cursor-pointer"
-              aria-label={c.hero?.prevAriaLabel}
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={() => setActiveHeroSlide((prev) => { const n = heroSlides.length; if (n === 0) return 0; const cur = prev % n; return cur === n - 1 ? 0 : cur + 1; })}
-              className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-xs flex items-center justify-center transition-all duration-200 border border-white/20 hover:scale-110 active:scale-95 cursor-pointer"
-              aria-label={c.hero?.nextAriaLabel}
-            >
-              <ChevronRight size={20} />
-            </button>
+          {/* Targeted Left Gradient: Provides high-contrast clarity for text while keeping fabrics on the right 100% natural and bright */}
+          <div className="absolute inset-y-0 left-0 w-full sm:w-[68%] md:w-[54%] lg:w-[46%] bg-gradient-to-r from-white/95 via-white/80 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#FAF8F5] via-[#FAF8F5]/40 to-transparent pointer-events-none" />
+        </div>
+
+        {/* Minimal Luxury Content Overlay aligned with page grid */}
+        <div className="relative z-10 w-full max-w-[1680px] mx-auto px-6 sm:px-12 lg:px-18 xl:px-20">
+          <div className="max-w-lg flex flex-col items-start">
+            
+            {/* Suitoholic Brand Logo */}
+            <div className="mb-3 sm:mb-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo/suitoholic-logo-dark.png"
+                alt="Suitoholic"
+                className="h-12 sm:h-14 md:h-16 w-auto object-contain drop-shadow-xs"
+              />
+            </div>
+
+            {/* Atelier Crest Eyebrow */}
+            <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-xs border border-[#8C6944]/25 px-3 py-1 rounded-full text-[#8C6944] text-[9px] sm:text-[10px] font-extrabold tracking-[0.24em] uppercase shadow-xs mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8C6944]" />
+              <span>{hero?.badge || "SUITOHOLIC BESPOKE ATELIER"}</span>
+            </div>
+
+            {/* Clean Minimal Headline */}
+            <h1 className="font-serif-luxury text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-bold text-[#14110E] uppercase tracking-wide leading-[1.12]">
+              {hero?.title || "LUXURY BESPOKE FABRICS"}
+            </h1>
+
+            {/* Short Minimal Subtitle */}
+            <p className="text-xs sm:text-sm text-[#4A3E33] font-sans font-medium max-w-md mt-2 sm:mt-2.5 leading-relaxed">
+              {hero?.subtitle || "Finest Italian, English & Egyptian weaves tailored to your exact fit."}
+            </p>
+
+            {/* Single Clean CTA */}
+            <div className="pt-5 sm:pt-6">
+              <button
+                type="button"
+                onClick={() => {
+                  const studioEl = document.getElementById("swatches-studio");
+                  if (studioEl) {
+                    studioEl.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="inline-flex items-center gap-2.5 bg-[#14110E] hover:bg-[#8C6944] text-[#FAF8F5] px-6 sm:px-8 py-3.5 rounded-xl text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase transition-all duration-300 shadow-xl hover:shadow-2xl cursor-pointer group/btn"
+              >
+                <span>{hero?.primaryCtaLabel || "EXPLORE SWATCHES"}</span>
+                <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />
+              </button>
+            </div>
 
           </div>
-
         </div>
       </section>
 
@@ -358,13 +416,24 @@ export default function FabricsPage() {
 
             {/* Action Buttons */}
             <div className="space-y-2 pt-1">
-              <Link
-                href={`${customizeBase}?fabric=${encodeURIComponent(activeFabric.code)}`}
-                className="w-full bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-xs font-bold tracking-[0.2em] py-3.5 rounded-xl transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md group/btn"
+              <button
+                type="button"
+                onClick={() => setIsCustomizerOpen(true)}
+                className="w-full bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-xs font-bold tracking-[0.2em] py-3.5 rounded-xl transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md group/btn cursor-pointer"
               >
-                <span>{studio?.customizeLabel}</span>
+                <Scissors size={14} className="text-[#C5A069]" />
+                <span>{studio?.customizeLabel || "CUSTOMIZE IN THIS FABRIC"}</span>
                 <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />
-              </Link>
+              </button>
+
+              <div className="text-center pt-0.5">
+                <Link
+                  href={`${customizeBase}?fabric=${encodeURIComponent(activeFabric.code)}`}
+                  className="text-[10px] font-semibold text-[#8C6D47] hover:underline uppercase tracking-wider"
+                >
+                  Open in Dedicated 3D Configurator Studio →
+                </Link>
+              </div>
 
               <button
                 onClick={() => { setSwatchError(null); setSwatchModalOpen(true); }}
@@ -708,6 +777,33 @@ export default function FabricsPage() {
 
           </div>
         </div>
+      )}
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-[#14110E] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-[#9E774C]/50 flex items-center gap-3 animate-in slide-in-from-bottom-5">
+          <CheckCircle2 size={18} className="text-[#C5A069]" />
+          <span className="text-xs font-bold tracking-wider">{toastMessage}</span>
+          <Link href="/cart" className="underline text-[#C5A069] text-xs font-bold ml-2">
+            View Bag
+          </Link>
+        </div>
+      )}
+
+      {/* 6-Step Bespoke Customization Popup Modal */}
+      {activeFabric && (
+        <CustomizationModal
+          isOpen={isCustomizerOpen}
+          onClose={() => setIsCustomizerOpen(false)}
+          productName={activeFabric.name}
+          product={{
+            name: activeFabric.name,
+            image: activeFabric.image,
+            gallery: [activeFabric.image],
+          }}
+          submitting={busy}
+          onConfirmCustomization={handleConfirmFabricCustomization}
+        />
       )}
 
       {/* Common Atelier Showcase: Video Banner, Shop By Fabrics & Customer Testimonials */}

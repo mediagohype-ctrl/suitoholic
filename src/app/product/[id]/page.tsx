@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
@@ -61,8 +61,9 @@ const triggerConfetti = () => {
   });
 };
 
-export default function ProductDetailPage() {
+function ProductDetailContent() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const idOrSlug = params?.id as string;
   const { products, getProduct } = useCatalog();
   const c = useContent("productPage");
@@ -87,6 +88,12 @@ export default function ProductDetailPage() {
   const [toastError, setToastError] = useState<boolean>(false);
   const [isCustomizerOpen, setIsCustomizerOpen] = useState<boolean>(false);
   const [buyNowMode, setBuyNowMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (searchParams && (searchParams.get("customize") === "true" || searchParams.get("customize") === "1")) {
+      setIsCustomizerOpen(true);
+    }
+  }, [searchParams]);
 
   if (!activeProduct) {
     return (
@@ -355,11 +362,11 @@ export default function ProductDetailPage() {
                     className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#120F0D] hover:bg-[#2A231D] text-white py-4 px-5 rounded-2xl text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-xl cursor-pointer group border border-[#9E774C]/50"
                   >
                     <div className="flex items-center space-x-2.5">
-                      <ShoppingBag size={17} className="text-[#C68A4C]" />
-                      <span>{outOfStock ? c.outOfStockLabel : c.addToBagLabel}</span>
+                      <Scissors size={17} className="text-[#C68A4C]" />
+                      <span>{outOfStock ? c.outOfStockLabel : "CUSTOMIZE & ADD TO BAG"}</span>
                     </div>
                     <span className="text-[10px] text-[#C68A4C] font-bold tracking-widest">
-                      {c.addToBagHint}
+                      6 STEPS →
                     </span>
                   </button>
 
@@ -368,7 +375,7 @@ export default function ProductDetailPage() {
                     disabled={outOfStock || busy}
                     className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#14110E] hover:bg-black border border-white/20 text-white py-4 px-5 rounded-2xl text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md"
                   >
-                    <span>{c.buyNowLabel}</span>
+                    <span>BUY NOW (CUSTOM FIT)</span>
                     <ArrowRight size={16} />
                   </button>
                 </div>
@@ -546,5 +553,13 @@ export default function ProductDetailPage() {
         onConfirmCustomization={handleConfirmCustomization}
       />
     </div>
+  );
+}
+
+export default function ProductDetailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#FAF8F5]" />}>
+      <ProductDetailContent />
+    </Suspense>
   );
 }

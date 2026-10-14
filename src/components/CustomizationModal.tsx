@@ -69,6 +69,12 @@ export default function CustomizationModal({
     }));
   };
 
+  React.useEffect(() => {
+    if (isOpen) {
+      setCurrentStep(1);
+    }
+  }, [isOpen]);
+
   // The initial state is seeded from initialChestSize; selections are kept if the modal is closed and reopened.
   if (!isOpen) return null;
 
@@ -528,6 +534,26 @@ export default function CustomizationModal({
                 {/* STEP 6: REVIEW */}
                 {currentStep === 6 && (
                   <div className="space-y-3.5 animate-in fade-in duration-200">
+                    {/* Selected Garment Summary Strip */}
+                    <div className="flex items-center gap-3 bg-[#FAF5EE] border border-[#D8C6B3] rounded-xl p-2.5">
+                      {product?.image && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={product.image}
+                          alt={productName}
+                          className="w-12 h-12 rounded-lg object-cover border border-[#D5C2AF] shrink-0"
+                        />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#9E774C] block">
+                          Tailoring Garment
+                        </span>
+                        <h4 className="text-xs font-bold uppercase text-[#14110E] truncate">
+                          {productName}
+                        </h4>
+                      </div>
+                    </div>
+
                     <div className="bg-[#F5EBE1]/95 border border-[#D8C6B3] rounded-xl p-3.5 space-y-2 text-xs shadow-xs">
                       <div className="flex justify-between border-b border-[#D8C6B3]/60 pb-1.5">
                         <span className="text-[#665749]">{c.reviewLabels.measurements}</span>
