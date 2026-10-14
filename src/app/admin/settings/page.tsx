@@ -223,8 +223,8 @@ function SettingsForm({ initial, onSaved }: { initial: AdminSettings; onSaved: (
         <Card>
           <CardHeader title="Payments" />
           <div className="space-y-4 p-4 sm:p-5">
-            <Toggle checked={form.codEnabled} onChange={(v) => set("codEnabled", v)} disabled={readOnly} label="Full Cash on delivery" description="Let customers pay 100% when the order arrives." />
-            <Toggle checked={form.upiEnabled} onChange={(v) => set("upiEnabled", v)} disabled={readOnly} label="UPI / Online full payment" description="Accept full payment via UPI at checkout." />
+            <Toggle checked={form.codEnabled} onChange={(v) => set("codEnabled", v)} disabled={readOnly} label="Cash on delivery" description="Let customers pay when the order arrives." />
+            <Toggle checked={form.upiEnabled} onChange={(v) => set("upiEnabled", v)} disabled={readOnly} label="UPI (Pay via any app)" description="Accept payment via Google Pay, PhonePe, Paytm, or any UPI app at checkout." />
             {form.upiEnabled && (
               <TextField label="UPI ID" value={form.upiId} onChange={(e) => set("upiId", e.target.value)} error={errors.upiId} placeholder="suitoholic@bank" className="sm:max-w-sm" />
             )}

@@ -25,7 +25,7 @@ export async function listCategories(req, res) {
 
 export async function adminListProducts(req, res) {
   const q = req.validQuery;
-  const { page, limit, offset } = paginate(q, { defaultLimit: 50, maxLimit: 200 });
+  const { page, limit, offset } = paginate(q, { defaultLimit: 50, maxLimit: 500 });
   const { items, total } = await catalog.listProducts({
     category: q.category,
     search: q.search,

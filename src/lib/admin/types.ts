@@ -80,6 +80,7 @@ export interface AdminFabric {
   compareAtPrice?: string;
   rating?: number;
   reviewsCount?: number;
+  stock?: number | null;
   bestFor?: string;
   care?: string;
   accentColor?: string;

@@ -27,6 +27,7 @@ export const FABRIC_COLUMNS = {
   rating: "rating",
   reviewsCount: "reviews_count",
   compareAtPrice: "compare_at_price",
+  stock: "stock",
 };
 
 export function toFabric(row) {
@@ -52,6 +53,7 @@ export function toFabric(row) {
     compareAtPrice: row.compare_at_price ?? "",
     rating: Number(row.rating ?? 5),
     reviewsCount: Number(row.reviews_count ?? 0),
+    stock: row.stock !== null && row.stock !== undefined ? Number(row.stock) : 50,
     bestFor: row.best_for,
     care: row.care,
     accentColor: row.accent_color,

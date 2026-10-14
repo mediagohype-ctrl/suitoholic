@@ -17,7 +17,7 @@ export async function publicListFabrics(req, res) {
 
 export async function adminListFabrics(req, res) {
   const q = req.validQuery || req.query;
-  const { page, limit, offset } = paginate(q, { defaultLimit: 50, maxLimit: 200 });
+  const { page, limit, offset } = paginate(q, { defaultLimit: 50, maxLimit: 500 });
   const { items, total } = await fabrics.listFabrics({
     category: q.category,
     search: q.search,

@@ -19,7 +19,7 @@ export const idParam = z.object({ id: z.coerce.number().int().positive() });
 
 export const listQuery = z.object({
   page: z.coerce.number().int().min(1).optional(),
-  limit: z.coerce.number().int().min(1).max(200).optional(),
+  limit: z.coerce.number().int().min(1).max(500).optional(),
   search: z.string().trim().max(100).optional(),
   status: z.string().trim().max(30).optional(),
   category: z.string().trim().max(64).optional(),
@@ -103,6 +103,7 @@ export const fabricInput = z.object({
   accentColor: optionalText(40),
   active: z.boolean().optional(),
   sortOrder: z.number().int().optional(),
+  stock: z.coerce.number().int().min(0).nullable().optional(),
 });
 export const fabricUpdate = fabricInput.partial();
 

@@ -8,7 +8,7 @@ import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminFabric } from "@/lib/admin/types";
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
-import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
+import { ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
 import { ImageField, MediaPreview } from "./media";
 import { Button, Card, CardHeader, Notice, cn } from "./ui";
 
@@ -478,14 +478,6 @@ export default function FabricForm({
                 label="Visible on website"
                 description="Hidden fabrics won't appear to customers on the website."
               />
-              <div className="pt-2">
-                <ColorField
-                  label="Swatch Border / Accent Color"
-                  value={form.accentColor}
-                  onChange={(v) => set("accentColor", v)}
-                  error={errors.accentColor}
-                />
-              </div>
             </div>
           </Card>
 

@@ -21,6 +21,7 @@ import {
   UserCircle,
   Users,
   X,
+  Boxes,
   ClipboardList,
 } from "lucide-react";
 import { AdminAuthProvider, useAdminAuth } from "@/lib/admin/auth";
@@ -48,6 +49,7 @@ const NAV: { section?: string; items: NavItem[] }[] = [
     section: "Catalog",
     items: [
       { href: "/admin/products", label: "Products", icon: <Package className="h-4 w-4" /> },
+      { href: "/admin/inventory", label: "Inventory", icon: <Boxes className="h-4 w-4" /> },
       { href: "/admin/categories", label: "Categories", icon: <Tags className="h-4 w-4" /> },
       { href: "/admin/fabrics", label: "Fabrics", icon: <Scissors className="h-4 w-4" /> },
     ],
