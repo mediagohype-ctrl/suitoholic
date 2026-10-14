@@ -94,6 +94,11 @@ function OrderView({ order, onChange }: { order: AdminOrder; onChange: (o: Admin
             <p>
               Status: {orderStatusLabel(order.status)} · Payment: {humanize(order.paymentStatus)} ({paymentMethodLabel(order.paymentMethod)})
             </p>
+            {order.paymentMethod === "partial_cod" && (
+              <p className="mt-1 font-bold text-red-700">
+                COLLECT ON DELIVERY: {order.balanceDueLabel || money(Number(order.balanceDue))} (Advance Paid: {order.advanceAmountLabel || money(Number(order.advanceAmount))})
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -150,9 +155,21 @@ function OrderView({ order, onChange }: { order: AdminOrder; onChange: (o: Admin
               <TotalRow label="Shipping" value={order.shippingFee ? money(order.shippingFee) : "Free"} />
               {order.discount > 0 && <TotalRow label="Discount" value={`− ${money(order.discount)}`} />}
               <div className="flex justify-between border-t border-[#E5E7EB] pt-2 text-base font-semibold">
-                <dt>Total</dt>
+                <dt>Total Order Amount</dt>
                 <dd>{order.totalLabel || money(order.total)}</dd>
               </div>
+              {(order.paymentMethod === "partial_cod" || Number(order.advanceAmount) > 0) && (
+                <>
+                  <div className="flex justify-between pt-1 text-sm font-medium text-[#2563EB]">
+                    <dt>Advance Paid Online ({order.paymentStatus === "paid" || order.paymentStatus === "partially_paid" ? "Received" : "Pending"})</dt>
+                    <dd>{order.advanceAmountLabel || money(Number(order.advanceAmount))}</dd>
+                  </div>
+                  <div className="flex justify-between border-t border-dashed border-[#E5E7EB] pt-1.5 text-base font-bold text-[#B4402F]">
+                    <dt>Balance to Collect on Delivery (COD)</dt>
+                    <dd>{order.balanceDueLabel || money(Number(order.balanceDue))}</dd>
+                  </div>
+                </>
+              )}
             </dl>
           </Card>
 

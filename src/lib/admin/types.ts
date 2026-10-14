@@ -58,6 +58,37 @@ export interface AdminProduct {
 
 export type AdminCategory = Category & { dbId?: number; productCount?: number; updatedAt?: string };
 
+export interface AdminFabric {
+  id: number;
+  code: string;
+  name: string;
+  category: string;
+  categoryLabel?: string;
+  composition?: string;
+  yarnCount?: string;
+  weave?: string;
+  weight?: string;
+  gsm?: string;
+  origin?: string;
+  opacity?: string;
+  breathability?: string;
+  wrinkleResistance?: string;
+  image?: string;
+  description?: string;
+  shortInfo?: string;
+  price?: string;
+  compareAtPrice?: string;
+  rating?: number;
+  reviewsCount?: number;
+  bestFor?: string;
+  care?: string;
+  accentColor?: string;
+  active: boolean;
+  sortOrder?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface DashboardData {
   currencySymbol: string;
   revenue: number;
@@ -147,4 +178,11 @@ export interface AdminSettings {
   supportPhone: string;
   orderNotice: string;
   abandonedCartHours: number;
+  lowStockThreshold?: number;
+  lowStockEmail?: string;
+  lowStockPhone?: string;
+  lowStockNotifyEmail?: boolean;
+  lowStockNotifyWhatsapp?: boolean;
+  partialPaymentEnabled?: boolean;
+  advancePaymentPercentage?: number;
 }

@@ -14,6 +14,7 @@ import {
   Menu,
   MessageSquare,
   Package,
+  Scissors,
   Settings,
   ShoppingBag,
   Tags,
@@ -48,6 +49,7 @@ const NAV: { section?: string; items: NavItem[] }[] = [
     items: [
       { href: "/admin/products", label: "Products", icon: <Package className="h-4 w-4" /> },
       { href: "/admin/categories", label: "Categories", icon: <Tags className="h-4 w-4" /> },
+      { href: "/admin/fabrics", label: "Fabrics", icon: <Scissors className="h-4 w-4" /> },
     ],
   },
   {

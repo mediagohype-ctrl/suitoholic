@@ -33,6 +33,8 @@ export interface StoreSettings {
   supportEmail: string;
   supportPhone: string;
   orderNotice: string;
+  partialPaymentEnabled?: boolean;
+  advancePaymentPercentage?: number;
 }
 
 /** Raw CMS overrides keyed by section; merged over the built-in defaults on the client. */
@@ -127,8 +129,12 @@ export interface Order {
   discount: number;
   total: number;
   totalLabel: string;
+  advanceAmount?: number;
+  advanceAmountLabel?: string;
+  balanceDue?: number;
+  balanceDueLabel?: string;
   paymentMethod: string;
-  paymentStatus: "pending" | "paid" | "refunded" | "failed";
+  paymentStatus: "pending" | "paid" | "partially_paid" | "refunded" | "failed";
   status: OrderStatus;
   notes: string;
   adminNotes?: string;

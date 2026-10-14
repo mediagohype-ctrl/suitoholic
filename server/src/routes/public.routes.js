@@ -3,6 +3,7 @@ import rateLimit from "express-rate-limit";
 import * as catalog from "../controllers/catalog.controller.js";
 import * as cart from "../controllers/cart.controller.js";
 import * as content from "../controllers/content.controller.js";
+import * as fabrics from "../controllers/fabric.controller.js";
 import * as media from "../controllers/media.controller.js";
 import * as inquiries from "../controllers/inquiry.controller.js";
 import * as orders from "../controllers/order.controller.js";
@@ -26,6 +27,7 @@ router.get("/catalog", catalog.getCatalog);
 router.get("/categories", catalog.listCategories);
 router.get("/products", validate(s.listQuery, "query"), catalog.listProducts);
 router.get("/products/:idOrSlug", catalog.getProduct);
+router.get("/fabrics", fabrics.publicListFabrics);
 
 // Bag (cart). The bag id is a random UUID kept in the shopper's browser.
 router.post("/cart", writeLimiter, cart.createCart);

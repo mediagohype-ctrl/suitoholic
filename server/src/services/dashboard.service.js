@@ -28,7 +28,7 @@ export async function getDashboard() {
          ) t`),
     one(`SELECT count(*) AS products,
                 count(*) FILTER (WHERE active) AS active_products,
-                count(*) FILTER (WHERE stock IS NOT NULL AND stock <= 5) AS low_stock,
+                count(*) FILTER (WHERE stock IS NOT NULL AND stock <= ${Math.max(1, Math.floor(Number(settings.lowStockThreshold) || 10))}) AS low_stock,
                 (SELECT count(*) FROM categories) AS categories
          FROM products`),
     one("SELECT count(*) AS count, (SELECT count(*) FROM inquiries WHERE status = 'new') AS new_inquiries FROM subscribers"),

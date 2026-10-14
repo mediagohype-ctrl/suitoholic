@@ -4,6 +4,7 @@ import * as admin from "../controllers/admin.controller.js";
 import * as cart from "../controllers/cart.controller.js";
 import * as catalog from "../controllers/catalog.controller.js";
 import * as content from "../controllers/content.controller.js";
+import * as fabrics from "../controllers/fabric.controller.js";
 import * as inquiries from "../controllers/inquiry.controller.js";
 import * as media from "../controllers/media.controller.js";
 import * as orders from "../controllers/order.controller.js";
@@ -46,6 +47,13 @@ router.get("/categories", catalog.adminListCategories);
 router.post("/categories", validate(s.categoryInput), catalog.adminCreateCategory);
 router.patch("/categories/:key", validate(s.categoryUpdate), catalog.adminUpdateCategory);
 router.delete("/categories/:key", catalog.adminDeleteCategory);
+
+// --------------------------------------------------------------- fabrics
+router.get("/fabrics", validate(s.listQuery, "query"), fabrics.adminListFabrics);
+router.post("/fabrics", validate(s.fabricInput), fabrics.adminCreateFabric);
+router.get("/fabrics/:id", validate(s.idParam, "params"), fabrics.adminGetFabric);
+router.patch("/fabrics/:id", validate(s.idParam, "params"), validate(s.fabricUpdate), fabrics.adminUpdateFabric);
+router.delete("/fabrics/:id", validate(s.idParam, "params"), fabrics.adminDeleteFabric);
 
 // ------------------------------------------------------------- bags/orders
 router.get("/carts", validate(s.listQuery, "query"), cart.adminListCarts);

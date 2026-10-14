@@ -17,6 +17,8 @@ export const DEFAULT_SETTINGS: StoreSettings = {
   supportEmail: "care@suitoholic.com",
   supportPhone: "",
   orderNotice: "",
+  partialPaymentEnabled: true,
+  advancePaymentPercentage: 20,
 };
 
 const FORMAL_COLORWAYS = [

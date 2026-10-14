@@ -5,7 +5,7 @@ import { humanize } from "@/lib/admin/format";
 import { Badge, type BadgeTone } from "./ui";
 
 export const ORDER_STATUSES: OrderStatus[] = ["pending", "confirmed", "in_tailoring", "shipped", "delivered", "cancelled"];
-export const PAYMENT_STATUSES = ["pending", "paid", "refunded", "failed"] as const;
+export const PAYMENT_STATUSES = ["pending", "paid", "partially_paid", "refunded", "failed"] as const;
 
 const orderTones: Record<string, BadgeTone> = {
   pending: "amber",
@@ -16,7 +16,13 @@ const orderTones: Record<string, BadgeTone> = {
   cancelled: "red",
 };
 
-const paymentTones: Record<string, BadgeTone> = { pending: "amber", paid: "green", refunded: "purple", failed: "red" };
+const paymentTones: Record<string, BadgeTone> = {
+  pending: "amber",
+  paid: "green",
+  partially_paid: "blue",
+  refunded: "purple",
+  failed: "red",
+};
 const bagTones: Record<string, BadgeTone> = { active: "green", abandoned: "amber", converted: "blue" };
 const inquiryTones: Record<string, BadgeTone> = { new: "bronze", in_progress: "blue", closed: "neutral" };
 
@@ -47,4 +53,11 @@ export const orderStatusColor: Record<string, string> = {
   cancelled: "#B4402F",
 };
 
-export const paymentMethodLabel = (m: string) => (m === "cod" ? "Cash on delivery" : m === "upi" ? "UPI" : humanize(m || ""));
+export const paymentMethodLabel = (m: string) =>
+  m === "cod"
+    ? "Cash on delivery"
+    : m === "upi"
+    ? "UPI"
+    : m === "partial_cod"
+    ? "Partial COD (Advance Paid)"
+    : humanize(m || "");

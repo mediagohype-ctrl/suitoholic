@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,14 +11,14 @@ import {
   ArrowRight, 
   Check, 
   ZoomIn, 
-  Bookmark,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-  Scissors,
-  Maximize2,
-  X,
-  CheckCircle2
+  Bookmark, 
+  ChevronLeft, 
+  ChevronRight, 
+  Plus, 
+  Scissors, 
+  Maximize2, 
+  X, 
+  CheckCircle2 
 } from "lucide-react";
 
 import { apiFetch, ApiError } from "@/lib/api";
@@ -26,7 +26,49 @@ import { useContent } from "@/context/SiteDataProvider";
 
 export default function FabricsPage() {
   const c = useContent("fabricsPage");
-  const fabrics = c.fabrics ?? [];
+  const [liveFabrics, setLiveFabrics] = useState<any[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    apiFetch<any[]>("/fabrics")
+      .then((items) => {
+        if (!cancelled && Array.isArray(items) && items.length > 0) {
+          const formatted = items.map((f) => ({
+            id: String(f.code || f.id),
+            code: f.code,
+            name: f.name,
+            category: f.category,
+            categoryLabel: f.categoryLabel || f.category_label || "",
+            composition: f.composition || "",
+            yarnCount: f.yarnCount || f.yarn_count || "",
+            weave: f.weave || "",
+            weight: f.weight || "",
+            gsm: f.gsm || "",
+            origin: f.origin || "",
+            opacity: f.opacity || "",
+            breathability: f.breathability || "",
+            wrinkleResistance: f.wrinkleResistance || f.wrinkle_resistance || "",
+            image: f.image || "",
+            description: f.description || "",
+            shortInfo: f.shortInfo || f.short_info || "",
+            price: f.price || "",
+            compareAtPrice: f.compareAtPrice || f.compare_at_price || "",
+            rating: Number(f.rating ?? 5.0),
+            reviewsCount: Number(f.reviewsCount ?? f.reviews_count ?? 0),
+            bestFor: f.bestFor || f.best_for || "",
+            care: f.care || "",
+            accentColor: f.accentColor || f.accent_color || "#FAF8F5",
+          }));
+          setLiveFabrics(formatted);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const fabrics = liveFabrics && liveFabrics.length > 0 ? liveFabrics : (c.fabrics ?? []);
   const heroSlides = c.hero?.slides ?? [];
   const studio = c.studio;
   const editorial = c.editorial;
@@ -240,7 +282,38 @@ export default function FabricsPage() {
               <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold uppercase text-[#14110E] leading-snug">
                 {activeFabric.name}
               </h3>
-              <p className="text-xs sm:text-[13px] text-[#55473A] font-sans leading-relaxed">
+
+              {/* Rating out of 5 and Client Reviews */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <div className="inline-flex items-center gap-1 bg-white border border-[#D5C2AF] px-2.5 py-1 rounded-lg text-xs font-semibold text-[#8C6D47] shadow-2xs">
+                  <span className="text-[#C5A069]">★</span>
+                  <span>{Number(activeFabric.rating ?? 5.0).toFixed(1)} / 5.0</span>
+                </div>
+                <span className="text-xs text-[#55473A] font-medium">
+                  {activeFabric.reviewsCount ? `${activeFabric.reviewsCount} Client Reviews` : "Atelier Verified"}
+                </span>
+              </div>
+
+              {/* Price & Compare-at (Discount) */}
+              {activeFabric.price && (
+                <div className="flex flex-wrap items-baseline gap-2.5 pt-1">
+                  <span className="font-serif-luxury text-xl sm:text-2xl font-bold text-[#14110E]">
+                    {activeFabric.price}
+                  </span>
+                  {activeFabric.compareAtPrice && (
+                    <span className="text-sm font-medium text-[#8C6D47] line-through">
+                      {activeFabric.compareAtPrice}
+                    </span>
+                  )}
+                  {activeFabric.compareAtPrice && (
+                    <span className="text-[10px] font-bold tracking-wider uppercase bg-[#2E7D32]/10 text-[#2E7D32] px-2 py-0.5 rounded">
+                      Special Value
+                    </span>
+                  )}
+                </div>
+              )}
+
+              <p className="text-xs sm:text-[13px] text-[#55473A] font-sans leading-relaxed pt-1">
                 {activeFabric.description}
               </p>
             </div>
@@ -366,6 +439,23 @@ export default function FabricsPage() {
                     >
                       {fabric.composition}
                     </p>
+
+                    {/* Price, Discount (Compare-at) & Rating */}
+                    <div className="pt-1.5 flex items-baseline justify-between gap-1">
+                      <div className="flex flex-wrap items-baseline gap-1.5">
+                        <span className={`text-xs font-bold ${isSelected ? "text-white" : "text-[#14110E]"}`}>
+                          {fabric.price}
+                        </span>
+                        {fabric.compareAtPrice && (
+                          <span className={`text-[10px] line-through ${isSelected ? "text-white/60" : "text-[#8C6D47]"}`}>
+                            {fabric.compareAtPrice}
+                          </span>
+                        )}
+                      </div>
+                      <span className={`text-[10px] font-semibold flex items-center gap-0.5 ${isSelected ? "text-[#F5E6D3]" : "text-[#9E774C]"}`}>
+                        ★ {Number(fabric.rating ?? 5.0).toFixed(1)}/5
+                      </span>
+                    </div>
                   </div>
 
                   {/* Click to Inspect Action */}

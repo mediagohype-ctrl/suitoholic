@@ -1,6 +1,7 @@
 import { many, one, query } from "../db/pool.js";
 import { ApiError } from "../utils/ApiError.js";
 import { formatPrice, slugify } from "../utils/format.js";
+import { notifyLowStock } from "./notification.service.js";
 import { getSettings } from "./settings.service.js";
 
 // ------------------------------------------------------------------ mapping
@@ -213,15 +214,25 @@ export async function getProduct(idOrSlug, { includeInactive = false } = {}) {
 export async function createProduct(input, client) {
   const data = { ...input, slug: input.slug || slugify(input.name) };
   const row = await insertRow("products", data, PRODUCT_COLUMNS, client);
-  const { currencySymbol } = await getSettings();
-  return toProduct(row, currencySymbol);
+  const settings = await getSettings();
+  if (row.stock !== null && row.stock !== undefined) {
+    notifyLowStock({ product: row, remainingStock: row.stock, settings }).catch((err) =>
+      console.error("[notification] Low stock alert error on create:", err.message),
+    );
+  }
+  return toProduct(row, settings.currencySymbol);
 }
 
 export async function updateProduct(id, input) {
   const row = await updateRow("products", "id", id, input, PRODUCT_COLUMNS);
   if (!row) throw ApiError.notFound("Product not found");
-  const { currencySymbol } = await getSettings();
-  return toProduct(row, currencySymbol);
+  const settings = await getSettings();
+  if (row.stock !== null && row.stock !== undefined) {
+    notifyLowStock({ product: row, remainingStock: row.stock, settings }).catch((err) =>
+      console.error("[notification] Low stock alert error on update:", err.message),
+    );
+  }
+  return toProduct(row, settings.currencySymbol);
 }
 
 export async function deleteProduct(id) {

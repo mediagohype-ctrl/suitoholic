@@ -97,6 +97,11 @@ export default function OrdersPage() {
                     <div className="flex flex-col items-start gap-1">
                       <PaymentBadge status={o.paymentStatus} />
                       <span className="text-[10px] uppercase tracking-wider text-[#8B93A1]">{paymentMethodLabel(o.paymentMethod)}</span>
+                      {o.paymentMethod === "partial_cod" && Number(o.balanceDue) > 0 && (
+                        <span className="rounded bg-[#FBE9E6] px-1.5 py-0.5 text-[10px] font-semibold text-[#B4402F]">
+                          COD Due: {formatMoney(Number(o.balanceDue))}
+                        </span>
+                      )}
                     </div>
                   </Td>
                   <Td>

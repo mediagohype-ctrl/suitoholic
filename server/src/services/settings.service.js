@@ -17,6 +17,15 @@ export const DEFAULT_SETTINGS = {
   orderNotice: "Every bespoke garment is hand-cut to your measurements and dispatched within 7–10 working days.",
   // Active bags untouched for this many hours are reported as abandoned in the admin.
   abandonedCartHours: 24,
+  // Low stock inventory alert configuration
+  lowStockThreshold: 10,
+  lowStockNotifyEmail: true,
+  lowStockNotifyWhatsapp: false,
+  lowStockEmail: "",
+  lowStockPhone: "",
+  // Partial payment (Deposit online + balance COD)
+  partialPaymentEnabled: true,
+  advancePaymentPercentage: 20,
 };
 
 const CACHE_MS = 15_000;
@@ -34,7 +43,7 @@ export async function getSettings() {
 /** Settings safe to expose to the storefront. */
 export async function getPublicSettings() {
   const s = await getSettings();
-  const { abandonedCartHours, ...rest } = s;
+  const { abandonedCartHours, lowStockEmail, lowStockPhone, lowStockNotifyEmail, lowStockNotifyWhatsapp, ...rest } = s;
   return rest;
 }
 

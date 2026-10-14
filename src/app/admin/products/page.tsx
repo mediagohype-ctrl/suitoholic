@@ -6,7 +6,7 @@ import { Package, Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
 import { formatMoney } from "@/lib/api";
 import { qs, useAdminApi, useAdminQuery } from "@/lib/admin/api";
 import { initialParam } from "@/lib/admin/format";
-import type { AdminCategory, AdminProduct, Paginated } from "@/lib/admin/types";
+import type { AdminCategory, AdminProduct, AdminSettings, Paginated } from "@/lib/admin/types";
 import { useConfirm, useToast } from "@/components/admin/feedback";
 import { Toggle, inputClass } from "@/components/admin/fields";
 import { Badge, ButtonLink, Card, EmptyState, ErrorState, IconButton, PageHeader, Pagination, SkeletonRows, TableWrap, Td, Th, Thumb, cn } from "@/components/admin/ui";
@@ -23,6 +23,8 @@ export default function ProductsPage() {
   const [visibility, setVisibility] = useState<"" | "active" | "hidden" | "featured" | "low">("");
   const [page, setPage] = useState(1);
   const categories = useAdminQuery<AdminCategory[]>("/categories");
+  const settings = useAdminQuery<AdminSettings>("/settings");
+  const lowThreshold = settings.data?.lowStockThreshold ?? 10;
   const { data, error, loading, reload, setData } = useAdminQuery<Paginated<AdminProduct>>(`/products${qs({ search: term, category, page, limit: LIMIT })}`);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function ProductsPage() {
     if (visibility === "active") return p.active;
     if (visibility === "hidden") return !p.active;
     if (visibility === "featured") return p.featured;
-    if (visibility === "low") return p.stock !== null && p.stock <= 5;
+    if (visibility === "low") return p.stock !== null && p.stock <= lowThreshold;
     return true;
   });
 
@@ -112,7 +114,7 @@ export default function ProductsPage() {
             <option value="active">Visible</option>
             <option value="hidden">Hidden</option>
             <option value="featured">Featured</option>
-            <option value="low">Low stock (≤ 5)</option>
+            <option value="low">Low stock (≤ {lowThreshold})</option>
           </select>
         </div>
 
@@ -162,7 +164,7 @@ export default function ProductsPage() {
                     {p.stock === null ? (
                       <span className="text-xs text-[#6B7280]">Made to order</span>
                     ) : (
-                      <span className={cn("font-medium tabular-nums", p.stock === 0 ? "text-[#B4402F]" : p.stock <= 5 ? "text-[#8A5A00]" : "")}>{p.stock}</span>
+                      <span className={cn("font-medium tabular-nums", p.stock === 0 ? "text-[#B4402F]" : p.stock <= lowThreshold ? "text-[#8A5A00]" : "")}>{p.stock}</span>
                     )}
                   </Td>
                   <Td>

@@ -2,12 +2,15 @@ import { many, one, withTransaction } from "../db/pool.js";
 import { ApiError } from "../utils/ApiError.js";
 import { formatPrice } from "../utils/format.js";
 import { priceLines } from "./cart.service.js";
+import { notifyLowStock } from "./notification.service.js";
 import { getSettings } from "./settings.service.js";
 
 export const ORDER_STATUSES = ["pending", "confirmed", "in_tailoring", "shipped", "delivered", "cancelled"];
-export const PAYMENT_STATUSES = ["pending", "paid", "refunded", "failed"];
+export const PAYMENT_STATUSES = ["pending", "paid", "partially_paid", "refunded", "failed"];
 
 function toOrder(row, sym = "₹") {
+  const advance = Number(row.advance_amount) || 0;
+  const balance = Number(row.balance_due) || 0;
   return {
     id: row.id,
     orderNumber: row.order_number,
@@ -20,6 +23,10 @@ function toOrder(row, sym = "₹") {
     discount: row.discount,
     total: row.total,
     totalLabel: formatPrice(row.total, sym),
+    advanceAmount: advance,
+    advanceAmountLabel: formatPrice(advance, sym),
+    balanceDue: balance,
+    balanceDueLabel: formatPrice(balance, sym),
     paymentMethod: row.payment_method,
     paymentStatus: row.payment_status,
     status: row.status,
@@ -69,8 +76,14 @@ async function loadOrder(where, params, { withAdminFields = true } = {}) {
 /** Converts an active bag into an order. Prices and stock are re-checked under row locks. */
 export async function checkout({ cartId, customer, shippingAddress, paymentMethod, notes }) {
   const settings = await getSettings();
-  const allowed = [settings.codEnabled && "cod", settings.upiEnabled && "upi"].filter(Boolean);
+  const allowed = [
+    settings.codEnabled && "cod",
+    settings.upiEnabled && "upi",
+    settings.partialPaymentEnabled && "partial_cod",
+  ].filter(Boolean);
   if (!allowed.includes(paymentMethod)) throw ApiError.badRequest("This payment method is not available");
+
+  const stockAlertProducts = [];
 
   const orderId = await withTransaction(async (client) => {
     const cart = await one("SELECT * FROM carts WHERE id = $1 FOR UPDATE", [cartId], client);
@@ -99,14 +112,34 @@ export async function checkout({ cartId, customer, shippingAddress, paymentMetho
       }
     }
     for (const [productId, qty] of needed) {
-      await client.query("UPDATE products SET stock = stock - $1 WHERE id = $2 AND stock IS NOT NULL", [qty, productId]);
+      const res = await client.query(
+        `UPDATE products SET stock = stock - $1 WHERE id = $2 AND stock IS NOT NULL RETURNING id, name, slug, stock`,
+        [qty, productId],
+      );
+      if (res.rows[0]) {
+        const p = res.rows[0];
+        const threshold = Math.max(1, Math.floor(Number(settings.lowStockThreshold) || 10));
+        if (p.stock <= threshold) {
+          stockAlertProducts.push(p);
+        }
+      }
     }
 
     const priced = priceLines(lines, settings);
+
+    // Calculate advance deposit and balance due on delivery
+    const isPartial = paymentMethod === "partial_cod";
+    const advancePercent = Math.min(99, Math.max(1, Number(settings.advancePaymentPercentage) || 20));
+    const advanceAmount = isPartial ? Math.round((priced.total * (advancePercent / 100)) * 100) / 100 : 0;
+    const balanceDue = isPartial
+      ? Math.round((priced.total - advanceAmount) * 100) / 100
+      : (paymentMethod === "cod" ? priced.total : 0);
+    const initialPaymentStatus = isPartial ? "partially_paid" : "pending";
+
     const order = await one(
       `INSERT INTO orders (cart_id, customer_name, email, phone, shipping_address, subtotal, customization_total,
-                           shipping_fee, total, payment_method, notes)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+                           shipping_fee, total, advance_amount, balance_due, payment_method, payment_status, notes)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`,
       [
         cartId,
         customer.name,
@@ -117,7 +150,10 @@ export async function checkout({ cartId, customer, shippingAddress, paymentMetho
         priced.customizationTotal,
         priced.shippingFee,
         priced.total,
+        advanceAmount,
+        balanceDue,
         paymentMethod,
+        initialPaymentStatus,
         notes,
       ],
       client,
@@ -143,13 +179,25 @@ export async function checkout({ cartId, customer, shippingAddress, paymentMetho
         ],
       );
     }
+    const initialNote = isPartial
+      ? `Order placed with ${advancePercent}% advance deposit (${formatPrice(advanceAmount, settings.currencySymbol)}). Balance ${formatPrice(balanceDue, settings.currencySymbol)} due upon delivery.`
+      : "Order placed";
     await client.query(
-      "INSERT INTO order_status_history (order_id, status, note, changed_by) VALUES ($1, 'pending', 'Order placed', 'customer')",
-      [order.id],
+      "INSERT INTO order_status_history (order_id, status, note, changed_by) VALUES ($1, 'pending', $2, 'customer')",
+      [order.id, initialNote],
     );
     await client.query("UPDATE carts SET status = 'converted', email = $2 WHERE id = $1", [cartId, customer.email.toLowerCase()]);
     return order.id;
   });
+
+  // Non-blocking asynchronous low-stock alert dispatch
+  if (stockAlertProducts.length > 0) {
+    for (const product of stockAlertProducts) {
+      notifyLowStock({ product, remainingStock: product.stock, settings }).catch((err) =>
+        console.error("[notification] Async low stock alert error:", err.message),
+      );
+    }
+  }
 
   return loadOrder("id = $1", [orderId], { withAdminFields: false });
 }

@@ -100,6 +100,18 @@ export default function OrderView({ order }: { order: Order }) {
             total={order.total}
             currencySymbol={symbol}
           />
+          {(order.paymentMethod === "partial_cod" || Number(order.advanceAmount) > 0) && (
+            <div className="mt-4 pt-3 border-t border-[#E8DACB] space-y-1.5 text-xs">
+              <div className="flex justify-between font-semibold text-[#2563EB]">
+                <span>Advance Paid Online ({order.paymentStatus === "paid" || order.paymentStatus === "partially_paid" ? "Received" : "Pending"}):</span>
+                <span>{order.advanceAmountLabel || formatMoney(Number(order.advanceAmount), symbol)}</span>
+              </div>
+              <div className="flex justify-between font-bold text-[#B4402F] border-t border-dashed border-[#E8DACB] pt-1">
+                <span>Balance Due on Delivery (COD):</span>
+                <span>{order.balanceDueLabel || formatMoney(Number(order.balanceDue), symbol)}</span>
+              </div>
+            </div>
+          )}
         </section>
         <section className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 sm:p-6 text-xs space-y-1">
           <h3 className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#9E774C] mb-2">{c.checkout.shippingHeading}</h3>
@@ -111,7 +123,11 @@ export default function OrderView({ order }: { order: Order }) {
           </p>
           <p>{order.shippingAddress.country}</p>
           <p className="pt-2 text-[#55473B]">
-            {order.paymentMethod === "upi" ? c.checkout.upiLabel : c.checkout.codLabel}
+            {order.paymentMethod === "upi"
+              ? c.checkout.upiLabel
+              : order.paymentMethod === "partial_cod"
+              ? "Partial Payment (Advance Paid Online + Balance Cash on Delivery)"
+              : c.checkout.codLabel}
           </p>
         </section>
       </aside>

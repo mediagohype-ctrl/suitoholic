@@ -31,19 +31,34 @@ export default function SettingsPage() {
   );
 }
 
-type Form = Omit<AdminSettings, "shippingFee" | "freeShippingThreshold" | "customizationFee" | "abandonedCartHours"> & {
+type Form = Omit<
+  AdminSettings,
+  "shippingFee" | "freeShippingThreshold" | "customizationFee" | "abandonedCartHours" | "lowStockThreshold" | "advancePaymentPercentage"
+> & {
   shippingFee: number | "";
   freeShippingThreshold: number | "";
   customizationFee: number | "";
   abandonedCartHours: number | "";
+  lowStockThreshold: number | "";
+  advancePaymentPercentage: number | "";
 };
 
 function SettingsForm({ initial, onSaved }: { initial: AdminSettings; onSaved: (s: AdminSettings) => void }) {
   const request = useAdminApi();
   const toast = useToast();
   const { isAdmin } = useAdminAuth();
-  const [baseline, setBaseline] = useState<Form>(initial);
-  const [form, setForm] = useState<Form>(initial);
+  const normalizedInitial: Form = {
+    ...initial,
+    lowStockThreshold: initial.lowStockThreshold ?? 10,
+    lowStockNotifyEmail: initial.lowStockNotifyEmail ?? true,
+    lowStockNotifyWhatsapp: initial.lowStockNotifyWhatsapp ?? false,
+    lowStockEmail: initial.lowStockEmail ?? "",
+    lowStockPhone: initial.lowStockPhone ?? "",
+    partialPaymentEnabled: initial.partialPaymentEnabled ?? true,
+    advancePaymentPercentage: initial.advancePaymentPercentage ?? 20,
+  };
+  const [baseline, setBaseline] = useState<Form>(normalizedInitial);
+  const [form, setForm] = useState<Form>(normalizedInitial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const readOnly = !isAdmin;
@@ -63,10 +78,22 @@ function SettingsForm({ initial, onSaved }: { initial: AdminSettings; onSaved: (
         freeShippingThreshold: num(form.freeShippingThreshold),
         customizationFee: num(form.customizationFee),
         abandonedCartHours: Math.round(num(form.abandonedCartHours)) || 24,
+        lowStockThreshold: Math.max(1, Math.round(num(form.lowStockThreshold))) || 10,
+        advancePaymentPercentage: Math.min(99, Math.max(1, Math.round(num(form.advancePaymentPercentage)))) || 20,
       };
       const saved = await request<AdminSettings>("/settings", { method: "PUT", body });
-      setBaseline(saved);
-      setForm(saved);
+      const normalizedSaved: Form = {
+        ...saved,
+        lowStockThreshold: saved.lowStockThreshold ?? 10,
+        lowStockNotifyEmail: saved.lowStockNotifyEmail ?? true,
+        lowStockNotifyWhatsapp: saved.lowStockNotifyWhatsapp ?? false,
+        lowStockEmail: saved.lowStockEmail ?? "",
+        lowStockPhone: saved.lowStockPhone ?? "",
+        partialPaymentEnabled: saved.partialPaymentEnabled ?? true,
+        advancePaymentPercentage: saved.advancePaymentPercentage ?? 20,
+      };
+      setBaseline(normalizedSaved);
+      setForm(normalizedSaved);
       onSaved(saved);
       toast.success("Settings saved");
     } catch (err) {
@@ -133,13 +160,98 @@ function SettingsForm({ initial, onSaved }: { initial: AdminSettings; onSaved: (
         </Card>
 
         <Card>
+          <CardHeader title="Inventory & low-stock alerts" description="Automated alerts when product stock reaches or drops below threshold." />
+          <div className="space-y-4 p-4 sm:p-5">
+            <div className="max-w-xs">
+              <NumberField
+                label="Low-stock threshold (units)"
+                value={form.lowStockThreshold}
+                onValue={(v) => set("lowStockThreshold", v)}
+                error={errors.lowStockThreshold}
+                min={1}
+                max={1000}
+                step={1}
+                hint="Trigger notification when inventory drops to or below this level (default: 10)."
+                disabled={readOnly}
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-4 border-t border-[#EEF0F3] pt-4 sm:grid-cols-2">
+              <div className="space-y-3">
+                <Toggle
+                  checked={form.lowStockNotifyEmail ?? true}
+                  onChange={(v) => set("lowStockNotifyEmail", v)}
+                  disabled={readOnly}
+                  label="Email alert"
+                  description="Send email notification when an item is low in stock."
+                />
+                {form.lowStockNotifyEmail && (
+                  <TextField
+                    label="Alert recipient email"
+                    type="email"
+                    value={form.lowStockEmail ?? ""}
+                    onChange={(e) => set("lowStockEmail", e.target.value)}
+                    placeholder={form.supportEmail || "care@suitoholic.com"}
+                    hint="Leave blank to use support/admin email."
+                    error={errors.lowStockEmail}
+                  />
+                )}
+              </div>
+              <div className="space-y-3">
+                <Toggle
+                  checked={form.lowStockNotifyWhatsapp ?? false}
+                  onChange={(v) => set("lowStockNotifyWhatsapp", v)}
+                  disabled={readOnly}
+                  label="WhatsApp notification"
+                  description="Send automated WhatsApp alert when stock hits threshold."
+                />
+                {form.lowStockNotifyWhatsapp && (
+                  <TextField
+                    label="WhatsApp phone number"
+                    type="tel"
+                    value={form.lowStockPhone ?? ""}
+                    onChange={(e) => set("lowStockPhone", e.target.value)}
+                    placeholder="+91 98765 43210"
+                    hint="Include country code (e.g. +91)."
+                    error={errors.lowStockPhone}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card>
           <CardHeader title="Payments" />
           <div className="space-y-4 p-4 sm:p-5">
-            <Toggle checked={form.codEnabled} onChange={(v) => set("codEnabled", v)} disabled={readOnly} label="Cash on delivery" description="Let customers pay when the order arrives." />
-            <Toggle checked={form.upiEnabled} onChange={(v) => set("upiEnabled", v)} disabled={readOnly} label="UPI" description="Show UPI payment details at checkout." />
+            <Toggle checked={form.codEnabled} onChange={(v) => set("codEnabled", v)} disabled={readOnly} label="Full Cash on delivery" description="Let customers pay 100% when the order arrives." />
+            <Toggle checked={form.upiEnabled} onChange={(v) => set("upiEnabled", v)} disabled={readOnly} label="UPI / Online full payment" description="Accept full payment via UPI at checkout." />
             {form.upiEnabled && (
               <TextField label="UPI ID" value={form.upiId} onChange={(e) => set("upiId", e.target.value)} error={errors.upiId} placeholder="suitoholic@bank" className="sm:max-w-sm" />
             )}
+            <div className="border-t border-[#EEF0F3] pt-4 space-y-3">
+              <Toggle
+                checked={form.partialPaymentEnabled ?? true}
+                onChange={(v) => set("partialPaymentEnabled", v)}
+                disabled={readOnly}
+                label="Partial payment (Advance Deposit + COD)"
+                description="Require a partial deposit online first; customer pays remaining balance on delivery."
+              />
+              {form.partialPaymentEnabled && (
+                <div className="max-w-xs pl-2">
+                  <NumberField
+                    label="Advance deposit percentage (%)"
+                    value={form.advancePaymentPercentage}
+                    onValue={(v) => set("advancePaymentPercentage", v)}
+                    error={errors.advancePaymentPercentage}
+                    min={1}
+                    max={99}
+                    step={1}
+                    hint="Default is 20%. Customer pays this % online first, remainder upon delivery."
+                    disabled={readOnly}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </Card>
 

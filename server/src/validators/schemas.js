@@ -77,6 +77,35 @@ export const productInput = z.object({
 });
 export const productUpdate = productInput.partial();
 
+export const fabricInput = z.object({
+  code: text(60).min(1, "Fabric code / SKU is required"),
+  name: text(200).min(1, "Fabric name is required"),
+  category: text(80).min(1, "Category is required"),
+  categoryLabel: optionalText(120),
+  composition: optionalText(250),
+  yarnCount: optionalText(160),
+  weave: optionalText(160),
+  weight: optionalText(160),
+  gsm: optionalText(80),
+  origin: optionalText(200),
+  opacity: optionalText(120),
+  breathability: optionalText(120),
+  wrinkleResistance: optionalText(160),
+  image: imageRef.optional(),
+  description: optionalText(5000),
+  shortInfo: optionalText(300),
+  price: optionalText(120),
+  compareAtPrice: optionalText(120),
+  rating: z.coerce.number().min(0).max(5).optional(),
+  reviewsCount: z.coerce.number().int().min(0).optional(),
+  bestFor: optionalText(400),
+  care: optionalText(400),
+  accentColor: optionalText(40),
+  active: z.boolean().optional(),
+  sortOrder: z.number().int().optional(),
+});
+export const fabricUpdate = fabricInput.partial();
+
 // ------------------------------------------------------------------ bag
 
 // The bespoke configurator payload. Known fields are typed; extra option keys added
@@ -128,7 +157,7 @@ export const checkoutInput = z.object({
     postalCode: text(20).min(3, "PIN code is required"),
     country: text(80).default("India"),
   }),
-  paymentMethod: z.enum(["cod", "upi"]).default("cod"),
+  paymentMethod: z.enum(["cod", "upi", "partial_cod"]).default("cod"),
   notes: text(1000).default(""),
 });
 
@@ -163,6 +192,13 @@ export const settingsInput = z
     supportPhone: text(40),
     orderNotice: text(1000),
     abandonedCartHours: z.number().int().min(1).max(720),
+    lowStockThreshold: z.number().int().min(1).max(1000),
+    lowStockNotifyEmail: z.boolean(),
+    lowStockNotifyWhatsapp: z.boolean(),
+    lowStockEmail: z.string().trim().email().or(z.literal("")),
+    lowStockPhone: text(40),
+    partialPaymentEnabled: z.boolean(),
+    advancePaymentPercentage: z.number().min(1).max(99),
   })
   .partial();
 
