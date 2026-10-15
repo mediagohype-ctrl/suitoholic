@@ -82,7 +82,7 @@ const DEFAULT_LOOKS: CuratedLookItem[] = [
     subtitle: "Architectural Navy Executive Pinstripe",
     price: "₹ 2,799",
     image: "/new_shirts/shirt_6.jpg",
-    hoverImage: "/customizer/shirt_model_navy_pinstripe.jpg",
+    hoverImage: "/customizer/shirt_model_navy_banker_stripe.jpg",
     tag: "EXECUTIVE FORMAL",
   },
   {
