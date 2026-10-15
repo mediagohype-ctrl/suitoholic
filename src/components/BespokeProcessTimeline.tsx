@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import { ArrowUpRight } from "lucide-react";
 
 interface ProcessStep {
@@ -49,32 +49,6 @@ const PROCESS_STEPS: ProcessStep[] = [
 ];
 
 export default function BespokeProcessTimeline() {
-  const [activeStep, setActiveStep] = useState<string>("01");
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const stepId = entry.target.getAttribute("data-step");
-            if (stepId) setActiveStep(stepId);
-          }
-        });
-      },
-      {
-        rootMargin: "-20% 0px -40% 0px",
-        threshold: 0.15,
-      }
-    );
-
-    stepRefs.current.forEach((el) => {
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   const handleScrollToConsult = () => {
     const target =
       document.getElementById("appointment-booking") ||
@@ -155,67 +129,39 @@ export default function BespokeProcessTimeline() {
           </div>
 
           {/* ========================================================================= */}
-          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Single-line Headings, Clean Formatting) */}
+          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Hover-Only End-to-End Line, Exactly 1) */}
           {/* ========================================================================= */}
           <div className="md:col-span-7 border-t border-[#E3D4C4]">
-            {PROCESS_STEPS.map((item, index) => {
-              const isActive = activeStep === item.step;
-
-              return (
-                <div
-                  key={item.step}
-                  ref={(el) => {
-                    stepRefs.current[index] = el;
-                  }}
-                  data-step={item.step}
-                  className={`relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 ${
-                    isActive ? "bg-[#FAF4EB]/80" : "hover:bg-[#FAF4EB]/40"
-                  } px-3 sm:px-6 group`}
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
-                    {/* Step Number (01, 02, etc.) */}
-                    <div
-                      className={`text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 transition-colors duration-200 ${
-                        isActive
-                          ? "text-[#8C5A28] font-bold"
-                          : "text-[#8C5A28]/70 group-hover:text-[#8C5A28]"
-                      }`}
-                    >
-                      {item.step}
-                    </div>
-
-                    {/* Step Title: Single-Line, Proper Proportion, Clean Format */}
-                    <div className="w-auto sm:w-64 lg:w-72 flex-shrink-0">
-                      <h3
-                        className={`text-xl sm:text-2xl lg:text-[26px] font-medium tracking-tight whitespace-nowrap sm:whitespace-normal transition-all duration-200 leading-snug ${
-                          isActive
-                            ? "text-[#8C5A28] translate-x-1"
-                            : "text-[#14110E] group-hover:text-[#8C5A28] group-hover:translate-x-1"
-                        }`}
-                      >
-                        {item.title}
-                      </h3>
-                    </div>
-
-                    {/* Step Description: Aligned nicely with title */}
-                    <div className="flex-1 max-w-md pt-1 sm:pt-0">
-                      <p className="text-xs sm:text-[13.5px] text-[#524436] leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
+            {PROCESS_STEPS.map((item) => (
+              <div
+                key={item.step}
+                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/80 px-3 sm:px-6 group cursor-pointer"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
+                  {/* Step Number (01, 02, etc.) */}
+                  <div className="text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 text-[#8C5A28]/70 group-hover:text-[#8C5A28] group-hover:font-bold transition-colors duration-200">
+                    {item.step}
                   </div>
 
-                  {/* End-to-End Animated Accent Indicator Line in Suitoholic Tailor Gold */}
-                  <div
-                    className={`absolute bottom-[-1px] left-0 h-[2px] z-10 transition-all duration-700 ease-out pointer-events-none ${
-                      isActive
-                        ? "w-full bg-[#8C5A28]"
-                        : "w-0 group-hover:w-full bg-[#8C5A28]"
-                    }`}
-                  />
+                  {/* Step Title: Single-Line, Proper Proportion, Clean Format */}
+                  <div className="w-auto sm:w-64 lg:w-72 flex-shrink-0">
+                    <h3 className="text-xl sm:text-2xl lg:text-[26px] font-medium tracking-tight whitespace-nowrap sm:whitespace-normal text-[#14110E] group-hover:text-[#8C5A28] group-hover:translate-x-1 transition-all duration-200 leading-snug">
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  {/* Step Description: Aligned nicely with title */}
+                  <div className="flex-1 max-w-md pt-1 sm:pt-0">
+                    <p className="text-xs sm:text-[13.5px] text-[#524436] leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
-              );
-            })}
+
+                {/* End-to-End Animated Accent Indicator Line: ONLY ON HOVER (Exactly 1 Line) */}
+                <div className="absolute bottom-[-1px] left-0 h-[2px] w-0 group-hover:w-full bg-[#8C5A28] z-10 transition-all duration-700 ease-out pointer-events-none" />
+              </div>
+            ))}
           </div>
         </div>
       </div>
