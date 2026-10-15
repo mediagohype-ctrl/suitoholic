@@ -121,6 +121,27 @@ h1, h2, h3, h4, h5, h6 {
   animation: levitate 5s ease-in-out infinite;
 }
 
+/* Infinite slow marquee for atelier offerings ticker strip */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
 /* Studio Ground & Floating Shadows */
 .studio-podium-shadow {
   box-shadow: 0 20px 40px -15px rgba(20, 17, 14, 0.08);

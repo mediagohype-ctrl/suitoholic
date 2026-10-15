@@ -141,6 +141,20 @@ function CustomShirtConfiguratorContent() {
     jumpToConfiguratorLabel: "Or Configure 3D Shirt Online",
   };
 
+  const customOfferingsList: { title: string; detail?: string }[] = (c as any).customOfferings || [
+    { title: "Bespoke Shirts", detail: "Formal, Casual & Tuxedo" },
+    { title: "Handcrafted Suits", detail: "Two-Piece & Three-Piece" },
+    { title: "Luxury Overcoats", detail: "Cashmere & Merino Wool" },
+    { title: "Tailored Blazers", detail: "Italian Poplins & Twills" },
+    { title: "Royal Bandhgalas", detail: "Heritage Silhouette" },
+    { title: "Tuxedos & Dinner Jackets", detail: "Silk Satin Lapels" },
+    { title: "Custom Trousers", detail: "Pleated & Gurkha Waist" },
+    { title: "Bespoke Waistcoats", detail: "Double & Single Breasted" },
+    { title: "Nehru Jackets", detail: "Raw Silk & Linen" },
+    { title: "Jodhpuri Suits", detail: "Royal Ceremonial Edit" },
+    { title: "Monogrammed Accents", detail: "Custom Embroidery on Cuffs" },
+  ];
+
   const handleAppointmentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!apptName || !apptPhone || !apptEmail || !apptDate) return;
@@ -417,6 +431,44 @@ function CustomShirtConfiguratorContent() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize */}
+      <section className="relative w-full bg-[#FAF5EE] border-b border-[#E2D4C3] py-3.5 sm:py-4 overflow-hidden select-none shadow-2xs">
+        {/* Left and Right Edge Gradient Masks for luxury editorial feathering */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#FAF5EE] to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#FAF5EE] to-transparent z-10" />
+
+        <div className="flex items-center">
+          {/* Leading Badge on Left */}
+          <div className="hidden md:flex items-center gap-2 pl-6 sm:pl-8 pr-5 shrink-0 z-20 border-r border-[#D5C2AF]/80">
+            <span className="w-2 h-2 rounded-full bg-[#8C5A28] animate-pulse" />
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#8C5A28] whitespace-nowrap">
+              {c.stripEyebrow || "BESPOKE SERVICES"}
+            </span>
+          </div>
+
+          {/* Marquee Track: Duplicated list for seamless infinite loop */}
+          <div className="overflow-hidden w-full">
+            <div className="animate-marquee-slow flex items-center">
+              {[...customOfferingsList, ...customOfferingsList].map((item, idx) => (
+                <div key={idx} className="flex items-center shrink-0">
+                  <div className="flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 group cursor-default">
+                    <span className="text-[#C59B6A] text-xs sm:text-sm font-bold">✦</span>
+                    <span className="font-serif-luxury text-xs sm:text-[13px] font-bold uppercase tracking-[0.16em] text-[#14110E] group-hover:text-[#8C5A28] transition-colors whitespace-nowrap">
+                      {item.title}
+                    </span>
+                    {item.detail && (
+                      <span className="hidden sm:inline-block text-[9.5px] font-medium text-[#7A6B5D] tracking-normal uppercase bg-[#EFE4D6]/70 px-2 py-0.5 rounded-full border border-[#D5C2AF]/50 whitespace-nowrap">
+                        {item.detail}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

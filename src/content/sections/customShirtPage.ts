@@ -21,6 +21,21 @@ export const customShirtPage = {
     jumpToConfiguratorLabel: "Or Configure 3D Shirt Online",
   },
 
+  stripEyebrow: "BESPOKE SERVICES",
+  customOfferings: [
+    { title: "Bespoke Shirts", detail: "Formal, Casual & Tuxedo" },
+    { title: "Handcrafted Suits", detail: "Two-Piece & Three-Piece" },
+    { title: "Luxury Overcoats", detail: "Cashmere & Merino Wool" },
+    { title: "Tailored Blazers", detail: "Italian Poplins & Twills" },
+    { title: "Royal Bandhgalas", detail: "Heritage Silhouette" },
+    { title: "Tuxedos & Dinner Jackets", detail: "Silk Satin Lapels" },
+    { title: "Custom Trousers", detail: "Pleated & Gurkha Waist" },
+    { title: "Bespoke Waistcoats", detail: "Double & Single Breasted" },
+    { title: "Nehru Jackets", detail: "Raw Silk & Linen" },
+    { title: "Jodhpuri Suits", detail: "Royal Ceremonial Edit" },
+    { title: "Monogrammed Accents", detail: "Custom Embroidery on Cuffs" },
+  ],
+
   // The catalog product (slug or id) used as the base for custom-fit orders added to the bag.
   bagProductSlug: "royal-formal-crisp-white-shirt",
 
