@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
+import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, Scissors, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
@@ -108,6 +109,35 @@ function CustomShirtConfiguratorContent() {
     );
     return list.length > 0 ? list : products;
   }, [products]);
+
+  const handleSelectCuratedLook = (item: CuratedLookItem) => {
+    const found = products.find((p) => p.slug === item.slug);
+    if (found) {
+      setActiveProduct(found);
+    } else {
+      setActiveProduct({
+        id: typeof item.id === "number" ? item.id : 9001,
+        slug: item.slug,
+        name: item.title,
+        price: item.price,
+        rawPrice: parseInt(item.price.replace(/[^\d]/g, "") || "2499", 10),
+        subtitle: item.subtitle,
+        description: item.subtitle,
+        fabric: item.subtitle,
+        category: "formal_shirts",
+        threadCount: "140s",
+        image: item.image,
+        gallery: [item.image],
+        rating: 5,
+        reviewsCount: 150,
+      } as ProductItem);
+    }
+
+    const target = document.getElementById("mannequin-viewer") || document.getElementById("configurator-section");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // Chest measurement mapping (chest -> collar/shoulder) from the customizer section
   const findChest = (size: number) => opts.chestSizes.find((s) => s.size === size);
@@ -460,122 +490,37 @@ function CustomShirtConfiguratorContent() {
       {/* OUR STORY: Heritage Timeline & Master Tailor Atelier Section */}
       <AtelierStoryTimeline {...((c as any).timelineStory || {})} />
 
+      {/* CURATED STARTING POINTS: Designer Ensembles Showcase (Matching Reference Design) */}
+      <CuratedStartingPoints
+        activeProductSlug={activeProduct?.slug}
+        onSelectLook={handleSelectCuratedLook}
+      />
+
       {/* Main Studio Content */}
       <div id="configurator-section" className="relative flex-1 w-full overflow-hidden flex flex-col justify-center">
         <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-10 sm:pt-14 pb-6 sm:pb-12">
           
-          {/* Top Section: Select Product to Customize with Real Product Cards */}
-          <div className="mb-8 sm:mb-10 space-y-4">
-            {/* Header: Title, Active Selection, Price & Navigation Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5C2AF]/70 pb-4">
-              <div>
-                <span className="text-[10px] font-extrabold tracking-[0.26em] uppercase text-[#8C5A28] block mb-1">
-                  ATELIER BESPOKE CONFIGURATOR • STEP 01
-                </span>
-                <h1 className="text-xl sm:text-2xl font-bold uppercase text-[#14110E] tracking-tight">
-                  SELECT SHIRT TO CUSTOMIZE
-                </h1>
-                <p className="text-xs text-[#665749] mt-0.5">
-                  Currently configured: <span className="font-bold text-[#8C5A28]">{activeProduct?.name || "Bespoke Dress Shirt"}</span> ({activeProduct?.price || "₹ 2,499"})
-                </p>
-              </div>
-
-              {/* Navigation Controls & Catalog link */}
-              <div className="flex items-center gap-3 self-end sm:self-auto">
-                <div className="flex items-center gap-1.5 bg-white border border-[#D5C2AF] rounded-lg p-1 shadow-2xs">
-                  <button
-                    type="button"
-                    onClick={() => scrollProducts("left")}
-                    aria-label="Previous shirts"
-                    className="w-8 h-8 rounded-md flex items-center justify-center hover:bg-[#FAF5EE] text-[#14110E] hover:text-[#8C5A28] transition-colors cursor-pointer"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => scrollProducts("right")}
-                    aria-label="Next shirts"
-                    className="w-8 h-8 rounded-md flex items-center justify-center hover:bg-[#FAF5EE] text-[#14110E] hover:text-[#8C5A28] transition-colors cursor-pointer"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
-                </div>
-
-                <Link
-                  href="/shop"
-                  className="text-[11px] font-bold text-[#8C5A28] hover:text-[#14110E] uppercase tracking-wider flex items-center gap-1 py-2 px-3 rounded-lg border border-[#D5C2AF] bg-white hover:bg-[#FAF5EE] transition-colors"
-                >
-                  View All ({products.length}) →
-                </Link>
-              </div>
+          {/* Top Header: Atelier Title & Configurator Mannequin Indicator */}
+          <div id="mannequin-viewer" className="mb-6 sm:mb-8 space-y-2 border-b border-[#D5C2AF]/70 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span className="text-[10px] font-extrabold tracking-[0.26em] uppercase text-[#8C5A28] block mb-1">
+                ATELIER BESPOKE CONFIGURATOR • 3D MANNEQUIN
+              </span>
+              <h1 className="text-xl sm:text-2xl font-bold uppercase text-[#14110E] tracking-tight">
+                CUSTOMIZING: <span className="text-[#8C5A28]">{activeProduct?.name || "BESPOKE DRESS SHIRT"}</span>
+              </h1>
             </div>
 
-            {/* Horizontal Product Cards Showcase */}
-            <div
-              ref={productScrollRef}
-              className="flex items-stretch gap-3.5 sm:gap-4 overflow-x-auto pb-3 pt-1 scrollbar-none scroll-smooth"
-            >
-              {customizableShirts.map((item) => {
-                const isSelected = activeProduct?.id === item.id || activeProduct?.slug === item.slug;
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => setActiveProduct(item)}
-                    className={`group shrink-0 w-[170px] sm:w-[195px] rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between text-left select-none ${
-                      isSelected
-                        ? "bg-white border-[#8C5A28] ring-2 ring-[#8C5A28]/40 shadow-md scale-[1.01]"
-                        : "bg-white/90 hover:bg-white border-[#D5C2AF] hover:border-[#8C5A28] shadow-2xs hover:shadow-sm"
-                    }`}
-                  >
-                    {/* Shirt Image Container */}
-                    <div className="relative aspect-[3/3.7] w-full overflow-hidden bg-[#F5EFE6]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                      />
-                      {isSelected ? (
-                        <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full bg-[#8C5A28] text-white text-[9px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
-                          <Check size={10} className="stroke-[3]" />
-                          <span>Active</span>
-                        </div>
-                      ) : item.tag ? (
-                        <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full bg-[#14110E]/75 backdrop-blur-sm text-[#FAF5EE] text-[8.5px] font-medium uppercase tracking-wider">
-                          {item.tag}
-                        </div>
-                      ) : null}
-                    </div>
-
-                    {/* Product Details */}
-                    <div className="p-3 flex flex-col justify-between flex-1">
-                      <div className="space-y-0.5">
-                        <h3 className="font-bold text-[11.5px] uppercase tracking-wide text-[#14110E] line-clamp-1 group-hover:text-[#8C5A28] transition-colors">
-                          {item.name}
-                        </h3>
-                        <p className="text-[10px] text-[#7A6B5D] line-clamp-1 font-normal">
-                          {item.fabric || item.subtitle || "100% Egyptian Giza Cotton"}
-                        </p>
-                      </div>
-
-                      <div className="pt-2.5 mt-2 flex items-center justify-between border-t border-[#EFE5D8]">
-                        <span className="font-serif-luxury font-bold text-xs text-[#14110E]">
-                          {item.price}
-                        </span>
-                        <span
-                          className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded transition-colors ${
-                            isSelected
-                              ? "bg-[#8C5A28] text-white"
-                              : "bg-[#FAF5EE] text-[#8C5A28] group-hover:bg-[#8C5A28] group-hover:text-white"
-                          }`}
-                        >
-                          {isSelected ? "Selected" : "Select"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="flex items-center gap-3">
+              <span className="font-serif-luxury text-xl sm:text-2xl font-bold text-[#14110E]">
+                {activeProduct?.price || "₹ 2,499"}
+              </span>
+              <a
+                href="#curated-looks"
+                className="text-[11px] font-bold text-[#8C5A28] hover:underline uppercase tracking-wider flex items-center gap-1 py-1.5 px-3 rounded-lg border border-[#D5C2AF] bg-white hover:bg-[#FAF5EE] transition-colors"
+              >
+                Change Look ↑
+              </a>
             </div>
           </div>
 
