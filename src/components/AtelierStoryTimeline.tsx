@@ -94,40 +94,40 @@ export default function AtelierStoryTimeline({
           </div>
 
           {/* RIGHT COLUMN: Vertical Golden Timeline & Milestone Cards in CSS Grid */}
-          <div className="lg:col-span-7 pt-2 lg:pt-4">
-            <div className="relative grid grid-cols-1 gap-6 sm:gap-7">
+          <div className="lg:col-span-7 pt-4 sm:pt-6 lg:pt-10">
+            <div className="relative grid grid-cols-1 gap-8 sm:gap-10 lg:gap-11">
               
               {/* Continuous Golden Timeline Line (aligned on x = 12px) */}
               <div
-                className="pointer-events-none absolute left-3 top-3 bottom-6 w-[2px] -translate-x-1/2 bg-gradient-to-b from-[#8C5A28] via-[#C59B6A] to-[#D5C2AF]"
+                className="pointer-events-none absolute left-3 top-3 bottom-8 w-[2px] -translate-x-1/2 bg-gradient-to-b from-[#8C5A28] via-[#C59B6A] to-[#D5C2AF]"
                 aria-hidden="true"
               />
 
               {/* Milestone Rows in CSS Grid [24px_1fr] */}
               {milestones.map((item, idx) => (
-                <div key={idx} className="relative grid grid-cols-[24px_1fr] gap-4 sm:gap-6 items-start group">
+                <div key={idx} className="relative grid grid-cols-[24px_1fr] gap-5 sm:gap-7 items-start group">
                   {/* Column 1: Timeline Circular Target Node */}
                   <div
-                    className="w-6 h-6 shrink-0 mt-6 rounded-full border-2 border-[#8C5A28] bg-[#FAF6F0] flex items-center justify-center shadow-xs group-hover:border-[#C59B6A] group-hover:scale-110 transition-all z-10"
+                    className="w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 border-[#8C5A28] bg-[#FAF6F0] flex items-center justify-center shadow-xs group-hover:border-[#C59B6A] group-hover:scale-110 transition-all z-10"
                     aria-hidden="true"
                   >
                     <div className="w-2 h-2 rounded-full bg-[#8C5A28] group-hover:bg-[#C59B6A] transition-colors" />
                   </div>
 
-                  {/* Column 2: Milestone Content Box */}
-                  <div className="bg-white/95 backdrop-blur-sm border border-[#D5C2AF] hover:border-[#8C5A28] rounded-xl sm:rounded-2xl p-6 sm:p-7 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                  {/* Column 2: Stretched Luxury Milestone Content Box */}
+                  <div className="bg-white/95 backdrop-blur-sm border border-[#D5C2AF] hover:border-[#8C5A28] rounded-xl sm:rounded-2xl p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
                     {/* Period Eyebrow */}
-                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#8C5A28] mb-2">
+                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#8C5A28] mb-2.5">
                       {item.period}
                     </span>
 
                     {/* Milestone Title */}
-                    <h3 className="font-serif-luxury text-lg sm:text-xl font-bold text-[#14110E] group-hover:text-[#8C5A28] transition-colors mb-2.5 leading-snug">
+                    <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-[#14110E] group-hover:text-[#8C5A28] transition-colors mb-3 leading-snug">
                       {item.title}
                     </h3>
 
                     {/* Milestone Story */}
-                    <p className="text-xs sm:text-[13.5px] text-[#524436] leading-[1.75] font-sans font-normal">
+                    <p className="text-[13px] sm:text-sm text-[#524436] leading-[1.8] font-sans font-normal">
                       {item.story}
                     </p>
                   </div>
