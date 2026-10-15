@@ -146,7 +146,7 @@ export default function CuratedStartingPoints({
           </p>
         </div>
 
-        {/* 4-Card Responsive Grid matching Home Page Image Format (aspect-[3/4.1], rounded-[9px]) */}
+        {/* 4-Card Responsive Grid matching Home Page Image Format (aspect-[3/4], rounded-[7px], no image border) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {items.map((item) => {
             const isSelected = activeProductSlug === item.slug;
@@ -154,14 +154,14 @@ export default function CuratedStartingPoints({
               <div
                 key={item.id}
                 onClick={() => onSelectLook(item)}
-                className={`group flex flex-col justify-between p-3 sm:p-3.5 rounded-[14px] bg-white border transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer ${
+                className={`group flex flex-col justify-between p-3 sm:p-3.5 rounded-[7px] bg-white border transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer ${
                   isSelected
                     ? "border-[#8C5A28] ring-2 ring-[#8C5A28]/40 shadow-md"
                     : "border-[#E2DDD5] hover:border-[#8C5A28]"
                 }`}
               >
-                {/* Upper Image Container: EXACT HOME PAGE FORMAT (aspect-[3/4.1], rounded-[9px], bg-[#F3F0EC], border) */}
-                <div className="relative w-full aspect-[3/4.1] rounded-[9px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/70 shadow-2xs transition-all duration-300 group-hover:shadow-xs">
+                {/* Upper Image Container: 7px border radius, NO image border, perfect 3:4 fit */}
+                <div className="relative w-full aspect-[3/4] rounded-[7px] overflow-hidden bg-[#F3F0EC]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.image}
@@ -169,46 +169,29 @@ export default function CuratedStartingPoints({
                     className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                     loading="lazy"
                   />
-
-                  {/* Subtle Gradient Overlay at bottom for clean contrast */}
-                  <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-
-                  {/* Top Badge: Active or Tag */}
-                  {isSelected ? (
-                    <div className="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-full bg-[#8C5A28] text-white text-[9.5px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
-                      <Check size={11} className="stroke-[3]" />
-                      <span>Configuring Now</span>
-                    </div>
-                  ) : item.tag ? (
-                    <div className="absolute top-2.5 left-2.5 z-10 px-2.5 py-0.5 rounded-full bg-black/65 backdrop-blur-xs text-[#FAF5EE] text-[9px] font-semibold uppercase tracking-wider border border-white/20">
-                      {item.tag}
-                    </div>
-                  ) : null}
                 </div>
 
                 {/* Lower Details Strip & Action Button */}
-                <div className="mt-3.5 flex flex-col justify-between flex-1 text-left">
-                  <div className="space-y-0.5">
+                <div className="mt-3 flex flex-col justify-between flex-1 text-left">
+                  {/* Title & Price (Subtitles and badges completely removed as marked) */}
+                  <div className="flex items-center justify-between gap-2">
                     <h3 className="font-bold text-[12px] sm:text-[13px] text-[#14110E] uppercase tracking-wide truncate group-hover:text-[#8C5A28] transition-colors leading-snug">
                       {item.title}
                     </h3>
-                    <div className="flex items-center justify-between text-[10.5px] text-[#665749]">
-                      <span className="truncate">{item.subtitle}</span>
-                      <span className="font-bold text-[#8C5A28] shrink-0 ml-1.5">{item.price}</span>
-                    </div>
+                    <span className="font-bold text-xs text-[#8C5A28] shrink-0">{item.price}</span>
                   </div>
 
                   {/* Full-width Divider Line */}
                   <div className="w-full h-[1px] bg-[#E8DFD5] my-2.5" />
 
-                  {/* CUSTOMIZE THIS LOOK Button (Matching reference action) */}
+                  {/* CUSTOMIZE THIS LOOK Button */}
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectLook(item);
                     }}
-                    className={`w-full text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-lg flex items-center justify-between transition-all duration-300 shadow-2xs cursor-pointer ${
+                    className={`w-full text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-[7px] flex items-center justify-between transition-all duration-300 shadow-2xs cursor-pointer ${
                       isSelected
                         ? "bg-[#8C5A28]"
                         : "bg-[#14110E] group-hover:bg-[#8C5A28]"
