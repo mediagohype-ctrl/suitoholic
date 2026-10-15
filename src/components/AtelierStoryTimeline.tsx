@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { Play, Pause, Volume2, VolumeX, Scissors } from "lucide-react";
 
 export interface TimelineMilestone {
   period: string;
@@ -48,9 +47,6 @@ export default function AtelierStoryTimeline({
     },
   ],
 }: AtelierStoryTimelineProps) {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
-
   return (
     <section className="relative w-full bg-[#13110E] text-[#FAF5EE] py-16 sm:py-20 lg:py-24 border-b border-[#2A231C] overflow-hidden">
       {/* Subtle ambient luxury backdrop glow */}
@@ -94,48 +90,6 @@ export default function AtelierStoryTimeline({
                   sizes="(max-width: 768px) 100vw, 420px"
                   priority
                 />
-
-                {/* Soft gradient shadow on bottom for controls overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0E0C0A] via-transparent to-transparent opacity-80" />
-
-                {/* Top Badge: Atelier Live Status */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#14110E]/85 backdrop-blur-md border border-[#3A3026] text-[10px] uppercase font-bold tracking-wider text-[#E8C296]">
-                  <Scissors size={12} className="text-[#C59B6A]" />
-                  <span>Master Atelier</span>
-                </div>
-
-                {/* Bottom Media Controls Bar (matching reference video card) */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between z-20">
-                  <span className="text-[10px] sm:text-[11px] font-medium text-[#C8B8A6] tracking-wider uppercase drop-shadow-md">
-                    {imageCaption}
-                  </span>
-
-                  <div className="flex items-center gap-2">
-                    {/* Play / Pause Toggle Button */}
-                    <button
-                      type="button"
-                      onClick={() => setIsPlaying(!isPlaying)}
-                      aria-label={isPlaying ? "Pause video" : "Play video"}
-                      className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-[#14110E] flex items-center justify-center transition-transform hover:scale-110 active:scale-95 shadow-md cursor-pointer"
-                    >
-                      {isPlaying ? (
-                        <Pause size={14} className="fill-current" />
-                      ) : (
-                        <Play size={14} className="fill-current ml-0.5" />
-                      )}
-                    </button>
-
-                    {/* Mute / Unmute Button */}
-                    <button
-                      type="button"
-                      onClick={() => setIsMuted(!isMuted)}
-                      aria-label={isMuted ? "Unmute" : "Mute"}
-                      className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm text-[#FAF5EE] border border-white/20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 cursor-pointer"
-                    >
-                      {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
