@@ -39,7 +39,7 @@ export default function Home() {
   const interludesAfter = (index: number) => INTERLUDES[index] ?? [];
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-transparent text-[#14110E] antialiased">
+    <div className="min-h-screen w-full overflow-x-clip flex flex-col bg-transparent text-[#14110E] antialiased">
       {/* Header */}
       <Header />
 

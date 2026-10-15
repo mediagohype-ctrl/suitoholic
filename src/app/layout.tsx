@@ -35,7 +35,7 @@ export default async function RootLayout({
   const site = await loadSite();
 
   return (
-    <html lang="en" suppressHydrationWarning className={`h-full w-full overflow-x-hidden antialiased ${orbitron.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`h-full w-full overflow-x-clip antialiased ${orbitron.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -48,12 +48,12 @@ export default async function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-hidden flex flex-col bg-white text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
+      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-clip flex flex-col bg-white text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
         {/* Global Studio Atmosphere: Clean Crisp White Background */}
         <StudioBackground />
 
         {/* Page Content Container */}
-        <div className="relative z-10 flex-1 flex flex-col min-h-screen w-full overflow-x-hidden">
+        <div className="relative z-10 flex-1 flex flex-col min-h-screen w-full overflow-x-clip">
           <SiteDataProvider value={site}>
             <CartProvider>{children}</CartProvider>
           </SiteDataProvider>

@@ -314,7 +314,7 @@ function CustomShirtConfiguratorContent() {
   const viewerSleeve: ViewerSleeve = customFit.sleeveType === "half" ? "half" : "full";
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-clip">
       {/* Header */}
       <Header activeTab="custom-fit" />
 

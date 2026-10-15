@@ -63,8 +63,8 @@ export default function BespokeProcessTimeline() {
         });
       },
       {
-        rootMargin: "-25% 0px -45% 0px",
-        threshold: 0.1,
+        rootMargin: "-20% 0px -40% 0px",
+        threshold: 0.15,
       }
     );
 
@@ -100,18 +100,25 @@ export default function BespokeProcessTimeline() {
       />
 
       <div className="relative z-10 max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-16 items-start">
           {/* ========================================================================= */}
-          {/* LEFT COLUMN: STICKY DISPLAY (Pins as user scrolls, matches reference)    */}
+          {/* LEFT COLUMN: STICKY / FIXED DISPLAY (Pins as user scrolls, matches ref)   */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start py-2 sm:py-4">
+          <div
+            className="md:col-span-5 md:sticky md:top-24 md:self-start py-2 sm:py-4 z-10"
+            style={{
+              position: "sticky",
+              top: "96px",
+              alignSelf: "flex-start",
+            }}
+          >
             {/* Eyebrow Label */}
-            <div className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.24em] text-[#C56337] mb-4">
+            <div className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.24em] text-[#C56337] mb-3 sm:mb-4">
               OUR PROVEN METHODOLOGY
             </div>
 
             {/* Giant Bold Headline matching reference typography */}
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[72px] font-black uppercase tracking-tight text-[#14110E] leading-[0.92] mb-8 font-sans">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[68px] font-black uppercase tracking-tight text-[#14110E] leading-[0.94] mb-6 sm:mb-8 font-sans">
               HOW WE
               <br />
               TAILOR
@@ -122,7 +129,7 @@ export default function BespokeProcessTimeline() {
             </h2>
 
             {/* Tagline / Subtitle with Left Border Accent */}
-            <div className="border-l-2 border-[#C56337] pl-4 py-1 space-y-1.5 mb-8">
+            <div className="border-l-2 border-[#C56337] pl-4 py-1 space-y-1.5 mb-6 sm:mb-8">
               <p className="text-sm sm:text-base font-semibold text-[#14110E]">
                 From First Measure to Final Delivery.
               </p>
@@ -136,7 +143,7 @@ export default function BespokeProcessTimeline() {
               <button
                 type="button"
                 onClick={handleScrollToConsult}
-                className="inline-flex items-center space-x-2.5 px-7 py-3.5 bg-[#C56337] hover:bg-[#A94F27] text-[#FAF8F5] text-xs sm:text-sm font-semibold tracking-[0.14em] uppercase transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer rounded-xs group"
+                className="inline-flex items-center space-x-2.5 px-6 sm:px-7 py-3 sm:py-3.5 bg-[#C56337] hover:bg-[#A94F27] text-[#FAF8F5] text-xs sm:text-sm font-semibold tracking-[0.14em] uppercase transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer rounded-xs group"
               >
                 <span>Book Consult</span>
                 <ArrowUpRight
@@ -148,9 +155,9 @@ export default function BespokeProcessTimeline() {
           </div>
 
           {/* ========================================================================= */}
-          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Horizontal Dividers, 3-Part Rows)      */}
+          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Spacious rows that scroll freely)      */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-7 border-t border-[#E5DDD2]">
+          <div className="md:col-span-7 border-t border-[#E5DDD2]">
             {PROCESS_STEPS.map((item, index) => {
               const isActive = activeStep === item.step;
 
@@ -161,7 +168,7 @@ export default function BespokeProcessTimeline() {
                     stepRefs.current[index] = el;
                   }}
                   data-step={item.step}
-                  className={`relative py-10 sm:py-12 lg:py-14 border-b border-[#E5DDD2] transition-colors duration-300 ${
+                  className={`relative py-12 sm:py-14 lg:py-18 border-b border-[#E5DDD2] transition-colors duration-300 ${
                     isActive ? "bg-[#F5EFE6]/40" : "hover:bg-[#FAF5ED]/50"
                   } px-2 sm:px-4 group`}
                 >
