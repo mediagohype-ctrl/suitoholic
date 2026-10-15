@@ -9,6 +9,7 @@ import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import ModernProductCard from "@/components/ModernProductCard";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
+import ShopNatureHeroBanner from "@/components/ShopNatureHeroBanner";
 import {
   RotateCcw,
   ChevronDown,
@@ -93,34 +94,15 @@ function ShopContent() {
   }, [products]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-clip">
       {/* Header */}
       <Header activeTab="shop" />
 
-      {/* Studio Atmosphere Backdrop */}
       <div className="relative flex-1 w-full">
-        <main className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-12 sm:pb-20">
+        <main className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-20">
 
-          {/* Top Editorial Banner - Clean Luxury Centered Header */}
-          <div className="mb-7 sm:mb-9 text-center relative max-w-3xl mx-auto space-y-2">
-            <div className="inline-flex items-center justify-center gap-2.5">
-              <span className="h-[1px] w-6 sm:w-10 bg-gradient-to-r from-transparent to-[#9E774C]" />
-              <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] text-[#9E774C]">
-                {c.eyebrow || "SUITOHOLIC BESPOKE ATELIER"}
-              </span>
-              <span className="h-[1px] w-6 sm:w-10 bg-gradient-to-l from-transparent to-[#9E774C]" />
-            </div>
-
-            <h1 className="text-xl sm:text-2xl lg:text-[30px] font-bold text-[#14110E] tracking-[0.18em] sm:tracking-[0.22em] uppercase leading-tight">
-              {c.title}
-            </h1>
-
-            {c.subtitle && (
-              <p className="text-xs sm:text-[13px] text-[#665749] max-w-lg mx-auto font-normal tracking-wide leading-relaxed">
-                {c.subtitle}
-              </p>
-            )}
-          </div>
+          {/* Clean Luxury Editorial Hero Banner: Grown by nature. Guided by restraint. */}
+          <ShopNatureHeroBanner />
 
 
           {/* Catalog Section: Full-Width Product Grid at Top */}
