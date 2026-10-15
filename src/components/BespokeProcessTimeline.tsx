@@ -110,14 +110,14 @@ export default function BespokeProcessTimeline() {
   }, [modalIndex, handleCloseModal, handlePrevStep, handleNextStep]);
 
   return (
-    <section className="relative w-full bg-gradient-to-b from-[#FBF8F3] via-[#FAF6F0] to-[#F7F2EB] text-[#14110E] py-16 sm:py-24 border-y border-[#E3D4C4]">
-      {/* Subtle Bespoke Grid Pattern Watermark */}
+    <section className="relative w-full bg-gradient-to-b from-[#EEE5EA] via-[#F6F1F4] to-[#EAE0E6] text-[#14110E] py-16 sm:py-24 border-y border-[#DDD2D8]">
+      {/* Subtle Bespoke Grid Pattern Watermark in Matching Tone */}
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-[0.14]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(74, 32, 42, 0.12) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(74, 32, 42, 0.12) 1px, transparent 1px)
+            linear-gradient(to right, rgba(74, 32, 42, 0.10) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(74, 32, 42, 0.10) 1px, transparent 1px)
           `,
           backgroundSize: "44px 44px",
         }}
@@ -136,9 +136,9 @@ export default function BespokeProcessTimeline() {
               alignSelf: "flex-start",
             }}
           >
-            {/* Eyebrow Label */}
+            {/* Eyebrow Label: Crisp White Card with #DDD2D8 Border */}
             <div
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FAF4EB] border border-[#D8C7B7] text-[#4A202A] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] shadow-2xs mb-4"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#DDD2D8] text-[#4A202A] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] shadow-xs mb-4"
               style={{ borderRadius: "7px" }}
             >
               <span>OUR PROVEN METHODOLOGY</span>
@@ -183,10 +183,10 @@ export default function BespokeProcessTimeline() {
           </div>
 
           {/* ========================================================================= */}
-          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Original Restored Layout)              */}
+          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Hover Image Preview & Highlight)       */}
           {/* ========================================================================= */}
           <div
-            className="md:col-span-7 border-t border-[#E3D4C4]"
+            className="md:col-span-7 border-t border-[#DDD2D8]"
             onMouseLeave={() => setHoveredIndex(null)}
           >
             {PROCESS_STEPS.map((item, index) => (
@@ -194,7 +194,7 @@ export default function BespokeProcessTimeline() {
                 key={item.step}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onClick={() => handleOpenModal(index)}
-                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/70 px-3 sm:px-6 group cursor-pointer select-none"
+                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#DDD2D8] transition-colors duration-300 hover:bg-[#FFFFFF]/80 px-3 sm:px-6 group cursor-pointer select-none"
               >
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
                   {/* Step Number (01, 02, etc.) */}
@@ -297,7 +297,7 @@ export default function BespokeProcessTimeline() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E3D4C4] bg-[#FAF4EB]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#DDD2D8] bg-[#EEE5EA]">
               <div className="flex items-center gap-3">
                 <span
                   className="px-2.5 py-1 bg-[#4A202A] text-[#FAF8F5] text-xs font-mono font-bold tracking-widest"
@@ -314,7 +314,7 @@ export default function BespokeProcessTimeline() {
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="p-2 hover:bg-[#E3D4C4]/60 text-[#14110E] transition-colors cursor-pointer"
+                className="p-2 hover:bg-[#DDD2D8]/60 text-[#14110E] transition-colors cursor-pointer"
                 style={{ borderRadius: "7px" }}
                 aria-label="Close modal"
               >
@@ -352,7 +352,7 @@ export default function BespokeProcessTimeline() {
             </div>
 
             {/* Modal Details Footer */}
-            <div className="p-6 sm:p-8 bg-[#FAF8F5]">
+            <div className="p-6 sm:p-8 bg-[#FFFFFF]">
               <h3 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#14110E] mb-2 font-sans">
                 {PROCESS_STEPS[modalIndex].title}
               </h3>
@@ -360,7 +360,7 @@ export default function BespokeProcessTimeline() {
                 {PROCESS_STEPS[modalIndex].description}
               </p>
 
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-[#E3D4C4]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-[#DDD2D8]">
                 <span className="text-xs font-mono text-[#7A6B5D]">
                   Step {modalIndex + 1} of {PROCESS_STEPS.length} in Suitoholic Bespoke Craftsmanship
                 </span>

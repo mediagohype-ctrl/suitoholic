@@ -46,20 +46,23 @@
 
 :root {
   --bg-primary: #FFFFFF;
-  --bg-sand: #FFFFFF;
-  --bg-sand-light: #F9F9F9;
+  --bg-surface-tint: #EEE5EA;
+  --bg-sand: #EEE5EA;
+  --bg-sand-light: #F7F3F5;
   --bg-sand-glow: #FFFFFF;
-  --bg-sand-dark: #F3F3F3;
+  --bg-sand-dark: #E6DCE2;
   --bg-bar: #FFFFFF;
   --bg-card: #FFFFFF;
   --bg-card-dark: #14110E;
   --bg-dark: #110E0D;
+  --accent-burgundy: #4A202A;
   --accent-gold: #9E774C;
   --accent-gold-light: #C5A069;
   --text-dark: #14110E;
   --text-muted: #5A4E42;
   --text-light: #FAF8F5;
-  --border-color: #E2E8F0;
+  --border-color: #DDD2D8;
+  --border-light: #DDD2D8;
 }
 
 html, body {
