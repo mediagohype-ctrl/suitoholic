@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Heart, ChevronLeft, ChevronRight, Scissors } from "lucide-react";
+import { Heart, ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
 import { ProductItem } from "@/data/products";
 
 interface ModernProductCardProps {
@@ -12,6 +12,7 @@ interface ModernProductCardProps {
 export default function ModernProductCard({ product }: ModernProductCardProps) {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
 
   // Use gallery if available, or fallback to main image
   const images = product.gallery && product.gallery.length > 0 
@@ -36,6 +37,13 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
     e.preventDefault();
     e.stopPropagation();
     setIsSaved((prev) => !prev);
+  };
+
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 1800);
   };
 
   return (
@@ -114,16 +122,6 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           })}
         </div>
 
-        {/* Quick Customize Button Overlay on Hover */}
-        <Link
-          href={`/product/${product.slug}?customize=true`}
-          aria-label={`Customize fit for ${product.name}`}
-          className="absolute bottom-3 inset-x-3 z-20 py-2 sm:py-2.5 bg-[#14110E]/95 hover:bg-black text-[#FAF8F5] text-[10px] sm:text-[11px] font-extrabold tracking-[0.18em] uppercase rounded-xl backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-1.5 shadow-lg border border-white/20 hover:scale-[1.02]"
-        >
-          <Scissors size={13} className="text-[#C68A4C]" />
-          <span>CUSTOMIZE FIT</span>
-        </Link>
-
         {/* Subtle Gradient Overlay at bottom for contrast */}
         <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
       </div>
@@ -143,14 +141,14 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           </div>
         </div>
 
-        {/* Right: Scissors Customize Button -> Opens Customizer on Product Page */}
+        {/* Right: Plus Button -> Redirects to Product Details Page */}
         <Link
-          href={`/product/${product.slug}?customize=true`}
+          href={`/product/${product.slug}`}
           aria-label={`View details and customize ${product.name}`}
-          title="Customize Fit (6 Steps)"
-          className="shrink-0 p-1 text-[#14110E] hover:text-[#9E774C] hover:bg-[#FAF5EE] rounded-lg transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
+          title="Customize Fit & Product Details"
+          className="shrink-0 p-0.5 text-[#14110E] hover:text-[#9E774C] transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
         >
-          <Scissors size={15} className="stroke-[2] text-[#9E774C]" />
+          <Plus size={16} className="stroke-[2]" />
         </Link>
 
       </div>
