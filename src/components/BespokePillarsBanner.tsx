@@ -44,7 +44,7 @@ const PILLARS: PillarItem[] = [
     description:
       "Feel the joy of a personalised menswear shopping experience. But what does a truly personalised experience look like? Every garment you wear is designed to match your look, the occasion, your preferences and skin tone, and is handcrafted to give you the perfect fit.",
     ctaText: "START 3D ATELIER CUSTOMIZER",
-    ctaHref: "/custom-shirt",
+    ctaHref: "#configurator-section",
     image: "/banners/banner_bespoke_experience.jpg",
     imageAlt: "Master tailor fitting a bespoke suit jacket onto a client",
     theme: "light",
@@ -59,7 +59,7 @@ const PILLARS: PillarItem[] = [
     description:
       "Confused about what to wear? Our experienced stylists will guide you at every step from suggesting looks and fabric recommendations to expert styling for special events.",
     ctaText: "BOOK A MASTER STYLIST",
-    ctaHref: "/custom-shirt#appointment-form",
+    ctaHref: "#appointment-booking",
     image: "/banners/banner_elite_service.jpg",
     imageAlt: "Aristocratic gentleman in bespoke navy bandhgala sitting in leather armchair",
     theme: "dark",

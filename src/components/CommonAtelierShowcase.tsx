@@ -3,7 +3,6 @@
 import React from "react";
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
 import ShopByFabricsSection from "@/components/ShopByFabricsSection";
-import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import TestimonialsSection from "@/components/TestimonialsSection";
 
 const ShowcaseDivider = () => (
@@ -27,12 +26,7 @@ export default function CommonAtelierShowcase() {
 
       <ShowcaseDivider />
 
-      {/* 3. The Bespoke Pillars Editorial Banner (Exceptional Fabrics, Bespoke Experience, Elite Service) */}
-      <BespokePillarsBanner />
-
-      <ShowcaseDivider />
-
-      {/* 4. Customer Testimonials Reviews */}
+      {/* 3. Customer Testimonials Reviews */}
       <TestimonialsSection />
     </section>
   );

@@ -9,6 +9,7 @@ import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
+import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, Scissors, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
@@ -341,7 +342,7 @@ function CustomShirtConfiguratorContent() {
             </div>
 
             {/* RIGHT COLUMN: Appointment Booking Form (Light Theme Box) */}
-            <div className="lg:col-span-5">
+            <div id="appointment-booking" className="lg:col-span-5 scroll-mt-24">
               <div className="bg-[#FFFFFF]/95 backdrop-blur-md border border-[#C59B6A]/60 rounded-[12px] px-6 sm:px-8 lg:px-9 py-8 sm:py-10 lg:py-11 shadow-lg relative text-left">
                 {appointmentSuccess ? (
                   <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
@@ -495,6 +496,9 @@ function CustomShirtConfiguratorContent() {
         activeProductSlug={activeProduct?.slug}
         onSelectLook={handleSelectCuratedLook}
       />
+
+      {/* THE BESPOKE PILLARS: 3-Tier Split Editorial Banner (Exceptional Fabrics, Bespoke Experience, Elite Service) */}
+      <BespokePillarsBanner />
 
       {/* Main Studio Content */}
       <div id="configurator-section" className="relative flex-1 w-full overflow-hidden flex flex-col justify-center">
