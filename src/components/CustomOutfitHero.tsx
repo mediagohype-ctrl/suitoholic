@@ -222,7 +222,6 @@ export default function CustomOutfitHero() {
   // Content configuration based on active category
   const isEthnic = activeCategory === "ethnic";
 
-  const badgeText = isEthnic ? "CUSTOM ETHNIC SET" : "BESPOKE SUIT SET";
   const heroTitle = isEthnic
     ? "Custom Kurta Pajama Sets for Men"
     : "Custom Bespoke Suits & Sets for Men";
@@ -264,29 +263,10 @@ export default function CustomOutfitHero() {
           {/* LEFT COLUMN: HERO HEADLINE, BADGES, PARAGRAPH, CTA BUTTONS        */}
           {/* ================================================================= */}
           <div className="lg:col-span-7 xl:col-span-7 text-left space-y-4 sm:space-y-6">
-            
-            {/* Top Badge: CUSTOM ETHNIC SET + LIVE PULSING TAG */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="text-[#C59B6A] text-[11px] sm:text-xs font-bold uppercase tracking-[0.24em] font-serif-luxury">
-                {badgeText}
-              </span>
-              
-              {/* Green LIVE Pill Badge */}
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#174D2A]/90 border border-[#2EB864]/50 shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
-                <span className="text-[#A6F4C5] text-[9.5px] sm:text-[10px] font-extrabold uppercase tracking-widest">
-                  LIVE
-                </span>
-              </div>
-            </div>
-
             {/* Main Editorial Headline */}
             <h1 className="font-serif-luxury text-3xl sm:text-4xl md:text-5xl lg:text-[52px] xl:text-[58px] font-bold text-[#FAF8F5] tracking-tight leading-[1.08] drop-shadow-sm">
               {heroTitle}
             </h1>
-
-            {/* Golden Horizontal Accent Divider */}
-            <div className="w-16 sm:w-20 h-[2.5px] bg-[#C59B6A] rounded-full shadow-[0_0_10px_rgba(197,155,106,0.6)]" />
 
             {/* Narrative Subtitle */}
             <p className="text-sm sm:text-base text-[#DCD1C5] font-sans font-light leading-[1.75] max-w-xl drop-shadow-xs">
