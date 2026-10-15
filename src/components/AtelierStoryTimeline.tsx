@@ -48,40 +48,39 @@ export default function AtelierStoryTimeline({
   ],
 }: AtelierStoryTimelineProps) {
   return (
-    <section className="relative w-full bg-[#13110E] text-[#FAF5EE] py-16 sm:py-20 lg:py-24 border-b border-[#2A231C] overflow-hidden">
-      {/* Subtle ambient luxury backdrop glow */}
-      <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-[#C59B6A]/5 rounded-full blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-[#C59B6A]/5 rounded-full blur-3xl" />
+    <section className="relative w-full bg-gradient-to-b from-[#F7F2EB] via-[#FAF6F0] to-[#FAF8F5] text-[#14110E] py-16 sm:py-20 lg:py-24 border-b border-[#E3D4C4] overflow-hidden">
+      {/* Subtle warm luxury backdrop glow */}
+      <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-[#C59B6A]/10 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-[#C59B6A]/10 rounded-full blur-3xl" />
 
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+        {/* Main 2-Column Responsive CSS Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
-          {/* LEFT COLUMN: Eyebrow, Title, Story & Master Tailor Media Card */}
-          <div className="lg:col-span-5 space-y-6 sm:space-y-7">
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rotate-45 bg-[#C59B6A] inline-block" />
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-[#C59B6A]">
-                {eyebrow}
-              </span>
+          {/* LEFT COLUMN: Eyebrow, Title, Narrative & Master Tailor Media Card */}
+          <div className="lg:col-span-5 space-y-5 sm:space-y-6">
+            {/* Eyebrow Badge in website theme */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#FAF4EB] border border-[#C59B6A]/80 text-[#8C5A28] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs">
+              <span className="w-1.5 h-1.5 rotate-45 bg-[#8C5A28] inline-block" />
+              <span>{eyebrow}</span>
             </div>
 
             {/* Main Headline */}
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#FAF5EE] tracking-tight leading-[1.16]">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#14110E] tracking-tight leading-[1.16]">
               {titlePrefix}
-              <span className="italic font-serif font-normal text-[#C59B6A] block sm:inline">
+              <span className="italic font-serif font-normal text-[#8C5A28] block sm:inline">
                 {titleAccent}
               </span>
             </h2>
 
             {/* Narrative Story Description */}
-            <p className="text-sm sm:text-[15px] text-[#A69788] font-sans font-normal leading-[1.8] max-w-xl">
+            <p className="text-sm sm:text-[15px] text-[#524436] font-sans font-normal leading-[1.8] max-w-xl">
               {description}
             </p>
 
             {/* Master Tailor Portrait Media Card */}
-            <div className="relative rounded-2xl overflow-hidden border border-[#332A22] bg-[#1A1612] shadow-2xl group max-w-md">
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#181410]">
+            <div className="relative rounded-2xl overflow-hidden border border-[#D5C2AF] bg-white shadow-md hover:shadow-xl transition-all duration-500 group max-w-md">
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#EFE8DF]">
                 <Image
                   src={image}
                   alt={imageCaption}
@@ -94,41 +93,41 @@ export default function AtelierStoryTimeline({
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Vertical Golden Timeline & Milestone Cards */}
-          <div className="lg:col-span-7 pt-2 lg:pt-6">
-            <div className="relative space-y-6 sm:space-y-8">
+          {/* RIGHT COLUMN: Vertical Golden Timeline & Milestone Cards in CSS Grid */}
+          <div className="lg:col-span-7 pt-2 lg:pt-4">
+            <div className="relative grid grid-cols-1 gap-6 sm:gap-7">
               
-              {/* Continuous Golden Timeline Line precisely centered at x = 12px */}
+              {/* Continuous Golden Timeline Line (aligned on x = 12px) */}
               <div
-                className="pointer-events-none absolute left-3 top-2 bottom-6 w-[1.5px] -translate-x-1/2 bg-gradient-to-b from-[#C59B6A]/80 via-[#C59B6A]/60 to-[#C59B6A]/30"
+                className="pointer-events-none absolute left-3 top-3 bottom-6 w-[2px] -translate-x-1/2 bg-gradient-to-b from-[#8C5A28] via-[#C59B6A] to-[#D5C2AF]"
                 aria-hidden="true"
               />
 
-              {/* Milestone Cards with flex-aligned circular nodes */}
+              {/* Milestone Rows in CSS Grid [24px_1fr] */}
               {milestones.map((item, idx) => (
-                <div key={idx} className="relative flex items-start gap-4 sm:gap-6 group">
-                  {/* Timeline Circular Node (24px wide, centered exactly at 12px) */}
+                <div key={idx} className="relative grid grid-cols-[24px_1fr] gap-4 sm:gap-6 items-start group">
+                  {/* Column 1: Timeline Circular Target Node */}
                   <div
-                    className="w-6 h-6 shrink-0 mt-6 rounded-full border border-[#C59B6A] bg-[#13110E] flex items-center justify-center shadow-[0_0_10px_rgba(197,155,106,0.35)] group-hover:border-[#E8C296] transition-colors z-10"
+                    className="w-6 h-6 shrink-0 mt-6 rounded-full border-2 border-[#8C5A28] bg-[#FAF6F0] flex items-center justify-center shadow-xs group-hover:border-[#C59B6A] group-hover:scale-110 transition-all z-10"
                     aria-hidden="true"
                   >
-                    <div className="w-2 h-2 rounded-full bg-[#C59B6A] group-hover:scale-125 transition-transform" />
+                    <div className="w-2 h-2 rounded-full bg-[#8C5A28] group-hover:bg-[#C59B6A] transition-colors" />
                   </div>
 
-                  {/* Milestone Content Box */}
-                  <div className="flex-1 bg-[#191512]/90 backdrop-blur-sm border border-[#30261E] hover:border-[#C59B6A]/60 rounded-xl sm:rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:shadow-[0_10px_35px_rgba(0,0,0,0.6)] hover:-translate-y-0.5">
+                  {/* Column 2: Milestone Content Box */}
+                  <div className="bg-white/95 backdrop-blur-sm border border-[#D5C2AF] hover:border-[#8C5A28] rounded-xl sm:rounded-2xl p-6 sm:p-7 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
                     {/* Period Eyebrow */}
-                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#C59B6A] mb-2">
+                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#8C5A28] mb-2">
                       {item.period}
                     </span>
 
                     {/* Milestone Title */}
-                    <h3 className="font-serif-luxury text-lg sm:text-xl font-bold text-[#FAF5EE] group-hover:text-[#E8C296] transition-colors mb-3 leading-snug">
+                    <h3 className="font-serif-luxury text-lg sm:text-xl font-bold text-[#14110E] group-hover:text-[#8C5A28] transition-colors mb-2.5 leading-snug">
                       {item.title}
                     </h3>
 
                     {/* Milestone Story */}
-                    <p className="text-xs sm:text-[13.5px] text-[#A69788] leading-[1.75] font-sans font-normal">
+                    <p className="text-xs sm:text-[13.5px] text-[#524436] leading-[1.75] font-sans font-normal">
                       {item.story}
                     </p>
                   </div>
