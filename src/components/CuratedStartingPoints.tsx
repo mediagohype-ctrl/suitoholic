@@ -154,11 +154,7 @@ export default function CuratedStartingPoints({
               <div
                 key={item.id}
                 onClick={() => onSelectLook(item)}
-                className={`group flex flex-col justify-between p-3 sm:p-3.5 rounded-[7px] bg-white border transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer ${
-                  isSelected
-                    ? "border-[#8C5A28] ring-2 ring-[#8C5A28]/40 shadow-md"
-                    : "border-[#E2DDD5] hover:border-[#8C5A28]"
-                }`}
+                className="group flex flex-col justify-between p-3 sm:p-3.5 rounded-[7px] bg-white border border-[#E2DDD5] hover:border-[#8C5A28] transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer"
               >
                 {/* Upper Image Container: 7px border radius, NO image border, perfect 3:4 fit */}
                 <div className="relative w-full aspect-[3/4] rounded-[7px] overflow-hidden bg-[#F3F0EC]">
@@ -173,7 +169,7 @@ export default function CuratedStartingPoints({
 
                 {/* Lower Details Strip & Action Button */}
                 <div className="mt-3 flex flex-col justify-between flex-1 text-left">
-                  {/* Title & Price (Subtitles and badges completely removed as marked) */}
+                  {/* Title & Price */}
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="font-bold text-[12px] sm:text-[13px] text-[#14110E] uppercase tracking-wide truncate group-hover:text-[#8C5A28] transition-colors leading-snug">
                       {item.title}
@@ -184,20 +180,16 @@ export default function CuratedStartingPoints({
                   {/* Full-width Divider Line */}
                   <div className="w-full h-[1px] bg-[#E8DFD5] my-2.5" />
 
-                  {/* CUSTOMIZE THIS LOOK Button */}
+                  {/* CUSTOMIZE THIS LOOK Button (Uniform styling across all cards) */}
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectLook(item);
                     }}
-                    className={`w-full text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-[7px] flex items-center justify-between transition-all duration-300 shadow-2xs cursor-pointer ${
-                      isSelected
-                        ? "bg-[#8C5A28]"
-                        : "bg-[#14110E] group-hover:bg-[#8C5A28]"
-                    }`}
+                    className="w-full text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-[7px] flex items-center justify-between transition-all duration-300 shadow-2xs cursor-pointer bg-[#14110E] group-hover:bg-[#8C5A28]"
                   >
-                    <span>{isSelected ? "CONFIGURING IN 3D" : "CUSTOMIZE THIS LOOK"}</span>
+                    <span>CUSTOMIZE THIS LOOK</span>
                     <ChevronRight size={13} className="text-[#E8C296] group-hover:translate-x-0.5 transition-transform" />
                   </button>
                 </div>
