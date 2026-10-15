@@ -102,7 +102,7 @@ export default function BespokeProcessTimeline() {
       <div className="relative z-10 max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-16 items-start">
           {/* ========================================================================= */}
-          {/* LEFT COLUMN: STICKY / FIXED DISPLAY (Website Tailor Palette)              */}
+          {/* LEFT COLUMN: STICKY / FIXED DISPLAY (Refined Boldness & Elegance)         */}
           {/* ========================================================================= */}
           <div
             className="md:col-span-5 md:sticky md:top-24 md:self-start py-2 sm:py-4 z-10"
@@ -112,13 +112,13 @@ export default function BespokeProcessTimeline() {
               alignSelf: "flex-start",
             }}
           >
-            {/* Eyebrow Label matching Suitoholic Brand Gold */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#FAF4EB] border border-[#C59B6A]/80 text-[#8C5A28] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs mb-4">
+            {/* Eyebrow Label */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#FAF4EB] border border-[#C59B6A]/80 text-[#8C5A28] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] shadow-2xs mb-4">
               <span>OUR PROVEN METHODOLOGY</span>
             </div>
 
-            {/* Giant Bold Headline with signature gold accent text */}
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[68px] font-black uppercase tracking-tight text-[#14110E] leading-[0.94] mb-6 sm:mb-8 font-sans">
+            {/* Refined Headline: Reduced Boldness, Elegant Tailored Letter-spacing */}
+            <h2 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-semibold uppercase tracking-tight text-[#14110E] leading-[1.04] mb-6 sm:mb-8 font-sans">
               HOW WE
               <br />
               TAILOR
@@ -155,7 +155,7 @@ export default function BespokeProcessTimeline() {
           </div>
 
           {/* ========================================================================= */}
-          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Suitoholic Dividers and Gold Accents)  */}
+          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Single-line Headings, Clean Formatting) */}
           {/* ========================================================================= */}
           <div className="md:col-span-7 border-t border-[#E3D4C4]">
             {PROCESS_STEPS.map((item, index) => {
@@ -168,14 +168,14 @@ export default function BespokeProcessTimeline() {
                     stepRefs.current[index] = el;
                   }}
                   data-step={item.step}
-                  className={`relative py-12 sm:py-14 lg:py-18 border-b border-[#E3D4C4] transition-colors duration-300 ${
+                  className={`relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 ${
                     isActive ? "bg-[#FAF4EB]/80" : "hover:bg-[#FAF4EB]/40"
-                  } px-2 sm:px-4 group`}
+                  } px-3 sm:px-6 group`}
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-6 lg:gap-8">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
                     {/* Step Number (01, 02, etc.) */}
                     <div
-                      className={`text-xs sm:text-sm font-mono tracking-widest w-12 sm:w-16 flex-shrink-0 transition-colors duration-200 ${
+                      className={`text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 transition-colors duration-200 ${
                         isActive
                           ? "text-[#8C5A28] font-bold"
                           : "text-[#8C5A28]/70 group-hover:text-[#8C5A28]"
@@ -184,12 +184,12 @@ export default function BespokeProcessTimeline() {
                       {item.step}
                     </div>
 
-                    {/* Step Title */}
-                    <div className="w-full sm:w-56 lg:w-64 flex-shrink-0">
+                    {/* Step Title: Single-Line, Proper Proportion, Clean Format */}
+                    <div className="w-auto sm:w-64 lg:w-72 flex-shrink-0">
                       <h3
-                        className={`text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight transition-all duration-200 ${
+                        className={`text-xl sm:text-2xl lg:text-[26px] font-medium tracking-tight whitespace-nowrap sm:whitespace-normal transition-all duration-200 leading-snug ${
                           isActive
-                            ? "text-[#8C5A28] font-normal translate-x-1"
+                            ? "text-[#8C5A28] translate-x-1"
                             : "text-[#14110E] group-hover:text-[#8C5A28] group-hover:translate-x-1"
                         }`}
                       >
@@ -197,9 +197,9 @@ export default function BespokeProcessTimeline() {
                       </h3>
                     </div>
 
-                    {/* Step Description */}
-                    <div className="flex-1 max-w-md">
-                      <p className="text-xs sm:text-sm lg:text-[14px] text-[#524436] leading-relaxed">
+                    {/* Step Description: Aligned nicely with title */}
+                    <div className="flex-1 max-w-md pt-1 sm:pt-0">
+                      <p className="text-xs sm:text-[13.5px] text-[#524436] leading-relaxed">
                         {item.description}
                       </p>
                     </div>
