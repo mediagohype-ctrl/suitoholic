@@ -154,10 +154,10 @@ export default function CuratedStartingPoints({
               <div
                 key={item.id}
                 onClick={() => onSelectLook(item)}
-                className="group flex flex-col justify-between p-3 sm:p-3.5 rounded-[7px] bg-white border border-[#E2DDD5] hover:border-[#8C5A28] transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer"
+                className="group flex flex-col justify-between rounded-[7px] overflow-hidden bg-white border border-[#E2DDD5] hover:border-[#8C5A28] transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer"
               >
-                {/* Upper Image Container: 7px border radius, NO image border, perfect 3:4 fit */}
-                <div className="relative w-full aspect-[3/4] rounded-[7px] overflow-hidden bg-[#F3F0EC]">
+                {/* Upper Image Container: Flush edge-to-edge with card, zero gap */}
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#F3F0EC]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.image}
@@ -167,8 +167,8 @@ export default function CuratedStartingPoints({
                   />
                 </div>
 
-                {/* Lower Details Strip & Action Button */}
-                <div className="mt-3 flex flex-col justify-between flex-1 text-left">
+                {/* Lower Details Strip & Action Button with dedicated padding */}
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1 text-left">
                   {/* Title & Price */}
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="font-bold text-[12px] sm:text-[13px] text-[#14110E] uppercase tracking-wide truncate group-hover:text-[#8C5A28] transition-colors leading-snug">
