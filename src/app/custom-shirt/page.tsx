@@ -6,11 +6,19 @@ import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
-import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
+import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
+import ShopByFabricsSection from "@/components/ShopByFabricsSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
 import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import BespokeProcessTimeline from "@/components/BespokeProcessTimeline";
+
+const ShowcaseDivider = () => (
+  <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-6 sm:my-8 lg:my-10">
+    <div className="w-full h-[1px] bg-gradient-to-r from-[#4A202A]/15 via-[#4A202A]/50 to-[#4A202A]/15" />
+  </div>
+);
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, Scissors, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
@@ -318,156 +326,8 @@ function CustomShirtConfiguratorContent() {
       {/* Header */}
       <Header activeTab="custom-fit" />
 
-      {/* HERO SECTION: Best Bespoke Tailors in Delhi NCR & Appointment Booking (Light Theme) */}
-      <section className="relative w-full min-h-screen flex flex-col justify-center pt-24 sm:pt-28 pb-10 sm:pb-12 bg-gradient-to-b from-[#F7F2EB] via-[#FAF6F0] to-[#FAF8F5] border-b border-[#E3D4C4]">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 my-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-            
-            {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}
-            <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
-              {/* Badge: PREET VIHAR, DELHI NCR */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#FAF4EB] border border-[#C59B6A]/80 text-[#8C5A28] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs">
-                <MapPin size={12} className="text-[#8C5A28]" />
-                <span>{heroCopy.badge}</span>
-              </div>
-
-              {/* Main Headline */}
-              <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-bold text-[#14110E] tracking-tight leading-[1.14]">
-                {heroCopy.title}
-              </h1>
-
-              {/* Story Description */}
-              <p className="text-sm sm:text-base text-[#524436] font-sans font-normal leading-[1.75] max-w-2xl">
-                {heroCopy.description}
-              </p>
-            </div>
-
-            {/* RIGHT COLUMN: Appointment Booking Form (Light Theme Box) */}
-            <div id="appointment-booking" className="lg:col-span-5 scroll-mt-24">
-              <div className="bg-[#FFFFFF]/95 backdrop-blur-md border border-[#C59B6A]/60 rounded-[12px] px-6 sm:px-8 lg:px-9 py-8 sm:py-10 lg:py-11 shadow-lg relative text-left">
-                {appointmentSuccess ? (
-                  <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
-                    <div className="w-12 h-12 rounded-full bg-[#FAF4EB] border border-[#C59B6A] text-[#8C5A28] flex items-center justify-center mx-auto shadow-sm">
-                      <Check size={22} className="stroke-[2.5]" />
-                    </div>
-                    <h3 className="font-serif-luxury text-xl font-bold uppercase text-[#14110E]">
-                      {heroCopy.successTitle}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#665749] max-w-xs mx-auto leading-relaxed">
-                      {heroCopy.successMessage}
-                    </p>
-                    {bookingReference && (
-                      <div className="pt-1">
-                        <span className="text-[11px] font-mono text-[#8C5A28] bg-[#FAF5EE] border border-[#E2D4C3] py-1.5 px-3 rounded-lg inline-block font-bold">
-                          Ref: {bookingReference}
-                        </span>
-                      </div>
-                    )}
-                    <div className="pt-3 flex flex-col gap-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setAppointmentSuccess(false);
-                          setBookingReference(null);
-                        }}
-                        className="text-xs font-bold text-[#8C5A28] hover:underline uppercase tracking-wider cursor-pointer"
-                      >
-                        Book Another Session
-                      </button>
-                      <a
-                        href="#curated-looks"
-                        className="text-xs font-bold text-[#14110E] hover:text-[#8C5A28] uppercase tracking-wider underline cursor-pointer"
-                      >
-                        Explore Curated Ensembles ↓
-                      </a>
-                    </div>
-                  </div>
-                ) : (
-                  <form onSubmit={handleAppointmentSubmit} className="space-y-5">
-                    {/* Name */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.nameLabel}
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={apptName}
-                        onChange={(e) => setApptName(e.target.value)}
-                        placeholder={heroCopy.namePlaceholder}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                      />
-                    </div>
-
-                    {/* Phone */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.phoneLabel}
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={apptPhone}
-                        onChange={(e) => setApptPhone(e.target.value)}
-                        placeholder={heroCopy.phonePlaceholder}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                      />
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.emailLabel}
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={apptEmail}
-                        onChange={(e) => setApptEmail(e.target.value)}
-                        placeholder={heroCopy.emailPlaceholder}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                      />
-                    </div>
-
-                    {/* Preferred Date */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.dateLabel}
-                      </label>
-                      <input
-                        type="date"
-                        required
-                        value={apptDate}
-                        onChange={(e) => setApptDate(e.target.value)}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs cursor-pointer"
-                      />
-                    </div>
-
-                    {apptError && (
-                      <p className="text-xs text-[#9B2C2C] font-semibold">
-                        {apptError}
-                      </p>
-                    )}
-
-                    {/* Submit Button matching tan color in reference */}
-                    <button
-                      type="submit"
-                      disabled={isBooking}
-                      className="w-full mt-2 bg-[#C59B6A] hover:bg-[#B38753] active:scale-[0.99] text-[#14110E] font-bold text-sm sm:text-base py-4 px-6 rounded-lg transition-all shadow-sm hover:shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center"
-                    >
-                      {isBooking ? "Booking..." : heroCopy.buttonLabel}
-                    </button>
-                  </form>
-                )}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize */}
-      <section className="relative w-full bg-[#FAF5EE] border-b border-[#E2D4C3] py-3.5 sm:py-4 overflow-hidden select-none shadow-2xs">
+      {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize (Placed cleanly under fixed Header) */}
+      <section className="relative w-full bg-[#FAF5EE] border-b border-[#E2D4C3] mt-[72px] sm:mt-[88px] py-3.5 sm:py-4 overflow-hidden select-none shadow-2xs">
         {/* Left and Right Edge Gradient Masks for luxury editorial feathering */}
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#FAF5EE] to-transparent z-10" />
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#FAF5EE] to-transparent z-10" />
@@ -504,8 +364,177 @@ function CustomShirtConfiguratorContent() {
       {/* HOW IT WORKS: From First Measure to Final Delivery (Website Light Theme) */}
       <BespokeProcessTimeline />
 
-      {/* Common Atelier Showcase: Video Banner, Shop By Fabrics & Customer Testimonials */}
-      <CommonAtelierShowcase />
+      <ShowcaseDivider />
+
+      {/* 1. Behind The Scenes / Tailoring In Motion Video Banner */}
+      <AtelierEditorialBanner />
+
+      <ShowcaseDivider />
+
+      {/* 2. Shop By Fabrics 3-Card Carousel */}
+      <ShopByFabricsSection />
+
+      {/* 3. ATELIER APPOINTMENT BOOKING SECTION (Moved right above Reviews) */}
+      <section className="relative w-full py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-[#EEE5EA] via-[#F6F1F4] to-[#EAE0E6] border-y border-[#DDD2D8]">
+        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+            
+            {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}
+            <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
+              {/* Badge: SUITOHOLIC BESPOKE ATELIER • DELHI NCR */}
+              <div
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#DDD2D8] text-[#4A202A] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] shadow-xs"
+                style={{ borderRadius: "7px" }}
+              >
+                <MapPin size={12} className="text-[#4A202A]" />
+                <span>{heroCopy.badge}</span>
+              </div>
+
+              {/* Main Headline */}
+              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-bold text-[#14110E] tracking-tight leading-[1.14]">
+                {heroCopy.title}
+              </h2>
+
+              {/* Story Description */}
+              <p className="text-sm sm:text-base text-[#5A4E42] font-sans font-normal leading-[1.75] max-w-2xl">
+                {heroCopy.description}
+              </p>
+            </div>
+
+            {/* RIGHT COLUMN: Appointment Booking Form (Light Theme Box) */}
+            <div id="appointment-booking" className="lg:col-span-5 scroll-mt-24">
+              <div
+                className="bg-[#FFFFFF] border border-[#DDD2D8] px-6 sm:px-8 lg:px-9 py-8 sm:py-10 lg:py-11 shadow-xl relative text-left"
+                style={{ borderRadius: "7px" }}
+              >
+                {appointmentSuccess ? (
+                  <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
+                    <div
+                      className="w-12 h-12 rounded-full bg-[#EEE5EA] border border-[#DDD2D8] text-[#4A202A] flex items-center justify-center mx-auto shadow-xs"
+                      style={{ borderRadius: "7px" }}
+                    >
+                      <Check size={22} className="stroke-[2.5]" />
+                    </div>
+                    <h3 className="font-serif-luxury text-xl font-bold uppercase text-[#14110E]">
+                      {heroCopy.successTitle}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#5A4E42] max-w-xs mx-auto leading-relaxed">
+                      {heroCopy.successMessage}
+                    </p>
+                    {bookingReference && (
+                      <div className="pt-1">
+                        <span
+                          className="text-[11px] font-mono text-[#4A202A] bg-[#EEE5EA] border border-[#DDD2D8] py-1.5 px-3 inline-block font-bold"
+                          style={{ borderRadius: "7px" }}
+                        >
+                          Ref: {bookingReference}
+                        </span>
+                      </div>
+                    )}
+                    <div className="pt-3 flex flex-col gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAppointmentSuccess(false);
+                          setBookingReference(null);
+                        }}
+                        className="text-xs font-bold text-[#4A202A] hover:underline uppercase tracking-wider cursor-pointer"
+                      >
+                        Book Another Session
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleAppointmentSubmit} className="space-y-5">
+                    {/* Name */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                        {heroCopy.nameLabel}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={apptName}
+                        onChange={(e) => setApptName(e.target.value)}
+                        placeholder={heroCopy.namePlaceholder}
+                        style={{ borderRadius: "7px" }}
+                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                      />
+                    </div>
+
+                    {/* Phone */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                        {heroCopy.phoneLabel}
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={apptPhone}
+                        onChange={(e) => setApptPhone(e.target.value)}
+                        placeholder={heroCopy.phonePlaceholder}
+                        style={{ borderRadius: "7px" }}
+                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                      />
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                        {heroCopy.emailLabel}
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={apptEmail}
+                        onChange={(e) => setApptEmail(e.target.value)}
+                        placeholder={heroCopy.emailPlaceholder}
+                        style={{ borderRadius: "7px" }}
+                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                      />
+                    </div>
+
+                    {/* Preferred Date */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                        {heroCopy.dateLabel}
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={apptDate}
+                        onChange={(e) => setApptDate(e.target.value)}
+                        style={{ borderRadius: "7px" }}
+                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs cursor-pointer"
+                      />
+                    </div>
+
+                    {apptError && (
+                      <p className="text-xs text-[#9B2C2C] font-semibold">
+                        {apptError}
+                      </p>
+                    )}
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      disabled={isBooking}
+                      style={{ borderRadius: "7px" }}
+                      className="w-full mt-2 bg-[#14110E] hover:bg-[#4A202A] active:scale-[0.99] text-[#FAF8F5] font-bold text-sm sm:text-base py-4 px-6 transition-all shadow-sm hover:shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center uppercase tracking-[0.14em]"
+                    >
+                      {isBooking ? "Booking..." : heroCopy.buttonLabel}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Customer Testimonials Reviews */}
+      <TestimonialsSection />
 
       {/* Bottom Feature Highlights Bar */}
       <FeatureHighlightsBar />
