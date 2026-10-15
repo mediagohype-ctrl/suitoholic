@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
-import { ArrowUpRight } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { ArrowUpRight, Eye, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProcessStep {
   step: string;
   title: string;
   description: string;
+  image: string;
+  tag: string;
 }
 
 const PROCESS_STEPS: ProcessStep[] = [
@@ -15,40 +17,60 @@ const PROCESS_STEPS: ProcessStep[] = [
     title: "Fabric Selection",
     description:
       "Curated swatches matched to your occasion, season, and the garment's purpose — with our guidance on what works.",
+    image: "/process/01_fabric_selection.jpg",
+    tag: "Egyptian Cotton & Luxury Weaves",
   },
   {
     step: "02",
     title: "Style & Design",
     description:
       "Every detail decided — collar, lapel, lining, buttons, embroidery, and length. Documented and confirmed before a single cut.",
+    image: "/process/02_style_design.jpg",
+    tag: "Collar, Cuffs & Monogram Spec",
   },
   {
     step: "03",
     title: "Measurement",
     description:
       "Taken in person, every time. Never from a size chart. Your posture, your proportions, your unique pattern.",
+    image: "/process/03_measurement.jpg",
+    tag: "30+ Precision Measurements",
   },
   {
     step: "04",
     title: "Cut & Stitch",
     description:
       "Cut by hand from your pattern. Assembled with the construction — canvas, interlining, embroidery — the garment needs.",
+    image: "/process/04_cut_stitch.jpg",
+    tag: "Master Hand-Shears & Single Needle",
   },
   {
     step: "05",
     title: "Trial Fitting",
     description:
       "You wear it. We check every point — shoulder, chest, waist, length. Corrections made before final construction.",
+    image: "/process/05_trial_fitting.jpg",
+    tag: "Basting Silhouette & Mirror Inspection",
   },
   {
     step: "06",
     title: "Final Delivery",
     description:
       "Pressed, inspected, handed over. Your pattern stays on file — every future order is faster, every fit more certain.",
+    image: "/process/06_final_delivery.jpg",
+    tag: "Signature Monogrammed Box",
   },
 ];
 
 export default function BespokeProcessTimeline() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [modalIndex, setModalIndex] = useState<number | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
+  };
+
   const handleScrollToConsult = () => {
     const target =
       document.getElementById("appointment-booking") ||
@@ -57,6 +79,71 @@ export default function BespokeProcessTimeline() {
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleOpenModal = (index: number) => {
+    setModalIndex(index);
+  };
+
+  const handleCloseModal = useCallback(() => {
+    setModalIndex(null);
+  }, []);
+
+  const handlePrevStep = useCallback(() => {
+    setModalIndex((prev) =>
+      prev === null ? null : prev === 0 ? PROCESS_STEPS.length - 1 : prev - 1
+    );
+  }, []);
+
+  const handleNextStep = useCallback(() => {
+    setModalIndex((prev) =>
+      prev === null ? null : prev === PROCESS_STEPS.length - 1 ? 0 : prev + 1
+    );
+  }, []);
+
+  // Keyboard navigation for modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (modalIndex === null) return;
+      if (e.key === "Escape") handleCloseModal();
+      if (e.key === "ArrowLeft") handlePrevStep();
+      if (e.key === "ArrowRight") handleNextStep();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [modalIndex, handleCloseModal, handlePrevStep, handleNextStep]);
+
+  // Compute smart floating position within window bounds
+  const getFloatingCardStyle = () => {
+    if (typeof window === "undefined") return { display: "none" };
+
+    const cardWidth = 360;
+    const cardHeight = 250;
+    const padding = 24;
+
+    let left = mousePos.x + 28;
+    let top = mousePos.y - 120;
+
+    // Check right viewport overflow
+    if (left + cardWidth + padding > window.innerWidth) {
+      left = mousePos.x - cardWidth - 28;
+    }
+
+    // Check bottom viewport overflow
+    if (top + cardHeight + padding > window.innerHeight) {
+      top = window.innerHeight - cardHeight - padding;
+    }
+
+    // Check top viewport overflow
+    if (top < padding) {
+      top = padding;
+    }
+
+    return {
+      left: `${left}px`,
+      top: `${top}px`,
+    };
   };
 
   return (
@@ -129,32 +216,47 @@ export default function BespokeProcessTimeline() {
           </div>
 
           {/* ========================================================================= */}
-          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Royal Burgundy Hover Transitions)      */}
+          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Hover Image Reveal & Click Lightbox)   */}
           {/* ========================================================================= */}
-          <div className="md:col-span-7 border-t border-[#E3D4C4]">
-            {PROCESS_STEPS.map((item) => (
+          <div
+            className="md:col-span-7 border-t border-[#E3D4C4]"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {PROCESS_STEPS.map((item, index) => (
               <div
                 key={item.step}
-                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/70 px-3 sm:px-6 group cursor-pointer"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onClick={() => handleOpenModal(index)}
+                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/70 px-3 sm:px-6 group cursor-pointer select-none"
               >
-                <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
-                  {/* Step Number (01, 02, etc.) */}
-                  <div className="text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 text-[#7A6B5D] group-hover:text-[#4A202A] group-hover:font-bold transition-colors duration-200">
-                    {item.step}
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8 justify-between">
+                  {/* Left part: Step Number & Title */}
+                  <div className="flex items-baseline gap-3 sm:gap-6 lg:gap-8 flex-shrink-0">
+                    {/* Step Number (01, 02, etc.) */}
+                    <div className="text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 text-[#7A6B5D] group-hover:text-[#4A202A] group-hover:font-bold transition-colors duration-200">
+                      {item.step}
+                    </div>
+
+                    {/* Step Title */}
+                    <div className="w-auto sm:w-56 lg:w-64 flex-shrink-0">
+                      <h3 className="text-xl sm:text-2xl lg:text-[26px] font-medium tracking-tight whitespace-nowrap sm:whitespace-normal text-[#14110E] group-hover:text-[#4A202A] group-hover:translate-x-1 transition-all duration-200 leading-snug">
+                        {item.title}
+                      </h3>
+                    </div>
                   </div>
 
-                  {/* Step Title */}
-                  <div className="w-auto sm:w-64 lg:w-72 flex-shrink-0">
-                    <h3 className="text-xl sm:text-2xl lg:text-[26px] font-medium tracking-tight whitespace-nowrap sm:whitespace-normal text-[#14110E] group-hover:text-[#4A202A] group-hover:translate-x-1 transition-all duration-200 leading-snug">
-                      {item.title}
-                    </h3>
-                  </div>
-
-                  {/* Step Description */}
+                  {/* Middle part: Step Description */}
                   <div className="flex-1 max-w-md pt-1 sm:pt-0">
                     <p className="text-xs sm:text-[13.5px] text-[#5A4E42] leading-relaxed">
                       {item.description}
                     </p>
+                  </div>
+
+                  {/* Right part: View Photo Pill / Camera Cue */}
+                  <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF4EB] border border-[#D8C7B7] text-[10px] sm:text-[11px] font-semibold text-[#4A202A] tracking-wider uppercase group-hover:bg-[#4A202A] group-hover:text-[#FAF8F5] group-hover:border-[#4A202A] transition-all duration-300 shadow-2xs flex-shrink-0 self-center">
+                    <Eye size={12} />
+                    <span>View</span>
                   </div>
                 </div>
 
@@ -165,6 +267,137 @@ export default function BespokeProcessTimeline() {
           </div>
         </div>
       </div>
+
+      {/* ========================================================================= */}
+      {/* FLOATING HOVER PREVIEW IMAGE (Follows cursor smoothly on desktop)         */}
+      {/* ========================================================================= */}
+      {hoveredIndex !== null && (
+        <div
+          className="fixed pointer-events-none z-50 hidden md:block transition-transform duration-100 ease-out will-change-transform"
+          style={getFloatingCardStyle()}
+        >
+          <div className="w-[340px] lg:w-[380px] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(20,17,14,0.38)] border border-[#4A202A]/30 bg-[#14110E] transition-all duration-300">
+            {/* Image Container with high-res photo */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1D1916]">
+              <img
+                src={PROCESS_STEPS[hoveredIndex].image}
+                alt={PROCESS_STEPS[hoveredIndex].title}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out scale-100"
+              />
+              {/* Luxury Vignette Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+
+              {/* Top Badge */}
+              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-[#14110E]/80 backdrop-blur-md border border-[#FAF8F5]/20 text-[#FAF8F5] text-[10px] font-mono tracking-widest uppercase">
+                Step {PROCESS_STEPS[hoveredIndex].step}
+              </div>
+
+              {/* Bottom Caption Overlay */}
+              <div className="absolute bottom-3.5 left-4 right-4 text-white">
+                <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#D8C7B7] mb-1">
+                  {PROCESS_STEPS[hoveredIndex].tag}
+                </div>
+                <div className="text-lg font-medium text-[#FAF8F5] leading-snug">
+                  {PROCESS_STEPS[hoveredIndex].title}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* FULL-SCREEN LIGHTBOX MODAL (On Step Click / Mobile Tap)                   */}
+      {/* ========================================================================= */}
+      {modalIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={handleCloseModal}
+        >
+          <div
+            className="relative w-full max-w-3xl bg-[#FAF8F5] text-[#14110E] rounded-2xl overflow-hidden shadow-2xl border border-[#D8C7B7] animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E3D4C4] bg-[#FAF4EB]">
+              <div className="flex items-center gap-3">
+                <span className="px-2.5 py-1 rounded-md bg-[#4A202A] text-[#FAF8F5] text-xs font-mono font-bold tracking-widest">
+                  STEP {PROCESS_STEPS[modalIndex].step}
+                </span>
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-[#4A202A]">
+                  {PROCESS_STEPS[modalIndex].tag}
+                </span>
+              </div>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                className="p-2 rounded-full hover:bg-[#E3D4C4]/60 text-[#14110E] transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Image View */}
+            <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-[#14110E] overflow-hidden">
+              <img
+                src={PROCESS_STEPS[modalIndex].image}
+                alt={PROCESS_STEPS[modalIndex].title}
+                className="w-full h-full object-cover"
+              />
+
+              {/* Prev / Next Buttons */}
+              <button
+                type="button"
+                onClick={handlePrevStep}
+                className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-black/85 text-white backdrop-blur-sm transition-all cursor-pointer shadow-lg hover:scale-105"
+                aria-label="Previous step"
+              >
+                <ChevronLeft size={22} />
+              </button>
+              <button
+                type="button"
+                onClick={handleNextStep}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-black/85 text-white backdrop-blur-sm transition-all cursor-pointer shadow-lg hover:scale-105"
+                aria-label="Next step"
+              >
+                <ChevronRight size={22} />
+              </button>
+            </div>
+
+            {/* Modal Details Footer */}
+            <div className="p-6 sm:p-8 bg-[#FAF8F5]">
+              <h3 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#14110E] mb-2 font-sans">
+                {PROCESS_STEPS[modalIndex].title}
+              </h3>
+              <p className="text-sm sm:text-base text-[#5A4E42] leading-relaxed max-w-2xl mb-6">
+                {PROCESS_STEPS[modalIndex].description}
+              </p>
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-[#E3D4C4]">
+                <span className="text-xs font-mono text-[#7A6B5D]">
+                  Step {modalIndex + 1} of {PROCESS_STEPS.length} in Suitoholic Bespoke Craftsmanship
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleCloseModal();
+                    handleScrollToConsult();
+                  }}
+                  className="inline-flex items-center justify-center space-x-2 px-6 py-2.5 bg-[#14110E] hover:bg-[#4A202A] text-[#FAF8F5] text-xs font-bold tracking-[0.16em] uppercase rounded-lg transition-all duration-300 shadow-sm"
+                >
+                  <span>Book Consult</span>
+                  <ArrowUpRight size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
