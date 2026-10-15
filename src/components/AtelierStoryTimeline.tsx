@@ -28,10 +28,10 @@ export default function AtelierStoryTimeline({
   imageCaption = "Master Bespoke Cutter • New Delhi Atelier Bench",
   milestones = [
     {
-      period: "EST. 2003",
+      period: "ESTD. 2026",
       title: "Founded In New Delhi Atelier",
       story:
-        "Suitoholic begins with master bespoke cutters committed to pure bespoke tailoring. Every garment drafted from a hand-cut paper pattern, upholding individual craft standards across two decades of devoted practice.",
+        "Suitoholic begins with master bespoke cutters committed to pure bespoke tailoring. Every garment drafted from a hand-cut paper pattern, upholding individual craft standards across devoted practice.",
     },
     {
       period: "PROVENANCE & CRAFT",
@@ -48,14 +48,14 @@ export default function AtelierStoryTimeline({
   ],
 }: AtelierStoryTimelineProps) {
   return (
-    <section className="relative w-full bg-gradient-to-b from-[#F7F2EB] via-[#FAF6F0] to-[#FAF8F5] text-[#14110E] py-16 sm:py-20 lg:py-24 border-b border-[#E3D4C4] overflow-hidden">
+    <section className="relative w-full bg-gradient-to-b from-[#EEE5EA] via-[#F8F4F6] to-[#FFFFFF] text-[#14110E] py-16 sm:py-20 lg:py-24 border-b border-[#DDD2D8] overflow-hidden select-none">
       {/* Subtle Tailor Cutting Grid Pattern (Bespoke Pattern Paper Graph Lines) */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.22]"
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.14]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(140, 90, 40, 0.20) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(140, 90, 40, 0.20) 1px, transparent 1px)
+            linear-gradient(to right, rgba(74, 32, 42, 0.15) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(74, 32, 42, 0.15) 1px, transparent 1px)
           `,
           backgroundSize: "36px 36px",
         }}
@@ -63,8 +63,8 @@ export default function AtelierStoryTimeline({
       />
 
       {/* Subtle warm luxury backdrop glow */}
-      <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-[#C59B6A]/10 rounded-full blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-[#C59B6A]/10 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-[#4A202A]/5 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-[#4A202A]/5 rounded-full blur-3xl" />
 
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Main 2-Column Responsive CSS Grid */}
@@ -73,27 +73,33 @@ export default function AtelierStoryTimeline({
           {/* LEFT COLUMN: Eyebrow, Title, Narrative & Master Tailor Media Card */}
           <div className="lg:col-span-5 space-y-5 sm:space-y-6">
             {/* Eyebrow Badge in website theme */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#FAF4EB] border border-[#C59B6A]/80 text-[#8C5A28] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs">
-              <span className="w-1.5 h-1.5 rotate-45 bg-[#8C5A28] inline-block" />
+            <div
+              style={{ borderRadius: "7px" }}
+              className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#DDD2D8] text-[#4A202A] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs"
+            >
+              <span className="w-1.5 h-1.5 rotate-45 bg-[#4A202A] inline-block" />
               <span>{eyebrow}</span>
             </div>
 
             {/* Main Headline */}
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#14110E] tracking-tight leading-[1.16]">
               {titlePrefix}
-              <span className="italic font-serif font-normal text-[#8C5A28] block sm:inline">
+              <span className="italic font-serif font-normal text-[#4A202A] block sm:inline">
                 {titleAccent}
               </span>
             </h2>
 
             {/* Narrative Story Description */}
-            <p className="text-sm sm:text-[15px] text-[#524436] font-sans font-normal leading-[1.8] max-w-xl">
+            <p className="text-sm sm:text-[15px] text-[#5A4E42] font-sans font-normal leading-[1.8] max-w-xl">
               {description}
             </p>
 
             {/* Master Tailor Portrait Media Card */}
-            <div className="relative rounded-2xl overflow-hidden border border-[#D5C2AF] bg-white shadow-md hover:shadow-xl transition-all duration-500 group max-w-md">
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#EFE8DF]">
+            <div
+              style={{ borderRadius: "7px" }}
+              className="relative overflow-hidden border border-[#DDD2D8] bg-white shadow-md hover:shadow-xl transition-all duration-500 group max-w-md"
+            >
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#EEE5EA]">
                 <Image
                   src={image}
                   alt={imageCaption}
@@ -112,7 +118,7 @@ export default function AtelierStoryTimeline({
               
               {/* Continuous Golden Timeline Line (aligned on x = 12px) */}
               <div
-                className="pointer-events-none absolute left-3 top-3 bottom-8 w-[2px] -translate-x-1/2 bg-gradient-to-b from-[#8C5A28] via-[#C59B6A] to-[#D5C2AF]"
+                className="pointer-events-none absolute left-3 top-3 bottom-8 w-[2px] -translate-x-1/2 bg-gradient-to-b from-[#4A202A] via-[#8C4A5A] to-[#DDD2D8]"
                 aria-hidden="true"
               />
 
@@ -121,26 +127,29 @@ export default function AtelierStoryTimeline({
                 <div key={idx} className="relative grid grid-cols-[24px_1fr] gap-5 sm:gap-7 items-start group">
                   {/* Column 1: Timeline Circular Target Node */}
                   <div
-                    className="w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 border-[#8C5A28] bg-[#FAF6F0] flex items-center justify-center shadow-xs group-hover:border-[#C59B6A] group-hover:scale-110 transition-all z-10"
+                    className="w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 border-[#4A202A] bg-[#EEE5EA] flex items-center justify-center shadow-xs group-hover:border-[#4A202A] group-hover:scale-110 transition-all z-10"
                     aria-hidden="true"
                   >
-                    <div className="w-2 h-2 rounded-full bg-[#8C5A28] group-hover:bg-[#C59B6A] transition-colors" />
+                    <div className="w-2 h-2 rounded-full bg-[#4A202A] group-hover:bg-[#4A202A] transition-colors" />
                   </div>
 
                   {/* Column 2: Stretched Luxury Milestone Content Box */}
-                  <div className="bg-white/95 backdrop-blur-sm border border-[#D5C2AF] hover:border-[#8C5A28] rounded-xl sm:rounded-2xl p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                  <div
+                    style={{ borderRadius: "7px" }}
+                    className="bg-white border border-[#DDD2D8] hover:border-[#4A202A] p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                  >
                     {/* Period Eyebrow */}
-                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#8C5A28] mb-2.5">
+                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#4A202A] mb-2.5">
                       {item.period}
                     </span>
 
                     {/* Milestone Title */}
-                    <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-[#14110E] group-hover:text-[#8C5A28] transition-colors mb-3 leading-snug">
+                    <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-[#14110E] group-hover:text-[#4A202A] transition-colors mb-3 leading-snug">
                       {item.title}
                     </h3>
 
                     {/* Milestone Story */}
-                    <p className="text-[13px] sm:text-sm text-[#524436] leading-[1.8] font-sans font-normal">
+                    <p className="text-[13px] sm:text-sm text-[#5A4E42] leading-[1.8] font-sans font-normal">
                       {item.story}
                     </p>
                   </div>
