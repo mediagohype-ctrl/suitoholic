@@ -4,6 +4,23 @@
 // so they are edited once for both the product-page customizer and this page.
 // Template tokens: {step}, {total}, {breadcrumb}.
 export const customShirtPage = {
+  hero: {
+    badge: "PREET VIHAR, DELHI NCR",
+    title: "Best Bespoke Tailors in Delhi NCR",
+    description: "Founded in Sindh in the 1930s by Kailash Ji's grandfather. Established in Daryaganj as Sindh Punjab Tailors after Partition. Continuing in today as Suit Up by Kailash Talreja where every garment is still cut by hand, fitted in person, and made to last.",
+    nameLabel: "Name",
+    namePlaceholder: "Enter your name",
+    phoneLabel: "Phone",
+    phonePlaceholder: "Enter your phone number",
+    emailLabel: "Email",
+    emailPlaceholder: "Enter your email",
+    dateLabel: "Preferred Date",
+    buttonLabel: "Book An Appointment",
+    successTitle: "Appointment Requested!",
+    successMessage: "Thank you! Our master tailor will contact you shortly to confirm your private fitting session.",
+    jumpToConfiguratorLabel: "Or Configure 3D Shirt Online",
+  },
+
   // The catalog product (slug or id) used as the base for custom-fit orders added to the bag.
   bagProductSlug: "royal-formal-crisp-white-shirt",
 
