@@ -64,12 +64,7 @@ const PROCESS_STEPS: ProcessStep[] = [
 
 export default function BespokeProcessTimeline() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [modalIndex, setModalIndex] = useState<number | null>(null);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
-  };
 
   const handleScrollToConsult = () => {
     const target =
@@ -114,38 +109,6 @@ export default function BespokeProcessTimeline() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [modalIndex, handleCloseModal, handlePrevStep, handleNextStep]);
 
-  // Compute smart floating position within window bounds
-  const getFloatingCardStyle = () => {
-    if (typeof window === "undefined") return { display: "none" };
-
-    const cardWidth = 360;
-    const cardHeight = 250;
-    const padding = 24;
-
-    let left = mousePos.x + 28;
-    let top = mousePos.y - 120;
-
-    // Check right viewport overflow
-    if (left + cardWidth + padding > window.innerWidth) {
-      left = mousePos.x - cardWidth - 28;
-    }
-
-    // Check bottom viewport overflow
-    if (top + cardHeight + padding > window.innerHeight) {
-      top = window.innerHeight - cardHeight - padding;
-    }
-
-    // Check top viewport overflow
-    if (top < padding) {
-      top = padding;
-    }
-
-    return {
-      left: `${left}px`,
-      top: `${top}px`,
-    };
-  };
-
   return (
     <section className="relative w-full bg-gradient-to-b from-[#FBF8F3] via-[#FAF6F0] to-[#F7F2EB] text-[#14110E] py-16 sm:py-24 border-y border-[#E3D4C4]">
       {/* Subtle Bespoke Grid Pattern Watermark */}
@@ -166,7 +129,7 @@ export default function BespokeProcessTimeline() {
           {/* LEFT COLUMN: STICKY / FIXED DISPLAY (Suitoholic Royal Maroon & Obsidian)  */}
           {/* ========================================================================= */}
           <div
-            className="md:col-span-5 md:sticky md:top-24 md:self-start py-2 sm:py-4 z-10"
+            className="md:col-span-5 lg:col-span-4 md:sticky md:top-24 md:self-start py-2 sm:py-4 z-10"
             style={{
               position: "sticky",
               top: "96px",
@@ -179,7 +142,7 @@ export default function BespokeProcessTimeline() {
             </div>
 
             {/* Headline with Royal Bespoke Burgundy Accent */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-semibold uppercase tracking-tight text-[#14110E] leading-[1.04] mb-6 sm:mb-8 font-sans">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] xl:text-[50px] font-semibold uppercase tracking-tight text-[#14110E] leading-[1.04] mb-6 sm:mb-8 font-sans">
               HOW WE
               <br />
               TAILOR
@@ -216,95 +179,98 @@ export default function BespokeProcessTimeline() {
           </div>
 
           {/* ========================================================================= */}
-          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Hover Image Reveal & Click Lightbox)   */}
+          {/* RIGHT COLUMN: PROCESS STEPS + RIGHT-SIDE FIXED/STICKY IMAGE PREVIEW       */}
           {/* ========================================================================= */}
-          <div
-            className="md:col-span-7 border-t border-[#E3D4C4]"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            {PROCESS_STEPS.map((item, index) => (
+          <div className="md:col-span-7 lg:col-span-8 border-t border-[#E3D4C4]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+              {/* Left Part of Right Column: Scrolling Process Rows */}
               <div
-                key={item.step}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onClick={() => handleOpenModal(index)}
-                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/70 px-3 sm:px-6 group cursor-pointer select-none"
+                className="lg:col-span-7"
+                onMouseLeave={() => setHoveredIndex(null)}
               >
-                <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8 justify-between">
-                  {/* Left part: Step Number & Title */}
-                  <div className="flex items-baseline gap-3 sm:gap-6 lg:gap-8 flex-shrink-0">
-                    {/* Step Number (01, 02, etc.) */}
-                    <div className="text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 text-[#7A6B5D] group-hover:text-[#4A202A] group-hover:font-bold transition-colors duration-200">
-                      {item.step}
+                {PROCESS_STEPS.map((item, index) => (
+                  <div
+                    key={item.step}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onClick={() => handleOpenModal(index)}
+                    className="relative py-8 sm:py-10 lg:py-12 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/70 px-3 sm:px-5 group cursor-pointer select-none"
+                  >
+                    <div className="flex items-start gap-4 sm:gap-6">
+                      {/* Step Number (01, 02, etc.) */}
+                      <div className="text-xs sm:text-sm font-mono tracking-widest w-8 sm:w-10 flex-shrink-0 text-[#7A6B5D] group-hover:text-[#4A202A] group-hover:font-bold transition-colors duration-200 pt-1">
+                        {item.step}
+                      </div>
+
+                      {/* Step Title & Description */}
+                      <div className="flex-1 pr-2">
+                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                          <h3 className="text-xl sm:text-2xl lg:text-[24px] font-medium tracking-tight text-[#14110E] group-hover:text-[#4A202A] group-hover:translate-x-1 transition-all duration-200 leading-snug">
+                            {item.title}
+                          </h3>
+
+                          {/* Quick cue icon */}
+                          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase text-[#7A6B5D] group-hover:text-[#4A202A] transition-colors duration-200 opacity-60 group-hover:opacity-100">
+                            <Eye size={12} />
+                            <span>Photo</span>
+                          </span>
+                        </div>
+
+                        <p className="text-xs sm:text-[13.5px] text-[#5A4E42] leading-relaxed max-w-md">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
 
-                    {/* Step Title */}
-                    <div className="w-auto sm:w-56 lg:w-64 flex-shrink-0">
-                      <h3 className="text-xl sm:text-2xl lg:text-[26px] font-medium tracking-tight whitespace-nowrap sm:whitespace-normal text-[#14110E] group-hover:text-[#4A202A] group-hover:translate-x-1 transition-all duration-200 leading-snug">
-                        {item.title}
-                      </h3>
-                    </div>
+                    {/* End-to-End Animated Accent Indicator Line in Suitoholic Royal Maroon */}
+                    <div className="absolute bottom-[-1px] left-0 h-[2px] w-0 group-hover:w-full bg-[#4A202A] z-10 transition-all duration-700 ease-out pointer-events-none" />
                   </div>
-
-                  {/* Middle part: Step Description */}
-                  <div className="flex-1 max-w-md pt-1 sm:pt-0">
-                    <p className="text-xs sm:text-[13.5px] text-[#5A4E42] leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {/* Right part: View Photo Pill / Camera Cue */}
-                  <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF4EB] border border-[#D8C7B7] text-[10px] sm:text-[11px] font-semibold text-[#4A202A] tracking-wider uppercase group-hover:bg-[#4A202A] group-hover:text-[#FAF8F5] group-hover:border-[#4A202A] transition-all duration-300 shadow-2xs flex-shrink-0 self-center">
-                    <Eye size={12} />
-                    <span>View</span>
-                  </div>
-                </div>
-
-                {/* End-to-End Animated Accent Indicator Line in Suitoholic Royal Maroon */}
-                <div className="absolute bottom-[-1px] left-0 h-[2px] w-0 group-hover:w-full bg-[#4A202A] z-10 transition-all duration-700 ease-out pointer-events-none" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* FLOATING HOVER PREVIEW IMAGE (Follows cursor smoothly on desktop)         */}
-      {/* ========================================================================= */}
-      {hoveredIndex !== null && (
-        <div
-          className="fixed pointer-events-none z-50 hidden md:block transition-transform duration-100 ease-out will-change-transform"
-          style={getFloatingCardStyle()}
-        >
-          <div className="w-[340px] lg:w-[380px] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(20,17,14,0.38)] border border-[#4A202A]/30 bg-[#14110E] transition-all duration-300">
-            {/* Image Container with high-res photo */}
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1D1916]">
-              <img
-                src={PROCESS_STEPS[hoveredIndex].image}
-                alt={PROCESS_STEPS[hoveredIndex].title}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out scale-100"
-              />
-              {/* Luxury Vignette Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-
-              {/* Top Badge */}
-              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-[#14110E]/80 backdrop-blur-md border border-[#FAF8F5]/20 text-[#FAF8F5] text-[10px] font-mono tracking-widest uppercase">
-                Step {PROCESS_STEPS[hoveredIndex].step}
+                ))}
               </div>
 
-              {/* Bottom Caption Overlay */}
-              <div className="absolute bottom-3.5 left-4 right-4 text-white">
-                <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#D8C7B7] mb-1">
-                  {PROCESS_STEPS[hoveredIndex].tag}
-                </div>
-                <div className="text-lg font-medium text-[#FAF8F5] leading-snug">
-                  {PROCESS_STEPS[hoveredIndex].title}
+              {/* Right Part of Right Column: FIXED / STICKY IMAGE (Stays fixed on the right side) */}
+              <div className="hidden lg:block lg:col-span-5 sticky top-28 self-start pt-4 pb-8">
+                <div
+                  className={`w-full rounded-2xl overflow-hidden shadow-[0_22px_55px_rgba(20,17,14,0.32)] border border-[#4A202A]/25 bg-[#14110E] transition-all duration-300 ease-out ${
+                    hoveredIndex !== null
+                      ? "opacity-100 scale-100 translate-y-0"
+                      : "opacity-0 scale-95 translate-y-2 pointer-events-none"
+                  }`}
+                >
+                  {/* Image Container with high-res photo */}
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1D1916]">
+                    {hoveredIndex !== null && (
+                      <>
+                        <img
+                          src={PROCESS_STEPS[hoveredIndex].image}
+                          alt={PROCESS_STEPS[hoveredIndex].title}
+                          className="w-full h-full object-cover transition-transform duration-700 ease-out scale-100"
+                        />
+                        {/* Luxury Vignette Gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+
+                        {/* Top Badge */}
+                        <div className="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-md bg-[#14110E]/80 backdrop-blur-md border border-[#FAF8F5]/20 text-[#FAF8F5] text-[10px] font-mono tracking-widest uppercase">
+                          Step {PROCESS_STEPS[hoveredIndex].step}
+                        </div>
+
+                        {/* Bottom Caption Overlay */}
+                        <div className="absolute bottom-4 left-4 right-4 text-white">
+                          <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#D8C7B7] mb-1">
+                            {PROCESS_STEPS[hoveredIndex].tag}
+                          </div>
+                          <div className="text-xl font-medium text-[#FAF8F5] leading-snug">
+                            {PROCESS_STEPS[hoveredIndex].title}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* ========================================================================= */}
       {/* FULL-SCREEN LIGHTBOX MODAL (On Step Click / Mobile Tap)                   */}
