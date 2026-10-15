@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { ArrowUpRight, Eye, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProcessStep {
   step: string;
@@ -129,7 +129,7 @@ export default function BespokeProcessTimeline() {
           {/* LEFT COLUMN: STICKY / FIXED DISPLAY (Suitoholic Royal Maroon & Obsidian)  */}
           {/* ========================================================================= */}
           <div
-            className="md:col-span-5 lg:col-span-4 md:sticky md:top-24 md:self-start py-2 sm:py-4 z-10"
+            className="md:col-span-5 md:sticky md:top-24 md:self-start py-2 sm:py-4 z-10"
             style={{
               position: "sticky",
               top: "96px",
@@ -137,12 +137,15 @@ export default function BespokeProcessTimeline() {
             }}
           >
             {/* Eyebrow Label */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#FAF4EB] border border-[#D8C7B7] text-[#4A202A] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] shadow-2xs mb-4">
+            <div
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FAF4EB] border border-[#D8C7B7] text-[#4A202A] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] shadow-2xs mb-4"
+              style={{ borderRadius: "7px" }}
+            >
               <span>OUR PROVEN METHODOLOGY</span>
             </div>
 
             {/* Headline with Royal Bespoke Burgundy Accent */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] xl:text-[50px] font-semibold uppercase tracking-tight text-[#14110E] leading-[1.04] mb-6 sm:mb-8 font-sans">
+            <h2 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-semibold uppercase tracking-tight text-[#14110E] leading-[1.04] mb-6 sm:mb-8 font-sans">
               HOW WE
               <br />
               TAILOR
@@ -167,7 +170,8 @@ export default function BespokeProcessTimeline() {
               <button
                 type="button"
                 onClick={handleScrollToConsult}
-                className="inline-flex items-center space-x-2.5 px-7 sm:px-8 py-3.5 bg-[#14110E] hover:bg-[#4A202A] active:scale-[0.99] text-[#FAF8F5] text-xs sm:text-sm font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer rounded-lg group"
+                style={{ borderRadius: "7px" }}
+                className="inline-flex items-center space-x-2.5 px-7 sm:px-8 py-3.5 bg-[#14110E] hover:bg-[#4A202A] active:scale-[0.99] text-[#FAF8F5] text-xs sm:text-sm font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer group"
               >
                 <span>Book Consult</span>
                 <ArrowUpRight
@@ -179,97 +183,102 @@ export default function BespokeProcessTimeline() {
           </div>
 
           {/* ========================================================================= */}
-          {/* RIGHT COLUMN: PROCESS STEPS + RIGHT-SIDE FIXED/STICKY IMAGE PREVIEW       */}
+          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Original Restored Layout)              */}
           {/* ========================================================================= */}
-          <div className="md:col-span-7 lg:col-span-8 border-t border-[#E3D4C4]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-              {/* Left Part of Right Column: Scrolling Process Rows */}
+          <div
+            className="md:col-span-7 border-t border-[#E3D4C4]"
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {PROCESS_STEPS.map((item, index) => (
               <div
-                className="lg:col-span-7"
-                onMouseLeave={() => setHoveredIndex(null)}
+                key={item.step}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onClick={() => handleOpenModal(index)}
+                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/70 px-3 sm:px-6 group cursor-pointer select-none"
               >
-                {PROCESS_STEPS.map((item, index) => (
-                  <div
-                    key={item.step}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onClick={() => handleOpenModal(index)}
-                    className="relative py-8 sm:py-10 lg:py-12 border-b border-[#E3D4C4] transition-colors duration-300 hover:bg-[#FAF4EB]/70 px-3 sm:px-5 group cursor-pointer select-none"
-                  >
-                    <div className="flex items-start gap-4 sm:gap-6">
-                      {/* Step Number (01, 02, etc.) */}
-                      <div className="text-xs sm:text-sm font-mono tracking-widest w-8 sm:w-10 flex-shrink-0 text-[#7A6B5D] group-hover:text-[#4A202A] group-hover:font-bold transition-colors duration-200 pt-1">
-                        {item.step}
-                      </div>
-
-                      {/* Step Title & Description */}
-                      <div className="flex-1 pr-2">
-                        <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <h3 className="text-xl sm:text-2xl lg:text-[24px] font-medium tracking-tight text-[#14110E] group-hover:text-[#4A202A] group-hover:translate-x-1 transition-all duration-200 leading-snug">
-                            {item.title}
-                          </h3>
-
-                          {/* Quick cue icon */}
-                          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase text-[#7A6B5D] group-hover:text-[#4A202A] transition-colors duration-200 opacity-60 group-hover:opacity-100">
-                            <Eye size={12} />
-                            <span>Photo</span>
-                          </span>
-                        </div>
-
-                        <p className="text-xs sm:text-[13.5px] text-[#5A4E42] leading-relaxed max-w-md">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* End-to-End Animated Accent Indicator Line in Suitoholic Royal Maroon */}
-                    <div className="absolute bottom-[-1px] left-0 h-[2px] w-0 group-hover:w-full bg-[#4A202A] z-10 transition-all duration-700 ease-out pointer-events-none" />
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
+                  {/* Step Number (01, 02, etc.) */}
+                  <div className="text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 text-[#7A6B5D] group-hover:text-[#4A202A] group-hover:font-bold transition-colors duration-200">
+                    {item.step}
                   </div>
-                ))}
+
+                  {/* Step Title */}
+                  <div className="w-auto sm:w-64 lg:w-72 flex-shrink-0">
+                    <h3 className="text-xl sm:text-2xl lg:text-[26px] font-medium tracking-tight whitespace-nowrap sm:whitespace-normal text-[#14110E] group-hover:text-[#4A202A] group-hover:translate-x-1 transition-all duration-200 leading-snug">
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  {/* Step Description */}
+                  <div className="flex-1 max-w-md pt-1 sm:pt-0">
+                    <p className="text-xs sm:text-[13.5px] text-[#5A4E42] leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* End-to-End Animated Accent Indicator Line in Suitoholic Royal Maroon */}
+                <div className="absolute bottom-[-1px] left-0 h-[2px] w-0 group-hover:w-full bg-[#4A202A] z-10 transition-all duration-700 ease-out pointer-events-none" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* RIGHT-SIDE FIXED HOVER IMAGE PREVIEW (Near Right Screen Edge, Fixed Spot)  */}
+      {/* ========================================================================= */}
+      <div
+        className={`fixed right-4 sm:right-8 lg:right-12 xl:right-16 top-1/2 -translate-y-1/2 z-40 hidden md:block pointer-events-none transition-all duration-300 ease-out ${
+          hoveredIndex !== null
+            ? "opacity-100 scale-100 translate-x-0"
+            : "opacity-0 scale-95 translate-x-6 pointer-events-none"
+        }`}
+        style={{ borderRadius: "7px" }}
+      >
+        {hoveredIndex !== null && (
+          <div
+            className="w-[300px] sm:w-[350px] lg:w-[380px] overflow-hidden shadow-[0_20px_50px_rgba(20,17,14,0.38)] border border-[#4A202A]/30 bg-[#14110E]"
+            style={{ borderRadius: "7px" }}
+          >
+            {/* Image Container with 7px Border Radius */}
+            <div
+              className="relative aspect-[4/3] w-full overflow-hidden bg-[#1D1916]"
+              style={{ borderRadius: "7px" }}
+            >
+              <img
+                src={PROCESS_STEPS[hoveredIndex].image}
+                alt={PROCESS_STEPS[hoveredIndex].title}
+                className="w-full h-full object-cover"
+                style={{ borderRadius: "7px" }}
+              />
+
+              {/* Luxury Dark Vignette Gradient */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none"
+                style={{ borderRadius: "7px" }}
+              />
+
+              {/* Top Step Badge with 7px Border Radius */}
+              <div
+                className="absolute top-3 left-3 px-2.5 py-1 bg-[#14110E]/85 backdrop-blur-md border border-[#FAF8F5]/20 text-[#FAF8F5] text-[10px] font-mono tracking-widest uppercase"
+                style={{ borderRadius: "7px" }}
+              >
+                Step {PROCESS_STEPS[hoveredIndex].step}
               </div>
 
-              {/* Right Part of Right Column: FIXED / STICKY IMAGE (Stays fixed on the right side) */}
-              <div className="hidden lg:block lg:col-span-5 sticky top-28 self-start pt-4 pb-8">
-                <div
-                  className={`w-full rounded-2xl overflow-hidden shadow-[0_22px_55px_rgba(20,17,14,0.32)] border border-[#4A202A]/25 bg-[#14110E] transition-all duration-300 ease-out ${
-                    hoveredIndex !== null
-                      ? "opacity-100 scale-100 translate-y-0"
-                      : "opacity-0 scale-95 translate-y-2 pointer-events-none"
-                  }`}
-                >
-                  {/* Image Container with high-res photo */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1D1916]">
-                    {hoveredIndex !== null && (
-                      <>
-                        <img
-                          src={PROCESS_STEPS[hoveredIndex].image}
-                          alt={PROCESS_STEPS[hoveredIndex].title}
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out scale-100"
-                        />
-                        {/* Luxury Vignette Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-
-                        {/* Top Badge */}
-                        <div className="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-md bg-[#14110E]/80 backdrop-blur-md border border-[#FAF8F5]/20 text-[#FAF8F5] text-[10px] font-mono tracking-widest uppercase">
-                          Step {PROCESS_STEPS[hoveredIndex].step}
-                        </div>
-
-                        {/* Bottom Caption Overlay */}
-                        <div className="absolute bottom-4 left-4 right-4 text-white">
-                          <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#D8C7B7] mb-1">
-                            {PROCESS_STEPS[hoveredIndex].tag}
-                          </div>
-                          <div className="text-xl font-medium text-[#FAF8F5] leading-snug">
-                            {PROCESS_STEPS[hoveredIndex].title}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
+              {/* Bottom Caption Overlay */}
+              <div className="absolute bottom-3.5 left-4 right-4 text-white">
+                <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#D8C7B7] mb-0.5">
+                  {PROCESS_STEPS[hoveredIndex].tag}
+                </div>
+                <div className="text-lg font-medium text-[#FAF8F5] leading-snug">
+                  {PROCESS_STEPS[hoveredIndex].title}
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* ========================================================================= */}
@@ -283,13 +292,17 @@ export default function BespokeProcessTimeline() {
           onClick={handleCloseModal}
         >
           <div
-            className="relative w-full max-w-3xl bg-[#FAF8F5] text-[#14110E] rounded-2xl overflow-hidden shadow-2xl border border-[#D8C7B7] animate-in zoom-in-95 duration-200"
+            className="relative w-full max-w-3xl bg-[#FAF8F5] text-[#14110E] overflow-hidden shadow-2xl border border-[#D8C7B7] animate-in zoom-in-95 duration-200"
+            style={{ borderRadius: "7px" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#E3D4C4] bg-[#FAF4EB]">
               <div className="flex items-center gap-3">
-                <span className="px-2.5 py-1 rounded-md bg-[#4A202A] text-[#FAF8F5] text-xs font-mono font-bold tracking-widest">
+                <span
+                  className="px-2.5 py-1 bg-[#4A202A] text-[#FAF8F5] text-xs font-mono font-bold tracking-widest"
+                  style={{ borderRadius: "7px" }}
+                >
                   STEP {PROCESS_STEPS[modalIndex].step}
                 </span>
                 <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-[#4A202A]">
@@ -301,7 +314,8 @@ export default function BespokeProcessTimeline() {
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="p-2 rounded-full hover:bg-[#E3D4C4]/60 text-[#14110E] transition-colors cursor-pointer"
+                className="p-2 hover:bg-[#E3D4C4]/60 text-[#14110E] transition-colors cursor-pointer"
+                style={{ borderRadius: "7px" }}
                 aria-label="Close modal"
               >
                 <X size={20} />
@@ -320,7 +334,8 @@ export default function BespokeProcessTimeline() {
               <button
                 type="button"
                 onClick={handlePrevStep}
-                className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-black/85 text-white backdrop-blur-sm transition-all cursor-pointer shadow-lg hover:scale-105"
+                className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 bg-black/60 hover:bg-black/85 text-white backdrop-blur-sm transition-all cursor-pointer shadow-lg hover:scale-105"
+                style={{ borderRadius: "7px" }}
                 aria-label="Previous step"
               >
                 <ChevronLeft size={22} />
@@ -328,7 +343,8 @@ export default function BespokeProcessTimeline() {
               <button
                 type="button"
                 onClick={handleNextStep}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-black/85 text-white backdrop-blur-sm transition-all cursor-pointer shadow-lg hover:scale-105"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-black/60 hover:bg-black/85 text-white backdrop-blur-sm transition-all cursor-pointer shadow-lg hover:scale-105"
+                style={{ borderRadius: "7px" }}
                 aria-label="Next step"
               >
                 <ChevronRight size={22} />
@@ -354,7 +370,8 @@ export default function BespokeProcessTimeline() {
                     handleCloseModal();
                     handleScrollToConsult();
                   }}
-                  className="inline-flex items-center justify-center space-x-2 px-6 py-2.5 bg-[#14110E] hover:bg-[#4A202A] text-[#FAF8F5] text-xs font-bold tracking-[0.16em] uppercase rounded-lg transition-all duration-300 shadow-sm"
+                  style={{ borderRadius: "7px" }}
+                  className="inline-flex items-center justify-center space-x-2 px-6 py-2.5 bg-[#14110E] hover:bg-[#4A202A] text-[#FAF8F5] text-xs font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-sm"
                 >
                   <span>Book Consult</span>
                   <ArrowUpRight size={14} />
