@@ -291,9 +291,9 @@ function CustomShirtConfiguratorContent() {
 
             {/* RIGHT COLUMN: Appointment Booking Form (Light Theme Box) */}
             <div className="lg:col-span-5">
-              <div className="bg-[#FFFFFF]/95 backdrop-blur-md border border-[#C59B6A]/60 rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-9 shadow-lg relative text-left">
+              <div className="bg-[#FFFFFF]/95 backdrop-blur-md border border-[#C59B6A]/60 rounded-[12px] px-6 sm:px-8 lg:px-9 py-8 sm:py-10 lg:py-11 shadow-lg relative text-left">
                 {appointmentSuccess ? (
-                  <div className="text-center py-6 sm:py-8 space-y-4 animate-in fade-in duration-300">
+                  <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
                     <div className="w-12 h-12 rounded-full bg-[#FAF4EB] border border-[#C59B6A] text-[#8C5A28] flex items-center justify-center mx-auto shadow-sm">
                       <Check size={22} className="stroke-[2.5]" />
                     </div>
@@ -330,10 +330,10 @@ function CustomShirtConfiguratorContent() {
                     </div>
                   </div>
                 ) : (
-                  <form onSubmit={handleAppointmentSubmit} className="space-y-4">
+                  <form onSubmit={handleAppointmentSubmit} className="space-y-5">
                     {/* Name */}
                     <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-1.5">
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
                         {heroCopy.nameLabel}
                       </label>
                       <input
@@ -342,13 +342,13 @@ function CustomShirtConfiguratorContent() {
                         value={apptName}
                         onChange={(e) => setApptName(e.target.value)}
                         placeholder={heroCopy.namePlaceholder}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
                       />
                     </div>
 
                     {/* Phone */}
                     <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-1.5">
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
                         {heroCopy.phoneLabel}
                       </label>
                       <input
@@ -357,13 +357,13 @@ function CustomShirtConfiguratorContent() {
                         value={apptPhone}
                         onChange={(e) => setApptPhone(e.target.value)}
                         placeholder={heroCopy.phonePlaceholder}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
                       />
                     </div>
 
                     {/* Email */}
                     <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-1.5">
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
                         {heroCopy.emailLabel}
                       </label>
                       <input
@@ -372,13 +372,13 @@ function CustomShirtConfiguratorContent() {
                         value={apptEmail}
                         onChange={(e) => setApptEmail(e.target.value)}
                         placeholder={heroCopy.emailPlaceholder}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
                       />
                     </div>
 
                     {/* Preferred Date */}
                     <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-1.5">
+                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
                         {heroCopy.dateLabel}
                       </label>
                       <input
@@ -386,7 +386,7 @@ function CustomShirtConfiguratorContent() {
                         required
                         value={apptDate}
                         onChange={(e) => setApptDate(e.target.value)}
-                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm outline-none transition-all shadow-2xs cursor-pointer"
+                        className="w-full bg-[#FAF7F2] border border-[#D5C2AF] text-[#14110E] focus:border-[#8C5A28] focus:bg-white rounded-lg px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs cursor-pointer"
                       />
                     </div>
 
@@ -400,7 +400,7 @@ function CustomShirtConfiguratorContent() {
                     <button
                       type="submit"
                       disabled={isBooking}
-                      className="w-full mt-2 bg-[#C59B6A] hover:bg-[#B38753] active:scale-[0.99] text-[#14110E] font-bold text-sm sm:text-base py-3.5 px-6 rounded-lg transition-all shadow-sm hover:shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center"
+                      className="w-full mt-2 bg-[#C59B6A] hover:bg-[#B38753] active:scale-[0.99] text-[#14110E] font-bold text-sm sm:text-base py-4 px-6 rounded-lg transition-all shadow-sm hover:shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center"
                     >
                       {isBooking ? "Booking..." : heroCopy.buttonLabel}
                     </button>
