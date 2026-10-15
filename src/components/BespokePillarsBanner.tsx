@@ -43,8 +43,8 @@ const PILLARS: PillarItem[] = [
     headingGold: "EXPERIENCE",
     description:
       "Feel the joy of a personalised menswear shopping experience. But what does a truly personalised experience look like? Every garment you wear is designed to match your look, the occasion, your preferences and skin tone, and is handcrafted to give you the perfect fit.",
-    ctaText: "START 3D ATELIER CUSTOMIZER",
-    ctaHref: "#configurator-section",
+    ctaText: "BOOK BESPOKE APPOINTMENT",
+    ctaHref: "#appointment-booking",
     image: "/banners/banner_bespoke_experience.jpg",
     imageAlt: "Master tailor fitting a bespoke suit jacket onto a client",
     theme: "light",
