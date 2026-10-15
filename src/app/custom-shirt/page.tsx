@@ -13,6 +13,7 @@ import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
 import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import BespokeProcessTimeline from "@/components/BespokeProcessTimeline";
+import CustomOutfitHero from "@/components/CustomOutfitHero";
 
 const ShowcaseDivider = () => (
   <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-6 sm:my-8 lg:my-10">
@@ -326,8 +327,11 @@ function CustomShirtConfiguratorContent() {
       {/* Header */}
       <Header activeTab="custom-fit" />
 
-      {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize (Placed cleanly under fixed Header) */}
-      <section className="relative w-full bg-[#FAF5EE] border-b border-[#E2D4C3] mt-[72px] sm:mt-[88px] py-3.5 sm:py-4 overflow-hidden select-none shadow-2xs">
+      {/* 1. CINEMATIC OUTFIT HERO: Build Your Outfit Interactive Atelier Experience (Matching Reference Design) */}
+      <CustomOutfitHero />
+
+      {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize */}
+      <section className="relative w-full bg-[#FAF5EE] border-b border-[#E2D4C3] py-3.5 sm:py-4 overflow-hidden select-none shadow-2xs">
         {/* Left and Right Edge Gradient Masks for luxury editorial feathering */}
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#FAF5EE] to-transparent z-10" />
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#FAF5EE] to-transparent z-10" />
