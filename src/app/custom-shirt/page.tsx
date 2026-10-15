@@ -125,20 +125,25 @@ function CustomShirtConfiguratorContent() {
   const [bookingReference, setBookingReference] = useState<string | null>(null);
 
   const heroCopy = (c as any).hero || {
-    badge: "PREET VIHAR, DELHI NCR",
-    title: "Best Bespoke Tailors in Delhi NCR",
-    description: "Founded in Sindh in the 1930s by Kailash Ji's grandfather. Established in Daryaganj as Sindh Punjab Tailors after Partition. Continuing in today as Suit Up by Kailash Talreja where every garment is still cut by hand, fitted in person, and made to last.",
+    badge: "SUITOHOLIC BESPOKE ATELIER • DELHI NCR",
+    title: "The Art of Bespoke Tailoring in Delhi NCR",
+    description: "Founded in New Delhi by master bespoke cutters dedicated to heritage craftsmanship. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture. Tailored from 140s Egyptian Giza cottons and Italian worsted wools, fitted in person, and made to last a lifetime.",
     nameLabel: "Name",
-    namePlaceholder: "Enter your name",
+    namePlaceholder: "Enter your full name",
     phoneLabel: "Phone",
     phonePlaceholder: "Enter your phone number",
     emailLabel: "Email",
-    emailPlaceholder: "Enter your email",
-    dateLabel: "Preferred Date",
-    buttonLabel: "Book An Appointment",
-    successTitle: "Appointment Requested!",
-    successMessage: "Thank you! Our master tailor will contact you shortly to confirm your private fitting session.",
-    jumpToConfiguratorLabel: "Or Configure 3D Shirt Online",
+    emailPlaceholder: "Enter your email address",
+    dateLabel: "Preferred Fitting Date",
+    buttonLabel: "Book Atelier Appointment",
+    successTitle: "Fitting Session Requested!",
+    successMessage: "Thank you! A Suitoholic master bespoke consultant will reach out shortly to confirm your private fitting in Delhi NCR.",
+    jumpToConfiguratorLabel: "Or Design Your Shirt with 3D Mannequin Online",
+    pillars: [
+      "Hand-Drafted Paper Pattern",
+      "1-on-1 Master Fitting",
+      "100% Fit Guarantee",
+    ],
   };
 
   const customOfferingsList: { title: string; detail?: string }[] = (c as any).customOfferings || [
@@ -168,8 +173,8 @@ function CustomShirtConfiguratorContent() {
           name: apptName.trim(),
           email: apptEmail.trim(),
           phone: apptPhone.trim(),
-          subject: "Bespoke Tailor Fitting Appointment",
-          message: `Preferred Date: ${apptDate}\nService: Custom Fit Consultation\nLocation: Preet Vihar, Delhi NCR`,
+          subject: "Suitoholic Bespoke Fitting Appointment - Delhi NCR",
+          message: `Preferred Date: ${apptDate}\nService: Custom Fit Consultation\nAtelier: Suitoholic Bespoke Wing, Delhi NCR`,
         },
       });
       setBookingReference(res?.id ? `SUI-FIT-${String(res.id).padStart(5, "0")}` : `SUI-FIT-${Math.floor(10000 + Math.random() * 90000)}`);
@@ -285,18 +290,16 @@ function CustomShirtConfiguratorContent() {
 
               {/* Atelier Trust Pillars */}
               <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-[#524436]">
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
-                  <span className="font-bold text-[#14110E] uppercase tracking-wider text-[11px]">Individually Hand-Cut</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
-                  <span className="font-bold text-[#14110E] uppercase tracking-wider text-[11px]">1-on-1 Master Fitting</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
-                  <span className="font-bold text-[#14110E] uppercase tracking-wider text-[11px]">30-Day Fit Guarantee</span>
-                </div>
+                {(heroCopy.pillars || [
+                  "Hand-Drafted Paper Pattern",
+                  "1-on-1 Master Fitting",
+                  "100% Fit Guarantee",
+                ]).map((pillar: string, pIdx: number) => (
+                  <div key={pIdx} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
+                    <span className="font-bold text-[#14110E] uppercase tracking-wider text-[11px]">{pillar}</span>
+                  </div>
+                ))}
               </div>
 
               {/* Jump link to 3D Configurator */}
