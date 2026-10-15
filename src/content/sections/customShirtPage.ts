@@ -41,6 +41,36 @@ export const customShirtPage = {
     { title: "Monogrammed Accents", detail: "Custom Embroidery on Cuffs" },
   ],
 
+  timelineStory: {
+    eyebrow: "OUR STORY",
+    titlePrefix: "Two Decades of Craft in ",
+    titleAccent: "Delhi NCR.",
+    description:
+      "Founded in New Delhi by master bespoke cutters dedicated to heritage craftsmanship. Reclaiming the uncompromising art of individual pattern drafting, Suitoholic crafts every single garment from a fresh paper pattern engineered to your unique posture, drape, and silhouette.",
+    image: "/master_tailor_story.jpg",
+    imageCaption: "Master Bespoke Cutter • New Delhi Atelier Bench",
+    milestones: [
+      {
+        period: "EST. 2003",
+        title: "Founded In New Delhi Atelier",
+        story:
+          "Suitoholic begins with master bespoke cutters committed to pure bespoke tailoring. Every garment drafted from a hand-cut paper pattern, upholding individual craft standards across two decades of devoted practice.",
+      },
+      {
+        period: "PROVENANCE & CRAFT",
+        title: "Direct Textile Mill Alliances, Biella & Giza",
+        story:
+          "Bypassing industrial middlemen, establishing direct partnerships with heritage looms in Biella, Italy for Super 150s worsted wool and Egypt's Nile Delta for authentic 140s Extra-Long Staple Giza cottons.",
+      },
+      {
+        period: "TODAY & BEYOND",
+        title: "Suitoholic Bespoke Atelier, Delhi NCR",
+        story:
+          "Dressing corporate leaders, dignitaries, and connoisseurs across 42 countries. The same timeless belief: that a garment made well — to your body, for your occasion — is never just clothing.",
+      },
+    ],
+  },
+
   // The catalog product (slug or id) used as the base for custom-fit orders added to the bag.
   bagProductSlug: "royal-formal-crisp-white-shirt",
 

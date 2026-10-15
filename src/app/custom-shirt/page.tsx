@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
+import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, Scissors, MapPin } from "lucide-react";
@@ -435,6 +436,9 @@ function CustomShirtConfiguratorContent() {
           </div>
         </div>
       </section>
+
+      {/* OUR STORY: Heritage Timeline & Master Tailor Atelier Section */}
+      <AtelierStoryTimeline {...((c as any).timelineStory || {})} />
 
       {/* Main Studio Content */}
       <div id="configurator-section" className="relative flex-1 w-full overflow-hidden flex flex-col justify-center">
