@@ -287,31 +287,6 @@ function CustomShirtConfiguratorContent() {
               <p className="text-sm sm:text-base text-[#524436] font-sans font-normal leading-[1.75] max-w-2xl">
                 {heroCopy.description}
               </p>
-
-              {/* Atelier Trust Pillars */}
-              <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-[#524436]">
-                {(heroCopy.pillars || [
-                  "Hand-Drafted Paper Pattern",
-                  "1-on-1 Master Fitting",
-                  "100% Fit Guarantee",
-                ]).map((pillar: string, pIdx: number) => (
-                  <div key={pIdx} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#8C5A28]" />
-                    <span className="font-bold text-[#14110E] uppercase tracking-wider text-[11px]">{pillar}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Jump link to 3D Configurator */}
-              <div className="pt-2">
-                <a
-                  href="#configurator-section"
-                  className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-[#8C5A28] hover:text-[#14110E] transition-colors group cursor-pointer"
-                >
-                  <span>{heroCopy.jumpToConfiguratorLabel}</span>
-                  <span className="transition-transform group-hover:translate-y-1">↓</span>
-                </a>
-              </div>
             </div>
 
             {/* RIGHT COLUMN: Appointment Booking Form (Light Theme Box) */}
