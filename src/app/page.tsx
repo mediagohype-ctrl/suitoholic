@@ -9,7 +9,6 @@ import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import ModernCollectionSection from "@/components/ModernCollectionSection";
 import CategoriesRotatingShowcase from "@/components/CategoriesRotatingShowcase";
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
-import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import ShopByCategoryGrid from "@/components/ShopByCategoryGrid";
 import NewsletterSection from "@/components/NewsletterSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
@@ -128,11 +127,9 @@ export default function Home() {
                   cardsPerView={isShopByFabrics ? 3 : 4}
                 />
 
-                {/* Bespoke Pillars Banner, Testimonial / Reviews Section followed by FAQ Section */}
+                {/* Testimonial / Reviews Section followed by FAQ Section */}
                 {isShopByFabrics && (
                   <React.Fragment key="testimonials-and-faq-block">
-                    <Divider />
-                    <BespokePillarsBanner />
                     <Divider />
                     <TestimonialsSection />
                     <Divider />
