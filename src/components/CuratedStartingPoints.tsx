@@ -27,60 +27,51 @@ const DEFAULT_LOOKS: CuratedLookItem[] = [
   {
     id: "look-1",
     slug: "royal-formal-crisp-white-shirt",
-    title: "Royal Formal Crisp White",
+    title: "Royal Bengal Stripe Formal",
     subtitle: "100% Egyptian Giza 140s Cotton",
     price: "₹ 2,499",
-    image: "/white_twill_model_editorial.jpg",
+    image: "/new_shirts/shirt_1.jpg",
     tag: "SIGNATURE",
   },
   {
     id: "look-2",
-    slug: "executive-french-cuff-blue-shirt",
-    title: "Executive French Cuff Blue",
-    subtitle: "Double-Ply Italian Poplin",
+    slug: "french-cuff-noble-charcoal-formal",
+    title: "Noble Espresso Sateen Twill",
+    subtitle: "Superfine 120s Sateen Drape",
     price: "₹ 2,699",
-    image: "/sky_blue_model_editorial.jpg",
+    image: "/new_shirts/shirt_2.jpg",
     tag: "BESTSELLER",
   },
   {
     id: "look-3",
-    slug: "boardroom-banker-pinstripe-formal",
-    title: "Boardroom Banker Stripe",
-    subtitle: "Two-Fold Savile Row Stripe",
+    slug: "executive-french-cuff-blue-shirt",
+    title: "Executive Sky Blue Pinstripe",
+    subtitle: "Two-Fold Italian Poplin Weave",
     price: "₹ 2,799",
-    image: "/bengal_stripe_royal_blue_model.jpg",
-    tag: "FORMAL ICON",
+    image: "/new_shirts/shirt_3.jpg",
+    tag: "BOARDROOM ICON",
   },
   {
     id: "look-4",
-    slug: "ceremonial-bandhgala",
-    title: "Royal Heritage Bandhgala",
-    subtitle: "Handcrafted Structured Cut",
-    price: "₹ 4,999",
-    image: "/ceremonial_bandhgala.jpg",
-    tag: "ROYAL EDIT",
-  },
-  {
-    id: "look-5",
-    slug: "black-tie-silk-tuxedo",
-    title: "Silk Lapel Tuxedo Ensemble",
-    subtitle: "Black-Tie Silk Satin Lapels",
-    price: "₹ 5,499",
-    image: "/blazer_charcoal_tux.jpg",
-    tag: "EVENING",
+    slug: "fine-ivory-herringbone-formal",
+    title: "Fine Ivory Sand Herringbone",
+    subtitle: "130s Micro-Herringbone Weave",
+    price: "₹ 2,899",
+    image: "/new_shirts/shirt_4.jpg",
+    tag: "LUXURY BESPOKE",
   },
 ];
 
 export default function CuratedStartingPoints({
   eyebrow = "CURATED STARTING POINTS",
   title = "Signature Bespoke Ensembles",
-  description = "Start with a master-tailored bespoke ensemble where every cloth, drape, and silhouette is engineered to perfection. Select a starting point below to custom tailor it live in our 3D Atelier.",
+  description = "Start with a master-tailored bespoke dress shirt where every cloth, drape, and silhouette is engineered to perfection. Select a starting point below to custom tailor it live in our 3D Atelier.",
   items = DEFAULT_LOOKS,
   activeProductSlug,
   onSelectLook,
 }: CuratedStartingPointsProps) {
   return (
-    <section id="curated-looks" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E3D4C4] bg-gradient-to-b from-[#FBF8F3] via-[#FAF6F0] to-[#F7F2EB] overflow-hidden">
+    <section id="curated-looks" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E3D4C4] bg-gradient-to-b from-[#FBF8F3] via-[#FAF6F0] to-[#F7F2EB] overflow-hidden select-none">
       {/* Subtle Tailor Cutting Grid Pattern (Bespoke Pattern Paper Graph Lines) */}
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-[0.14]"
@@ -110,8 +101,8 @@ export default function CuratedStartingPoints({
             <span className="w-1.5 h-1.5 rotate-45 bg-[#8C5A28] inline-block" />
           </div>
 
-          {/* Title - matching reference screenshot layout with Suitoholic's font styling */}
-          <h2 className="text-2xl sm:text-3xl lg:text-[42px] font-bold text-[#14110E] tracking-[0.14em] uppercase leading-tight">
+          {/* Title - matching reference layout with Suitoholic's font styling */}
+          <h2 className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-[#14110E] tracking-[0.14em] uppercase leading-tight">
             Signature Bespoke <span className="text-[#8C5A28] italic font-serif">Ensembles</span>
           </h2>
 
@@ -121,67 +112,69 @@ export default function CuratedStartingPoints({
           </p>
         </div>
 
-        {/* 5-Card Responsive Showcase (Swipeable on mobile, 5-col grid on desktop) */}
-        <div className="flex lg:grid lg:grid-cols-5 gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 scrollbar-none snap-x">
+        {/* 4-Card Responsive Grid matching Home Page Image Format (aspect-[3/4.1], rounded-[9px]) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {items.map((item) => {
             const isSelected = activeProductSlug === item.slug;
             return (
               <div
                 key={item.id}
                 onClick={() => onSelectLook(item)}
-                className={`relative group shrink-0 w-[260px] sm:w-[280px] lg:w-auto rounded-2xl overflow-hidden border transition-all duration-500 flex flex-col justify-end aspect-[3/4.9] sm:aspect-[3/5.1] shadow-md hover:shadow-2xl snap-center cursor-pointer select-none ${
+                className={`group flex flex-col justify-between p-3 sm:p-3.5 rounded-[14px] bg-white border transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer ${
                   isSelected
-                    ? "border-[#8C5A28] ring-2 ring-[#8C5A28] shadow-xl"
-                    : "border-[#D5C2AF] hover:border-[#8C5A28]"
+                    ? "border-[#8C5A28] ring-2 ring-[#8C5A28]/40 shadow-md"
+                    : "border-[#E2DDD5] hover:border-[#8C5A28]"
                 }`}
               >
-                {/* Background Full-Length Model Photo */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                />
+                {/* Upper Image Container: EXACT HOME PAGE FORMAT (aspect-[3/4.1], rounded-[9px], bg-[#F3F0EC], border) */}
+                <div className="relative w-full aspect-[3/4.1] rounded-[9px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/70 shadow-2xs transition-all duration-300 group-hover:shadow-xs">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="lazy"
+                  />
 
-                {/* Soft gradient shadow for contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent pointer-events-none" />
+                  {/* Subtle Gradient Overlay at bottom for clean contrast */}
+                  <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
 
-                {/* Top Badge: Selected or Tag */}
-                {isSelected ? (
-                  <div className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-[#8C5A28] text-white text-[9.5px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-md">
-                    <Check size={11} className="stroke-[3]" />
-                    <span>Configuring Now</span>
+                  {/* Top Badge: Active or Tag */}
+                  {isSelected ? (
+                    <div className="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-full bg-[#8C5A28] text-white text-[9.5px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+                      <Check size={11} className="stroke-[3]" />
+                      <span>Configuring Now</span>
+                    </div>
+                  ) : item.tag ? (
+                    <div className="absolute top-2.5 left-2.5 z-10 px-2.5 py-0.5 rounded-full bg-black/65 backdrop-blur-xs text-[#FAF5EE] text-[9px] font-semibold uppercase tracking-wider border border-white/20">
+                      {item.tag}
+                    </div>
+                  ) : null}
+                </div>
+
+                {/* Lower Details Strip & Action Button */}
+                <div className="mt-3.5 flex flex-col justify-between flex-1 text-left">
+                  <div className="space-y-0.5">
+                    <h3 className="font-bold text-[12px] sm:text-[13px] text-[#14110E] uppercase tracking-wide truncate group-hover:text-[#8C5A28] transition-colors leading-snug">
+                      {item.title}
+                    </h3>
+                    <div className="flex items-center justify-between text-[10.5px] text-[#665749]">
+                      <span className="truncate">{item.subtitle}</span>
+                      <span className="font-bold text-[#8C5A28] shrink-0 ml-1.5">{item.price}</span>
+                    </div>
                   </div>
-                ) : item.tag ? (
-                  <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-[#FAF5EE] text-[9px] font-medium uppercase tracking-wider border border-white/20">
-                    {item.tag}
-                  </div>
-                ) : null}
 
-                {/* Floating Bottom Card Footer (matching reference screenshot pill box) */}
-                <div className="relative z-10 m-3 sm:m-3.5 p-3.5 sm:p-4 rounded-xl bg-white/95 backdrop-blur-md border border-[#E2D4C3] shadow-lg text-left transition-all duration-300 group-hover:bg-white">
-                  {/* Title of look */}
-                  <h3 className="font-bold text-xs sm:text-[13px] text-[#14110E] uppercase tracking-wide line-clamp-1 mb-0.5 group-hover:text-[#8C5A28] transition-colors">
-                    {item.title}
-                  </h3>
+                  {/* Full-width Divider Line */}
+                  <div className="w-full h-[1px] bg-[#E8DFD5] my-2.5" />
 
-                  {/* Subtitle / Fabric & Price */}
-                  <div className="flex items-center justify-between text-[10px] text-[#665749] mb-2 font-normal">
-                    <span className="line-clamp-1">{item.subtitle}</span>
-                    <span className="font-bold text-[#8C5A28] shrink-0 ml-1">{item.price}</span>
-                  </div>
-
-                  {/* Full-width subtle divider line (matching reference screenshot) */}
-                  <div className="w-full h-[1px] bg-[#E5DCD2] mb-3" />
-
-                  {/* Customize Button (matching reference screenshot) */}
+                  {/* CUSTOMIZE THIS LOOK Button (Matching reference action) */}
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectLook(item);
                     }}
-                    className={`w-full text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-lg flex items-center justify-between transition-all duration-300 shadow-sm cursor-pointer ${
+                    className={`w-full text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-lg flex items-center justify-between transition-all duration-300 shadow-2xs cursor-pointer ${
                       isSelected
                         ? "bg-[#8C5A28]"
                         : "bg-[#14110E] group-hover:bg-[#8C5A28]"
