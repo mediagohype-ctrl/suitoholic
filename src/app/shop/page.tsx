@@ -102,10 +102,24 @@ function ShopContent() {
         <main className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-12 sm:pb-20">
 
           {/* Top Editorial Banner - Clean Luxury Centered Header */}
-          <div className="mb-7 sm:mb-9 text-center relative max-w-3xl mx-auto">
-            <h1 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#4A202A] tracking-[0.24em] uppercase leading-tight">
+          <div className="mb-7 sm:mb-9 text-center relative max-w-3xl mx-auto space-y-2">
+            <div className="inline-flex items-center justify-center gap-2.5">
+              <span className="h-[1px] w-6 sm:w-10 bg-gradient-to-r from-transparent to-[#9E774C]" />
+              <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] text-[#9E774C]">
+                {c.eyebrow || "SUITOHOLIC BESPOKE ATELIER"}
+              </span>
+              <span className="h-[1px] w-6 sm:w-10 bg-gradient-to-l from-transparent to-[#9E774C]" />
+            </div>
+
+            <h1 className="text-xl sm:text-2xl lg:text-[30px] font-bold text-[#14110E] tracking-[0.18em] sm:tracking-[0.22em] uppercase leading-tight">
               {c.title}
             </h1>
+
+            {c.subtitle && (
+              <p className="text-xs sm:text-[13px] text-[#665749] max-w-lg mx-auto font-normal tracking-wide leading-relaxed">
+                {c.subtitle}
+              </p>
+            )}
           </div>
 
 
