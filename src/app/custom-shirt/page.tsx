@@ -266,9 +266,9 @@ function CustomShirtConfiguratorContent() {
       <Header activeTab="custom-fit" />
 
       {/* HERO SECTION: Best Bespoke Tailors in Delhi NCR & Appointment Booking (Light Theme) */}
-      <section className="relative w-full pt-32 sm:pt-36 lg:pt-40 pb-12 sm:pb-16 bg-gradient-to-b from-[#F7F2EB] via-[#FAF6F0] to-[#FAF8F5] border-b border-[#E3D4C4]">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <section className="relative w-full min-h-screen flex flex-col justify-center pt-24 sm:pt-28 pb-10 sm:pb-12 bg-gradient-to-b from-[#F7F2EB] via-[#FAF6F0] to-[#FAF8F5] border-b border-[#E3D4C4]">
+        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 my-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
             
             {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}
             <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
