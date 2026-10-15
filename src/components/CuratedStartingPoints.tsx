@@ -62,6 +62,45 @@ const DEFAULT_LOOKS: CuratedLookItem[] = [
   },
 ];
 
+function HeadingFlourish({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 150 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      {/* 4-Petal Floral Clover Motif on Far Left */}
+      <circle cx="14" cy="24" r="1.5" fill="currentColor" />
+      <ellipse cx="14" cy="17.5" rx="2.2" ry="4.5" stroke="currentColor" strokeWidth="1.3" />
+      <ellipse cx="14" cy="30.5" rx="2.2" ry="4.5" stroke="currentColor" strokeWidth="1.3" />
+      <ellipse cx="7.5" cy="24" rx="4.5" ry="2.2" stroke="currentColor" strokeWidth="1.3" />
+      <ellipse cx="20.5" cy="24" rx="4.5" ry="2.2" stroke="currentColor" strokeWidth="1.3" />
+
+      {/* Central Horizontal Stem */}
+      <path d="M 25 24 L 84 24" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+
+      {/* 3 Pairs of Delicate Leaves */}
+      {/* Leaf Pair 1 */}
+      <path d="M 33 24 C 36 17, 44 16, 48 19 C 44 23, 38 24, 33 24 Z" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M 33 24 C 36 31, 44 32, 48 29 C 44 25, 38 24, 33 24 Z" stroke="currentColor" strokeWidth="1.2" />
+
+      {/* Leaf Pair 2 */}
+      <path d="M 47 24 C 50 17, 58 16, 62 19 C 58 23, 52 24, 47 24 Z" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M 47 24 C 50 31, 58 32, 62 29 C 58 25, 52 24, 47 24 Z" stroke="currentColor" strokeWidth="1.2" />
+
+      {/* Leaf Pair 3 */}
+      <path d="M 61 24 C 64 17, 72 16, 76 19 C 72 23, 66 24, 61 24 Z" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M 61 24 C 64 31, 72 32, 76 29 C 72 25, 66 24, 61 24 Z" stroke="currentColor" strokeWidth="1.2" />
+
+      {/* Right End: Upper Sweeping Arch & Lower Spiral Loop */}
+      <path d="M 84 24 C 95 11, 122 11, 144 22" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M 84 24 C 95 36, 116 41, 130 32 C 140 25, 136 15, 125 17 C 117 19, 116 29, 123 32 C 128 34, 133 31, 132 26" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function CuratedStartingPoints({
   eyebrow = "CURATED STARTING POINTS",
   title = "Signature Bespoke Ensembles",
@@ -78,21 +117,28 @@ export default function CuratedStartingPoints({
 
       <div className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12">
         
-        {/* Section Header: Eyebrow, Title, Subtitle */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-10 sm:mb-12">
+        {/* Section Header: Eyebrow, Ornate Calligraphic Title, Subtitle */}
+        <div className="text-center max-w-4xl mx-auto space-y-3 sm:space-y-4 mb-10 sm:mb-14">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rotate-45 bg-[#8C5A28] inline-block" />
             <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-[#8C5A28]">
               {eyebrow}
             </span>
-            <span className="w-1.5 h-1.5 rotate-45 bg-[#8C5A28] inline-block" />
           </div>
 
-          {/* Title - matching reference layout with Suitoholic's font styling */}
-          <h2 className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-[#14110E] tracking-[0.14em] uppercase leading-tight">
-            Signature Bespoke <span className="text-[#8C5A28] italic font-serif">Ensembles</span>
-          </h2>
+          {/* Title Row: Left Flourish + Calligraphic Script Title + Right Flourish */}
+          <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 w-full">
+            {/* Left Flourish */}
+            <HeadingFlourish className="text-[#C59B6A] shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto" />
+
+            {/* Cursive Calligraphic Heading matching reference screenshot */}
+            <h2 className="font-script-calligraphy text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] text-[#8C5A28] leading-[1.05] tracking-normal whitespace-nowrap drop-shadow-xs">
+              {title}
+            </h2>
+
+            {/* Right Flourish (Mirrored) */}
+            <HeadingFlourish className="text-[#C59B6A] shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto scale-x-[-1]" />
+          </div>
 
           {/* Subtitle Description */}
           <p className="text-xs sm:text-sm text-[#524436] font-sans font-normal leading-relaxed max-w-2xl mx-auto">

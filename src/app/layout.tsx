@@ -40,6 +40,10 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
+          href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Great+Vibes&display=swap"
+          rel="stylesheet"
+        />
+        <link
           href="https://fonts.cdnfonts.com/css/sf-pro-display"
           rel="stylesheet"
         />
