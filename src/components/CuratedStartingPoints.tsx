@@ -72,18 +72,6 @@ export default function CuratedStartingPoints({
 }: CuratedStartingPointsProps) {
   return (
     <section id="curated-looks" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E3D4C4] bg-gradient-to-b from-[#FBF8F3] via-[#FAF6F0] to-[#F7F2EB] overflow-hidden select-none">
-      {/* Subtle Tailor Cutting Grid Pattern (Bespoke Pattern Paper Graph Lines) */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.14]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(140, 90, 40, 0.22) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(140, 90, 40, 0.22) 1px, transparent 1px)
-          `,
-          backgroundSize: "36px 36px",
-        }}
-      />
-
       {/* Subtle warm luxury backdrop glow */}
       <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-[#C59B6A]/10 rounded-full blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-[#C59B6A]/10 rounded-full blur-3xl" />
