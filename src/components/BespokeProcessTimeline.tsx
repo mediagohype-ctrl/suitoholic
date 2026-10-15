@@ -205,12 +205,12 @@ export default function BespokeProcessTimeline() {
                     </div>
                   </div>
 
-                  {/* Active / Hover Left Accent Indicator Line */}
+                  {/* End-to-End Animated Accent Indicator Line */}
                   <div
-                    className={`absolute bottom-0 left-0 h-[2px] transition-all duration-500 ${
+                    className={`absolute bottom-[-1px] left-0 h-[2px] z-10 transition-all duration-700 ease-out pointer-events-none ${
                       isActive
-                        ? "w-16 bg-[#C56337]"
-                        : "w-0 group-hover:w-12 bg-[#C56337]/60"
+                        ? "w-full bg-[#C56337]"
+                        : "w-0 group-hover:w-full bg-[#C56337]"
                     }`}
                   />
                 </div>
