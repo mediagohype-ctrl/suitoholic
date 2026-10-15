@@ -96,27 +96,27 @@ export default function AtelierStoryTimeline({
 
           {/* RIGHT COLUMN: Vertical Golden Timeline & Milestone Cards */}
           <div className="lg:col-span-7 pt-2 lg:pt-6">
-            <div className="relative pl-7 sm:pl-10 space-y-6 sm:space-y-8">
+            <div className="relative space-y-6 sm:space-y-8">
               
-              {/* Continuous Golden Timeline Line */}
+              {/* Continuous Golden Timeline Line precisely centered at x = 12px */}
               <div
-                className="pointer-events-none absolute left-3 sm:left-4 top-5 bottom-8 w-[1.5px] bg-gradient-to-b from-[#C59B6A]/80 via-[#C59B6A]/60 to-[#C59B6A]/30"
+                className="pointer-events-none absolute left-3 top-2 bottom-6 w-[1.5px] -translate-x-1/2 bg-gradient-to-b from-[#C59B6A]/80 via-[#C59B6A]/60 to-[#C59B6A]/30"
                 aria-hidden="true"
               />
 
-              {/* Milestone Cards */}
+              {/* Milestone Cards with flex-aligned circular nodes */}
               {milestones.map((item, idx) => (
-                <div key={idx} className="relative group">
-                  {/* Timeline Circular Node (matches screenshot target ring) */}
+                <div key={idx} className="relative flex items-start gap-4 sm:gap-6 group">
+                  {/* Timeline Circular Node (24px wide, centered exactly at 12px) */}
                   <div
-                    className="absolute -left-7 sm:-left-10 top-7 w-6 h-6 rounded-full border border-[#C59B6A] bg-[#13110E] flex items-center justify-center shadow-[0_0_10px_rgba(197,155,106,0.35)] group-hover:border-[#E8C296] transition-colors"
+                    className="w-6 h-6 shrink-0 mt-6 rounded-full border border-[#C59B6A] bg-[#13110E] flex items-center justify-center shadow-[0_0_10px_rgba(197,155,106,0.35)] group-hover:border-[#E8C296] transition-colors z-10"
                     aria-hidden="true"
                   >
                     <div className="w-2 h-2 rounded-full bg-[#C59B6A] group-hover:scale-125 transition-transform" />
                   </div>
 
                   {/* Milestone Content Box */}
-                  <div className="bg-[#191512]/90 backdrop-blur-sm border border-[#30261E] hover:border-[#C59B6A]/60 rounded-xl sm:rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:shadow-[0_10px_35px_rgba(0,0,0,0.6)] hover:-translate-y-0.5">
+                  <div className="flex-1 bg-[#191512]/90 backdrop-blur-sm border border-[#30261E] hover:border-[#C59B6A]/60 rounded-xl sm:rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:shadow-[0_10px_35px_rgba(0,0,0,0.6)] hover:-translate-y-0.5">
                     {/* Period Eyebrow */}
                     <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#C59B6A] mb-2">
                       {item.period}
