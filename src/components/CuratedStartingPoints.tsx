@@ -11,6 +11,7 @@ export interface CuratedLookItem {
   subtitle: string;
   price: string;
   image: string;
+  hoverImage?: string;
   tag?: string;
 }
 
@@ -31,6 +32,7 @@ const DEFAULT_LOOKS: CuratedLookItem[] = [
     subtitle: "100% Egyptian Giza 140s Cotton",
     price: "₹ 2,499",
     image: "/new_shirts/shirt_1.jpg",
+    hoverImage: "/customizer/shirt_model_coral_stripe.jpg",
     tag: "SIGNATURE",
   },
   {
@@ -40,6 +42,7 @@ const DEFAULT_LOOKS: CuratedLookItem[] = [
     subtitle: "Superfine 120s Sateen Drape",
     price: "₹ 2,699",
     image: "/new_shirts/shirt_2.jpg",
+    hoverImage: "/customizer/shirt_model_espresso.jpg",
     tag: "BESTSELLER",
   },
   {
@@ -49,6 +52,7 @@ const DEFAULT_LOOKS: CuratedLookItem[] = [
     subtitle: "Two-Fold Italian Poplin Weave",
     price: "₹ 2,799",
     image: "/new_shirts/shirt_3.jpg",
+    hoverImage: "/customizer/shirt_model_bengal_blue.jpg",
     tag: "BOARDROOM ICON",
   },
   {
@@ -58,6 +62,7 @@ const DEFAULT_LOOKS: CuratedLookItem[] = [
     subtitle: "130s Micro-Herringbone Weave",
     price: "₹ 2,899",
     image: "/new_shirts/shirt_4.jpg",
+    hoverImage: "/customizer/shirt_model_sandstone_linen.jpg",
     tag: "LUXURY BESPOKE",
   },
 ];
@@ -158,13 +163,25 @@ export default function CuratedStartingPoints({
               >
                 {/* Upper Image Container: Flush edge-to-edge with card, zero gap */}
                 <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#F3F0EC]">
+                  {/* Default Image: Collar & Fabric Macro View */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:opacity-0 group-hover:scale-105"
                     loading="lazy"
                   />
+
+                  {/* Hover Image: Full Shirt View in exact same color */}
+                  {item.hoverImage && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={item.hoverImage}
+                      alt={`${item.title} Full Shirt`}
+                      className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  )}
                 </div>
 
                 {/* Lower Details Strip & Action Button with dedicated padding */}
