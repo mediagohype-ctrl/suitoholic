@@ -74,7 +74,7 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
   if (items.length === 0) return null;
 
   return (
-    <section className={`w-full z-30 shrink-0 bg-[#EFE5D9] border-t border-b border-[#D8C7B7]/80 py-3.5 sm:py-4 px-4 sm:px-6 shadow-[0_-2px_12px_rgba(0,0,0,0.03)] select-none transition-all ${className}`}>
+    <section className={`w-full z-30 shrink-0 bg-[#EEE5EA] border-t border-b border-[#DDD2D8] py-3.5 sm:py-4 px-4 sm:px-6 shadow-[0_-2px_12px_rgba(74,32,42,0.02)] select-none transition-all ${className}`}>
       <div className="w-full max-w-7xl mx-auto">
 
         {/* MOBILE VIEW: 2 Columns × 2 Rows with Center Vertical Divider matching screenshot */}
@@ -93,12 +93,12 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
                   <h4 className="text-[10.5px] sm:text-xs font-bold tracking-[0.06em] text-[#14110E] uppercase leading-tight font-sans">
                     {item.title}
                   </h4>
-                  <p className="text-[9px] sm:text-[10px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans">
+                  <p className="text-[9px] sm:text-[10px] font-normal text-[#6B5A65] mt-0.5 leading-tight font-sans">
                     {item.subtitle}
                   </p>
                 </div>
                 {/* Center Vertical Divider Line */}
-                {leftColumn && <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-[#8C6D47]" />}
+                {leftColumn && <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-[#DDD2D8]" />}
               </div>
             );
           })}
@@ -115,13 +115,13 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
                 <h4 className="text-[11px] lg:text-[12px] font-bold tracking-[0.12em] text-[#14110E] uppercase leading-tight font-sans">
                   {item.title}
                 </h4>
-                <p className="text-[10px] lg:text-[11px] font-normal text-[#5A4E42] mt-0.5 leading-tight font-sans whitespace-nowrap">
+                <p className="text-[10px] lg:text-[11px] font-normal text-[#6B5A65] mt-0.5 leading-tight font-sans whitespace-nowrap">
                   {item.subtitle}
                 </p>
               </div>
               {/* Taller Vertical Separation Line */}
               {i < items.length - 1 && (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 sm:h-11 lg:h-12 w-[1px] bg-[#8C6D47]" />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 sm:h-11 lg:h-12 w-[1px] bg-[#DDD2D8]" />
               )}
             </div>
           ))}
