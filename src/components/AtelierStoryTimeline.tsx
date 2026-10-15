@@ -51,11 +51,11 @@ export default function AtelierStoryTimeline({
     <section className="relative w-full bg-gradient-to-b from-[#F7F2EB] via-[#FAF6F0] to-[#FAF8F5] text-[#14110E] py-16 sm:py-20 lg:py-24 border-b border-[#E3D4C4] overflow-hidden">
       {/* Subtle Tailor Cutting Grid Pattern (Bespoke Pattern Paper Graph Lines) */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-40"
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.22]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(140, 90, 40, 0.22) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(140, 90, 40, 0.22) 1px, transparent 1px)
+            linear-gradient(to right, rgba(140, 90, 40, 0.20) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(140, 90, 40, 0.20) 1px, transparent 1px)
           `,
           backgroundSize: "36px 36px",
         }}
