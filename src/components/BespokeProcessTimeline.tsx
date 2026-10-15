@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 interface ProcessStep {
@@ -49,6 +49,32 @@ const PROCESS_STEPS: ProcessStep[] = [
 ];
 
 export default function BespokeProcessTimeline() {
+  const [activeStep, setActiveStep] = useState<string>("01");
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const stepId = entry.target.getAttribute("data-step");
+            if (stepId) setActiveStep(stepId);
+          }
+        });
+      },
+      {
+        rootMargin: "-25% 0px -45% 0px",
+        threshold: 0.1,
+      }
+    );
+
+    stepRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleScrollToConsult = () => {
     const target =
       document.getElementById("appointment-booking") ||
@@ -60,87 +86,129 @@ export default function BespokeProcessTimeline() {
   };
 
   return (
-    <section className="relative w-full bg-[#FAF8F5] text-[#14110E] py-16 sm:py-20 lg:py-24 border-y border-[#E8DFD4] overflow-hidden">
-      {/* Subtle Bespoke Graph / Atelier Grid Watermark (Light Theme) */}
+    <section className="relative w-full bg-[#FAF8F5] text-[#14110E] py-16 sm:py-24 border-y border-[#E8DFD4]">
+      {/* Subtle Bespoke Grid Pattern Watermark */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.20]"
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.16]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(140, 105, 68, 0.15) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(140, 105, 68, 0.15) 1px, transparent 1px)
+            linear-gradient(to right, rgba(140, 105, 68, 0.12) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(140, 105, 68, 0.12) 1px, transparent 1px)
           `,
-          backgroundSize: "40px 40px",
+          backgroundSize: "44px 44px",
         }}
       />
 
       <div className="relative z-10 max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12">
-        {/* Header Block: Eyebrow, Main Title, and Book Consult CTA Button */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 sm:pb-16 border-b border-[#E8DFD4]/70">
-          <div>
-            {/* Eyebrow with gold square marker */}
-            <div className="inline-flex items-center space-x-2.5 mb-3.5">
-              <span className="w-2.5 h-2.5 bg-[#8C6944] inline-block shadow-xs" />
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.26em] text-[#8C6944]">
-                HOW IT WORKS
-              </span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* ========================================================================= */}
+          {/* LEFT COLUMN: STICKY DISPLAY (Pins as user scrolls, matches reference)    */}
+          {/* ========================================================================= */}
+          <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start py-2 sm:py-4">
+            {/* Eyebrow Label */}
+            <div className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.24em] text-[#C56337] mb-4">
+              OUR PROVEN METHODOLOGY
             </div>
 
-            {/* Main Headline */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-serif text-[#14110E] font-medium tracking-tight leading-[1.15]">
-              From First Measure
+            {/* Giant Bold Headline matching reference typography */}
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[72px] font-black uppercase tracking-tight text-[#14110E] leading-[0.92] mb-8 font-sans">
+              HOW WE
               <br />
-              to Final Delivery
+              TAILOR
+              <br />
+              <span className="font-serif italic font-normal text-[#C56337]">
+                PERFECTION.
+              </span>
             </h2>
-          </div>
 
-          {/* Action Button: Book Consult */}
-          <div className="flex-shrink-0">
-            <button
-              type="button"
-              onClick={handleScrollToConsult}
-              className="inline-flex items-center space-x-2 px-7 sm:px-8 py-3.5 bg-[#B38344] hover:bg-[#8C6944] text-[#FAF8F5] text-xs sm:text-sm font-semibold tracking-[0.14em] uppercase transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer rounded-xs group"
-            >
-              <span>Book Consult</span>
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </button>
-          </div>
-        </div>
+            {/* Tagline / Subtitle with Left Border Accent */}
+            <div className="border-l-2 border-[#C56337] pl-4 py-1 space-y-1.5 mb-8">
+              <p className="text-sm sm:text-base font-semibold text-[#14110E]">
+                From First Measure to Final Delivery.
+              </p>
+              <p className="text-xs sm:text-sm text-[#6E6259] leading-relaxed max-w-sm">
+                Clear enough to trust. Exacting enough for timeless bespoke elegance.
+              </p>
+            </div>
 
-        {/* 6-Step Horizontal Process Flow */}
-        <div className="relative pt-12 sm:pt-16">
-          {/* Connecting Dotted Line across the steps (Desktop LG+) */}
-          <div
-            className="hidden lg:block absolute top-[79px] left-[7%] right-[7%] h-[1px] border-t border-dashed border-[#8C6944]/45 z-0 pointer-events-none"
-            aria-hidden="true"
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 sm:gap-10 lg:gap-5 relative z-10">
-            {PROCESS_STEPS.map((item) => (
-              <div
-                key={item.step}
-                className="flex flex-col items-center text-center group transition-transform duration-300 hover:-translate-y-1"
+            {/* Book Consult Action Button */}
+            <div>
+              <button
+                type="button"
+                onClick={handleScrollToConsult}
+                className="inline-flex items-center space-x-2.5 px-7 py-3.5 bg-[#C56337] hover:bg-[#A94F27] text-[#FAF8F5] text-xs sm:text-sm font-semibold tracking-[0.14em] uppercase transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer rounded-xs group"
               >
-                {/* Circular Step Badge */}
-                <div className="relative mb-5 sm:mb-6">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-[#8C6944]/55 bg-[#FAF8F5] flex items-center justify-center font-serif text-[#8C6944] text-base sm:text-lg font-semibold tracking-wider transition-all duration-300 shadow-xs group-hover:border-[#8C6944] group-hover:bg-[#F4ECE1] group-hover:scale-105 group-hover:shadow-md">
-                    {item.step}
+                <span>Book Consult</span>
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </button>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* RIGHT COLUMN: SCROLLING STEP ROWS (Horizontal Dividers, 3-Part Rows)      */}
+          {/* ========================================================================= */}
+          <div className="lg:col-span-7 border-t border-[#E5DDD2]">
+            {PROCESS_STEPS.map((item, index) => {
+              const isActive = activeStep === item.step;
+
+              return (
+                <div
+                  key={item.step}
+                  ref={(el) => {
+                    stepRefs.current[index] = el;
+                  }}
+                  data-step={item.step}
+                  className={`relative py-10 sm:py-12 lg:py-14 border-b border-[#E5DDD2] transition-colors duration-300 ${
+                    isActive ? "bg-[#F5EFE6]/40" : "hover:bg-[#FAF5ED]/50"
+                  } px-2 sm:px-4 group`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-6 lg:gap-8">
+                    {/* Step Number (01, 02, etc.) */}
+                    <div
+                      className={`text-xs sm:text-sm font-mono tracking-widest w-12 sm:w-16 flex-shrink-0 transition-colors duration-200 ${
+                        isActive
+                          ? "text-[#C56337] font-bold"
+                          : "text-[#8C6944]/80 group-hover:text-[#C56337]"
+                      }`}
+                    >
+                      {item.step}
+                    </div>
+
+                    {/* Step Title (Large, Clean Typography) */}
+                    <div className="w-full sm:w-56 lg:w-64 flex-shrink-0">
+                      <h3
+                        className={`text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight transition-all duration-200 ${
+                          isActive
+                            ? "text-[#C56337] font-normal translate-x-1"
+                            : "text-[#14110E] group-hover:text-[#C56337] group-hover:translate-x-1"
+                        }`}
+                      >
+                        {item.title}
+                      </h3>
+                    </div>
+
+                    {/* Step Description */}
+                    <div className="flex-1 max-w-md">
+                      <p className="text-xs sm:text-sm lg:text-[14px] text-[#6E6259] leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
                   </div>
+
+                  {/* Active / Hover Left Accent Indicator Line */}
+                  <div
+                    className={`absolute bottom-0 left-0 h-[2px] transition-all duration-500 ${
+                      isActive
+                        ? "w-16 bg-[#C56337]"
+                        : "w-0 group-hover:w-12 bg-[#C56337]/60"
+                    }`}
+                  />
                 </div>
-
-                {/* Step Title */}
-                <h3 className="font-serif text-lg sm:text-xl font-medium text-[#14110E] mb-2.5 transition-colors duration-200 group-hover:text-[#8C6944]">
-                  {item.title}
-                </h3>
-
-                {/* Step Description */}
-                <p className="text-xs sm:text-[13px] text-[#6E6259] leading-relaxed font-sans max-w-[260px] lg:max-w-none">
-                  {item.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
