@@ -23,13 +23,13 @@ export default function MensFabricShowcaseGrid({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D5C2AF] pb-4">
         
         {/* Title with Bronze Accent Bar */}
-        <div className="flex items-center gap-3">
-          <div className="w-1.5 h-7 rounded-full bg-[#9E774C]" />
+        <div className="flex items-center gap-3.5">
+          <div className="w-1.5 h-8 sm:h-10 rounded-full bg-[#9E774C]" />
           <div>
-            <h2 className="text-xl sm:text-2xl lg:text-[26px] font-serif-luxury font-bold tracking-[0.18em] text-[#4A202A] leading-snug uppercase">
+            <h2 className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-serif-luxury font-bold tracking-[0.14em] text-[#4A202A] leading-snug uppercase">
               {grid?.heading}
             </h2>
-            <p className="text-xs sm:text-[13px] text-[#665749] font-sans mt-0.5">
+            <p className="text-sm sm:text-base md:text-[17px] text-[#665749] font-sans mt-1">
               {grid?.subheading}
             </p>
           </div>

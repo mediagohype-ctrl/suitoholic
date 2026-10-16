@@ -146,11 +146,16 @@ export default function ModernCollectionSection({
           : "px-4 sm:px-6 lg:px-10 xl:px-14"
       }`}
     >
-      {/* Centered Heading matching product heading format */}
-      <div className="flex flex-col items-center justify-center text-center mb-7 sm:mb-10">
-        <h2 className="font-serif-luxury text-xl sm:text-2xl lg:text-[26px] font-semibold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
+      {/* Centered Heading & Subtitle matching luxury scale */}
+      <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
           {headerTitle || collection.title}
         </h2>
+        {(collection.subtitle || (collection as unknown as { description?: string })?.description) && (
+          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#55473A] font-normal leading-relaxed tracking-normal max-w-2xl">
+            {collection.subtitle || (collection as unknown as { description?: string })?.description}
+          </p>
+        )}
       </div>
 
       {isThreeCardMode ? (

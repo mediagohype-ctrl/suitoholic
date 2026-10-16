@@ -107,17 +107,17 @@ html, body {
 
   /* Default heading scale - ONLY applies when NO explicit Tailwind text-* class is provided */
   h1:where(:not([class*="text-"])) {
-    font-size: clamp(2rem, 3.8vw, 2.9rem);
+    font-size: clamp(2.2rem, 4.2vw, 3.4rem);
     line-height: 1.1;
   }
 
   h2:where(:not([class*="text-"])) {
-    font-size: clamp(1.75rem, 3.2vw, 2.6rem); /* 2.6rem = 41.6px */
+    font-size: clamp(1.85rem, 3.5vw, 2.75rem);
     line-height: 1.15;
   }
 
   h3:where(:not([class*="text-"])) {
-    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    font-size: clamp(1.25rem, 2.1vw, 1.65rem);
     line-height: 1.25;
   }
 }

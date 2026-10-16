@@ -109,10 +109,10 @@ function ShopContent() {
           {/* Catalog Section: Full-Width Product Grid at Top */}
           <div id="catalog-section" className="w-full space-y-6 pt-1 mb-14 sm:mb-20">
 
-            {/* Section Heading: Short & Refined Luxury Title (No Subtitle) */}
+            {/* Section Heading: Refined Luxury Title */}
             <div className="flex items-center justify-center gap-3 sm:gap-6 w-full pt-1 pb-1">
               <div className="h-[1.5px] w-8 sm:w-16 md:w-24 bg-gradient-to-r from-transparent to-[#4A202A]/40" />
-              <h2 className="font-serif-luxury text-xl sm:text-2xl lg:text-[26px] font-bold text-[#4A202A] tracking-[0.2em] uppercase leading-tight text-center drop-shadow-xs">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-[#4A202A] tracking-[0.14em] uppercase leading-tight text-center drop-shadow-xs">
                 {selectedCategory === "all" ? (c.title || "THE BESPOKE COLLECTION") : `${currentCategoryName} COLLECTION`}
               </h2>
               <div className="h-[1.5px] w-8 sm:w-16 md:w-24 bg-gradient-to-l from-transparent to-[#4A202A]/40" />

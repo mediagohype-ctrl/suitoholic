@@ -37,7 +37,7 @@ export default function ShopNatureHeroBanner() {
             </h1>
 
             {/* Subtitle / Philosophy Description */}
-            <p className="text-xs sm:text-[13.5px] lg:text-[14px] text-[#5A4E42] leading-relaxed mb-7 sm:mb-8 font-sans font-normal">
+            <p className="text-sm sm:text-base lg:text-[17px] text-[#5A4E42] leading-relaxed mb-7 sm:mb-8 font-sans font-normal">
               Crafted with natural fibres and timeless design, each piece brings together
               thoughtful craftsmanship, conscious choices and effortless elegance, created for
               everyday living and made to remain meaningful beyond seasons and trends.

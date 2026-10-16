@@ -114,10 +114,10 @@ export default function HeroVideoBanner() {
       <div className="relative z-20 w-full max-w-[1780px] mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 flex-1 min-h-0 flex flex-col justify-center">
         
         {/* Left Column: Main Heading + Action Buttons (+ Mobile Range Tracker) */}
-        <div className="max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-[440px] xl:max-w-[480px] flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
+        <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
 
           {/* Main Luxury High-Contrast Heading */}
-          <h1 className="font-semibold text-[16px] sm:text-[19px] md:text-[22px] lg:text-[26px] xl:text-[30px] leading-[1.12] sm:leading-[1.1] text-[#14110E] tracking-normal uppercase mb-2.5 sm:mb-4 md:mb-5">
+          <h1 className="font-serif-luxury font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[50px] leading-[1.08] text-[#14110E] tracking-[0.02em] uppercase mb-4 sm:mb-6">
             {c.headingLine1} <br />
             {c.headingLine2}
           </h1>
@@ -127,7 +127,7 @@ export default function HeroVideoBanner() {
             <Link
               href={c.primaryCtaHref}
               style={{ borderRadius: "7px" }}
-              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[9px] sm:text-[10px] lg:text-[11px] font-extrabold tracking-[0.14em] px-3.5 sm:px-6 lg:px-7 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[115px] sm:w-auto"
+              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[10px] sm:text-[11.5px] lg:text-[12.5px] font-extrabold tracking-[0.16em] px-5 sm:px-7 lg:px-8 py-2.5 sm:py-3 md:py-3.5 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[125px] sm:w-auto"
             >
               {c.primaryCtaLabel}
             </Link>
@@ -135,7 +135,7 @@ export default function HeroVideoBanner() {
             <Link
               href={c.secondaryCtaHref}
               style={{ borderRadius: "7px" }}
-              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] border border-[#4A202A] text-[9px] sm:text-[10px] lg:text-[11px] font-extrabold tracking-[0.14em] px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md hover:shadow-lg active:scale-98 whitespace-nowrap w-[115px] sm:w-auto"
+              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] border border-[#4A202A] text-[10px] sm:text-[11.5px] lg:text-[12.5px] font-extrabold tracking-[0.16em] px-4 sm:px-6 lg:px-7 py-2.5 sm:py-3 md:py-3.5 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md hover:shadow-lg active:scale-98 whitespace-nowrap w-[125px] sm:w-auto"
             >
               <span>{c.secondaryCtaLabel}</span>
               <span className="transform group-hover:translate-x-1 transition-transform duration-200 text-xs sm:text-sm leading-none">→</span>

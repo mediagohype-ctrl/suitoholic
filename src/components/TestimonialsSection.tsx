@@ -188,12 +188,12 @@ export default function TestimonialsSection() {
   return (
     <section className="py-14 sm:py-18 lg:py-24 bg-[#EFE5E7] w-full relative overflow-hidden select-none">
       {/* Header: Title + Subtitle */}
-      <div className="flex flex-col items-center justify-center text-center mb-7 sm:mb-10 px-4 max-w-4xl mx-auto">
-        <h2 className="font-serif-luxury text-xl sm:text-2xl lg:text-[26px] font-semibold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
+      <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 px-4 max-w-4xl mx-auto">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
           WHAT OUR CUSTOMERS SAY
         </h2>
-        <p className="mt-2 text-xs sm:text-sm md:text-base text-[#8C6A74] font-medium tracking-normal">
-          Real words from real customers - style, comfort, and confidence.
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#7A5A64] font-normal tracking-normal max-w-xl">
+          Real words from real customers - style, comfort, and bespoke confidence.
         </p>
       </div>
 

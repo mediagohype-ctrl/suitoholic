@@ -224,7 +224,7 @@ export default function AboutPage() {
               {c.process.titleLine} <br />
               <span className="italic font-light text-[#8C6D47]">{c.process.titleAccent}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-[#5C4D40] font-sans">
+            <p className="text-sm sm:text-base md:text-[17px] text-[#5C4D40] font-sans leading-relaxed">
               {c.process.intro}
             </p>
           </div>
@@ -277,7 +277,7 @@ export default function AboutPage() {
               {c.anatomy.titleLine} <br />
               <span className="italic font-light text-[#8C6D47]">{c.anatomy.titleAccent}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-[#5C4D40] font-sans">
+            <p className="text-sm sm:text-base md:text-[17px] text-[#5C4D40] font-sans leading-relaxed">
               {c.anatomy.intro}
             </p>
           </div>
@@ -388,7 +388,7 @@ export default function AboutPage() {
                 <span className="italic font-light text-[#8C6D47]">{c.heritage.titleAccent}</span>
               </h2>
             </div>
-            <p className="text-xs sm:text-sm text-[#5C4D40] max-w-md font-sans">
+            <p className="text-sm sm:text-base md:text-[17px] text-[#5C4D40] max-w-lg font-sans leading-relaxed">
               {c.heritage.intro}
             </p>
           </div>
@@ -546,7 +546,7 @@ export default function AboutPage() {
                 {c.cta.titleLine} <br />
                 <span className="italic font-light text-[#8C6D47]">{c.cta.titleAccent}</span>
               </h2>
-              <p className="text-xs sm:text-sm lg:text-[15px] text-[#55473A] leading-relaxed font-sans max-w-xl">
+              <p className="text-sm sm:text-base lg:text-[17px] text-[#55473A] leading-relaxed font-sans max-w-xl">
                 {c.cta.description}
               </p>
               

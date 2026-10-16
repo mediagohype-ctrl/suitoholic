@@ -28,21 +28,21 @@ export default function AtelierEditorialBanner() {
       {/* Luxury Editorial Heading */}
       <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8 lg:mb-10 flex flex-col items-center">
         {/* Subtle Eyebrow with hairline rules */}
-        <div className="inline-flex items-center gap-2.5 mb-2 sm:mb-2.5">
-          <span className="w-6 sm:w-10 h-[1px] bg-[#8C6944]/45" />
-          <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.26em] text-[#8C6944] uppercase font-sans">
+        <div className="inline-flex items-center gap-2.5 mb-2.5 sm:mb-3">
+          <span className="w-8 sm:w-12 h-[1px] bg-[#8C6944]/45" />
+          <span className="text-[11px] sm:text-xs font-semibold tracking-[0.26em] text-[#8C6944] uppercase font-sans">
             {c.videoBadge || "THE ATELIER ARCHIVE"}
           </span>
-          <span className="w-6 sm:w-10 h-[1px] bg-[#8C6944]/45" />
+          <span className="w-8 sm:w-12 h-[1px] bg-[#8C6944]/45" />
         </div>
 
         {/* Main Heading */}
-        <h2 className="font-serif-luxury text-xl sm:text-2xl lg:text-[26px] font-semibold text-[#4A202A] tracking-[0.14em] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-[#4A202A] tracking-[0.14em] uppercase leading-tight">
           {c.videoTitle || "TAILORING IN MOTION"}
         </h2>
 
         {/* Editorial Subtitle */}
-        <p className="mt-1 text-xs sm:text-sm text-[#6B5B4E] font-normal tracking-wide max-w-md sm:max-w-lg text-center leading-relaxed">
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#6B5B4E] font-normal tracking-normal max-w-xl text-center leading-relaxed">
           {c.videoSubtitle || "Artisanal precision, 360° fluid drape, and bespoke master craftsmanship in motion."}
         </p>
       </div>

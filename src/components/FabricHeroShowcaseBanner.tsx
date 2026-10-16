@@ -23,98 +23,83 @@ export interface HeroFabricItem {
 
 export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
   {
-    id: "fabric-charcoal-wool",
-    tabLabel: "SUPER 140S",
-    millBrand: "SUITOHOLIC ATELIER • BIELLA MILLS, ITALY",
-    title: "Charcoal Super 140s",
-    weight: "260 g/m²",
-    composition: "100% Australian Super 140s Merino Wool",
-    season: "4-Season Suiting",
-    weave: "Fine Diagonal Micro-Twill",
-    origin: "Biella, Piedmont, Italy",
-    softness: 92,
-    durability: 88,
-    drape: 95,
-    image: "/banners/macro_wool_twill_weave.jpg",
-    code: "WL-140-CH",
-  },
-  {
-    id: "fabric-diamond-twill",
-    tabLabel: "GIZA 160S",
-    millBrand: "SUITOHOLIC ATELIER • BERGAMO, ITALY",
-    title: "Midnight Diamond Twill",
-    weight: "135 g/m²",
-    composition: "100% Egyptian Giza 160s Combed Cotton",
-    season: "All-Season Formal",
-    weave: "45° Steep Diamond Micro-Twill",
-    origin: "Alexandria Delta • Bergamo, Italy",
-    softness: 95,
-    durability: 86,
-    drape: 93,
-    image: "/banners/macro_giza_cotton_weave.jpg",
-    code: "TW-904-BK",
-  },
-  {
-    id: "fabric-camel-flannel",
-    tabLabel: "CASHMERE",
-    millBrand: "SUITOHOLIC ATELIER • NORTHERN ITALY",
-    title: "Camel Brushed Flannel",
-    weight: "280 g/m²",
-    composition: "90% Virgin Merino Wool, 10% Cashmere",
-    season: "Autumn / Winter Sartorial",
-    weave: "Velvety Brushed Flannel Weave",
-    origin: "Biella Luxury Mills, Italy",
-    softness: 98,
-    durability: 85,
-    drape: 94,
-    image: "/banners/macro_cashmere_flannel.jpg",
-    code: "CS-180-CM",
-  },
-  {
-    id: "fabric-oxford-white",
-    tabLabel: "ROYAL OXFORD",
-    millBrand: "SUITOHOLIC ATELIER • NILE DELTA & BIELLA",
-    title: "Optic White Royal Oxford",
-    weight: "130 g/m²",
-    composition: "100% Long-Staple Egyptian Giza 140s Cotton",
-    season: "Year-Round Executive",
-    weave: "2x2 Micro-Basketweave",
-    origin: "Nile Delta • Spun in Biella, Italy",
-    softness: 91,
-    durability: 94,
-    drape: 89,
-    image: "/banners/macro_oxford_white.jpg",
-    code: "OX-140-WH",
-  },
-  {
-    id: "fabric-terracotta-slub",
-    tabLabel: "NORMANDY LINEN",
-    millBrand: "SUITOHOLIC ATELIER • TUSCANY, ITALY",
-    title: "Tuscan Slub Linen",
-    weight: "165 g/m²",
-    composition: "100% Pure Normandy Flax Linen",
+    id: "fabric-superviola-sand",
+    tabLabel: "SAND LINEN",
+    millBrand: "SUITOHOLIC ATELIER • NORMANDY FLAX, FRANCE",
+    title: "Superviola Sand Flax Linen",
+    weight: "155 g/m²",
+    composition: "100% Pure Artisanal Normandy Flax Linen",
     season: "Spring / Summer Breathable",
-    weave: "Tactile Cross-Slub Open Weave",
-    origin: "Normandy • Woven in Tuscany, Italy",
-    softness: 84,
+    weave: "Natural Slub Textural Cross-Weave",
+    origin: "Normandy Flax Fields, France",
+    softness: 88,
     durability: 96,
-    drape: 91,
-    image: "/banners/macro_terracotta_linen.jpg",
-    code: "LN-550-TC",
+    drape: 92,
+    image: "/detail_fabric_macro.jpg",
+    code: "V-13672/06",
+  },
+  {
+    id: "fabric-sh403-royal",
+    tabLabel: "BENGAL STRIPE",
+    millBrand: "SUITOHOLIC ATELIER • NILE DELTA & BIELLA",
+    title: "Royal Bengal Banker Stripe",
+    weight: "120 g/m²",
+    composition: "100% Egyptian Giza 140s Cotton (2-Ply)",
+    season: "All-Season Sartorial",
+    weave: "High-Density Fine Twill Weave",
+    origin: "Nile Delta Harvest • Spun in Italy",
+    softness: 94,
+    durability: 91,
+    drape: 95,
+    image: "/fabric_roll_charcoal_wool.jpg",
+    code: "SH-403-BL",
+  },
+  {
+    id: "fabric-sh403-rose",
+    tabLabel: "ROSE STRIPE",
+    millBrand: "SUITOHOLIC ATELIER • BIELLA MILLS, ITALY",
+    title: "Blossom Rose Banker Stripe",
+    weight: "120 g/m²",
+    composition: "100% Egyptian Giza 140s Cotton (2-Ply)",
+    season: "All-Season Executive",
+    weave: "Precision Micro-Twill Candy Stripe",
+    origin: "Alexandria Delta • Finished in Biella, Italy",
+    softness: 95,
+    durability: 90,
+    drape: 93,
+    image: "/formal_white_twill.jpg",
+    code: "SH-403-RS",
+  },
+  {
+    id: "fabric-bordeaux-silk",
+    tabLabel: "DARK TWILL",
+    millBrand: "SUITOHOLIC ATELIER • COMO MILLS, NORTHERN ITALY",
+    title: "Deep Espresso Silk Twill",
+    weight: "145 g/m²",
+    composition: "100% Pure Mulberry Silk & Giza Cotton",
+    season: "Evening Black-Tie Structured",
+    weave: "High-Luster Intricate Jacquard Luster",
+    origin: "Como Historic Mills, Northern Italy",
+    softness: 97,
+    durability: 89,
+    drape: 96,
+    image: "/dark_fabric.jpg",
+    code: "SJ-200-BX",
   },
 ];
 
 interface FabricHeroShowcaseBannerProps {
   onSelectFabricForCustomization?: (fabricCode: string) => void;
   onRequestSwatch?: (fabricId: string) => void;
+  activeFabricId?: string;
 }
 
 export default function FabricHeroShowcaseBanner({
   onSelectFabricForCustomization,
   onRequestSwatch,
+  activeFabricId,
 }: FabricHeroShowcaseBannerProps) {
-  const [activeTabIdx, setActiveTabIdx] = useState(0);
-  const activeFabric = HERO_FABRIC_ITEMS[activeTabIdx];
+  const activeFabric = (activeFabricId ? HERO_FABRIC_ITEMS.find((f) => f.id === activeFabricId || f.code === activeFabricId) : null) || HERO_FABRIC_ITEMS[0];
 
   // Magnifier inspection state
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -132,6 +117,19 @@ export default function FabricHeroShowcaseBanner({
     });
   };
 
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!imageContainerRef.current || !e.touches[0]) return;
+    const rect = imageContainerRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = ((touch.clientX - rect.left) / rect.width) * 100;
+    const y = ((touch.clientY - rect.top) / rect.height) * 100;
+    setMousePos({
+      x: Math.max(0, Math.min(100, x)),
+      y: Math.max(0, Math.min(100, y)),
+    });
+    setIsHovering(true);
+  };
+
   return (
     <section 
       aria-label="Interactive Bespoke Fabric Weave Showcase"
@@ -147,7 +145,10 @@ export default function FabricHeroShowcaseBanner({
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
           onMouseMove={handleMouseMove}
-          className="relative lg:col-span-6 w-full h-[380px] sm:h-[460px] lg:h-full overflow-hidden bg-[#EAE2E7] cursor-crosshair group select-none lg:border-r border-[#DDD2D8]"
+          onTouchStart={() => setIsHovering(true)}
+          onTouchEnd={() => setIsHovering(false)}
+          onTouchMove={handleTouchMove}
+          className="relative lg:col-span-6 w-full h-[440px] sm:h-[520px] lg:h-full min-h-[460px] lg:min-h-[620px] overflow-hidden bg-[#FAF6F8] cursor-crosshair group select-none lg:border-r border-[#DDD2D8]"
         >
           {/* Base Fabric Texture with Dynamic Zoom Origin */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -155,7 +156,7 @@ export default function FabricHeroShowcaseBanner({
             key={activeFabric.image}
             src={activeFabric.image}
             alt={`${activeFabric.title} Weave Texture`}
-            className="w-full h-full object-cover transition-transform duration-300 ease-out"
+            className="w-full h-full object-cover object-top sm:object-center transition-transform duration-150 ease-out will-change-transform"
             style={{
               transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
               transform: isHovering ? "scale(2.4)" : "scale(1.0)",
@@ -164,7 +165,7 @@ export default function FabricHeroShowcaseBanner({
           />
 
           {/* Clean Subtle Ambient Lighting Sheen (Light Theme) */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5" />
 
           {/* Centered "HOVER TO INSPECT WEAVE" Badge in Crisp Luxury Light Glass */}
@@ -173,7 +174,7 @@ export default function FabricHeroShowcaseBanner({
               isHovering ? "opacity-0 scale-90" : "opacity-100 scale-100"
             }`}
           >
-            <div className="flex flex-col items-center justify-center p-3.5 sm:p-4 bg-white/92 backdrop-blur-md border border-[#DDD2D8] rounded-full shadow-[0_12px_32px_rgba(74,32,42,0.14)]">
+            <div className="flex flex-col items-center justify-center p-3.5 sm:p-4 bg-white/95 backdrop-blur-md border border-[#DDD2D8] rounded-full shadow-[0_12px_32px_rgba(74,32,42,0.12)]">
               <div className="w-10 h-10 rounded-full bg-[#EEE5EA] border border-[#DDD2D8] flex items-center justify-center mb-1 shadow-2xs">
                 <ZoomIn size={18} className="text-[#4A202A] stroke-[2.2]" />
               </div>
@@ -183,17 +184,10 @@ export default function FabricHeroShowcaseBanner({
             </div>
           </div>
 
-          {/* Bottom Left Corner: Weave Spec Badge in Frosted Ivory */}
-          <div className="pointer-events-none absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-10 flex items-center gap-2 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-md border border-[#DDD2D8] shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-[#9E774C]" />
-            <span className="text-[9.5px] sm:text-[10.5px] font-mono font-bold tracking-[0.14em] uppercase text-[#4A202A]">
-              8K HIGH-MAGNIFICATION ATELIER SPECIMEN
-            </span>
-          </div>
 
           {/* Top Right Corner: Zoom Factor indicator when active */}
           {isHovering && (
-            <div className="pointer-events-none absolute top-4 right-4 z-10 px-3 py-1 bg-[#4A202A] text-[#FAF8F5] backdrop-blur-md rounded border border-[#9E774C]/50 text-[10px] font-mono font-bold shadow-md">
+            <div className="pointer-events-none absolute top-4 right-4 z-10 px-3 py-1.5 bg-[#4A202A] text-[#FAF8F5] backdrop-blur-md rounded border border-[#9E774C]/50 text-[10px] font-mono font-bold shadow-md">
               2.4X MACRO ZOOM
             </div>
           )}
@@ -210,35 +204,9 @@ export default function FabricHeroShowcaseBanner({
 
           <div className="relative z-10 space-y-6 sm:space-y-7">
             
-            {/* Top Pill Tabs matching reference layout (Light Palette) */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-              {HERO_FABRIC_ITEMS.map((item, idx) => {
-                const isActive = idx === activeTabIdx;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setActiveTabIdx(idx)}
-                    style={{ borderRadius: "6px" }}
-                    className={`text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.18em] px-3.5 sm:px-4 py-2 transition-all duration-300 cursor-pointer ${
-                      isActive
-                        ? "bg-[#4A202A] text-[#FAF8F5] shadow-md font-black scale-102"
-                        : "bg-white hover:bg-[#FAF8F5] text-[#5A4E42] hover:text-[#14110E] border border-[#DDD2D8] hover:border-[#4A202A] shadow-2xs"
-                    }`}
-                  >
-                    {item.tabLabel}
-                  </button>
-                );
-              })}
-            </div>
 
-            {/* Sub-Header Mill / Brand Name */}
-            <div className="space-y-1">
-              <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.26em] text-[#9E774C] block">
-                {activeFabric.millBrand}
-              </span>
-
-              {/* Main Title in Luxury Cormorant Garamond Serif */}
+            {/* Main Title in Luxury Cormorant Garamond Serif */}
+            <div>
               <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[42px] xl:text-[46px] font-bold text-[#14110E] uppercase tracking-[0.02em] leading-[1.08]">
                 {activeFabric.title}
               </h1>

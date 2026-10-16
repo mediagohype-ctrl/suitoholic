@@ -8,6 +8,8 @@ import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import FabricCategoryQuickRow from "@/components/FabricCategoryQuickRow";
 import MensFabricShowcaseGrid from "@/components/MensFabricShowcaseGrid";
 import FabricHeroShowcaseBanner from "@/components/FabricHeroShowcaseBanner";
+import WorldsFinestFabricsIntro from "@/components/WorldsFinestFabricsIntro";
+import PrestigeMillsGrid from "@/components/PrestigeMillsGrid";
 import { 
   ArrowRight, 
   Check, 
@@ -197,10 +199,14 @@ export default function FabricsPage() {
       {/* Header with active 'fabrics' tab indicator */}
       <Header activeTab="fabrics" />
 
-      {/* ========================================================================= */}
-      {/* 1. INTERACTIVE BESPOKE FABRIC WEAVE SHOWCASE HERO BANNER (MATCHING REF)    */}
-      {/* ========================================================================= */}
-      <FabricHeroShowcaseBanner />
+      {/* 1. INTERACTIVE BESPOKE FABRIC WEAVE SHOWCASE HERO BANNER */}
+      <FabricHeroShowcaseBanner activeFabricId={activeFabric?.id} />
+
+      {/* 2. WORLDS FINEST FABRICS ATELIER PREFACE SECTION (MATCHING REFERENCE) */}
+      <WorldsFinestFabricsIntro />
+
+      {/* 3. PRESTIGE CLOTH MILLS SHOWCASE GRID (MATCHING REFERENCE) */}
+      <PrestigeMillsGrid />
 
       {/* ========================================================================= */}
       {/* 2. HORIZONTAL FABRIC CATEGORIES ROW (MATCHING REFERENCE SCREENSHOT)       */}
@@ -225,10 +231,10 @@ export default function FabricsPage() {
         <div className="space-y-4 border-b border-[#D5C2AF] pb-5">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
             <div>
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-bold tracking-[0.18em] uppercase leading-tight text-[#4A202A]">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] uppercase leading-tight text-[#4A202A]">
                 {studio?.heading}
               </h2>
-              <p className="text-xs sm:text-sm text-[#55473A] font-sans mt-0.5 max-w-xl">
+              <p className="text-sm sm:text-base md:text-[17px] text-[#55473A] font-sans mt-1.5 max-w-2xl leading-relaxed">
                 {studio?.subheading}
               </p>
             </div>
@@ -502,12 +508,12 @@ export default function FabricsPage() {
                 </span>
               </div>
 
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-4xl font-normal uppercase leading-[1.08] tracking-tight text-[#14110E]">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-normal uppercase leading-[1.1] tracking-tight text-[#14110E]">
                 {editorial?.headingLine1}{" "}<br className="hidden sm:inline" />
                 {editorial?.headingLine2}
               </h2>
 
-              <p className="text-xs sm:text-sm text-[#55473A] font-sans leading-relaxed">
+              <p className="text-sm sm:text-base md:text-[16.5px] text-[#55473A] font-sans leading-relaxed max-w-2xl">
                 {editorial?.body}
               </p>
 

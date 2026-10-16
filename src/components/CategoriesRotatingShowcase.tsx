@@ -66,11 +66,14 @@ export default function CategoriesRotatingShowcase() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Top Heading matching reference screenshot: CATEGORIES */}
-      <div className="text-center mb-6 sm:mb-8 lg:mb-10">
-        <h2 className="text-lg sm:text-xl lg:text-[22px] text-[#4A202A] tracking-[0.22em] uppercase font-semibold">
+      {/* Top Heading & Subtitle */}
+      <div className="text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-[#4A202A] tracking-[0.14em] uppercase leading-tight">
           {c.heading}
         </h2>
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#55473A] font-normal leading-relaxed tracking-normal max-w-2xl mx-auto">
+          Rotate through signature atelier cuts, woven drapes, and sartorial fits.
+        </p>
       </div>
 
       {/* 3D Coverflow Revolving Carousel Stage matching reference screenshot */}
