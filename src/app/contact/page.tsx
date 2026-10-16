@@ -295,7 +295,8 @@ export default function ContactPage() {
                   <div className="pt-2">
                     <button
                       onClick={handleResetForm}
-                      className="bg-[#14110E] hover:bg-black text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full transition-all cursor-pointer shadow-md"
+                      style={{ borderRadius: "7px" }}
+                      className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold uppercase tracking-wider px-6 py-3 transition-all cursor-pointer shadow-md hover:shadow-lg"
                     >
                       Submit Another Query
                     </button>
@@ -433,7 +434,8 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-[#14110E] hover:bg-black text-white text-xs sm:text-sm font-bold tracking-[0.2em] uppercase py-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2.5 shadow-lg cursor-pointer disabled:opacity-75"
+                      style={{ borderRadius: "7px" }}
+                      className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs sm:text-sm font-extrabold tracking-[0.2em] uppercase py-4 transition-all duration-300 flex items-center justify-center space-x-2.5 shadow-md hover:shadow-lg cursor-pointer disabled:opacity-75"
                     >
                       {isSubmitting ? (
                         <span>Transmitting to Atelier...</span>

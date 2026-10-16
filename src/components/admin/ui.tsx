@@ -16,9 +16,9 @@ type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "bronze";
 type ButtonSize = "sm" | "md";
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9E774C]/50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap";
+  "inline-flex items-center justify-center gap-2 rounded-[7px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4A202A]/50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap";
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: "bg-[#14110E] text-white hover:bg-[#2b241d]",
+  primary: "bg-[#4A202A] text-[#FAF8F5] hover:bg-[#34141D]",
   bronze: "bg-[#9E774C] text-white hover:bg-[#8a6640]",
   secondary: "bg-white text-[#14110E] border border-[#E5E7EB] hover:bg-[#F9FAFB]",
   ghost: "text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#14110E]",

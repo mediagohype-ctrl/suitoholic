@@ -352,13 +352,14 @@ export default function ProductDetailPage() {
                   <button
                     onClick={() => handleOpenCustomizer(false)}
                     disabled={outOfStock || busy}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#120F0D] hover:bg-[#2A231D] text-white py-4 px-5 rounded-2xl text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-xl cursor-pointer group border border-[#9E774C]/50"
+                    style={{ borderRadius: "7px" }}
+                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] py-4 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-md hover:shadow-lg cursor-pointer group"
                   >
                     <div className="flex items-center space-x-2.5">
-                      <ShoppingBag size={17} className="text-[#C68A4C]" />
+                      <ShoppingBag size={17} className="text-[#FAF8F5]" />
                       <span>{outOfStock ? c.outOfStockLabel : c.addToBagLabel}</span>
                     </div>
-                    <span className="text-[10px] text-[#C68A4C] font-bold tracking-widest">
+                    <span className="text-[10px] text-[#FAF8F5]/80 font-bold tracking-widest">
                       {c.addToBagHint}
                     </span>
                   </button>
@@ -366,7 +367,8 @@ export default function ProductDetailPage() {
                   <button
                     onClick={() => handleOpenCustomizer(true)}
                     disabled={outOfStock || busy}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#14110E] hover:bg-black border border-white/20 text-white py-4 px-5 rounded-2xl text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md"
+                    style={{ borderRadius: "7px" }}
+                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] py-4 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md hover:shadow-lg"
                   >
                     <span>{c.buyNowLabel}</span>
                     <ArrowRight size={16} />

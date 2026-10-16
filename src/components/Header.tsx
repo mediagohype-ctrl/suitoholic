@@ -13,6 +13,8 @@ interface HeaderProps {
   activeTab?: string;
   /** Overrides the live bag count (normally read from the bag). */
   cartCount?: number;
+  /** Force solid opaque background (essential when pages have dark hero banners) */
+  forceSolid?: boolean;
 }
 
 const TAB_PATHS: Record<string, string> = {
@@ -23,7 +25,7 @@ const TAB_PATHS: Record<string, string> = {
   contact: "/contact",
 };
 
-export default function Header({ activeTab, cartCount }: HeaderProps) {
+export default function Header({ activeTab, cartCount, forceSolid = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -66,8 +68,8 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
       className={`fixed top-0 left-0 right-0 w-full z-50 transition-transform duration-300 ease-in-out ${
         visible ? "translate-y-0" : "-translate-y-full"
       } ${
-        scrolled
-          ? "shadow-md bg-white/95 backdrop-blur-md"
+        scrolled || forceSolid
+          ? "shadow-sm bg-white/95 backdrop-blur-md"
           : "bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
       }`}
     >
@@ -92,8 +94,8 @@ export default function Header({ activeTab, cartCount }: HeaderProps) {
 
       {/* Main Navigation Bar */}
       <div className={`transition-all duration-300 ${
-        scrolled
-          ? "bg-white/90 backdrop-blur-md border-b border-gray-200"
+        scrolled || forceSolid
+          ? "bg-white/95 backdrop-blur-md border-b border-[#DDD2D8]"
           : "bg-transparent border-b border-transparent"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between relative">

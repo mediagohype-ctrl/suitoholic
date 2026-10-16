@@ -148,7 +148,7 @@ export default function ModernCollectionSection({
     >
       {/* Centered Heading matching product heading format */}
       <div className="flex flex-col items-center justify-center text-center mb-7 sm:mb-10">
-        <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold tracking-[0.2em] text-[#4A202A] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-xl sm:text-2xl lg:text-[26px] font-semibold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
           {headerTitle || collection.title}
         </h2>
       </div>
@@ -227,7 +227,8 @@ export default function ModernCollectionSection({
           <div className="flex items-center justify-center mt-8 sm:mt-10 lg:mt-12">
             <Link
               href={colId === "all" ? "/shop" : `/shop?category=${colId || "formal_bespoke"}`}
-              className="inline-flex items-center justify-center border border-[#4A202A] bg-transparent hover:bg-[#4A202A] text-[#4A202A] hover:text-[#FAF8F5] text-xs sm:text-sm font-semibold tracking-[0.22em] px-10 sm:px-14 py-2.5 sm:py-3 transition-all duration-300 uppercase shadow-xs hover:shadow-md rounded-2xl sm:rounded-full active:scale-98"
+              style={{ borderRadius: "7px" }}
+              className="inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs sm:text-[13px] font-extrabold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg active:scale-98"
             >
               VIEW ALL
             </Link>

@@ -405,132 +405,127 @@ function CustomShirtConfiguratorContent() {
               </p>
             </div>
 
-            {/* RIGHT COLUMN: Appointment Booking Form (Light Theme Box) */}
-            <div id="appointment-booking" className="lg:col-span-5 scroll-mt-24">
-              <div
-                className="bg-[#FFFFFF] border border-[#DDD2D8] px-6 sm:px-8 lg:px-9 py-8 sm:py-10 lg:py-11 shadow-xl relative text-left"
-                style={{ borderRadius: "7px" }}
-              >
-                {appointmentSuccess ? (
-                  <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
-                    <div
-                      className="w-12 h-12 rounded-full bg-[#EEE5EA] border border-[#DDD2D8] text-[#4A202A] flex items-center justify-center mx-auto shadow-xs"
-                      style={{ borderRadius: "7px" }}
-                    >
-                      <Check size={22} className="stroke-[2.5]" />
-                    </div>
-                    <h3 className="font-serif-luxury text-xl font-bold uppercase text-[#14110E]">
-                      {heroCopy.successTitle}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#5A4E42] max-w-xs mx-auto leading-relaxed">
-                      {heroCopy.successMessage}
-                    </p>
-                    {bookingReference && (
-                      <div className="pt-1">
-                        <span
-                          className="text-[11px] font-mono text-[#4A202A] bg-[#EEE5EA] border border-[#DDD2D8] py-1.5 px-3 inline-block font-bold"
-                          style={{ borderRadius: "7px" }}
-                        >
-                          Ref: {bookingReference}
-                        </span>
-                      </div>
-                    )}
-                    <div className="pt-3 flex flex-col gap-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setAppointmentSuccess(false);
-                          setBookingReference(null);
-                        }}
-                        className="text-xs font-bold text-[#4A202A] hover:underline uppercase tracking-wider cursor-pointer"
-                      >
-                        Book Another Session
-                      </button>
-                    </div>
+            {/* RIGHT COLUMN: Appointment Booking Form (Direct layout without card box) */}
+            <div id="appointment-booking" className="lg:col-span-5 scroll-mt-24 text-left">
+              {appointmentSuccess ? (
+                <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
+                  <div
+                    className="w-12 h-12 rounded-full bg-[#EEE5EA] border border-[#DDD2D8] text-[#4A202A] flex items-center justify-center mx-auto shadow-xs"
+                    style={{ borderRadius: "7px" }}
+                  >
+                    <Check size={22} className="stroke-[2.5]" />
                   </div>
-                ) : (
-                  <form onSubmit={handleAppointmentSubmit} className="space-y-5">
-                    {/* Name */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.nameLabel}
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={apptName}
-                        onChange={(e) => setApptName(e.target.value)}
-                        placeholder={heroCopy.namePlaceholder}
+                  <h3 className="font-serif-luxury text-xl font-bold uppercase text-[#14110E]">
+                    {heroCopy.successTitle}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#5A4E42] max-w-xs mx-auto leading-relaxed">
+                    {heroCopy.successMessage}
+                  </p>
+                  {bookingReference && (
+                    <div className="pt-1">
+                      <span
+                        className="text-[11px] font-mono text-[#4A202A] bg-[#EEE5EA] border border-[#DDD2D8] py-1.5 px-3 inline-block font-bold"
                         style={{ borderRadius: "7px" }}
-                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                      />
+                      >
+                        Ref: {bookingReference}
+                      </span>
                     </div>
-
-                    {/* Phone */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.phoneLabel}
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={apptPhone}
-                        onChange={(e) => setApptPhone(e.target.value)}
-                        placeholder={heroCopy.phonePlaceholder}
-                        style={{ borderRadius: "7px" }}
-                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                      />
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.emailLabel}
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={apptEmail}
-                        onChange={(e) => setApptEmail(e.target.value)}
-                        placeholder={heroCopy.emailPlaceholder}
-                        style={{ borderRadius: "7px" }}
-                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] placeholder-[#9E8E7F] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                      />
-                    </div>
-
-                    {/* Preferred Date */}
-                    <div>
-                      <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                        {heroCopy.dateLabel}
-                      </label>
-                      <input
-                        type="date"
-                        required
-                        value={apptDate}
-                        onChange={(e) => setApptDate(e.target.value)}
-                        style={{ borderRadius: "7px" }}
-                        className="w-full bg-[#FAF8F5] border border-[#DDD2D8] text-[#14110E] focus:border-[#4A202A] focus:bg-white px-3.5 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs cursor-pointer"
-                      />
-                    </div>
-
-                    {apptError && (
-                      <p className="text-xs text-[#9B2C2C] font-semibold">
-                        {apptError}
-                      </p>
-                    )}
-
-                    {/* Submit Button */}
+                  )}
+                  <div className="pt-3 flex flex-col gap-2">
                     <button
-                      type="submit"
-                      disabled={isBooking}
-                      style={{ borderRadius: "7px" }}
-                      className="w-full mt-2 bg-[#14110E] hover:bg-[#4A202A] active:scale-[0.99] text-[#FAF8F5] font-bold text-sm sm:text-base py-4 px-6 transition-all shadow-sm hover:shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center uppercase tracking-[0.14em]"
+                      type="button"
+                      onClick={() => {
+                        setAppointmentSuccess(false);
+                        setBookingReference(null);
+                      }}
+                      className="text-xs font-bold text-[#4A202A] hover:underline uppercase tracking-wider cursor-pointer"
                     >
-                      {isBooking ? "Booking..." : heroCopy.buttonLabel}
+                      Book Another Session
                     </button>
-                  </form>
-                )}
-              </div>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleAppointmentSubmit} className="space-y-4 sm:space-y-5">
+                  {/* Name */}
+                  <div>
+                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                      {heroCopy.nameLabel}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={apptName}
+                      onChange={(e) => setApptName(e.target.value)}
+                      placeholder={heroCopy.namePlaceholder}
+                      style={{ borderRadius: "7px" }}
+                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] placeholder-[#8C7B83] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                      {heroCopy.phoneLabel}
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={apptPhone}
+                      onChange={(e) => setApptPhone(e.target.value)}
+                      placeholder={heroCopy.phonePlaceholder}
+                      style={{ borderRadius: "7px" }}
+                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] placeholder-[#8C7B83] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                      {heroCopy.emailLabel}
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={apptEmail}
+                      onChange={(e) => setApptEmail(e.target.value)}
+                      placeholder={heroCopy.emailPlaceholder}
+                      style={{ borderRadius: "7px" }}
+                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] placeholder-[#8C7B83] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
+                    />
+                  </div>
+
+                  {/* Preferred Date */}
+                  <div>
+                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
+                      {heroCopy.dateLabel}
+                    </label>
+                    <input
+                      type="date"
+                      required
+                      value={apptDate}
+                      onChange={(e) => setApptDate(e.target.value)}
+                      style={{ borderRadius: "7px" }}
+                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs cursor-pointer"
+                    />
+                  </div>
+
+                  {apptError && (
+                    <p className="text-xs text-[#9B2C2C] font-semibold">
+                      {apptError}
+                    </p>
+                  )}
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isBooking}
+                    style={{ borderRadius: "7px" }}
+                    className="w-full mt-2 bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.99] text-[#FAF8F5] font-extrabold text-sm sm:text-base py-4 px-6 transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center uppercase tracking-[0.14em]"
+                  >
+                    {isBooking ? "Booking..." : heroCopy.buttonLabel}
+                  </button>
+                </form>
+              )}
             </div>
 
           </div>

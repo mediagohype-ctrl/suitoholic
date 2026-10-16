@@ -95,18 +95,28 @@ function ShopContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-clip">
-      {/* Header */}
+      {/* Transparent Header at top */}
       <Header activeTab="shop" />
 
+      {/* Clean Luxury Editorial Hero Banner: Grown by nature. Guided by restraint. (Full Width End-to-End) */}
+      <div className="w-full">
+        <ShopNatureHeroBanner />
+      </div>
+
       <div className="relative flex-1 w-full">
-        <main className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-20">
-
-          {/* Clean Luxury Editorial Hero Banner: Grown by nature. Guided by restraint. */}
-          <ShopNatureHeroBanner />
-
+        <main className="relative z-10 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 pt-8 sm:pt-12 pb-12 sm:pb-20">
 
           {/* Catalog Section: Full-Width Product Grid at Top */}
           <div id="catalog-section" className="w-full space-y-6 pt-1 mb-14 sm:mb-20">
+
+            {/* Section Heading: Short & Refined Luxury Title (No Subtitle) */}
+            <div className="flex items-center justify-center gap-3 sm:gap-6 w-full pt-1 pb-1">
+              <div className="h-[1.5px] w-8 sm:w-16 md:w-24 bg-gradient-to-r from-transparent to-[#4A202A]/40" />
+              <h2 className="font-serif-luxury text-xl sm:text-2xl lg:text-[26px] font-bold text-[#4A202A] tracking-[0.2em] uppercase leading-tight text-center drop-shadow-xs">
+                {selectedCategory === "all" ? (c.title || "THE BESPOKE COLLECTION") : `${currentCategoryName} COLLECTION`}
+              </h2>
+              <div className="h-[1.5px] w-8 sm:w-16 md:w-24 bg-gradient-to-l from-transparent to-[#4A202A]/40" />
+            </div>
 
             {/* Top Control Bar */}
             <div className="relative bg-[#FAF5EE] border border-[#E2D4C3] rounded-xl px-4 py-3 flex flex-wrap gap-2 items-center justify-between text-[11px] text-[#4A3E33] font-medium shadow-xs">
@@ -150,7 +160,8 @@ function ShopContent() {
                 <p className="text-sm text-[#55473B]">{c.emptyText}</p>
                 <button
                   onClick={resetAll}
-                  className="inline-flex items-center gap-2 bg-[#14110E] hover:bg-[#9E774C] text-white px-5 py-2.5 rounded-xl text-[10.5px] font-bold uppercase tracking-[0.16em] transition-all"
+                  style={{ borderRadius: "7px" }}
+                  className="inline-flex items-center gap-2 bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] px-5 py-2.5 text-[10.5px] font-extrabold uppercase tracking-[0.16em] transition-all shadow-md hover:shadow-lg cursor-pointer"
                 >
                   {c.resetAllLabel} <RotateCcw size={13} />
                 </button>
@@ -172,7 +183,8 @@ function ShopContent() {
                 <button
                   type="button"
                   onClick={() => setVisibleCount((prev) => prev + 12)}
-                  className="inline-flex items-center justify-center border border-[#7A6B5D]/60 hover:border-[#14110E] bg-transparent hover:bg-[#14110E] text-[#14110E] hover:text-[#FAF8F5] text-xs font-bold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase rounded-full shadow-xs hover:shadow-md cursor-pointer active:scale-98"
+                  style={{ borderRadius: "7px" }}
+                  className="inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg cursor-pointer active:scale-98"
                 >
                   LOAD MORE ({sortedProducts.length - visibleCount} MORE)
                 </button>
@@ -218,7 +230,8 @@ function ShopContent() {
                           catalogEl.scrollIntoView({ behavior: "smooth" });
                         }
                       }}
-                      className="inline-flex items-center justify-center border border-[#7A6B5D]/60 hover:border-[#14110E] bg-transparent hover:bg-[#14110E] text-[#14110E] hover:text-[#FAF8F5] text-xs font-bold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase rounded-full shadow-xs hover:shadow-md cursor-pointer active:scale-98"
+                      style={{ borderRadius: "7px" }}
+                      className="inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg cursor-pointer active:scale-98"
                     >
                       VIEW ALL
                     </button>

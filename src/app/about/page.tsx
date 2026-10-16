@@ -121,7 +121,8 @@ export default function AboutPage() {
               <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
                 <Link
                   href={c.hero.primaryButtonHref}
-                  className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md flex items-center gap-2 group whitespace-nowrap"
+                  style={{ borderRadius: "7px" }}
+                  className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[11px] sm:text-xs font-extrabold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md hover:shadow-lg flex items-center gap-2 group whitespace-nowrap cursor-pointer"
                 >
                   <span>{c.hero.primaryButtonLabel}</span>
                   <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
@@ -552,7 +553,8 @@ export default function AboutPage() {
               <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
                 <Link
                   href={c.cta.primaryButtonHref}
-                  className="bg-[#14110E] hover:bg-black text-[#FAF8F5] text-xs font-bold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md flex items-center gap-2 group whitespace-nowrap"
+                  style={{ borderRadius: "7px" }}
+                  className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md hover:shadow-lg flex items-center gap-2 group whitespace-nowrap cursor-pointer"
                 >
                   <span>{c.cta.primaryButtonLabel}</span>
                   <ArrowRight size={15} className="transform group-hover:translate-x-1 transition-transform" />
@@ -560,7 +562,8 @@ export default function AboutPage() {
                 
                 <Link
                   href={c.cta.secondaryButtonHref}
-                  className="bg-[#14110E] hover:bg-black text-white border border-[#14110E] text-xs font-bold tracking-[0.2em] px-7 sm:px-9 py-4 transition-all duration-300 uppercase whitespace-nowrap shadow-md"
+                  style={{ borderRadius: "7px" }}
+                  className="bg-[#4A202A] hover:bg-[#34141D] text-white border border-[#4A202A] text-xs font-extrabold tracking-[0.2em] px-7 sm:px-9 py-4 transition-all duration-300 uppercase whitespace-nowrap shadow-md hover:shadow-lg cursor-pointer"
                 >
                   {c.cta.secondaryButtonLabel}
                 </Link>

@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import FabricCategoryQuickRow from "@/components/FabricCategoryQuickRow";
 import MensFabricShowcaseGrid from "@/components/MensFabricShowcaseGrid";
+import FabricHeroShowcaseBanner from "@/components/FabricHeroShowcaseBanner";
 import { 
   ArrowRight, 
   Check, 
@@ -197,74 +198,9 @@ export default function FabricsPage() {
       <Header activeTab="fabrics" />
 
       {/* ========================================================================= */}
-      {/* 1. LUXURY LIGHT THEME FULL-WIDTH SUITOHOLIC HERO BANNER                   */}
+      {/* 1. INTERACTIVE BESPOKE FABRIC WEAVE SHOWCASE HERO BANNER (MATCHING REF)    */}
       {/* ========================================================================= */}
-      <section className="relative w-full h-[460px] sm:h-[520px] md:h-[560px] lg:h-[620px] overflow-hidden bg-[#FAF8F5] select-none pt-24 sm:pt-28 flex items-center group">
-        {/* Full Bleed Visual Fabric Showcase Background */}
-        <div className="absolute inset-0 w-full h-full">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={hero?.image || "/fabrics_hero_banner.jpg"}
-            alt="Suitoholic Bespoke Fabrics"
-            className="w-full h-full object-cover object-[center_35%] transition-transform duration-1000 ease-out group-hover:scale-[1.02]"
-            loading="eager"
-          />
-
-          {/* Targeted Left Gradient: Provides high-contrast clarity for text while keeping fabrics on the right 100% natural and bright */}
-          <div className="absolute inset-y-0 left-0 w-full sm:w-[68%] md:w-[54%] lg:w-[46%] bg-gradient-to-r from-white/95 via-white/80 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#FAF8F5] via-[#FAF8F5]/40 to-transparent pointer-events-none" />
-        </div>
-
-        {/* Minimal Luxury Content Overlay aligned with page grid */}
-        <div className="relative z-10 w-full max-w-[1680px] mx-auto px-6 sm:px-12 lg:px-18 xl:px-20">
-          <div className="max-w-lg flex flex-col items-start">
-            
-            {/* Suitoholic Brand Logo */}
-            <div className="mb-3 sm:mb-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo/suitoholic-logo-dark.png"
-                alt="Suitoholic"
-                className="h-12 sm:h-14 md:h-16 w-auto object-contain drop-shadow-xs"
-              />
-            </div>
-
-            {/* Atelier Crest Eyebrow */}
-            <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-xs border border-[#8C6944]/25 px-3 py-1 rounded-full text-[#8C6944] text-[9px] sm:text-[10px] font-extrabold tracking-[0.24em] uppercase shadow-xs mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8C6944]" />
-              <span>{hero?.badge || "SUITOHOLIC BESPOKE ATELIER"}</span>
-            </div>
-
-            {/* Clean Minimal Headline */}
-            <h1 className="font-serif-luxury text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-bold text-[#14110E] uppercase tracking-wide leading-[1.12]">
-              {hero?.title || "LUXURY BESPOKE FABRICS"}
-            </h1>
-
-            {/* Short Minimal Subtitle */}
-            <p className="text-xs sm:text-sm text-[#4A3E33] font-sans font-medium max-w-md mt-2 sm:mt-2.5 leading-relaxed">
-              {hero?.subtitle || "Finest Italian, English & Egyptian weaves tailored to your exact fit."}
-            </p>
-
-            {/* Single Clean CTA */}
-            <div className="pt-5 sm:pt-6">
-              <button
-                type="button"
-                onClick={() => {
-                  const studioEl = document.getElementById("swatches-studio");
-                  if (studioEl) {
-                    studioEl.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="inline-flex items-center gap-2.5 bg-[#14110E] hover:bg-[#8C6944] text-[#FAF8F5] px-6 sm:px-8 py-3.5 rounded-xl text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase transition-all duration-300 shadow-xl hover:shadow-2xl cursor-pointer group/btn"
-              >
-                <span>{hero?.primaryCtaLabel || "EXPLORE SWATCHES"}</span>
-                <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      <FabricHeroShowcaseBanner />
 
       {/* ========================================================================= */}
       {/* 2. HORIZONTAL FABRIC CATEGORIES ROW (MATCHING REFERENCE SCREENSHOT)       */}
@@ -419,9 +355,10 @@ export default function FabricsPage() {
               <button
                 type="button"
                 onClick={() => setIsCustomizerOpen(true)}
-                className="w-full bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-xs font-bold tracking-[0.2em] py-3.5 rounded-xl transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md group/btn cursor-pointer"
+                style={{ borderRadius: "7px" }}
+                className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.2em] py-3.5 transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg group/btn cursor-pointer"
               >
-                <Scissors size={14} className="text-[#C5A069]" />
+                <Scissors size={14} className="text-[#FAF8F5]" />
                 <span>{studio?.customizeLabel || "CUSTOMIZE IN THIS FABRIC"}</span>
                 <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />
               </button>
@@ -648,7 +585,8 @@ export default function FabricsPage() {
               </div>
               <Link
                 href={`${customizeBase}?fabric=${encodeURIComponent(activeFabric.code)}`}
-                className="bg-[#9E774C] hover:bg-[#B38C5F] text-white text-xs font-bold tracking-widest uppercase px-6 py-3 rounded-xl transition-all shadow-md"
+                style={{ borderRadius: "7px" }}
+                className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-widest uppercase px-6 py-3 transition-all shadow-md hover:shadow-lg"
               >
                 {zoom?.configuratorLabel}
               </Link>
@@ -768,7 +706,8 @@ export default function FabricsPage() {
                   type="submit"
                   disabled={swatchSubmitting}
                   aria-busy={swatchSubmitting}
-                  className="w-full bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-xs font-bold tracking-[0.2em] py-3.5 rounded-xl transition-all duration-300 uppercase shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+                  style={{ borderRadius: "7px" }}
+                  className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.2em] py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                 >
                   {swatchSubmitting ? swatch?.submittingLabel : swatch?.submitLabel}
                 </button>

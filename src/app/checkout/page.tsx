@@ -255,7 +255,8 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={submitting || loading || paymentOptions.length === 0}
-            className="w-full bg-[#14110E] hover:bg-[#2A231D] disabled:opacity-60 text-white py-4 px-5 rounded-xl text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-center gap-2 shadow-md"
+            style={{ borderRadius: "7px" }}
+            className="w-full bg-[#4A202A] hover:bg-[#34141D] disabled:opacity-60 text-[#FAF8F5] py-4 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg cursor-pointer"
           >
             <Lock size={14} />{" "}
             {submitting

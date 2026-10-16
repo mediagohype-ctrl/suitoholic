@@ -145,12 +145,12 @@ export default function BespokeProcessTimeline() {
             </div>
 
             {/* Headline with Royal Bespoke Burgundy Accent */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-semibold uppercase tracking-tight text-[#14110E] leading-[1.04] mb-6 sm:mb-8 font-sans">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-semibold uppercase tracking-[0.025em] text-[#14110E] leading-[1.08] mb-6 sm:mb-8">
               HOW WE
               <br />
               TAILOR
               <br />
-              <span className="font-serif italic font-normal text-[#4A202A]">
+              <span className="italic font-normal text-[#4A202A]">
                 PERFECTION.
               </span>
             </h2>
@@ -165,13 +165,13 @@ export default function BespokeProcessTimeline() {
               </p>
             </div>
 
-            {/* Signature Suitoholic Luxury Obsidian Button */}
+            {/* Signature Suitoholic Luxury Burgundy Button */}
             <div>
               <button
                 type="button"
                 onClick={handleScrollToConsult}
                 style={{ borderRadius: "7px" }}
-                className="inline-flex items-center space-x-2.5 px-7 sm:px-8 py-3.5 bg-[#14110E] hover:bg-[#4A202A] active:scale-[0.99] text-[#FAF8F5] text-xs sm:text-sm font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer group"
+                className="inline-flex items-center space-x-2.5 px-7 sm:px-8 py-3.5 bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.99] text-[#FAF8F5] text-xs sm:text-sm font-extrabold tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group"
               >
                 <span>Book Consult</span>
                 <ArrowUpRight
@@ -371,7 +371,7 @@ export default function BespokeProcessTimeline() {
                     handleScrollToConsult();
                   }}
                   style={{ borderRadius: "7px" }}
-                  className="inline-flex items-center justify-center space-x-2 px-6 py-2.5 bg-[#14110E] hover:bg-[#4A202A] text-[#FAF8F5] text-xs font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-sm"
+                  className="inline-flex items-center justify-center space-x-2 px-6 py-2.5 bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   <span>Book Consult</span>
                   <ArrowUpRight size={14} />

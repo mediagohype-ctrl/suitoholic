@@ -132,11 +132,14 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
         {/* Left: Product Name & Price matching reference layout */}
         <div className="min-w-0 flex-1 space-y-0.5">
           <Link href={`/product/${product.slug}`} className="block">
-            <h3 className="text-[11px] sm:text-[12px] font-bold text-[#14110E] hover:text-[#9E774C] transition-colors truncate tracking-tight uppercase leading-snug">
+            <h3 
+              title={product.name}
+              className="text-[11px] sm:text-[12px] font-bold text-[#14110E] hover:text-[#9E774C] transition-colors truncate tracking-wide uppercase leading-snug"
+            >
               {product.name}
             </h3>
           </Link>
-          <div className="text-[10.5px] sm:text-[11.5px] font-normal text-[#665749] tracking-normal uppercase">
+          <div className="text-[10px] sm:text-[11px] font-normal text-[#665749] tracking-normal uppercase">
             RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : product.price.replace("₹", "").trim()}
           </div>
         </div>

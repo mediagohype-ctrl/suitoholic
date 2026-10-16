@@ -267,7 +267,8 @@ export default function Footer() {
             ))}
             <button
               onClick={scrollToTop}
-              className="inline-flex items-center gap-1 bg-[#14110E] hover:bg-[#4A202A] text-white px-3 py-1 rounded-full text-[11px] font-semibold transition-all shadow-xs cursor-pointer group"
+              style={{ borderRadius: "7px" }}
+              className="inline-flex items-center gap-1.5 bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] px-3.5 py-1.5 text-[11px] font-bold transition-all shadow-sm hover:shadow-md cursor-pointer group"
             >
               <span>{c.backToTopLabel}</span>
               <ArrowUp size={11} className="transform group-hover:-translate-y-0.5 transition-transform" />

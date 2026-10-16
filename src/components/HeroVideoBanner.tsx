@@ -126,14 +126,16 @@ export default function HeroVideoBanner() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2.5 md:gap-3 w-full sm:w-auto">
             <Link
               href={c.primaryCtaHref}
-              className="bg-[#14110E] hover:bg-[#2A241F] text-[#FAF8F5] text-[9px] sm:text-[10px] lg:text-[11px] font-bold tracking-[0.14em] px-3.5 sm:px-6 lg:px-7 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[115px] sm:w-auto"
+              style={{ borderRadius: "7px" }}
+              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[9px] sm:text-[10px] lg:text-[11px] font-extrabold tracking-[0.14em] px-3.5 sm:px-6 lg:px-7 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[115px] sm:w-auto"
             >
               {c.primaryCtaLabel}
             </Link>
             
             <Link
               href={c.secondaryCtaHref}
-              className="bg-[#14110E] hover:bg-black text-[#FAF8F5] border border-[#14110E] text-[9px] sm:text-[10px] lg:text-[11px] font-bold tracking-[0.14em] px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md active:scale-98 whitespace-nowrap w-[115px] sm:w-auto"
+              style={{ borderRadius: "7px" }}
+              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] border border-[#4A202A] text-[9px] sm:text-[10px] lg:text-[11px] font-extrabold tracking-[0.14em] px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 md:py-3 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md hover:shadow-lg active:scale-98 whitespace-nowrap w-[115px] sm:w-auto"
             >
               <span>{c.secondaryCtaLabel}</span>
               <span className="transform group-hover:translate-x-1 transition-transform duration-200 text-xs sm:text-sm leading-none">→</span>

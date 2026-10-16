@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Scissors, Crown } from "lucide-react";
+import { ArrowRight, Scissors, Crown } from "lucide-react";
 
 interface PillarItem {
   id: string;
@@ -15,7 +15,7 @@ interface PillarItem {
   ctaHref: string;
   image: string;
   imageAlt: string;
-  theme: "dark" | "light";
+  theme: "tint" | "light";
   imagePosition: "left" | "right";
 }
 
@@ -23,7 +23,6 @@ const PILLARS: PillarItem[] = [
   {
     id: "fabrics",
     badge: "HERITAGE TEXTILES",
-    badgeIcon: <Sparkles size={12} className="text-[#C59B6A]" />,
     headingWhite: "EXCEPTIONAL FABRICS.",
     headingGold: "THOUGHTFULLY CHOSEN.",
     description:
@@ -32,13 +31,13 @@ const PILLARS: PillarItem[] = [
     ctaHref: "/fabrics",
     image: "/banners/banner_exceptional_fabrics.jpg",
     imageAlt: "Master shirtmaker selecting luxury Egyptian Giza cotton shirt fabrics on atelier cutting table",
-    theme: "dark",
+    theme: "tint",
     imagePosition: "left",
   },
   {
     id: "bespoke-experience",
     badge: "MASTER CRAFTSMANSHIP",
-    badgeIcon: <Scissors size={12} className="text-[#8C5A28]" />,
+    badgeIcon: <Scissors size={12} className="text-[#9E774C]" />,
     headingWhite: "BESPOKE",
     headingGold: "EXPERIENCE",
     description:
@@ -53,7 +52,7 @@ const PILLARS: PillarItem[] = [
   {
     id: "elite-service",
     badge: "CONCIERGE STYLING",
-    badgeIcon: <Crown size={12} className="text-[#C59B6A]" />,
+    badgeIcon: <Crown size={12} className="text-[#9E774C]" />,
     headingWhite: "ELITE",
     headingGold: "SERVICE",
     description:
@@ -62,7 +61,7 @@ const PILLARS: PillarItem[] = [
     ctaHref: "#appointment-booking",
     image: "/banners/banner_elite_service.jpg",
     imageAlt: "Gentleman in bespoke tailored Giza cotton dress shirt reviewing fabric swatches in styling salon",
-    theme: "dark",
+    theme: "tint",
     imagePosition: "left",
   },
 ];
@@ -76,13 +75,13 @@ export default function BespokePillarsBanner() {
     >
       <div className="w-full flex flex-col">
         {PILLARS.map((pillar) => {
-          const isDark = pillar.theme === "dark";
           const isImageLeft = pillar.imagePosition === "left";
+          const isTint = pillar.theme === "tint";
 
           return (
             <div
               key={pillar.id}
-              className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[620px]"
+              className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[620px] border-b border-[#DDD2D8]/70 last:border-b-0"
             >
               {/* IMAGE COLUMN */}
               <div
@@ -98,14 +97,14 @@ export default function BespokePillarsBanner() {
                   loading="lazy"
                 />
                 {/* Subtle vignette sheen */}
-                <div className="pointer-events-none absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                <div className="pointer-events-none absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
               </div>
 
               {/* CONTENT COLUMN */}
               <div
                 className={`w-full flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-16 xl:px-24 py-12 sm:py-16 lg:py-20 ${
-                  isDark
-                    ? "bg-[#1E2538] text-white"
+                  isTint
+                    ? "bg-[#EEE5EA] text-[#14110E]"
                     : "bg-[#FFFFFF] text-[#14110E]"
                 } ${isImageLeft ? "order-2" : "order-2 lg:order-1"}`}
               >
@@ -114,32 +113,24 @@ export default function BespokePillarsBanner() {
                   {pillar.badge && (
                     <div className="inline-flex items-center gap-2">
                       {pillar.badgeIcon}
-                      <span
-                        className={`text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] ${
-                          isDark ? "text-[#C59B6A]" : "text-[#8C5A28]"
-                        }`}
-                      >
+                      <span className="text-[11px] sm:text-[11.5px] font-bold uppercase tracking-[0.24em] text-[#9E774C]">
                         {pillar.badge}
                       </span>
                     </div>
                   )}
 
-                  {/* Two-Line High Impact Heading */}
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] xl:text-[44px] font-extrabold uppercase tracking-tight leading-[1.08] flex flex-col">
-                    <span className={isDark ? "text-white" : "text-[#14110E]"}>
+                  {/* Two-Line Luxury Serif Heading with distinct hierarchy */}
+                  <h2 className="font-serif-luxury text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] xl:text-[40px] font-semibold uppercase tracking-[0.025em] leading-[1.12] flex flex-col space-y-1">
+                    <span className="text-[#14110E]">
                       {pillar.headingWhite}
                     </span>
-                    <span className={isDark ? "text-[#C59B6A]" : "text-[#8C5A28]"}>
+                    <span className="text-[#9E774C]">
                       {pillar.headingGold}
                     </span>
                   </h2>
 
-                  {/* Body Paragraph with professional shirtmaking typography */}
-                  <p
-                    className={`text-xs sm:text-sm md:text-[14.5px] leading-relaxed font-sans font-normal ${
-                      isDark ? "text-[#CBD5E1]" : "text-[#524436]"
-                    }`}
-                  >
+                  {/* Subtitle / Description Body Paragraph with distinct professional size */}
+                  <p className="text-[13.5px] sm:text-[14.5px] lg:text-[15px] leading-[1.75] font-sans font-normal text-[#5A4E42] max-w-lg">
                     {pillar.description}
                   </p>
 
@@ -147,11 +138,8 @@ export default function BespokePillarsBanner() {
                   <div className="pt-2 sm:pt-3">
                     <Link
                       href={pillar.ctaHref}
-                      className={`inline-flex items-center gap-2.5 text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase py-3.5 px-7 rounded-[7px] transition-all duration-300 shadow-md cursor-pointer ${
-                        isDark
-                          ? "bg-[#C59B6A] hover:bg-[#B38753] text-[#14110E] hover:shadow-xl"
-                          : "bg-[#14110E] hover:bg-[#25201A] text-white hover:shadow-xl"
-                      }`}
+                      style={{ borderRadius: "7px" }}
+                      className="inline-flex items-center gap-2.5 text-[11px] sm:text-xs font-bold tracking-[0.16em] uppercase py-3.5 px-7 bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group"
                     >
                       <span>{pillar.ctaText}</span>
                       <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />

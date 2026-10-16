@@ -51,7 +51,7 @@ export const customShirtPage = {
     imageCaption: "Master Bespoke Cutter • New Delhi Atelier Bench",
     milestones: [
       {
-        period: "ESTD. 2026",
+        period: "ESTD. 2003",
         title: "Founded In New Delhi Atelier",
         story:
           "Suitoholic begins with master bespoke cutters committed to pure bespoke tailoring. Every garment drafted from a hand-cut paper pattern, upholding individual craft standards across two decades of devoted practice.",

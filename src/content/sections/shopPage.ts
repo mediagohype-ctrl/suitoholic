@@ -2,7 +2,7 @@ export const shopPage = {
   eyebrow: "SUITOHOLIC BESPOKE ATELIER",
   eyebrowLeft: "SUITOHOLIC ATELIER",
   eyebrowRight: "BESPOKE COLLECTION",
-  title: "THE BESPOKE SHIRT COLLECTION",
+  title: "THE BESPOKE COLLECTION",
   subtitle: "Handcrafted from 100% Egyptian Giza Cotton & fine Italian weaves, tailored to your exact measurements.",
   allPillLabel: "ALL SHIRTS",
   allSidebarLabel: "ALL SHIRTS & PRODUCTS",

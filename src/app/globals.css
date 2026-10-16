@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Great+Vibes&display=swap');
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&display=swap');
@@ -40,8 +41,9 @@
 
 @theme {
   --font-sans: 'nits-Pro-Display-Medium', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: 'nits-Pro-Display-Medium', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: 'nits-Pro-Display-Medium', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, Garamond, serif;
+  --font-heading: var(--font-cormorant), 'Cormorant Garamond', Georgia, Garamond, serif;
+  --font-cormorant: var(--font-cormorant), 'Cormorant Garamond', Georgia, Garamond, serif;
 }
 
 :root {
@@ -76,17 +78,48 @@ html, body {
   padding: 0;
 }
 
-/* Entire website font: nits-Pro-Display-Medium */
-*, ::before, ::after {
-  font-family: 'nits-Pro-Display-Medium', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+/* Explicit Luxury Serif Utility */
+.font-serif-luxury,
+.font-cormorant {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, Garamond, serif !important;
+  letter-spacing: 0.03em;
 }
 
-h1, h2, h3, h4, h5, h6,
-.font-serif-luxury,
-.font-serif,
-.font-sans,
-p, span, a, button, input, select, textarea, label {
-  font-family: 'nits-Pro-Display-Medium', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+@layer base {
+  body, input, textarea, select, button {
+    font-family: 'nits-Pro-Display-Medium', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* Cormorant Garamond for all Headings & Luxury Serif across the entire website */
+  h1, h2, h3, h4, h5, h6,
+  .font-serif-luxury,
+  .font-serif,
+  .font-heading,
+  .font-cormorant {
+    font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, Garamond, serif;
+    letter-spacing: 0.03em;
+  }
+
+  .cormorant-garamond-700 {
+    font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, Garamond, serif;
+    font-weight: 700;
+  }
+
+  /* Default heading scale - ONLY applies when NO explicit Tailwind text-* class is provided */
+  h1:where(:not([class*="text-"])) {
+    font-size: clamp(2rem, 3.8vw, 2.9rem);
+    line-height: 1.1;
+  }
+
+  h2:where(:not([class*="text-"])) {
+    font-size: clamp(1.75rem, 3.2vw, 2.6rem); /* 2.6rem = 41.6px */
+    line-height: 1.15;
+  }
+
+  h3:where(:not([class*="text-"])) {
+    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    line-height: 1.25;
+  }
 }
 
 /* Calligraphic Script Flourish for special luxury headings */
@@ -96,11 +129,6 @@ p, span, a, button, input, select, textarea, label {
   font-style: normal !important;
   letter-spacing: normal !important;
   text-transform: none !important;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  letter-spacing: 0.12em;
 }
 
 /* Authentic Luxury Studio Backdrop Gradient */

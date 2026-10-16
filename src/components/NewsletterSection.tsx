@@ -90,14 +90,15 @@ export default function NewsletterSection() {
                   <button
                     type="submit"
                     disabled={!isFormValid}
-                    className={`text-sm sm:text-base font-bold tracking-wide px-7 sm:px-9 py-4 rounded-[8px] transition-all duration-300 flex items-center justify-center gap-2 shrink-0 ${
+                    style={{ borderRadius: "7px" }}
+                    className={`text-sm sm:text-base font-extrabold tracking-wide px-7 sm:px-9 py-4 transition-all duration-300 flex items-center justify-center gap-2 shrink-0 ${
                       isFormValid
-                        ? "bg-[#14110E] hover:bg-black text-white shadow-md cursor-pointer group scale-100"
-                        : "bg-[#14110E]/40 text-white/60 cursor-not-allowed shadow-none"
+                        ? "bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] shadow-md hover:shadow-lg cursor-pointer group scale-100"
+                        : "bg-[#4A202A]/40 text-white/60 cursor-not-allowed shadow-none"
                     }`}
                   >
                     <span>{loading ? c.subscribingLabel : c.subscribeLabel}</span>
-                    <Send size={16} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-white" : "text-[#8C7684]"}`} />
+                    <Send size={16} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-[#FAF8F5]" : "text-[#8C7684]"}`} />
                   </button>
                 </div>
 

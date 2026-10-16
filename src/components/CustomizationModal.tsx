@@ -606,7 +606,8 @@ export default function CustomizationModal({
                   <button
                     onClick={handleNextStep}
                     disabled={submitting}
-                    className="flex-1 disabled:opacity-60 disabled:cursor-wait bg-[#120F0D] hover:bg-[#2A231D] text-white py-3.5 px-5 rounded-xl text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-md cursor-pointer"
+                    style={{ borderRadius: "7px" }}
+                    className="flex-1 disabled:opacity-60 disabled:cursor-wait bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] py-3.5 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-md hover:shadow-lg cursor-pointer"
                   >
                     <span>{currentStep === totalSteps ? (submitting ? c.addingLabel : c.confirmLabel) : c.continueLabel}</span>
                     <span className="text-[10px] opacity-80 font-normal tracking-widest">{currentStep} OF {totalSteps}</span>

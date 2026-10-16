@@ -38,7 +38,8 @@ export default function MensFabricShowcaseGrid({
         {/* Right Action: Customize Button */}
         <Link
           href={grid?.ctaLink || "/custom-shirt"}
-          className="bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-xs font-bold tracking-[0.18em] px-6 py-2.5 rounded-full transition-all duration-300 uppercase shadow-md flex items-center gap-2 group shrink-0 self-start sm:self-auto"
+          style={{ borderRadius: "7px" }}
+          className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.18em] px-6 py-2.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg flex items-center gap-2 group shrink-0 self-start sm:self-auto cursor-pointer"
         >
           <span>{grid?.ctaLabel}</span>
           <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />

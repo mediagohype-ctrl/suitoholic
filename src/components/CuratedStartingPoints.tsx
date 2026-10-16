@@ -206,7 +206,7 @@ export default function CuratedStartingPoints({
         <div className="text-center max-w-4xl mx-auto space-y-3 sm:space-y-4 mb-10 sm:mb-14">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2">
-            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-[#4A202A]">
+            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-[#9E774C]">
               {eyebrow}
             </span>
           </div>
@@ -284,10 +284,10 @@ export default function CuratedStartingPoints({
                       e.stopPropagation();
                       onSelectLook(item);
                     }}
-                    className="w-full text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-[7px] flex items-center justify-between transition-all duration-300 shadow-2xs cursor-pointer bg-[#14110E] group-hover:bg-[#4A202A]"
+                    className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-[7px] flex items-center justify-between transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group"
                   >
                     <span>CUSTOMIZE THIS LOOK</span>
-                    <ChevronRight size={13} className="text-[#FAF8F5] group-hover:translate-x-0.5 transition-transform" />
+                    <ChevronRight size={13} className="text-[#FAF8F5] group-hover:translate-x-0.5 transition-transform stroke-[2.5]" />
                   </button>
                 </div>
               </div>

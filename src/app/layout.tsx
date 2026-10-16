@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cache } from "react";
-import { Orbitron } from "next/font/google";
+import { Orbitron, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import StudioBackground from "@/components/StudioBackground";
 import { mergeContent } from "@/content/merge";
@@ -13,6 +13,14 @@ const orbitron = Orbitron({
   subsets: ["latin"],
   variable: "--font-orbitron",
   weight: ["600", "700", "800", "900"],
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -35,12 +43,12 @@ export default async function RootLayout({
   const site = await loadSite();
 
   return (
-    <html lang="en" suppressHydrationWarning className={`h-full w-full overflow-x-clip antialiased ${orbitron.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`h-full w-full overflow-x-clip antialiased ${orbitron.variable} ${cormorant.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Great+Vibes&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Pinyon+Script&family=Great+Vibes&display=swap"
           rel="stylesheet"
         />
         <link

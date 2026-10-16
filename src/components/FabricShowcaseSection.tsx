@@ -221,7 +221,8 @@ export default function FabricShowcaseSection() {
             <div className="pt-2">
               <Link
                 href={`/custom-shirt?fabric=${encodeURIComponent(activeFabric.code)}`}
-                className="w-full bg-[#14110E] hover:bg-[#9E774C] text-[#FAF8F5] text-xs font-bold tracking-[0.2em] py-3.5 rounded-xl transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md group/btn"
+                style={{ borderRadius: "7px" }}
+                className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.2em] py-3.5 transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg group/btn"
               >
                 <span>CUSTOMIZE IN THIS FABRIC</span>
                 <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />

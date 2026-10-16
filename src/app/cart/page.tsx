@@ -148,13 +148,14 @@ export default function CartPage() {
               />
             )}
             {hasUnavailable ? (
-              <button disabled className="w-full bg-[#14110E] opacity-50 text-white py-4 rounded-xl text-xs font-bold tracking-[0.16em] uppercase cursor-not-allowed">
+              <button disabled style={{ borderRadius: "7px" }} className="w-full bg-[#4A202A] opacity-50 text-white py-4 text-xs font-extrabold tracking-[0.16em] uppercase cursor-not-allowed">
                 {c.checkoutLabel}
               </button>
             ) : (
               <Link
                 href="/checkout"
-                className="w-full bg-[#14110E] hover:bg-[#2A231D] text-white py-4 px-5 rounded-xl text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-md"
+                style={{ borderRadius: "7px" }}
+                className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] py-4 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-md hover:shadow-lg"
               >
                 <span>{c.checkoutLabel}</span>
                 <ArrowRight size={16} />

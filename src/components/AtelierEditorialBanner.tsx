@@ -37,7 +37,7 @@ export default function AtelierEditorialBanner() {
         </div>
 
         {/* Main Heading */}
-        <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold text-[#4A202A] tracking-[0.22em] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-xl sm:text-2xl lg:text-[26px] font-semibold text-[#4A202A] tracking-[0.14em] uppercase leading-tight">
           {c.videoTitle || "TAILORING IN MOTION"}
         </h2>
 
