@@ -483,13 +483,6 @@ export default function PrestigeMillsGrid() {
             transform: `translate3d(0, ${scrollYProgress * -10}px, 0)`,
           }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FAF6F8] rounded-full border border-[#DDD2D8] shadow-2xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#9E774C]" />
-            <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.24em] text-[#9E774C] uppercase">
-              HERITAGE WEAVING ATELIERS
-            </span>
-          </div>
-
           <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] uppercase text-[#4A202A] leading-tight">
             OUR ESTEEMED TEXTILE PARTNERS
           </h2>

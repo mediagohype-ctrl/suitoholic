@@ -5,7 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
-import FabricCategoryQuickRow from "@/components/FabricCategoryQuickRow";
+import LuxuryClothArchiveSection from "@/components/LuxuryClothArchiveSection";
 import MensFabricShowcaseGrid from "@/components/MensFabricShowcaseGrid";
 import FabricHeroShowcaseBanner from "@/components/FabricHeroShowcaseBanner";
 import WorldsFinestFabricsIntro from "@/components/WorldsFinestFabricsIntro";
@@ -209,280 +209,27 @@ export default function FabricsPage() {
       <PrestigeMillsGrid />
 
       {/* ========================================================================= */}
-      {/* 2. HORIZONTAL FABRIC CATEGORIES ROW (MATCHING REFERENCE SCREENSHOT)       */}
+      {/* 2. MASTER LUXURY CLOTH ARCHIVE SECTION (MATCHING REFERENCE IMAGE 1)       */}
       {/* ========================================================================= */}
-      <FabricCategoryQuickRow
-        activeCategoryId={selectedCategory}
-        onSelectCategory={(catId) => {
-          setSelectedCategory(catId);
-          const studioEl = document.getElementById("swatches-studio");
-          if (studioEl) {
-            studioEl.scrollIntoView({ behavior: "smooth" });
+      <LuxuryClothArchiveSection
+        onSelectFabricForCustomizer={(code) => {
+          const matched = fabrics.find((f) => f.code === code);
+          if (matched) {
+            setActiveFabricId(matched.id);
           }
+        }}
+        onRequestSwatchModal={(cloth) => {
+          const matched = fabrics.find((f) => f.code === cloth.code);
+          if (matched) {
+            setActiveFabricId(matched.id);
+          }
+          setSwatchError(null);
+          setSwatchModalOpen(true);
         }}
       />
 
-      {/* ========================================================================= */}
-      {/* 3. MASTER INTERACTIVE SWATCHES STUDIO & ARCHIVE                           */}
-      {/* ========================================================================= */}
-      <main id="swatches-studio" className="relative flex-1 w-full max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 space-y-10 sm:space-y-14">
+      <main className="relative flex-1 w-full max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 space-y-10 sm:space-y-14">
         
-        {/* Section Header & Filter Tabs */}
-        <div className="space-y-4 border-b border-[#D5C2AF] pb-5">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-            <div>
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] uppercase leading-tight text-[#4A202A]">
-                {studio?.heading}
-              </h2>
-              <p className="text-sm sm:text-base md:text-[17px] text-[#55473A] font-sans mt-1.5 max-w-2xl leading-relaxed">
-                {studio?.subheading}
-              </p>
-            </div>
-
-            {/* Refined Filter Tabs Bar */}
-            <div className="flex flex-wrap items-center gap-2">
-              {(studio?.filterTabs ?? []).map((tab) => {
-                const isActive = selectedCategory === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setSelectedCategory(tab.id)}
-                    className={`text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.14em] uppercase px-4 py-2 rounded-xl transition-all duration-200 border cursor-pointer ${
-                      isActive
-                        ? "bg-[#14110E] text-[#FAF8F5] border-[#14110E] shadow-sm ring-1 ring-[#14110E]"
-                        : "bg-[#FAF5EF] hover:bg-white text-[#14110E] border-[#D5C2AF]"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Master 12-Column Swatch Inspection Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
-          
-          {/* Left Column (5 Cols): Active Fabric Spec Card */}
-          {activeFabric && (
-          <div className="lg:col-span-5 bg-[#FAF5EF] border border-[#D5C2AF] rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5 shadow-sm">
-            
-            {/* Header */}
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between border-b border-[#D5C2AF]/80 pb-2.5">
-                <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#8C6D47] uppercase font-sans">
-                  {activeFabric.categoryLabel}
-                </span>
-                <span className="font-mono text-xs font-bold text-[#14110E] bg-white px-3 py-1 rounded-lg border border-[#D5C2AF] shadow-2xs">
-                  {activeFabric.code}
-                </span>
-              </div>
-
-              <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold uppercase text-[#14110E] leading-snug">
-                {activeFabric.name}
-              </h3>
-
-              {/* Rating out of 5 and Client Reviews */}
-              <div className="flex flex-wrap items-center gap-2 pt-1">
-                <div className="inline-flex items-center gap-1 bg-white border border-[#D5C2AF] px-2.5 py-1 rounded-lg text-xs font-semibold text-[#8C6D47] shadow-2xs">
-                  <span className="text-[#C5A069]">★</span>
-                  <span>{Number(activeFabric.rating ?? 5.0).toFixed(1)} / 5.0</span>
-                </div>
-                <span className="text-xs text-[#55473A] font-medium">
-                  {activeFabric.reviewsCount ? `${activeFabric.reviewsCount} Client Reviews` : "Atelier Verified"}
-                </span>
-              </div>
-
-              {/* Price & Compare-at (Discount) */}
-              {activeFabric.price && (
-                <div className="flex flex-wrap items-baseline gap-2.5 pt-1">
-                  <span className="font-serif-luxury text-xl sm:text-2xl font-bold text-[#14110E]">
-                    {activeFabric.price}
-                  </span>
-                  {activeFabric.compareAtPrice && (
-                    <span className="text-sm font-medium text-[#8C6D47] line-through">
-                      {activeFabric.compareAtPrice}
-                    </span>
-                  )}
-                  {activeFabric.compareAtPrice && (
-                    <span className="text-[10px] font-bold tracking-wider uppercase bg-[#2E7D32]/10 text-[#2E7D32] px-2 py-0.5 rounded">
-                      Special Value
-                    </span>
-                  )}
-                </div>
-              )}
-
-              <p className="text-xs sm:text-[13px] text-[#55473A] font-sans leading-relaxed pt-1">
-                {activeFabric.description}
-              </p>
-            </div>
-
-            {/* Macro Texture Preview Box with Zoom Feature */}
-            <div 
-              onClick={() => setZoomModalOpen(true)}
-              className="relative rounded-2xl overflow-hidden h-[240px] sm:h-[280px] bg-[#1E1914] border border-[#D5C2AF] shadow-inner cursor-zoom-in group"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={activeFabric.image}
-                alt={activeFabric.name}
-                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-              <div className="absolute bottom-3 right-3 bg-[#14110E]/90 backdrop-blur-md text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-lg border border-white/20 flex items-center gap-1.5 shadow-md">
-                <ZoomIn size={13} className="text-[#C5A069]" />
-                <span>{studio?.magnifyLabel}</span>
-              </div>
-            </div>
-
-            {/* Technical Specifications Grid */}
-            <div className="grid grid-cols-2 gap-2.5 pt-1 text-xs">
-              <div className="bg-white p-3 rounded-xl border border-[#D5C2AF]/70 space-y-0.5 shadow-2xs">
-                <span className="text-[9px] uppercase font-bold text-[#8C6D47] block font-sans">{studio?.specLabels?.composition}</span>
-                <span className="font-semibold text-[#14110E] text-[11px] block">{activeFabric.composition}</span>
-              </div>
-              <div className="bg-white p-3 rounded-xl border border-[#D5C2AF]/70 space-y-0.5 shadow-2xs">
-                <span className="text-[9px] uppercase font-bold text-[#8C6D47] block font-sans">{studio?.specLabels?.yarnCount}</span>
-                <span className="font-semibold text-[#14110E] text-[11px] block">{activeFabric.yarnCount}</span>
-              </div>
-              <div className="bg-white p-3 rounded-xl border border-[#D5C2AF]/70 space-y-0.5 shadow-2xs">
-                <span className="text-[9px] uppercase font-bold text-[#8C6D47] block font-sans">{studio?.specLabels?.weaveWeight}</span>
-                <span className="font-semibold text-[#14110E] text-[11px] block">{activeFabric.gsm} • {activeFabric.weight}</span>
-              </div>
-              <div className="bg-white p-3 rounded-xl border border-[#D5C2AF]/70 space-y-0.5 shadow-2xs">
-                <span className="text-[9px] uppercase font-bold text-[#8C6D47] block font-sans">{studio?.specLabels?.breathability}</span>
-                <span className="font-semibold text-[#14110E] text-[11px] block">{activeFabric.breathability}</span>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="space-y-2 pt-1">
-              <button
-                type="button"
-                onClick={() => setIsCustomizerOpen(true)}
-                style={{ borderRadius: "7px" }}
-                className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.2em] py-3.5 transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg group/btn cursor-pointer"
-              >
-                <Scissors size={14} className="text-[#FAF8F5]" />
-                <span>{studio?.customizeLabel || "CUSTOMIZE IN THIS FABRIC"}</span>
-                <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />
-              </button>
-
-              <div className="text-center pt-0.5">
-                <Link
-                  href={`${customizeBase}?fabric=${encodeURIComponent(activeFabric.code)}`}
-                  className="text-[10px] font-semibold text-[#8C6D47] hover:underline uppercase tracking-wider"
-                >
-                  Open in Dedicated 3D Configurator Studio →
-                </Link>
-              </div>
-
-              <button
-                onClick={() => { setSwatchError(null); setSwatchModalOpen(true); }}
-                className="w-full bg-white hover:bg-[#FAF5EF] text-[#14110E] border border-[#D5C2AF] text-[11px] font-bold tracking-[0.16em] py-2.5 rounded-xl transition-all duration-200 uppercase cursor-pointer shadow-2xs"
-              >
-                {studio?.requestSwatchLabel}
-              </button>
-            </div>
-
-          </div>
-          )}
-
-          {/* Right Column (7 Cols): Swatches Grid Card Gallery */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-5 items-stretch">
-            {filteredFabrics.map((fabric) => {
-              const isSelected = activeFabric?.id === fabric.id;
-              return (
-                <div
-                  key={fabric.id}
-                  onClick={() => setActiveFabricId(fabric.id)}
-                  className={`rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 transition-all duration-300 border flex flex-col justify-between space-y-3 cursor-pointer group ${
-                    isSelected
-                      ? "bg-[#14110E] text-white border-[#14110E] shadow-xl ring-2 ring-[#9E774C]/60 scale-[1.02]"
-                      : "bg-[#FAF5EF] hover:bg-white text-[#14110E] border-[#D5C2AF] hover:border-[#9E774C] shadow-2xs"
-                  }`}
-                >
-                  {/* Swatch Square Image */}
-                  <div className="relative rounded-xl overflow-hidden aspect-square w-full bg-[#221B16] border border-[#D5C2AF]/50">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={fabric.image}
-                      alt={fabric.name}
-                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    
-                    {/* Selected Check Pill */}
-                    {isSelected && (
-                      <div className="absolute top-2.5 right-2.5 bg-[#9E774C] text-white p-1.5 rounded-full shadow-md">
-                        <Check size={13} strokeWidth={3} />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Swatch Details */}
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span
-                        className={`text-[9.5px] font-bold tracking-wider uppercase font-mono ${
-                          isSelected ? "text-[#D8C7B5]" : "text-[#8C6D47]"
-                        }`}
-                      >
-                        {fabric.code}
-                      </span>
-                      <span
-                        className={`text-[8.5px] font-semibold uppercase ${
-                          isSelected ? "text-white/60" : "text-[#6E5D4F]"
-                        }`}
-                      >
-                        {fabric.category.replace("_", " & ").toUpperCase()}
-                      </span>
-                    </div>
-
-                    <h4 className="font-serif-luxury text-xs sm:text-sm font-bold uppercase tracking-tight leading-snug line-clamp-1">
-                      {fabric.name}
-                    </h4>
-
-                    <p
-                      className={`text-[10px] sm:text-[10.5px] font-sans line-clamp-1 ${
-                        isSelected ? "text-[#CDBEB0]" : "text-[#55473A]"
-                      }`}
-                    >
-                      {fabric.composition}
-                    </p>
-
-                    {/* Price, Discount (Compare-at) & Rating */}
-                    <div className="pt-1.5 flex items-baseline justify-between gap-1">
-                      <div className="flex flex-wrap items-baseline gap-1.5">
-                        <span className={`text-xs font-bold ${isSelected ? "text-white" : "text-[#14110E]"}`}>
-                          {fabric.price}
-                        </span>
-                        {fabric.compareAtPrice && (
-                          <span className={`text-[10px] line-through ${isSelected ? "text-white/60" : "text-[#8C6D47]"}`}>
-                            {fabric.compareAtPrice}
-                          </span>
-                        )}
-                      </div>
-                      <span className={`text-[10px] font-semibold flex items-center gap-0.5 ${isSelected ? "text-[#F5E6D3]" : "text-[#9E774C]"}`}>
-                        ★ {Number(fabric.rating ?? 5.0).toFixed(1)}/5
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Click to Inspect Action */}
-                  <div className="pt-2 border-t border-current/15 flex items-center justify-between text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider">
-                    <span>{isSelected ? studio?.activeSelectionLabel : studio?.inspectLabel}</span>
-                    <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform" />
-                  </div>
-
-                </div>
-              );
-            })}
-          </div>
-
-        </div>
-
         {/* ========================================================================= */}
         {/* 4. MENSWEAR BESPOKE FABRICS SHOWCASE (MATCHING REFERENCE 4-CARD GRID)     */}
         {/* ========================================================================= */}
