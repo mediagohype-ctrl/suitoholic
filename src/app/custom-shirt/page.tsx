@@ -8,8 +8,6 @@ import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
 import ShopByFabricsSection from "@/components/ShopByFabricsSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
 import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import CustomOutfitHero from "@/components/CustomOutfitHero";
@@ -352,8 +350,6 @@ function CustomShirtConfiguratorContent() {
         </div>
       </section>
 
-      {/* OUR STORY: Heritage Timeline & Master Tailor Atelier Section */}
-      <AtelierStoryTimeline {...((c as any).timelineStory || {})} />
 
       {/* CURATED STARTING POINTS: Designer Ensembles Showcase (Matching Reference Design) */}
       <CuratedStartingPoints

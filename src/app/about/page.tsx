@@ -5,6 +5,8 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
+import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
+import PrinciplesSection from "@/components/PrinciplesSection";
 import {
   Scissors,
   Ruler,
@@ -74,83 +76,71 @@ export default function AboutPage() {
   const activeMilestone = heritageMilestones[milestoneIdx] as (typeof heritageMilestones)[number] | undefined;
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-transparent text-[#14110E] antialiased">
+    <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-[#FAF6F8] text-[#14110E] antialiased">
       {/* Global Header */}
-      <Header />
+      <Header activeTab="about" />
+
+      {/* ========================================================================= */}
+      {/* 1. HERO SECTION: "Tailoring with Care and Precision" (Light Atelier Aesthetic) */}
+      {/* ========================================================================= */}
+      <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center text-center overflow-hidden border-b border-[#DDD2D8] select-none bg-[#FAF6F8] pt-32 sm:pt-36 pb-20 sm:pb-24">
+        {/* Background Tailoring Atelier Photo (Light & Sunlit with Fabric Shelves & Tailor) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/about_hero_light.jpg"
+          alt="Suitoholic Master Bespoke Tailoring Atelier"
+          className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+          loading="eager"
+        />
+
+        {/* Top Navbar Scrim for clean header contrast */}
+        <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
+
+        {/* Centered Hero Content Container */}
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+          
+          {/* Eyebrow: —— WHO WE ARE —— */}
+          <div className="inline-flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <span className="w-8 sm:w-12 h-[1px] bg-[#9E774C]/70" />
+            <span className="text-[11px] sm:text-xs font-mono tracking-[0.28em] text-[#4A202A] uppercase font-bold">
+              WHO WE ARE
+            </span>
+            <span className="w-8 sm:w-12 h-[1px] bg-[#9E774C]/70" />
+          </div>
+
+          {/* Main Headline: Tailoring with Care and Precision */}
+          <h1 className="font-serif-luxury text-4xl sm:text-5xl md:text-6xl lg:text-[70px] xl:text-[76px] font-normal leading-[1.08] tracking-tight text-[#14110E] mb-3 sm:mb-4 drop-shadow-[0_2px_14px_rgba(255,255,255,0.85)] max-w-4xl">
+            Tailoring with Care and <span className="text-[#4A202A] italic">Precision</span>
+          </h1>
+
+          {/* Subtitle kicker: FOCUSED ON QUALITY, FIT, AND SERVICE */}
+          <div className="text-[11px] sm:text-xs font-mono tracking-[0.24em] text-[#9E774C] uppercase font-bold mb-4 sm:mb-5">
+            FOCUSED ON QUALITY, FIT, AND SERVICE
+          </div>
+
+          {/* Subtle Vertical Royal Burgundy Accent Line */}
+          <div className="w-[1.5px] h-8 sm:h-10 bg-[#4A202A]/50 mb-5 sm:mb-6" />
+
+          {/* Description Paragraph */}
+          <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-[17px] text-[#221B16] font-sans leading-relaxed font-medium drop-shadow-[0_1px_8px_rgba(255,255,255,0.9)]">
+            We create custom garments that reflect your personal style, with attention to every detail from start to finish.
+          </p>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 2. OUR STORY: Heritage Timeline & Master Tailor Atelier Section           */}
+      {/* ========================================================================= */}
+      <AtelierStoryTimeline />
+
+      {/* ========================================================================= */}
+      {/* 3. WHAT WE VALUE: Principles That Guide Every Garment                     */}
+      {/* ========================================================================= */}
+      <PrinciplesSection />
 
       {/* Main Container */}
-      <main className="flex-1 w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 pt-36 sm:pt-44 lg:pt-48 pb-8 sm:pb-12 lg:pb-16 space-y-12 sm:space-y-16 lg:space-y-20 select-none">
-        
-        {/* ========================================================================= */}
-        {/* 1. HERO SECTION: Brand Mission & What Suitoholic Does                     */}
-        {/* ========================================================================= */}
-        <section className="relative w-full rounded-2xl sm:rounded-3xl lg:rounded-[36px] bg-[#EFE5D9] border border-[#D5C2AF] overflow-hidden shadow-[0_20px_50px_rgba(20,17,14,0.06)] p-6 sm:p-10 lg:p-14 xl:p-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
-            {/* Left Column: Brand Declaration & Core Business Model */}
-            <div className="lg:col-span-6 space-y-6 sm:space-y-8">
-
-              {/* Main Luxury Serif Heading */}
-              <h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-[52px] xl:text-[60px] font-normal uppercase leading-[1.04] tracking-tight text-[#14110E]">
-                {c.hero.titleLine} <br />
-                <span className="italic font-light text-[#8C6D47]">
-                  {c.hero.titleAccent}
-                </span>
-              </h1>
-
-              {/* Company Summary */}
-              <p className="text-xs sm:text-sm lg:text-[15.5px] text-[#55473A] leading-relaxed font-sans font-normal max-w-xl">
-                {withHighlight(c.hero.summary, c.hero.summaryHighlight)}
-              </p>
-
-              {/* 4 Core Operational Pillars */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 border-t border-[#D5C2AF]">
-                {c.hero.stats.map((stat, idx) => (
-                  <div key={idx} className="space-y-1">
-                    <span className="font-serif text-2xl sm:text-3xl font-bold text-[#14110E] block leading-none">
-                      {stat.value}
-                    </span>
-                    <span className="text-[9.5px] sm:text-[10.5px] text-[#8C6D47] uppercase font-bold tracking-wider block font-sans">
-                      {stat.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
-                <Link
-                  href={c.hero.primaryButtonHref}
-                  style={{ borderRadius: "7px" }}
-                  className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[11px] sm:text-xs font-extrabold tracking-[0.2em] px-8 sm:px-10 py-4 transition-all duration-300 uppercase shadow-md hover:shadow-lg flex items-center gap-2 group whitespace-nowrap cursor-pointer"
-                >
-                  <span>{c.hero.primaryButtonLabel}</span>
-                  <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
-                </Link>
-                
-                <Link
-                  href={c.hero.secondaryButtonHref}
-                  className="bg-transparent hover:bg-black/5 text-[#14110E] border border-[#14110E]/40 hover:border-[#14110E] text-[11px] sm:text-xs font-bold tracking-[0.2em] px-7 sm:px-8 py-4 transition-all duration-300 uppercase whitespace-nowrap"
-                >
-                  {c.hero.secondaryButtonLabel}
-                </Link>
-              </div>
-
-            </div>
-
-            {/* Right Column: Authentic Editorial Atelier Cutting Bench Visual (Clean text-free presentation) */}
-            <div className="lg:col-span-6 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-[#D5C2AF] h-[360px] sm:h-[480px] lg:h-[540px] bg-[#1E1915] group">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={c.hero.image}
-                alt={c.hero.imageAlt}
-                className="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
-                loading="eager"
-              />
-            </div>
-
-          </div>
-        </section>
+      <main className="flex-1 w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 pt-12 sm:pt-16 lg:pt-20 pb-8 sm:pb-12 lg:pb-16 space-y-12 sm:space-y-16 lg:space-y-20 select-none">
 
         {/* ========================================================================= */}
         {/* 2. WHAT WE CRAFT: The 4 Core Garment Categories & Services                */}

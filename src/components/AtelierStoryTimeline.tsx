@@ -113,7 +113,7 @@ export default function AtelierStoryTimeline({
           </div>
 
           {/* RIGHT COLUMN: Vertical Golden Timeline & Milestone Cards in CSS Grid */}
-          <div className="lg:col-span-7 pt-4 sm:pt-6 lg:pt-10">
+          <div className="lg:col-span-7 pt-8 sm:pt-12 lg:pt-20 xl:pt-24">
             <div className="relative grid grid-cols-1 gap-8 sm:gap-10 lg:gap-11">
               
               {/* Continuous Golden Timeline Line (aligned on x = 12px) */}
