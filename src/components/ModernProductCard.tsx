@@ -49,7 +49,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   return (
     <div className="group flex flex-col w-full">
       {/* Upper Tall Rounded Image Container */}
-      <div className="relative w-full aspect-[3/4.1] min-h-[350px] sm:min-h-[410px] lg:min-h-[470px] xl:min-h-[510px] rounded-[9px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/70 shadow-2xs transition-all duration-300 group-hover:shadow-md">
+      <div className="relative w-full aspect-[3/4.1] min-h-[350px] sm:min-h-[410px] lg:min-h-[470px] xl:min-h-[510px] rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-2xs transition-all duration-300 group-hover:shadow-md">
         
         {/* Main Product Image */}
         <Link href={`/product/${product.slug}`} className="block w-full h-full">
@@ -76,7 +76,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
             size={17}
             className={
               isSaved
-                ? "text-[#C5A069] fill-[#C5A069]"
+                ? "text-black fill-black bg-white rounded-full p-0.5"
                 : "text-white fill-white/20 stroke-white stroke-[2]"
             }
           />
@@ -134,12 +134,12 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           <Link href={`/product/${product.slug}`} className="block">
             <h3 
               title={product.name}
-              className="text-[11px] sm:text-[12px] font-bold text-[#14110E] hover:text-[#9E774C] transition-colors truncate tracking-wide uppercase leading-snug"
+              className="text-[11px] sm:text-[12px] font-bold text-black hover:opacity-75 transition-opacity truncate tracking-wide uppercase leading-snug"
             >
               {product.name}
             </h3>
           </Link>
-          <div className="text-[10px] sm:text-[11px] font-normal text-[#665749] tracking-normal uppercase">
+          <div className="text-[10px] sm:text-[11px] font-normal text-[#666666] tracking-normal uppercase">
             RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : product.price.replace("₹", "").trim()}
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           href={`/product/${product.slug}`}
           aria-label={`View details and customize ${product.name}`}
           title="Customize Fit & Product Details"
-          className="shrink-0 p-0.5 text-[#14110E] hover:text-[#9E774C] transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
+          className="shrink-0 p-0.5 text-black hover:opacity-75 transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
         >
           <Plus size={16} className="stroke-[2]" />
         </Link>

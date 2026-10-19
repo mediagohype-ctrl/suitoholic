@@ -47,29 +47,31 @@
 }
 
 :root {
+  --bg-canvas: #ECEAE5;
   --bg-primary: #FFFFFF;
-  --bg-surface-tint: #EEE5EA;
-  --bg-sand: #EEE5EA;
-  --bg-sand-light: #F7F3F5;
+  --bg-surface-tint: #F7F5F0;
+  --bg-sand: #ECEAE5;
+  --bg-sand-light: #F7F5F0;
   --bg-sand-glow: #FFFFFF;
-  --bg-sand-dark: #E6DCE2;
+  --bg-sand-dark: #E2DFD8;
   --bg-bar: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-card-dark: #14110E;
-  --bg-dark: #110E0D;
-  --accent-burgundy: #4A202A;
-  --accent-gold: #9E774C;
-  --accent-gold-light: #C5A069;
-  --text-dark: #14110E;
-  --text-muted: #5A4E42;
-  --text-light: #FAF8F5;
-  --border-color: #DDD2D8;
-  --border-light: #DDD2D8;
+  --bg-card-dark: #0A0A0A;
+  --bg-dark: #000000;
+  --accent-black: #000000;
+  --accent-burgundy: #000000;
+  --accent-gold: #111111;
+  --accent-gold-light: #222222;
+  --text-dark: #000000;
+  --text-muted: #666666;
+  --text-light: #FFFFFF;
+  --border-color: #E5E3DD;
+  --border-light: #EBE9E4;
 }
 
 html, body {
-  background-color: #FFFFFF;
-  color: #14110E;
+  background-color: #ECEAE5;
+  color: #000000;
   font-family: 'nits-Pro-Display-Medium', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: clip;
   max-width: 100vw;
@@ -198,10 +200,10 @@ html, body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FFFFFF;
+  background: #ECEAE5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C5A069;
+  background: #111111;
   border-radius: 3px;
 }
 

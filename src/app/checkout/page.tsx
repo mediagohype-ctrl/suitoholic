@@ -14,14 +14,14 @@ import { saveLastOrder } from "@/lib/orders";
 import type { Order } from "@/lib/types";
 
 const inputClass =
-  "w-full bg-white border border-[#D5C2AF] rounded-xl px-3.5 py-2.5 text-sm text-[#14110E] focus:outline-none focus:ring-2 focus:ring-[#9E774C] placeholder:text-[#A89888]";
+  "w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-4 py-3 text-sm text-black focus:outline-none focus:border-black placeholder:text-[#999999]";
 
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
-    <label className="block space-y-1">
-      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#3A3028]">{label}</span>
+    <label className="block space-y-1.5">
+      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#666666]">{label}</span>
       {children}
-      {error && <span className="block text-[11px] text-[#B23B3B]">{error}</span>}
+      {error && <span className="block text-[11px] text-red-600">{error}</span>}
     </label>
   );
 }
@@ -108,9 +108,9 @@ export default function CheckoutPage() {
   if (!loading && items.length === 0 && !submitting) {
     return (
       <PageShell eyebrow={c.eyebrow} title={c.checkout.title}>
-        <div className="max-w-md mx-auto text-center bg-[#FAF5EE] border border-[#E2D4C3] rounded-3xl p-10 space-y-4">
-          <h2 className="font-serif-luxury text-2xl uppercase">{c.emptyTitle}</h2>
-          <Link href="/shop" className="inline-flex items-center gap-2 bg-[#14110E] hover:bg-[#9E774C] text-white px-6 py-3 rounded-xl text-[11px] font-bold uppercase tracking-[0.16em]">
+        <div className="max-w-md mx-auto text-center bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-10 space-y-4 shadow-sm">
+          <h2 className="font-serif-luxury text-2xl uppercase text-black">{c.emptyTitle}</h2>
+          <Link href="/shop" className="inline-flex items-center gap-2 bg-black hover:bg-neutral-800 text-white px-8 py-3.5 rounded-full text-[11px] font-bold uppercase tracking-[0.16em] shadow-sm">
             {c.continueShoppingLabel}
           </Link>
         </div>
@@ -122,8 +122,8 @@ export default function CheckoutPage() {
     <PageShell eyebrow={c.eyebrow} title={c.checkout.title} showShowcase={false}>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
         <div className="lg:col-span-7 space-y-6">
-          <section className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 sm:p-6 space-y-4">
-            <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase">{c.checkout.contactHeading}</h2>
+          <section className="bg-white border border-[#E5E3DD] rounded-[24px] p-6 sm:p-7 shadow-sm space-y-4">
+            <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase text-black">{c.checkout.contactHeading}</h2>
             <Field label="Full name" error={fieldErrors.name}>
               <input required autoComplete="name" className={inputClass} value={form.name} onChange={set("name")} />
             </Field>
@@ -137,8 +137,8 @@ export default function CheckoutPage() {
             </div>
           </section>
 
-          <section className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 sm:p-6 space-y-4">
-            <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase">{c.checkout.shippingHeading}</h2>
+          <section className="bg-white border border-[#E5E3DD] rounded-[24px] p-6 sm:p-7 shadow-sm space-y-4">
+            <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase text-black">{c.checkout.shippingHeading}</h2>
             <Field label="Address" error={fieldErrors.line1}>
               <input required autoComplete="address-line1" className={inputClass} value={form.line1} onChange={set("line1")} />
             </Field>
@@ -161,12 +161,12 @@ export default function CheckoutPage() {
             </Field>
           </section>
 
-          <section className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 sm:p-6 space-y-3">
-            <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase">{c.checkout.paymentHeading}</h2>
+          <section className="bg-white border border-[#E5E3DD] rounded-[24px] p-6 sm:p-7 shadow-sm space-y-3">
+            <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase text-black">{c.checkout.paymentHeading}</h2>
             {paymentOptions.map((opt) => (
               <label
                 key={opt.id}
-                className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${paymentMethod === opt.id ? "border-[#8C6D47] bg-[#EAE0D3] ring-1 ring-[#8C6D47]" : "border-[#D5C2AF] bg-white"}`}
+                className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === opt.id ? "border-black bg-[#F5F4F0] ring-1 ring-black" : "border-[#E5E3DD] bg-white hover:border-black/40"}`}
               >
                 <input
                   type="radio"
@@ -174,11 +174,11 @@ export default function CheckoutPage() {
                   value={opt.id}
                   checked={paymentMethod === opt.id}
                   onChange={() => setPaymentMethod(opt.id)}
-                  className="mt-1 accent-[#7A4B1A]"
+                  className="mt-1 accent-black"
                 />
                 <span>
-                  <span className="block text-xs font-bold uppercase tracking-wider">{opt.label}</span>
-                  <span className="block text-[11px] text-[#55473B] mt-0.5">
+                  <span className="block text-xs font-bold uppercase tracking-wider text-black">{opt.label}</span>
+                  <span className="block text-[11px] text-[#666666] mt-0.5">
                     {opt.hint}
                     {opt.id === "upi" && settings.upiId ? ` (${settings.upiId})` : ""}
                   </span>
@@ -191,27 +191,27 @@ export default function CheckoutPage() {
           </section>
         </div>
 
-        <aside className="lg:col-span-5 lg:sticky lg:top-32 bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
-          <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase border-b border-[#E8DACB] pb-2">{c.summaryTitle}</h2>
+        <aside className="lg:col-span-5 lg:sticky lg:top-32 bg-white border border-[#E5E3DD] rounded-[24px] p-6 shadow-sm space-y-4">
+          <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase border-b border-[#E5E3DD] pb-3 text-black">{c.summaryTitle}</h2>
           <ul className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
             {items.map((item) => (
               <li key={item.id} className="flex gap-3">
-                <div className="relative w-14 h-16 rounded-lg overflow-hidden bg-[#241D17] shrink-0">
+                <div className="relative w-14 h-16 rounded-xl overflow-hidden bg-[#ECEAE5] shrink-0 border border-[#E5E3DD]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={item.image} alt="" className="w-full h-full object-cover object-top" />
-                  <span className="absolute -top-0 -right-0 bg-[#14110E] text-white text-[9px] font-bold min-w-4 h-4 px-1 rounded-bl-md flex items-center justify-center">
+                  <span className="absolute -top-0 -right-0 bg-black text-white text-[9px] font-bold min-w-4 h-4 px-1 rounded-bl-md flex items-center justify-center">
                     {item.quantity}
                   </span>
                 </div>
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex justify-between gap-2">
-                    <p className="text-xs font-bold uppercase leading-snug">{item.name}</p>
-                    <p className="text-xs font-semibold whitespace-nowrap">{item.lineTotalLabel}</p>
+                    <p className="text-xs font-bold uppercase leading-snug text-black">{item.name}</p>
+                    <p className="text-xs font-semibold whitespace-nowrap text-black">{item.lineTotalLabel}</p>
                   </div>
                   {item.customization ? (
                     <CustomizationDetails customization={item.customization} />
                   ) : (
-                    item.size && <p className="text-[11px] text-[#55473B]">{c.standardSizeLabel}: {item.size}</p>
+                    item.size && <p className="text-[11px] text-[#666666]">{c.standardSizeLabel}: {item.size}</p>
                   )}
                 </div>
               </li>
@@ -227,15 +227,15 @@ export default function CheckoutPage() {
             />
           )}
           {paymentMethod === "partial_cod" && cart && (
-            <div className="rounded-xl border border-[#D5C2AF] bg-white p-3.5 space-y-2 text-xs">
-              <div className="flex justify-between font-semibold text-[#7A4B1A]">
+            <div className="rounded-2xl border border-[#E5E3DD] bg-[#F5F4F0] p-4 space-y-2 text-xs">
+              <div className="flex justify-between font-semibold text-black">
                 <span>Pay Online Now ({advancePercent}% Advance):</span>
                 <span>
                   {cart.currencySymbol}
                   {(Math.round((cart.total * (advancePercent / 100)) * 100) / 100).toLocaleString("en-IN")}
                 </span>
               </div>
-              <div className="flex justify-between font-bold text-[#14110E] border-t border-[#EEF0F3] pt-1.5">
+              <div className="flex justify-between font-bold text-black border-t border-[#E5E3DD] pt-2">
                 <span>Remaining on Delivery (COD):</span>
                 <span>
                   {cart.currencySymbol}
@@ -246,17 +246,16 @@ export default function CheckoutPage() {
               </div>
             </div>
           )}
-          {settings.orderNotice && <p className="text-[11px] text-[#55473B] bg-white/70 rounded-xl p-3 border border-[#E8DACB]">{settings.orderNotice}</p>}
+          {settings.orderNotice && <p className="text-[11px] text-[#666666] bg-[#F5F4F0] rounded-xl p-3 border border-[#E5E3DD]">{settings.orderNotice}</p>}
           {error && (
-            <div role="alert" className="flex items-start gap-2 bg-[#9B2C2C] text-white text-xs font-semibold rounded-xl px-4 py-3">
+            <div role="alert" className="flex items-start gap-2 bg-red-600 text-white text-xs font-semibold rounded-xl px-4 py-3">
               <AlertCircle size={16} className="shrink-0 mt-px" /> {error}
             </div>
           )}
           <button
             type="submit"
             disabled={submitting || loading || paymentOptions.length === 0}
-            style={{ borderRadius: "7px" }}
-            className="w-full bg-[#4A202A] hover:bg-[#34141D] disabled:opacity-60 text-[#FAF8F5] py-4 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg cursor-pointer"
+            className="w-full bg-black hover:bg-neutral-800 disabled:opacity-60 text-white py-4 px-6 rounded-full text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
           >
             <Lock size={14} />{" "}
             {submitting
@@ -267,7 +266,7 @@ export default function CheckoutPage() {
                 ).toLocaleString("en-IN")} Advance & Place Order`
               : c.checkout.placeOrderLabel}
           </button>
-          <Link href="/cart" className="inline-flex items-center gap-1 text-[11px] font-bold tracking-widest text-[#9E774C] uppercase hover:underline">
+          <Link href="/cart" className="inline-flex items-center gap-1 text-[11px] font-bold tracking-widest text-black hover:text-[#666666] uppercase transition-colors">
             <ArrowLeft size={12} /> {c.checkout.backToBagLabel}
           </Link>
         </aside>

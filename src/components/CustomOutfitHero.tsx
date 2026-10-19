@@ -33,9 +33,9 @@ const INITIAL_GARMENTS: OutfitGarment[] = [
 /* ========================================================================= */
 
 function KurtaIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#4A202A" : "#8C7B83";
-  const strokeColor = "#FAF8F5";
-  const dotColor = "#FAF8F5";
+  const fillColor = isChecked ? "#000000" : "#888888";
+  const strokeColor = "#FFFFFF";
+  const dotColor = "#FFFFFF";
   return (
     <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Mandarin Collar */}
@@ -44,7 +44,7 @@ function KurtaIcon({ className = "w-14 h-16", isChecked = false }: { className?:
       <path
         d="M32 14L16 28L23 35L29 27V88H38V50H42V88H51V27L57 35L64 28L48 14H32Z"
         fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(74,32,42,0.12))"
+        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
       />
       {/* Placket line & pocket */}
       <line x1="40" y1="14" x2="40" y2="38" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
@@ -58,8 +58,8 @@ function KurtaIcon({ className = "w-14 h-16", isChecked = false }: { className?:
 }
 
 function PajamaIcon({ className = "w-12 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#4A202A" : "#8C7B83";
-  const strokeColor = "#FAF8F5";
+  const fillColor = isChecked ? "#000000" : "#888888";
+  const strokeColor = "#FFFFFF";
   return (
     <svg viewBox="0 0 70 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Waistband */}
@@ -68,7 +68,7 @@ function PajamaIcon({ className = "w-12 h-16", isChecked = false }: { className?
       <path
         d="M22 14L24 50L28 88H33L35 36L37 88H42L46 50L48 14H22Z"
         fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(74,32,42,0.12))"
+        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
       />
       {/* Fabric gathering / pleat lines */}
       <path d="M26 58C29 60 28 62 31 63" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.8" />
@@ -80,8 +80,8 @@ function PajamaIcon({ className = "w-12 h-16", isChecked = false }: { className?
 }
 
 function SadriIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#4A202A" : "#8C7B83";
-  const strokeColor = "#FAF8F5";
+  const fillColor = isChecked ? "#000000" : "#888888";
+  const strokeColor = "#FFFFFF";
   return (
     <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Mandarin Collar */}
@@ -90,7 +90,7 @@ function SadriIcon({ className = "w-14 h-16", isChecked = false }: { className?:
       <path
         d="M31 16L24 23L27 34L26 78L40 82L54 78L53 34L56 23L49 16H31Z"
         fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(74,32,42,0.12))"
+        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
       />
       {/* Center opening line */}
       <line x1="40" y1="16" x2="40" y2="82" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
@@ -109,15 +109,15 @@ function SadriIcon({ className = "w-14 h-16", isChecked = false }: { className?:
 }
 
 function CoatIcon({ className = "w-16 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#4A202A" : "#8C7B83";
-  const strokeColor = "#FAF8F5";
+  const fillColor = isChecked ? "#000000" : "#888888";
+  const strokeColor = "#FFFFFF";
   return (
     <svg viewBox="0 0 84 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Tailored Coat / Blazer with Lapels */}
       <path
         d="M32 14L15 26L21 44L22 84L42 86L62 84L63 44L69 26L52 14H32Z"
         fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(74,32,42,0.12))"
+        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
       />
       {/* Inner lapel cuts */}
       <path d="M32 14L37 36L42 56L47 36L52 14" stroke={strokeColor} strokeWidth="1.4" strokeLinecap="round" />
@@ -134,8 +134,8 @@ function CoatIcon({ className = "w-16 h-16", isChecked = false }: { className?: 
 }
 
 function BespokeShirtIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#4A202A" : "#8C7B83";
-  const strokeColor = "#FAF8F5";
+  const fillColor = isChecked ? "#000000" : "#888888";
+  const strokeColor = "#FFFFFF";
   return (
     <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Cutaway Collar */}
@@ -144,7 +144,7 @@ function BespokeShirtIcon({ className = "w-14 h-16", isChecked = false }: { clas
       <path
         d="M30 14L14 26L20 34L26 27V82L40 84L54 82V27L60 34L66 26L50 14H30Z"
         fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(74,32,42,0.12))"
+        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
       />
       {/* Placket */}
       <line x1="40" y1="18" x2="40" y2="84" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
@@ -159,8 +159,8 @@ function BespokeShirtIcon({ className = "w-14 h-16", isChecked = false }: { clas
 }
 
 function TrouserIcon({ className = "w-12 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#4A202A" : "#8C7B83";
-  const strokeColor = "#FAF8F5";
+  const fillColor = isChecked ? "#000000" : "#888888";
+  const strokeColor = "#FFFFFF";
   return (
     <svg viewBox="0 0 70 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Waistband & loops */}
@@ -169,7 +169,7 @@ function TrouserIcon({ className = "w-12 h-16", isChecked = false }: { className
       <path
         d="M22 15L24 50L26 86H33L35 38L37 86H44L46 50L48 15H22Z"
         fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(74,32,42,0.12))"
+        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
       />
       {/* Crease lines */}
       <line x1="29.5" y1="20" x2="29.5" y2="84" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.7" />
@@ -179,15 +179,15 @@ function TrouserIcon({ className = "w-12 h-16", isChecked = false }: { className
 }
 
 function WaistcoatIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#4A202A" : "#8C7B83";
-  const strokeColor = "#FAF8F5";
+  const fillColor = isChecked ? "#000000" : "#888888";
+  const strokeColor = "#FFFFFF";
   return (
     <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* V-Neck Cut */}
       <path
         d="M32 14L24 22L27 34L26 78L40 85L54 78L53 34L56 22L48 14L40 32L32 14Z"
         fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(74,32,42,0.12))"
+        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
       />
       {/* Center line & buttons */}
       <line x1="40" y1="32" x2="40" y2="85" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
@@ -244,76 +244,70 @@ export default function CustomOutfitHero() {
     : "Design a complete bespoke suit set for men — build the tailored jacket and trousers together, add a crisp bespoke shirt or waistcoat, and have it hand-cut to your unique posture in Delhi NCR.";
 
   return (
-    <section className="relative w-full min-h-[640px] sm:min-h-[720px] lg:min-h-[780px] flex items-center justify-center overflow-hidden bg-[#FBF9F7] select-none pt-[76px] sm:pt-[92px] lg:pt-[100px] pb-12 sm:pb-16 border-b border-[#DDD2D8]">
-      {/* ===================================================================== */}
-      {/* 1. CINEMATIC DAYLIGHT PALACE PHOTOSHOOT (PURE & CLEAR - ZERO SHADE)   */}
-      {/* ===================================================================== */}
+    <section className="relative w-full min-h-[640px] sm:min-h-[720px] lg:min-h-[780px] flex items-center justify-center overflow-hidden bg-[#ECEAE5] select-none pt-[76px] sm:pt-[92px] lg:pt-[100px] pb-12 sm:pb-16 border-b border-[#E5E3DD]">
+      {/* 1. CINEMATIC DAYLIGHT PHOTOSHOOT */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/banners/outfit_hero_bg.jpg"
-          alt="Gentleman in bespoke tailored burgundy kurta outfit in sunlit royal palace"
-          className="w-full h-full object-cover object-center"
+          src={isEthnic ? "/banners/outfit_hero_ethnic_light.jpg" : "/banners/outfit_hero_suit_light.jpg"}
+          alt={isEthnic ? "Gentleman in bespoke ethnic outfit" : "Gentleman in bespoke tailored suit"}
+          className="w-full h-full object-cover object-center transition-all duration-700 ease-in-out"
         />
+        {/* Subtle left scrim for flawless text readability on bright background */}
+        <div className="absolute inset-y-0 left-0 w-full lg:w-3/5 bg-gradient-to-r from-white/70 via-white/35 to-transparent pointer-events-none" />
       </div>
 
-      {/* ===================================================================== */}
-      {/* 2. HERO CONTENT GRID: EDITORIAL COPY (LEFT) & OUTFIT BUILDER (RIGHT)  */}
-      {/* ===================================================================== */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+      {/* 2. HERO CONTENT GRID */}
+      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           
-          {/* ================================================================= */}
-          {/* LEFT COLUMN: HERO HEADLINE, BADGES, PARAGRAPH, CTA BUTTONS        */}
-          {/* ================================================================= */}
+          {/* LEFT COLUMN: HERO HEADLINE & CTA BUTTONS */}
           <div className="lg:col-span-5 xl:col-span-5 text-left space-y-4 sm:space-y-6">
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rotate-45 bg-[#9E774C] inline-block" />
-              <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-[#9E774C]">
+              <span className="w-1.5 h-1.5 rotate-45 bg-black inline-block" />
+              <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-black">
                 SUITOHOLIC BESPOKE ATELIER
               </span>
-              <span className="w-1.5 h-1.5 rotate-45 bg-[#9E774C] inline-block" />
+              <span className="w-1.5 h-1.5 rotate-45 bg-black inline-block" />
             </div>
 
             {/* Main Editorial Headline */}
-            <h1 className="cormorant-garamond-700 text-3xl sm:text-4xl md:text-[38px] lg:text-[42px] xl:text-[45px] font-bold text-[#14110E] tracking-tight leading-[1.12]">
+            <h1 className="cormorant-garamond-700 text-3xl sm:text-4xl md:text-[38px] lg:text-[42px] xl:text-[45px] font-bold text-black tracking-tight leading-[1.12]">
               {isEthnic ? (
                 <>
                   Custom Kurta Pajama{" "}
-                  <span className="text-[#4A202A] italic font-serif">Sets for Men</span>
+                  <span className="text-black italic font-serif">Sets for Men</span>
                 </>
               ) : (
                 <>
                   Custom Bespoke{" "}
-                  <span className="text-[#4A202A] italic font-serif">Suits for Men</span>
+                  <span className="text-black italic font-serif">Suits for Men</span>
                 </>
               )}
             </h1>
 
             {/* Narrative Subtitle */}
-            <p className="text-sm sm:text-[14px] text-[#3D332B] font-sans font-normal leading-[1.75] max-w-md">
+            <p className="text-sm sm:text-[14px] text-[#444444] font-sans font-normal leading-[1.75] max-w-md">
               {heroDescription}
             </p>
 
             {/* Action Buttons: START DESIGNING & VIEW COLLECTION */}
             <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3.5 sm:gap-4">
-              {/* Primary Burgundy Button */}
+              {/* Primary Black Button */}
               <button
                 type="button"
                 onClick={handleStartDesigning}
-                style={{ borderRadius: "7px" }}
-                className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.98] text-[#FAF8F5] font-extrabold text-xs sm:text-[13px] tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group"
+                className="inline-flex items-center gap-2.5 px-8 sm:px-9 py-4 bg-black hover:bg-neutral-800 active:scale-[0.98] text-white font-bold text-xs sm:text-[13px] tracking-[0.16em] uppercase rounded-full transition-all duration-300 shadow-sm hover:shadow cursor-pointer group"
               >
                 <span>START DESIGNING</span>
                 <ChevronRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 stroke-[2.5]" />
               </button>
 
-              {/* Secondary Light Palette Luxury Outline Button */}
+              {/* Secondary Luxury Outline Button */}
               <Link
                 href="/shop"
-                style={{ borderRadius: "7px" }}
-                className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 bg-white/95 hover:bg-white border border-[#DDD2D8] hover:border-[#4A202A] active:scale-[0.98] text-[#14110E] hover:text-[#4A202A] font-bold text-xs sm:text-[13px] tracking-[0.16em] uppercase transition-all duration-300 cursor-pointer group shadow-2xs hover:shadow-sm"
+                className="inline-flex items-center gap-2.5 px-8 sm:px-9 py-4 bg-white hover:bg-neutral-100 border border-[#E5E3DD] active:scale-[0.98] text-black font-bold text-xs sm:text-[13px] tracking-[0.16em] uppercase rounded-full transition-all duration-300 cursor-pointer group shadow-sm hover:shadow"
               >
                 <span>VIEW COLLECTION</span>
                 <ChevronRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 stroke-[2.5]" />
@@ -321,39 +315,30 @@ export default function CustomOutfitHero() {
             </div>
           </div>
 
-          {/* ================================================================= */}
-          {/* MIDDLE CLEAR COLUMN: OPEN WINDOW WHERE CENTERED MODEL STANDS      */}
-          {/* ================================================================= */}
+          {/* MIDDLE CLEAR COLUMN */}
           <div className="hidden lg:block lg:col-span-2 xl:col-span-2 pointer-events-none" />
 
-          {/* ================================================================= */}
-          {/* RIGHT COLUMN: FLOATING "BUILD YOUR OUTFIT" INTERACTIVE CARD        */}
-          {/* ================================================================= */}
+          {/* RIGHT COLUMN: FLOATING "BUILD YOUR OUTFIT" INTERACTIVE CARD */}
           <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
             <div
-              style={{ borderRadius: "7px" }}
-              className="w-full max-w-[420px] bg-white/95 backdrop-blur-xl border border-[#DDD2D8] shadow-[0_16px_40px_rgba(74,32,42,0.08)] p-5 sm:p-6 lg:p-7 relative overflow-hidden"
+              className="w-full max-w-[440px] bg-white/95 backdrop-blur-xl border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] shadow-sm p-6 sm:p-7 relative overflow-hidden"
             >
-              {/* Subtle Ambient Brand Glow Behind Card */}
-              <div className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-36 bg-[#9E774C]/15 blur-3xl rounded-full" />
-
               {/* Card Header Title */}
               <div className="text-center mb-4">
-                <h3 className="font-serif-luxury text-xs sm:text-sm font-bold tracking-[0.24em] uppercase text-[#4A202A]">
+                <h3 className="font-serif-luxury text-xs sm:text-sm font-bold tracking-[0.24em] uppercase text-black">
                   BUILD YOUR OUTFIT
                 </h3>
               </div>
 
-              {/* Category Preset Switcher: Ethnic Set vs. Bespoke Suit */}
-              <div className="flex items-center justify-center gap-2 mb-4">
+              {/* Category Preset Switcher */}
+              <div className="flex items-center justify-center gap-2 mb-5">
                 <button
                   type="button"
                   onClick={() => setActiveCategory("ethnic")}
-                  style={{ borderRadius: "7px" }}
-                  className={`px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     isEthnic
-                      ? "bg-[#4A202A] text-[#FAF8F5] shadow-xs font-extrabold"
-                      : "bg-[#EEE5EA]/70 hover:bg-[#EEE5EA] text-[#5A4E42] border border-[#DDD2D8]"
+                      ? "bg-black text-white shadow-sm font-extrabold"
+                      : "bg-[#F5F4F0] hover:bg-neutral-200 text-[#666666] border border-[#E5E3DD]"
                   }`}
                 >
                   Ethnic Set
@@ -361,51 +346,48 @@ export default function CustomOutfitHero() {
                 <button
                   type="button"
                   onClick={() => setActiveCategory("bespoke_suit")}
-                  style={{ borderRadius: "7px" }}
-                  className={`px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     !isEthnic
-                      ? "bg-[#4A202A] text-[#FAF8F5] shadow-xs font-extrabold"
-                      : "bg-[#EEE5EA]/70 hover:bg-[#EEE5EA] text-[#5A4E42] border border-[#DDD2D8]"
+                      ? "bg-black text-white shadow-sm font-extrabold"
+                      : "bg-[#F5F4F0] hover:bg-neutral-200 text-[#666666] border border-[#E5E3DD]"
                   }`}
                 >
                   Bespoke Suit
                 </button>
               </div>
 
-              {/* 2x2 Interactive Garment Grid matching reference screenshot */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-3.5 mb-4">
+              {/* 2x2 Interactive Garment Grid */}
+              <div className="grid grid-cols-2 gap-3 sm:gap-3.5 mb-5">
                 {currentCategoryGarments.map((garment) => {
                   const isChecked = garment.selected;
                   return (
                     <div
                       key={garment.id}
                       onClick={() => toggleGarment(garment.id)}
-                      style={{ borderRadius: "7px" }}
-                      className={`relative flex flex-col justify-between p-3.5 sm:p-4 min-h-[148px] sm:min-h-[160px] transition-all duration-300 cursor-pointer select-none group ${
+                      className={`relative flex flex-col justify-between p-4 min-h-[150px] sm:min-h-[160px] rounded-2xl transition-all duration-300 cursor-pointer select-none group ${
                         isChecked
-                          ? "bg-[#FAF6F8] border-2 border-[#4A202A] ring-1 ring-[#4A202A]/20 shadow-xs"
-                          : "bg-white border border-[#DDD2D8] hover:border-[#9E774C]/60 hover:bg-[#FAF6F8]"
+                          ? "bg-white border-2 border-black shadow-sm"
+                          : "bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black/50"
                       }`}
                     >
-                      {/* Top Bar: Garment Name & Toggle Indicator */}
+                      {/* Top Bar */}
                       <div className="flex items-center justify-between gap-1 w-full z-10">
-                        <span className={`text-xs sm:text-[13px] font-bold ${isChecked ? "text-[#4A202A]" : "text-[#5A4E42] group-hover:text-[#14110E]"}`}>
+                        <span className={`text-xs sm:text-[13px] font-bold ${isChecked ? "text-black" : "text-[#666666] group-hover:text-black"}`}>
                           {garment.name}
                         </span>
 
-                        {/* Round Checkmark or Plus Circle */}
                         {isChecked ? (
-                          <div className="w-5 h-5 rounded-full bg-[#4A202A] text-white flex items-center justify-center shrink-0 shadow-xs">
+                          <div className="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
                             <Check size={12} strokeWidth={3} />
                           </div>
                         ) : (
-                          <div className="w-5 h-5 rounded-full bg-[#EEE5EA] text-[#5A4E42] border border-[#DDD2D8] flex items-center justify-center shrink-0 group-hover:border-[#9E774C]/60 group-hover:text-[#4A202A]">
+                          <div className="w-5 h-5 rounded-full bg-white text-[#666666] border border-[#E5E3DD] flex items-center justify-center shrink-0 group-hover:border-black group-hover:text-black">
                             <Plus size={11} strokeWidth={2.5} />
                           </div>
                         )}
                       </div>
 
-                      {/* Center: Vector Garment Silhouette with subtle animation */}
+                      {/* Center Silhouette */}
                       <div className="flex-1 flex items-center justify-center py-2 transition-transform duration-300 group-hover:scale-105">
                         {garment.type === "kurta" && <KurtaIcon isChecked={isChecked} />}
                         {garment.type === "pajama" && <PajamaIcon isChecked={isChecked} />}
@@ -421,19 +403,18 @@ export default function CustomOutfitHero() {
                 })}
               </div>
 
-              {/* Status Pill: Garments Selected count */}
-              <div className="text-center mb-4">
-                <span className="inline-block text-[11px] text-[#5A4E42] font-semibold tracking-wide">
+              {/* Status Pill */}
+              <div className="text-center mb-5">
+                <span className="inline-block text-[11px] text-[#666666] font-semibold tracking-wide">
                   {selectedCount} of 4 Garments Selected • 100% Fit Guarantee
                 </span>
               </div>
 
-              {/* Wide CTA Button: START CUSTOMIZING > */}
+              {/* Wide CTA Button */}
               <button
                 type="button"
                 onClick={handleStartCustomizing}
-                style={{ borderRadius: "7px" }}
-                className="w-full py-3.5 sm:py-4 bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.99] text-[#FAF8F5] font-extrabold text-xs sm:text-[13px] tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
+                className="w-full py-4 bg-black hover:bg-neutral-800 active:scale-[0.99] text-white font-bold rounded-full text-xs sm:text-[13px] tracking-[0.16em] uppercase transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center gap-2 cursor-pointer group"
               >
                 <span>START CUSTOMIZING</span>
                 <ChevronRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 stroke-[2.5]" />

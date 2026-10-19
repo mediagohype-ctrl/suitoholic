@@ -195,18 +195,14 @@ export default function CuratedStartingPoints({
   onSelectLook,
 }: CuratedStartingPointsProps) {
   return (
-    <section id="curated-looks" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#DDD2D8] bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F8] to-[#EEE5EA] overflow-hidden select-none">
-      {/* Subtle warm luxury backdrop glow */}
-      <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-[#4A202A]/5 rounded-full blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-[#4A202A]/5 rounded-full blur-3xl" />
-
-      <div className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12">
+    <section id="curated-looks" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden select-none">
+      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header: Eyebrow, Ornate Calligraphic Title, Subtitle */}
         <div className="text-center max-w-4xl mx-auto space-y-3 sm:space-y-4 mb-10 sm:mb-14">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2">
-            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-[#9E774C]">
+            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-black">
               {eyebrow}
             </span>
           </div>
@@ -214,35 +210,33 @@ export default function CuratedStartingPoints({
           {/* Title Row: Left Flourish + Calligraphic Script Title + Right Flourish */}
           <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 w-full">
             {/* Left Flourish */}
-            <HeadingFlourish className="text-[#4A202A]/40 shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto" />
+            <HeadingFlourish className="text-black/30 shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto" />
 
-            {/* Cursive Calligraphic Heading matching reference screenshot */}
-            <h2 className="font-script-calligraphy text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] text-[#4A202A] leading-[1.05] tracking-normal whitespace-nowrap drop-shadow-xs">
+            {/* Heading */}
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl md:text-5xl lg:text-[52px] text-black leading-[1.05] tracking-normal whitespace-nowrap">
               {title}
             </h2>
 
             {/* Right Flourish (Mirrored) */}
-            <HeadingFlourish className="text-[#4A202A]/40 shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto scale-x-[-1]" />
+            <HeadingFlourish className="text-black/30 shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto scale-x-[-1]" />
           </div>
 
           {/* Subtitle Description */}
-          <p className="text-xs sm:text-sm text-[#5A4E42] font-sans font-normal leading-relaxed max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-[#666666] font-sans font-normal leading-relaxed max-w-2xl mx-auto">
             {description}
           </p>
         </div>
 
-        {/* 4-Card Responsive Grid matching Home Page Image Format (aspect-[3/4], rounded-[7px], no image border) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-          {items.map((item) => {
-            const isSelected = activeProductSlug === item.slug;
-            return (
-              <div
+        {/* 4-Card Responsive Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 lg:gap-3.5">
+          {items.map((item) => (
+            <div
                 key={item.id}
                 onClick={() => onSelectLook(item)}
-                className="group flex flex-col justify-between rounded-[7px] overflow-hidden bg-white border border-[#DDD2D8] hover:border-[#4A202A] transition-all duration-300 shadow-2xs hover:shadow-lg cursor-pointer"
+                className="group flex flex-col justify-between rounded-[11px] overflow-hidden bg-white border border-[#E5E3DD] hover:border-black/30 transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer"
               >
                 {/* Upper Image Container: Flush edge-to-edge with card, zero gap */}
-                <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#EEE5EA]">
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#F5F4F0]">
                   {/* Default Image: Collar & Fabric Macro View */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -252,7 +246,7 @@ export default function CuratedStartingPoints({
                     loading="lazy"
                   />
 
-                  {/* Hover Image: Full Shirt View in exact same color */}
+                  {/* Hover Image */}
                   {item.hoverImage && (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
@@ -264,35 +258,34 @@ export default function CuratedStartingPoints({
                   )}
                 </div>
 
-                {/* Lower Details Strip & Action Button with dedicated padding */}
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1 text-left">
+                {/* Lower Details Strip & Action Button */}
+                <div className="p-3.5 sm:p-4 flex flex-col justify-between flex-1 text-left">
                   {/* Title & Price */}
                   <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-bold text-[12px] sm:text-[13px] text-[#14110E] uppercase tracking-wide truncate group-hover:text-[#4A202A] transition-colors leading-snug">
+                    <h3 className="font-bold text-[11px] sm:text-[12.5px] text-black uppercase tracking-wide truncate group-hover:text-neutral-700 transition-colors leading-snug">
                       {item.title}
                     </h3>
-                    <span className="font-bold text-xs text-[#4A202A] shrink-0">{item.price}</span>
+                    <span className="font-bold text-xs text-black shrink-0">{item.price}</span>
                   </div>
 
                   {/* Full-width Divider Line */}
-                  <div className="w-full h-[1px] bg-[#DDD2D8] my-2.5" />
+                  <div className="w-full h-[1px] bg-[#E5E3DD] my-2.5" />
 
-                  {/* CUSTOMIZE THIS LOOK Button (Uniform styling across all cards) */}
+                  {/* CUSTOMIZE THIS LOOK Button */}
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectLook(item);
                     }}
-                    className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.14em] py-2.5 px-3.5 rounded-[7px] flex items-center justify-between transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group"
+                    className="w-full bg-black hover:bg-neutral-800 text-white text-[10px] sm:text-[10.5px] font-bold uppercase tracking-[0.14em] py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-full flex items-center justify-between transition-all duration-300 shadow-xs hover:shadow cursor-pointer group"
                   >
                     <span>CUSTOMIZE THIS LOOK</span>
-                    <ChevronRight size={13} className="text-[#FAF8F5] group-hover:translate-x-0.5 transition-transform stroke-[2.5]" />
+                    <ChevronRight size={13} className="text-white group-hover:translate-x-0.5 transition-transform stroke-[2.5]" />
                   </button>
                 </div>
               </div>
-            );
-          })}
+          ))}
         </div>
 
       </div>

@@ -132,7 +132,7 @@ export default function FabricHeroShowcaseBanner({
   return (
     <section 
       aria-label="Interactive Bespoke Fabric Weave Showcase"
-      className="relative w-full h-[100dvh] min-h-[580px] sm:min-h-[640px] overflow-hidden bg-[#FAF6F8] select-none border-b border-[#DDD2D8]"
+      className="relative w-full h-[100dvh] min-h-[580px] sm:min-h-[640px] overflow-hidden bg-[#ECEAE5] select-none border-b border-[#E5E3DD]"
     >
       <div 
         ref={imageContainerRef}
@@ -142,7 +142,7 @@ export default function FabricHeroShowcaseBanner({
         onTouchStart={() => setIsHovering(true)}
         onTouchEnd={() => setIsHovering(false)}
         onTouchMove={handleTouchMove}
-        className="relative w-full h-full overflow-hidden bg-[#FAF6F8] cursor-crosshair group select-none"
+        className="relative w-full h-full overflow-hidden bg-[#ECEAE5] cursor-crosshair group select-none"
       >
         {/* Base Fabric Texture with Dynamic Zoom Origin */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -168,11 +168,11 @@ export default function FabricHeroShowcaseBanner({
             isHovering ? "opacity-0 scale-90" : "opacity-100 scale-100"
           }`}
         >
-          <div className="flex flex-col items-center justify-center p-3.5 sm:p-4 bg-white/95 backdrop-blur-md border border-[#DDD2D8] rounded-full shadow-[0_12px_32px_rgba(74,32,42,0.12)]">
-            <div className="w-10 h-10 rounded-full bg-[#EEE5EA] border border-[#DDD2D8] flex items-center justify-center mb-1 shadow-2xs">
-              <ZoomIn size={18} className="text-[#4A202A] stroke-[2.2]" />
+          <div className="flex flex-col items-center justify-center p-3.5 sm:p-4 bg-white/95 backdrop-blur-md border border-[#E5E3DD] rounded-full shadow-lg">
+            <div className="w-10 h-10 rounded-full bg-[#F5F4F0] border border-[#E5E3DD] flex items-center justify-center mb-1 shadow-2xs">
+              <ZoomIn size={18} className="text-black stroke-[2.2]" />
             </div>
-            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] text-[#4A202A] px-3">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] text-black px-3">
               HOVER TO INSPECT WEAVE
             </span>
           </div>
@@ -180,7 +180,7 @@ export default function FabricHeroShowcaseBanner({
 
         {/* Top Right Corner: Zoom Factor indicator when active */}
         {isHovering && (
-          <div className="pointer-events-none absolute top-24 sm:top-28 right-4 sm:right-8 z-10 px-3 py-1.5 bg-[#4A202A] text-[#FAF8F5] backdrop-blur-md rounded border border-[#9E774C]/50 text-[10px] font-mono font-bold shadow-md">
+          <div className="pointer-events-none absolute top-24 sm:top-28 right-4 sm:right-8 z-10 px-3.5 py-1.5 bg-black text-white backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono font-bold shadow-md">
             2.4X MACRO ZOOM
           </div>
         )}

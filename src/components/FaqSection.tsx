@@ -88,10 +88,10 @@ export default function FaqSection() {
     <section className="py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-10 xl:px-14 w-full max-w-[1400px] mx-auto relative z-10 flex flex-col justify-center select-none overflow-x-clip">
       {/* Header: Title & Subtitle */}
       <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 w-full max-w-5xl mx-auto px-4">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
           FREQUENTLY ASKED QUESTIONS
         </h2>
-        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#55473A] font-normal leading-relaxed tracking-normal max-w-xl mx-auto">
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal leading-relaxed tracking-normal max-w-xl mx-auto">
           Everything you need to know about our bespoke fitting, delivery, and swatches.
         </p>
       </div>
@@ -112,7 +112,7 @@ export default function FaqSection() {
               style={{
                 transitionDelay: isVisible ? `${(index % 4) * 90}ms` : "0ms",
               }}
-              className={`bg-white rounded-[6px] border overflow-hidden transform transition-[transform,opacity,border-color,box-shadow] duration-700 ease-out ${
+              className={`bg-white rounded-[12px] border overflow-hidden transform transition-[transform,opacity,border-color,box-shadow] duration-700 ease-out ${
                 isVisible
                   ? "translate-x-0 opacity-100"
                   : isFromLeft
@@ -120,8 +120,8 @@ export default function FaqSection() {
                   : "translate-x-20 sm:translate-x-32 opacity-0"
               } ${
                 isOpen
-                  ? "border-[#4A202A]/40 shadow-md ring-1 ring-[#4A202A]/10"
-                  : "border-[#E8DFD5] hover:border-[#D5C6B7] shadow-2xs"
+                  ? "border-black/40 shadow-sm ring-1 ring-black/10"
+                  : "border-[#E5E3DD] hover:border-black/30 shadow-2xs"
               }`}
             >
               <button
@@ -133,8 +133,8 @@ export default function FaqSection() {
                 <span
                   className={`text-sm sm:text-base font-semibold tracking-tight transition-colors duration-300 ${
                     isOpen
-                      ? "text-[#4A202A]"
-                      : "text-[#1C1815] group-hover:text-[#4A202A]"
+                      ? "text-black"
+                      : "text-black group-hover:opacity-75"
                   }`}
                 >
                   {faq.question}
@@ -143,8 +143,8 @@ export default function FaqSection() {
                 <div
                   className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-500 ease-out ${
                     isOpen
-                      ? "bg-[#4A202A] text-white rotate-180"
-                      : "bg-[#F7F2EC] text-[#665749] group-hover:bg-[#ECE3D8]"
+                      ? "bg-black text-white rotate-180"
+                      : "bg-[#F5F4F0] text-black group-hover:bg-[#EBE9E4]"
                   }`}
                 >
                   <ChevronDown size={16} />
@@ -160,7 +160,7 @@ export default function FaqSection() {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <div className="px-5 sm:px-7 pb-5 sm:pb-6 text-xs sm:text-sm text-[#5C4F44] leading-relaxed border-t border-[#F2ECE5] pt-3.5 font-normal">
+                  <div className="px-5 sm:px-7 pb-5 sm:pb-6 text-xs sm:text-sm text-[#666666] leading-relaxed border-t border-[#E5E3DD] pt-3.5 font-normal">
                     {faq.answer}
                   </div>
                 </div>
@@ -171,15 +171,15 @@ export default function FaqSection() {
       </div>
 
       {/* Bottom Concierge Assistance Card */}
-      <div className="mt-12 sm:mt-16 max-w-4xl mx-auto w-full bg-[#FAF5EE] border border-[#E5DDD2] rounded-[8px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left shadow-2xs">
+      <div className="mt-12 sm:mt-16 max-w-4xl mx-auto w-full bg-white border border-[#E5E3DD] rounded-[16px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left shadow-sm">
         <div className="space-y-1">
-          <div className="text-[#9E774C] text-xs font-bold tracking-widest uppercase">
+          <div className="text-black text-xs font-bold tracking-widest uppercase">
             <span>PERSONAL ATELIER STYLIST</span>
           </div>
-          <h4 className="font-serif-luxury text-lg sm:text-xl font-bold text-[#4A202A] tracking-wide">
+          <h4 className="font-serif-luxury text-lg sm:text-xl font-bold text-black tracking-wide">
             Still Have Questions About Your Bespoke Fit?
           </h4>
-          <p className="text-xs sm:text-sm text-[#6E5D4F]">
+          <p className="text-xs sm:text-sm text-[#666666]">
             Our master tailors and concierge are ready to assist you via WhatsApp or Email.
           </p>
         </div>
@@ -197,7 +197,7 @@ export default function FaqSection() {
 
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 bg-white hover:bg-[#F3ECE4] text-[#4A202A] border border-[#E0D5C7] px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all shadow-2xs cursor-pointer"
+            className="inline-flex items-center gap-2 bg-white hover:bg-black text-black hover:text-white border border-[#E5E3DD] hover:border-black px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all shadow-2xs cursor-pointer"
           >
             <Mail size={15} />
             <span>CONTACT US</span>

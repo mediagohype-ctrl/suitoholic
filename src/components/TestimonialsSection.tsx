@@ -186,13 +186,13 @@ export default function TestimonialsSection() {
   }, [handleNext, isPaused, step]);
 
   return (
-    <section className="py-14 sm:py-18 lg:py-24 bg-[#EFE5E7] w-full relative overflow-hidden select-none">
+    <section className="py-14 sm:py-18 lg:py-24 bg-white border-t border-b border-[#E5E3DD] w-full relative overflow-hidden select-none">
       {/* Header: Title + Subtitle */}
       <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 px-4 max-w-4xl mx-auto">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
           WHAT OUR CUSTOMERS SAY
         </h2>
-        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#7A5A64] font-normal tracking-normal max-w-xl">
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal tracking-normal max-w-xl">
           Real words from real customers - style, comfort, and bespoke confidence.
         </p>
       </div>
@@ -208,7 +208,7 @@ export default function TestimonialsSection() {
           type="button"
           onClick={handleManualPrev}
           aria-label="Previous review"
-          className="absolute left-1 sm:left-2 lg:left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#4A202A] hover:bg-[#38161F] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
+          className="absolute left-1 sm:left-2 lg:left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
         >
           <ChevronLeft size={22} className="transform -translate-x-0.5" />
         </button>
@@ -218,7 +218,7 @@ export default function TestimonialsSection() {
           type="button"
           onClick={handleManualNext}
           aria-label="Next review"
-          className="absolute right-1 sm:right-2 lg:right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#4A202A] hover:bg-[#38161F] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
+          className="absolute right-1 sm:right-2 lg:right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
         >
           <ChevronRight size={22} className="transform translate-x-0.5" />
         </button>
@@ -239,10 +239,10 @@ export default function TestimonialsSection() {
             {ALL_ITEMS.map((item, idx) => (
               <div
                 key={`${item.id}-${idx}`}
-                className="w-full sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-60px)/4)] shrink-0 bg-white rounded-[8px] p-6 sm:p-7 pt-8 pb-8 flex flex-col items-center text-center shadow-xs hover:shadow-md transition-shadow min-h-[380px]"
+                className="w-full sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-60px)/4)] shrink-0 bg-[#F5F4F0] border border-[#E5E3DD] rounded-[16px] p-6 sm:p-7 pt-8 pb-8 flex flex-col items-center text-center shadow-xs hover:shadow-md transition-shadow min-h-[380px]"
               >
-                {/* Customer Avatar Circle with dark outer border ring */}
-                <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] rounded-full p-[2px] border-2 border-[#1E1B18] overflow-hidden mx-auto shrink-0 bg-neutral-100 shadow-xs">
+                {/* Customer Avatar Circle */}
+                <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] rounded-full p-[2px] border-2 border-black overflow-hidden mx-auto shrink-0 bg-white shadow-xs">
                   <img
                     src={item.avatar}
                     alt={item.name}
@@ -252,12 +252,12 @@ export default function TestimonialsSection() {
                 </div>
 
                 {/* Customer Name */}
-                <h3 className="mt-4 font-bold text-[#1C1917] text-base sm:text-[17px] tracking-normal">
+                <h3 className="mt-4 font-bold text-black text-base sm:text-[17px] tracking-normal">
                   {item.name}
                 </h3>
 
-                {/* Product Subtitle - Italic Soft Gray */}
-                <span className="italic text-xs sm:text-[13px] text-[#7A706B] mt-0.5 font-normal tracking-wide">
+                {/* Product Subtitle */}
+                <span className="italic text-xs sm:text-[13px] text-[#666666] mt-0.5 font-normal tracking-wide">
                   {item.product}
                 </span>
 
@@ -269,15 +269,15 @@ export default function TestimonialsSection() {
                       size={14}
                       className={
                         i < item.rating
-                          ? "fill-[#F5A623] text-[#F5A623]"
-                          : "fill-transparent text-[#F5A623] stroke-[1.5]"
+                          ? "fill-black text-black"
+                          : "fill-transparent text-black/30 stroke-[1.5]"
                       }
                     />
                   ))}
                 </div>
 
-                {/* Review Text - Italic 14px with Elegant Quotes & Comfortable Spacing */}
-                <p className="mt-4 text-[#3C3530] italic text-sm sm:text-[14px] leading-[1.65] max-w-[290px] font-normal">
+                {/* Review Text */}
+                <p className="mt-4 text-[#444444] italic text-sm sm:text-[14px] leading-[1.65] max-w-[290px] font-normal">
                   {item.review}
                 </p>
               </div>

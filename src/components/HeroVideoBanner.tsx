@@ -117,7 +117,7 @@ export default function HeroVideoBanner() {
         <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
 
           {/* Main Luxury High-Contrast Heading */}
-          <h1 className="font-serif-luxury font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[50px] leading-[1.08] text-[#14110E] tracking-[0.02em] uppercase mb-4 sm:mb-6">
+          <h1 className="font-serif-luxury font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[50px] leading-[1.08] text-black tracking-[0.02em] uppercase mb-4 sm:mb-6">
             {c.headingLine1} <br />
             {c.headingLine2}
           </h1>
@@ -126,16 +126,14 @@ export default function HeroVideoBanner() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2.5 md:gap-3 w-full sm:w-auto">
             <Link
               href={c.primaryCtaHref}
-              style={{ borderRadius: "7px" }}
-              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-[10px] sm:text-[11.5px] lg:text-[12.5px] font-extrabold tracking-[0.16em] px-5 sm:px-7 lg:px-8 py-2.5 sm:py-3 md:py-3.5 transition-all duration-300 text-center uppercase shadow-md hover:shadow-lg active:scale-98 w-[125px] sm:w-auto"
+              className="bg-black hover:bg-neutral-800 text-white text-[10px] sm:text-[11.5px] lg:text-[12.5px] font-bold tracking-[0.16em] px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5 rounded-full transition-all duration-300 text-center uppercase shadow-sm hover:shadow-md active:scale-98 w-[125px] sm:w-auto"
             >
               {c.primaryCtaLabel}
             </Link>
             
             <Link
               href={c.secondaryCtaHref}
-              style={{ borderRadius: "7px" }}
-              className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] border border-[#4A202A] text-[10px] sm:text-[11.5px] lg:text-[12.5px] font-extrabold tracking-[0.16em] px-4 sm:px-6 lg:px-7 py-2.5 sm:py-3 md:py-3.5 transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-md hover:shadow-lg active:scale-98 whitespace-nowrap w-[125px] sm:w-auto"
+              className="bg-white hover:bg-black text-black hover:text-white border border-black text-[10px] sm:text-[11.5px] lg:text-[12.5px] font-bold tracking-[0.16em] px-5 sm:px-7 lg:px-8 py-3 sm:py-3.5 rounded-full transition-all duration-300 text-center uppercase flex items-center justify-center gap-1.5 group shadow-sm hover:shadow-md active:scale-98 whitespace-nowrap w-[125px] sm:w-auto"
             >
               <span>{c.secondaryCtaLabel}</span>
               <span className="transform group-hover:translate-x-1 transition-transform duration-200 text-xs sm:text-sm leading-none">→</span>
@@ -193,14 +191,14 @@ export default function HeroVideoBanner() {
 
             {/* 01 ... 05 Vertical Range Dynamic Tracker */}
             <div className="flex flex-col items-center select-none py-0.5">
-              <span className="text-[9px] sm:text-[9.5px] font-normal text-[#5A4E42]/80 tracking-wider mb-1 font-mono">
+              <span className="text-[9px] sm:text-[9.5px] font-normal text-black/80 tracking-wider mb-1 font-mono">
                 {c.trackerStartLabel}
               </span>
               
               <div className="relative w-3 h-16 sm:h-20 my-0.5">
-                <div className="absolute top-0 bottom-0 w-[1px] bg-[#5A4E42]/20 left-1/2 -translate-x-1/2" />
+                <div className="absolute top-0 bottom-0 w-[1px] bg-black/20 left-1/2 -translate-x-1/2" />
                 <div
-                  className="absolute top-0 w-[1px] bg-[#5A4E42]/70 left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
+                  className="absolute top-0 w-[1px] bg-black/70 left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
                   style={{
                     height: `${(activeIndex / lastIndex) * 100}%`,
                   }}
@@ -220,7 +218,7 @@ export default function HeroVideoBanner() {
                     >
                       <span
                         className={`w-0.5 h-0.5 rounded-full transition-all duration-300 ${
-                          isPastOrActive ? "bg-[#5A4E42]" : "bg-[#5A4E42]/30"
+                          isPastOrActive ? "bg-black" : "bg-black/30"
                         }`}
                       />
                     </button>
@@ -228,16 +226,16 @@ export default function HeroVideoBanner() {
                 })}
 
                 <div
-                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full border border-[#5A4E42] bg-[#FAF5EE]/90 pointer-events-none transition-all duration-500 ease-out z-20 flex items-center justify-center"
+                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full border border-black bg-white/90 pointer-events-none transition-all duration-500 ease-out z-20 flex items-center justify-center"
                   style={{
                     top: `${(activeIndex / lastIndex) * 100}%`,
                   }}
                 >
-                  <div className="w-0.5 h-0.5 rounded-full bg-[#5A4E42]" />
+                  <div className="w-0.5 h-0.5 rounded-full bg-black" />
                 </div>
               </div>
 
-              <span className="text-[9px] sm:text-[9.5px] font-normal text-[#5A4E42]/80 tracking-wider mt-1 font-mono">
+              <span className="text-[9px] sm:text-[9.5px] font-normal text-black/80 tracking-wider mt-1 font-mono">
                 {c.trackerEndLabel}
               </span>
             </div>

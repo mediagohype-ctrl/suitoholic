@@ -48,23 +48,23 @@ export default function AtelierStoryTimeline({
   ],
 }: AtelierStoryTimelineProps) {
   return (
-    <section className="relative w-full bg-gradient-to-b from-[#EEE5EA] via-[#F8F4F6] to-[#FFFFFF] text-[#14110E] py-16 sm:py-20 lg:py-24 border-b border-[#DDD2D8] overflow-hidden select-none">
-      {/* Subtle Tailor Cutting Grid Pattern (Bespoke Pattern Paper Graph Lines) */}
+    <section className="relative w-full bg-white text-black py-16 sm:py-20 lg:py-24 border-b border-[#E5E3DD] overflow-hidden select-none">
+      {/* Subtle Tailor Cutting Grid Pattern */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.14]"
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.06]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(74, 32, 42, 0.15) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(74, 32, 42, 0.15) 1px, transparent 1px)
+            linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)
           `,
           backgroundSize: "36px 36px",
         }}
         aria-hidden="true"
       />
 
-      {/* Subtle warm luxury backdrop glow */}
-      <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-[#4A202A]/5 rounded-full blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-[#4A202A]/5 rounded-full blur-3xl" />
+      {/* Subtle minimalist background glow */}
+      <div className="pointer-events-none absolute -top-40 right-1/4 w-96 h-96 bg-black/[0.02] rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 left-10 w-96 h-96 bg-black/[0.02] rounded-full blur-3xl" />
 
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Main 2-Column Responsive CSS Grid */}
@@ -75,31 +75,31 @@ export default function AtelierStoryTimeline({
             {/* Eyebrow Badge in website theme */}
             <div
               style={{ borderRadius: "7px" }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#DDD2D8] text-[#4A202A] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs"
+              className="inline-flex items-center gap-2 px-3 py-1 bg-[#F5F4F0] border border-[#E5E3DD] text-black text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs"
             >
-              <span className="w-1.5 h-1.5 rotate-45 bg-[#4A202A] inline-block" />
+              <span className="w-1.5 h-1.5 rotate-45 bg-black inline-block" />
               <span>{eyebrow}</span>
             </div>
 
             {/* Main Headline */}
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#14110E] tracking-tight leading-[1.16]">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-black tracking-tight leading-[1.16]">
               {titlePrefix}
-              <span className="italic font-serif font-normal text-[#4A202A] block sm:inline">
+              <span className="italic font-serif font-normal text-black block sm:inline">
                 {titleAccent}
               </span>
             </h2>
 
             {/* Narrative Story Description */}
-            <p className="text-sm sm:text-[15px] text-[#5A4E42] font-sans font-normal leading-[1.8] max-w-xl">
+            <p className="text-sm sm:text-[15px] text-[#666666] font-sans font-normal leading-[1.8] max-w-xl">
               {description}
             </p>
 
             {/* Master Tailor Portrait Media Card */}
             <div
               style={{ borderRadius: "7px" }}
-              className="relative overflow-hidden border border-[#DDD2D8] bg-white shadow-md hover:shadow-xl transition-all duration-500 group max-w-md"
+              className="relative overflow-hidden border border-[#E5E3DD] bg-white shadow-sm hover:shadow-md transition-all duration-500 group max-w-md"
             >
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#EEE5EA]">
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F5F4F0]">
                 <Image
                   src={image}
                   alt={imageCaption}
@@ -112,13 +112,13 @@ export default function AtelierStoryTimeline({
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Vertical Golden Timeline & Milestone Cards in CSS Grid */}
+          {/* RIGHT COLUMN: Vertical Timeline & Milestone Cards in CSS Grid */}
           <div className="lg:col-span-7 pt-8 sm:pt-12 lg:pt-20 xl:pt-24">
             <div className="relative grid grid-cols-1 gap-8 sm:gap-10 lg:gap-11">
               
-              {/* Continuous Golden Timeline Line (aligned on x = 12px) */}
+              {/* Continuous Timeline Line (aligned on x = 12px) */}
               <div
-                className="pointer-events-none absolute left-3 top-3 bottom-8 w-[2px] -translate-x-1/2 bg-gradient-to-b from-[#4A202A] via-[#8C4A5A] to-[#DDD2D8]"
+                className="pointer-events-none absolute left-3 top-3 bottom-8 w-[2px] -translate-x-1/2 bg-[#E5E3DD]"
                 aria-hidden="true"
               />
 
@@ -127,29 +127,29 @@ export default function AtelierStoryTimeline({
                 <div key={idx} className="relative grid grid-cols-[24px_1fr] gap-5 sm:gap-7 items-start group">
                   {/* Column 1: Timeline Circular Target Node */}
                   <div
-                    className="w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 border-[#4A202A] bg-[#EEE5EA] flex items-center justify-center shadow-xs group-hover:border-[#4A202A] group-hover:scale-110 transition-all z-10"
+                    className="w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 border-black bg-white flex items-center justify-center shadow-xs group-hover:scale-110 transition-all z-10"
                     aria-hidden="true"
                   >
-                    <div className="w-2 h-2 rounded-full bg-[#4A202A] group-hover:bg-[#4A202A] transition-colors" />
+                    <div className="w-2 h-2 rounded-full bg-black group-hover:bg-neutral-800 transition-colors" />
                   </div>
 
-                  {/* Column 2: Stretched Luxury Milestone Content Box */}
+                  {/* Column 2: Milestone Content Box */}
                   <div
                     style={{ borderRadius: "7px" }}
-                    className="bg-white border border-[#DDD2D8] hover:border-[#4A202A] p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                    className="bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black hover:bg-white p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   >
                     {/* Period Eyebrow */}
-                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#4A202A] mb-2.5">
+                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-black mb-2.5">
                       {item.period}
                     </span>
 
                     {/* Milestone Title */}
-                    <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-[#14110E] group-hover:text-[#4A202A] transition-colors mb-3 leading-snug">
+                    <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-black group-hover:opacity-75 transition-opacity mb-3 leading-snug">
                       {item.title}
                     </h3>
 
                     {/* Milestone Story */}
-                    <p className="text-[13px] sm:text-sm text-[#5A4E42] leading-[1.8] font-sans font-normal">
+                    <p className="text-[13px] sm:text-sm text-[#666666] leading-[1.8] font-sans font-normal">
                       {item.story}
                     </p>
                   </div>

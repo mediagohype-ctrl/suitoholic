@@ -18,11 +18,11 @@ import { useCatalog, useContent } from "@/context/SiteDataProvider";
 const Divider = ({ wide = false }: { wide?: boolean }) =>
   wide ? (
     <div className="w-full my-4 sm:my-6 lg:my-8">
-      <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+      <div className="w-full h-[1px] bg-[#E5E3DD]" />
     </div>
   ) : (
     <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-4 sm:my-6 lg:my-8">
-      <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+      <div className="w-full h-[1px] bg-[#E5E3DD]" />
     </div>
   );
 
@@ -39,7 +39,7 @@ export default function Home() {
   const interludesAfter = (index: number) => INTERLUDES[index] ?? [];
 
   return (
-    <div className="min-h-screen w-full overflow-x-clip flex flex-col bg-transparent text-[#14110E] antialiased">
+    <div className="min-h-screen w-full overflow-x-clip flex flex-col bg-transparent text-black antialiased">
       {/* Header */}
       <Header />
 

@@ -90,13 +90,13 @@ export default function ProductDetailPage() {
 
   if (!activeProduct) {
     return (
-      <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
+      <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-hidden selection:bg-black selection:text-white">
         <Header activeTab="shop" />
         <main className="flex-1 flex flex-col items-center justify-center text-center px-4 pt-44 pb-20 space-y-5">
           <h1 className="font-serif-luxury text-2xl sm:text-3xl uppercase tracking-wider">{c.notFoundTitle}</h1>
           <Link
             href="/shop"
-            className="inline-flex items-center space-x-2 bg-[#120F0D] hover:bg-[#9E774C] text-white px-6 py-3 rounded-xl text-xs font-bold tracking-[0.16em] uppercase transition-all"
+            className="inline-flex items-center space-x-2 bg-black hover:bg-neutral-800 text-white px-8 py-3.5 rounded-full text-xs font-bold tracking-[0.16em] uppercase transition-all shadow-sm"
           >
             <span>{c.notFoundCta}</span>
             <ArrowRight size={14} />
@@ -173,7 +173,7 @@ export default function ProductDetailPage() {
     .slice(0, 4);
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-hidden selection:bg-black selection:text-white">
       {/* Header */}
       <Header activeTab="shop" />
 
@@ -185,7 +185,7 @@ export default function ProductDetailPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Link
               href={`/shop?category=${activeProduct.category}`}
-              className="inline-flex items-center space-x-2 bg-white hover:bg-[#120F0D] text-[#1F1C18] hover:text-white border border-gray-300 px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-xs"
+              className="inline-flex items-center space-x-2 bg-white hover:bg-black text-black hover:text-white border border-[#E5E3DD] px-5 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all shadow-sm"
             >
               <ArrowLeft size={15} />
               <span>{c.backLabel}</span>
@@ -195,11 +195,11 @@ export default function ProductDetailPage() {
           {/* SECTION 1: HERO 2-COLUMN VISUAL SHOWCASE */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-            {/* LEFT COLUMN: Visual Showcase Gallery & Interactive 3D View Switcher */}
+            {/* LEFT COLUMN: Visual Showcase Gallery */}
             <div className="lg:col-span-6 space-y-4">
 
               {/* Main Display Box */}
-              <div className="relative w-full aspect-[4/4.1] sm:aspect-[4/4.1] lg:aspect-[4/4] max-h-[485px] sm:max-h-[520px] lg:max-h-[540px] rounded-[13px] overflow-hidden bg-[#F3F0EC] border border-[#E2DDD5]/80 shadow-md flex items-center justify-center group">
+              <div className="relative w-full aspect-[4/4.1] sm:aspect-[4/4.1] lg:aspect-[4/4] max-h-[485px] sm:max-h-[520px] lg:max-h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden bg-white border border-[#E5E3DD] shadow-sm flex items-center justify-center group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={gallery[selectedImageIndex] || activeProduct.image}
@@ -228,9 +228,9 @@ export default function ProductDetailPage() {
                     <button
                       key={idx}
                       onClick={() => setSelectedImageIndex(idx)}
-                      className={`aspect-[4/3.2] rounded-[13px] overflow-hidden transition-all relative cursor-pointer ${selectedImageIndex === idx
-                        ? "ring-2 ring-[#120F0D] shadow-sm opacity-100"
-                        : "opacity-60 hover:opacity-100"
+                      className={`aspect-[4/3.2] rounded-[16px] overflow-hidden transition-all relative cursor-pointer border ${selectedImageIndex === idx
+                        ? "border-black ring-2 ring-black shadow-sm opacity-100"
+                        : "border-[#E5E3DD] opacity-60 hover:opacity-100"
                         }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -249,10 +249,10 @@ export default function ProductDetailPage() {
                 {c.badges.map((badge, i) => {
                   const Icon = BADGE_ICONS[badge.icon] ?? ShieldCheck;
                   return (
-                    <div key={i} className="bg-white border border-gray-200 rounded-2xl p-3 shadow-xs">
-                      <Icon size={18} className="mx-auto text-[#9E774C] mb-1" />
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider block text-[#14110E]">{badge.title}</span>
-                      <span className="text-[9px] text-[#665749] block">{badge.subtitle}</span>
+                    <div key={i} className="bg-white border border-[#E5E3DD] rounded-2xl p-3 shadow-sm">
+                      <Icon size={18} className="mx-auto text-black mb-1" />
+                      <span className="text-[10px] font-bold uppercase tracking-wider block text-black">{badge.title}</span>
+                      <span className="text-[9px] text-[#666666] block">{badge.subtitle}</span>
                     </div>
                   );
                 })}
@@ -261,44 +261,44 @@ export default function ProductDetailPage() {
             </div>
 
             {/* RIGHT COLUMN: Interactive Product Specs, Swatches & Action Buttons */}
-            <div className="lg:col-span-6 bg-white border border-gray-200 rounded-3xl p-6 sm:p-9 shadow-lg space-y-6">
+            <div className="lg:col-span-6 bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6">
 
               {/* Brand Title & Price */}
               <div>
-                <span className="text-[10.5px] font-extrabold tracking-[0.26em] uppercase text-[#9E774C] block mb-1">
+                <span className="text-[10.5px] font-bold tracking-[0.26em] uppercase text-[#666666] block mb-1">
                   {c.brandEyebrow}
                 </span>
-                <h1 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#14110E] tracking-tight uppercase leading-tight">
+                <h1 className="text-xl sm:text-2xl lg:text-[28px] font-normal font-serif-luxury text-black tracking-tight uppercase leading-tight">
                   {activeProduct.name}
                 </h1>
 
                 {/* Rating & Review Counter */}
                 <div className="flex items-center space-x-2.5 mt-2.5">
-                  <div className="flex text-[#C59B27]">
+                  <div className="flex text-black">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={15} className={i < Math.round(activeProduct.rating) ? "fill-current" : ""} />
                     ))}
                   </div>
-                  <span className="text-xs font-extrabold text-[#14110E]">{activeProduct.rating} / 5.0</span>
-                  <span className="text-xs text-[#665749] font-medium">({activeProduct.reviewsCount} {c.reviewsSuffix})</span>
+                  <span className="text-xs font-bold text-black">{activeProduct.rating} / 5.0</span>
+                  <span className="text-xs text-[#666666] font-medium">({activeProduct.reviewsCount} {c.reviewsSuffix})</span>
                 </div>
 
                 {/* Price Display */}
-                <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-gray-200 pt-3.5">
-                  <span className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#14110E]">
+                <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[#E5E3DD] pt-3.5">
+                  <span className="font-serif-luxury text-3xl sm:text-4xl font-normal text-black">
                     {activeProduct.price}
                   </span>
                   {activeProduct.compareAtPrice ? (
-                    <span className="text-sm text-[#8C7B6B] line-through">
+                    <span className="text-sm text-[#888888] line-through">
                       {activeProduct.price.replace(/[\d,.]+/, Number(activeProduct.compareAtPrice).toLocaleString("en-IN"))}
                     </span>
                   ) : null}
-                  <span className="text-xs text-[#665749] font-medium">
+                  <span className="text-xs text-[#666666] font-medium">
                     {c.taxNote}
                   </span>
                 </div>
                 {(outOfStock || lowStock) && (
-                  <p className={`mt-2 text-[11px] font-bold uppercase tracking-wider ${outOfStock ? "text-[#B23B3B]" : "text-[#9E774C]"}`}>
+                  <p className={`mt-2 text-[11px] font-bold uppercase tracking-wider ${outOfStock ? "text-red-600" : "text-[#666666]"}`}>
                     {outOfStock ? c.outOfStockLabel : fillTemplate(c.lowStockTemplate, { stock: activeProduct.stock ?? 0 })}
                   </p>
                 )}
@@ -306,12 +306,12 @@ export default function ProductDetailPage() {
 
               {/* VISUAL COLORWAY / FABRIC SWATCH SELECTOR */}
               {colorways.length > 0 && (
-                <div className="space-y-2.5 border-t border-gray-200 pt-3.5">
+                <div className="space-y-2.5 border-t border-[#E5E3DD] pt-3.5">
                   <div className="flex justify-between items-center">
-                    <label className="text-[10.5px] font-extrabold tracking-[0.2em] uppercase text-[#14110E]">
+                    <label className="text-[10.5px] font-bold tracking-[0.2em] uppercase text-black">
                       {c.colorwaysLabel}
                     </label>
-                    <span className="text-[11px] font-bold text-[#9E774C] uppercase">{activeProduct.name.split(" ")[0]}</span>
+                    <span className="text-[11px] font-bold text-[#666666] uppercase">{activeProduct.name.split(" ")[0]}</span>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3">
@@ -329,8 +329,8 @@ export default function ProductDetailPage() {
                             }
                           }}
                           className={`w-9 h-9 rounded-full border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm relative group ${isSelected
-                            ? "border-[#120F0D] ring-2 ring-[#C68A4C] scale-110"
-                            : "border-gray-300 opacity-80 hover:opacity-100"
+                            ? "border-black ring-2 ring-black scale-110"
+                            : "border-[#E5E3DD] opacity-80 hover:opacity-100"
                             }`}
                           style={{ backgroundColor: cw.hex }}
                           title={cw.name}
@@ -346,20 +346,19 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              {/* E-COMMERCE ACTION BUTTONS */}
-              <div className="space-y-3 pt-3 border-t border-gray-200">
+              {/* E-COMMERCE ACTION BUTTONS (SOLID BLACK PILLS) */}
+              <div className="space-y-3 pt-3 border-t border-[#E5E3DD]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     onClick={() => handleOpenCustomizer(false)}
                     disabled={outOfStock || busy}
-                    style={{ borderRadius: "7px" }}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] py-4 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-md hover:shadow-lg cursor-pointer group"
+                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-black hover:bg-neutral-800 text-white rounded-full py-4 px-6 text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-sm cursor-pointer group"
                   >
                     <div className="flex items-center space-x-2.5">
-                      <ShoppingBag size={17} className="text-[#FAF8F5]" />
+                      <ShoppingBag size={17} className="text-white" />
                       <span>{outOfStock ? c.outOfStockLabel : c.addToBagLabel}</span>
                     </div>
-                    <span className="text-[10px] text-[#FAF8F5]/80 font-bold tracking-widest">
+                    <span className="text-[10px] text-white/70 font-bold tracking-widest">
                       {c.addToBagHint}
                     </span>
                   </button>
@@ -367,8 +366,7 @@ export default function ProductDetailPage() {
                   <button
                     onClick={() => handleOpenCustomizer(true)}
                     disabled={outOfStock || busy}
-                    style={{ borderRadius: "7px" }}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] py-4 px-5 text-xs font-extrabold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md hover:shadow-lg"
+                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-black hover:bg-neutral-800 text-white rounded-full py-4 px-6 text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm"
                   >
                     <span>{c.buyNowLabel}</span>
                     <ArrowRight size={16} />
@@ -379,12 +377,12 @@ export default function ProductDetailPage() {
                 {toastVisible && (
                   <div
                     role="status"
-                    className={`${toastError ? "bg-[#9B2C2C]" : "bg-[#2D6A4F]"} text-white p-3.5 rounded-xl text-center text-xs font-bold tracking-wider animate-in slide-in-from-top-2 duration-300 shadow-lg flex flex-wrap items-center justify-center gap-2`}
+                    className={`${toastError ? "bg-red-600" : "bg-black"} text-white p-3.5 rounded-full text-center text-xs font-bold tracking-wider animate-in slide-in-from-top-2 duration-300 shadow-lg flex flex-wrap items-center justify-center gap-2`}
                   >
                     {toastError ? <AlertCircle size={16} /> : <Check size={16} />}
                     <span>{toastMessage}</span>
                     {!toastError && (
-                      <Link href="/cart" className="underline underline-offset-2 hover:text-[#F3E3CF]">
+                      <Link href="/cart" className="underline underline-offset-2 hover:text-white/80">
                         {c.viewBagLabel}
                       </Link>
                     )}
@@ -393,38 +391,38 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Specifications Card */}
-              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4.5 space-y-2 text-xs shadow-xs">
-                <h4 className="text-[10.5px] font-extrabold tracking-[0.2em] text-[#9E774C] uppercase mb-2">
+              <div className="bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-4.5 space-y-2 text-xs shadow-xs">
+                <h4 className="text-[10.5px] font-bold tracking-[0.2em] text-[#666666] uppercase mb-2">
                   {c.specsHeading}
                 </h4>
-                <div className="flex justify-between gap-3 border-b border-[#D8C6B3]/60 pb-2">
-                  <span className="text-[#665749]">{c.specLabels.fabric}</span>
-                  <strong className="text-[#14110E] text-right">{activeProduct.fabric}</strong>
+                <div className="flex justify-between gap-3 border-b border-[#E5E3DD] pb-2">
+                  <span className="text-[#666666]">{c.specLabels.fabric}</span>
+                  <strong className="text-black text-right">{activeProduct.fabric}</strong>
                 </div>
-                <div className="flex justify-between gap-3 border-b border-[#D8C6B3]/60 pb-2">
-                  <span className="text-[#665749]">{c.specLabels.threadCount}</span>
-                  <strong className="text-[#14110E] text-right">{activeProduct.threadCount}</strong>
+                <div className="flex justify-between gap-3 border-b border-[#E5E3DD] pb-2">
+                  <span className="text-[#666666]">{c.specLabels.threadCount}</span>
+                  <strong className="text-black text-right">{activeProduct.threadCount}</strong>
                 </div>
                 {activeProduct.collar && (
-                  <div className="flex justify-between gap-3 border-b border-[#D8C6B3]/60 pb-2">
-                    <span className="text-[#665749]">{c.specLabels.collar}</span>
-                    <strong className="text-[#14110E] text-right">{activeProduct.collar}</strong>
+                  <div className="flex justify-between gap-3 border-b border-[#E5E3DD] pb-2">
+                    <span className="text-[#666666]">{c.specLabels.collar}</span>
+                    <strong className="text-black text-right">{activeProduct.collar}</strong>
                   </div>
                 )}
                 {activeProduct.cuff && (
                   <div className="flex justify-between gap-3">
-                    <span className="text-[#665749]">{c.specLabels.cuff}</span>
-                    <strong className="text-[#14110E] text-right">{activeProduct.cuff}</strong>
+                    <span className="text-[#666666]">{c.specLabels.cuff}</span>
+                    <strong className="text-black text-right">{activeProduct.cuff}</strong>
                   </div>
                 )}
               </div>
 
               {/* Product Description Paragraph (Placed AFTER Specifications) */}
-              <div className="pt-2 border-t border-[#D5C2AF]/70">
-                <span className="text-[10.5px] font-extrabold tracking-[0.2em] text-[#9E774C] uppercase block mb-1.5">
+              <div className="pt-2 border-t border-[#E5E3DD]">
+                <span className="text-[10.5px] font-bold tracking-[0.2em] text-[#666666] uppercase block mb-1.5">
                   {c.descriptionHeading}
                 </span>
-                <p className="text-xs sm:text-[13px] text-[#3D332A] font-normal leading-relaxed whitespace-pre-line">
+                <p className="text-xs sm:text-[13px] text-[#444444] font-normal leading-relaxed whitespace-pre-line">
                   {activeProduct.description}
                 </p>
               </div>
@@ -434,22 +432,23 @@ export default function ProductDetailPage() {
           </div>
 
           {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES (SHOP PAGE STYLING) */}
+          {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES */}
           <div className="w-full space-y-6 pt-6 sm:pt-8 select-none">
             <div className="text-center max-w-2xl mx-auto space-y-2">
-              <div className="inline-flex items-center justify-center space-x-2 text-[10px] sm:text-[11px] font-extrabold tracking-[0.28em] text-[#9E774C] uppercase">
-                <span className="h-[1px] w-8 sm:w-14 bg-[#9E774C]" />
+              <div className="inline-flex items-center justify-center space-x-2 text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-[#666666] uppercase">
+                <span className="h-[1px] w-8 sm:w-14 bg-black/30" />
                 <span>EXECUTIVE ATELIER</span>
                 <span>•</span>
                 <span>SIGNATURE EDIT</span>
-                <span className="h-[1px] w-8 sm:w-14 bg-[#9E774C]" />
+                <span className="h-[1px] w-8 sm:w-14 bg-black/30" />
               </div>
 
-              <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold tracking-[0.2em] text-[#4A202A] uppercase leading-tight">
+              <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold tracking-[0.2em] text-black uppercase leading-tight">
                 {c.macroTitle || "BEST SELLERS"}
               </h2>
 
               {c.macroSubtitle && (
-                <p className="text-[11px] sm:text-xs text-[#665749] tracking-wider uppercase font-medium pt-0.5">
+                <p className="text-[11px] sm:text-xs text-[#666666] tracking-wider uppercase font-medium pt-0.5">
                   {c.macroSubtitle}
                 </p>
               )}
@@ -469,14 +468,14 @@ export default function ProductDetailPage() {
             <div className="w-full space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
                 <div>
-                  <span className="text-[10.5px] font-extrabold tracking-[0.28em] text-[#9E774C] uppercase block mb-1">
+                  <span className="text-[10.5px] font-bold tracking-[0.28em] text-[#666666] uppercase block mb-1">
                     {c.completeLookEyebrow}
                   </span>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-[#14110E] uppercase tracking-wider">
+                  <h2 className="text-2xl sm:text-3xl font-normal font-serif-luxury text-black uppercase tracking-wider">
                     {c.completeLookTitle}
                   </h2>
                 </div>
-                <span className="text-xs font-bold text-[#665749] uppercase tracking-wider">
+                <span className="text-xs font-bold text-[#666666] uppercase tracking-wider">
                   {c.completeLookSubtitle} {activeProduct.name}
                 </span>
               </div>
@@ -496,14 +495,14 @@ export default function ProductDetailPage() {
             <div className="w-full space-y-4 pt-2">
               <div className="flex justify-between items-end gap-3">
                 <div>
-                  <span className="text-[10.5px] font-extrabold tracking-[0.28em] text-[#9E774C] uppercase block mb-1">
+                  <span className="text-[10.5px] font-bold tracking-[0.28em] text-[#666666] uppercase block mb-1">
                     {c.moreEyebrow}
                   </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#14110E] uppercase tracking-wider">
+                  <h3 className="text-xl sm:text-2xl font-normal font-serif-luxury text-black uppercase tracking-wider">
                     {c.moreTitle}
                   </h3>
                 </div>
-                <Link href="/shop" className="text-xs font-bold tracking-widest text-[#9E774C] hover:underline uppercase flex items-center gap-1 shrink-0">
+                <Link href="/shop" className="text-xs font-bold tracking-widest text-black hover:text-[#666666] uppercase flex items-center gap-1 shrink-0 transition-colors">
                   <span>{c.viewAllLabel}</span>
                   <ArrowRight size={14} />
                 </Link>

@@ -148,11 +148,11 @@ export default function ModernCollectionSection({
     >
       {/* Centered Heading & Subtitle matching luxury scale */}
       <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-[#4A202A] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
           {headerTitle || collection.title}
         </h2>
         {(collection.subtitle || (collection as unknown as { description?: string })?.description) && (
-          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#55473A] font-normal leading-relaxed tracking-normal max-w-2xl">
+          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal leading-relaxed tracking-normal max-w-2xl">
             {collection.subtitle || (collection as unknown as { description?: string })?.description}
           </p>
         )}
@@ -163,27 +163,27 @@ export default function ModernCollectionSection({
         /* EXACT SCREENSHOT FORMAT: 3 SQUARE CARDS WITH LABEL UNDERNEATH & SIDE NAV  */
         /* ========================================================================= */
         <div className="relative w-full">
-          {/* Circular Maroon Left Arrow Button (Shifted completely outside the image) */}
+          {/* Circular Left Arrow Button */}
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous fabric"
-            className="absolute -left-4 sm:-left-7 lg:-left-11 xl:-left-13 top-[calc(50%-18px)] -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#4A202A] hover:bg-[#38161F] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
+            className="absolute -left-4 sm:-left-7 lg:-left-11 xl:-left-13 top-[calc(50%-18px)] -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
           >
             <ChevronLeft size={20} className="transform -translate-x-0.5" />
           </button>
 
-          {/* Circular Maroon Right Arrow Button (Shifted completely outside the image) */}
+          {/* Circular Right Arrow Button */}
           <button
             type="button"
             onClick={handleNext}
             aria-label="Next fabric"
-            className="absolute -right-4 sm:-right-7 lg:-right-11 xl:-right-13 top-[calc(50%-18px)] -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#4A202A] hover:bg-[#38161F] text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
+            className="absolute -right-4 sm:-right-7 lg:-right-11 xl:-right-13 top-[calc(50%-18px)] -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
           >
             <ChevronRight size={20} className="transform translate-x-0.5" />
           </button>
 
-          {/* 3-Cards Row (Reduced gap: gap-3 sm:gap-4 lg:gap-5) */}
+          {/* 3-Cards Row */}
           <div
             ref={scrollRef}
             className="flex items-start gap-3 sm:gap-4 lg:gap-5 overflow-x-auto scrollbar-none scroll-smooth pb-3 pt-1 px-0.5"
@@ -195,7 +195,7 @@ export default function ModernCollectionSection({
                 className="group flex flex-col items-center cursor-pointer w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)] shrink-0"
               >
                 {/* Square Rounded Card Image Container with 9px border radius */}
-                <div className="relative w-full aspect-square rounded-[9px] overflow-hidden bg-[#F3F0EC] shadow-xs group-hover:shadow-md transition-all duration-500">
+                <div className="relative w-full aspect-square rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-xs group-hover:shadow-md transition-all duration-500">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={product.image}
@@ -207,8 +207,8 @@ export default function ModernCollectionSection({
                   <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
                 </div>
 
-                {/* Sub-label placed directly UNDER card matching reference screenshot */}
-                <span className="text-center font-bold text-[11px] sm:text-xs lg:text-[13px] tracking-[0.2em] text-[#4A202A] group-hover:text-[#9E774C] uppercase transition-colors pt-3.5 sm:pt-4 px-1 block leading-snug">
+                {/* Sub-label placed directly UNDER card */}
+                <span className="text-center font-bold text-[11px] sm:text-xs lg:text-[13px] tracking-[0.2em] text-black group-hover:opacity-75 uppercase transition-opacity pt-3.5 sm:pt-4 px-1 block leading-snug">
                   {product.name}
                 </span>
               </Link>
@@ -232,8 +232,7 @@ export default function ModernCollectionSection({
           <div className="flex items-center justify-center mt-8 sm:mt-10 lg:mt-12">
             <Link
               href={colId === "all" ? "/shop" : `/shop?category=${colId || "formal_bespoke"}`}
-              style={{ borderRadius: "7px" }}
-              className="inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs sm:text-[13px] font-extrabold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg active:scale-98"
+              className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white text-xs sm:text-[13px] font-bold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 rounded-full transition-all duration-300 uppercase shadow-sm hover:shadow-md active:scale-98"
             >
               VIEW ALL
             </Link>

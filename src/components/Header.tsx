@@ -74,17 +74,17 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       }`}
     >
       {/* Top Announcement Bar */}
-      <div className="hidden sm:block bg-[#14110E] text-[#EFE5D8] border-b border-[#2A231D] py-1.5 px-4 sm:px-8 text-[10px] font-medium tracking-[0.18em] uppercase z-50 relative shadow-xs">
+      <div className="hidden sm:block bg-[#000000] text-[#FFFFFF] border-b border-[#222222] py-1.5 px-4 sm:px-8 text-[10px] font-medium tracking-[0.18em] uppercase z-50 relative shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span>{c.announcementWelcome}</span>
-            <span className="text-[#C5A069]">|</span>
-            <span className="text-[#D8C6B3]">{c.announcementTagline}</span>
+            <span className="text-[#666666]">|</span>
+            <span className="text-[#CCCCCC]">{c.announcementTagline}</span>
           </div>
-          <div className="flex items-center space-x-4 text-[#D8C6B3]">
+          <div className="flex items-center space-x-4 text-[#CCCCCC]">
             {c.topLinks.map((link, i) => (
               <React.Fragment key={`${link.href}-${i}`}>
-                {i > 0 && <span className="text-[#C5A069]">|</span>}
+                {i > 0 && <span className="text-[#666666]">|</span>}
                 <Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
               </React.Fragment>
             ))}
@@ -95,7 +95,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       {/* Main Navigation Bar */}
       <div className={`transition-all duration-300 ${
         scrolled || forceSolid
-          ? "bg-white/95 backdrop-blur-md border-b border-[#DDD2D8]"
+          ? "bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
           : "bg-transparent border-b border-transparent"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between relative">
@@ -139,25 +139,25 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                       href={link.href}
                       className={`transition-colors duration-200 pb-1 flex items-center gap-1.5 relative ${
                         active
-                          ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
-                          : "text-[#554A3F] hover:text-[#14110E]"
+                          ? "text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
+                          : "text-[#666666] hover:text-[#000000]"
                       }`}
                     >
                       <span>{link.label}</span>
                       <ChevronDown
                         size={12}
-                        className="transition-transform duration-200 group-hover:rotate-180 text-[#9E774C]"
+                        className="transition-transform duration-200 group-hover:rotate-180 text-[#666666]"
                       />
                     </Link>
 
                     {/* Shop Category Hover Dropdown */}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50">
-                      <div className="w-[340px] bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl shadow-2xl p-4 space-y-1.5 backdrop-blur-md">
-                        <div className="px-3 py-1.5 border-b border-[#E8DACB] flex items-center justify-between">
-                          <span className="text-[10px] font-bold tracking-[0.22em] text-[#9E774C] uppercase">
+                      <div className="w-[340px] bg-white border border-[#E5E3DD] rounded-2xl shadow-2xl p-4 space-y-1.5 backdrop-blur-md">
+                        <div className="px-3 py-1.5 border-b border-[#E5E3DD] flex items-center justify-between">
+                          <span className="text-[10px] font-bold tracking-[0.22em] text-[#000000] uppercase">
                             SHOP CATEGORIES
                           </span>
-                          <span className="text-[9px] text-[#7A6B5D] tracking-wider uppercase font-semibold">
+                          <span className="text-[9px] text-[#666666] tracking-wider uppercase font-semibold">
                             SUITOHOLIC
                           </span>
                         </div>
@@ -165,27 +165,27 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                         <div className="pt-1.5 space-y-1">
                           <Link
                             href="/shop"
-                            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[11px] font-bold tracking-[0.16em] uppercase text-[#14110E] hover:bg-[#14110E] hover:text-[#FAF8F5] transition-all group/item"
+                            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[11px] font-bold tracking-[0.16em] uppercase text-[#000000] hover:bg-[#000000] hover:text-white transition-all group/item"
                           >
                             <span>ALL SHIRTS &amp; PRODUCTS</span>
-                            <span className="text-xs text-[#9E774C] group-hover/item:text-white transition-colors">→</span>
+                            <span className="text-xs text-[#666666] group-hover/item:text-white transition-colors">→</span>
                           </Link>
 
                           {categories.map((cat) => (
                             <Link
                               key={cat.id}
                               href={`/shop?category=${cat.id}`}
-                              className="flex items-center justify-between px-3.5 py-2 rounded-xl text-[10.5px] font-semibold tracking-[0.14em] uppercase text-[#4A3E33] hover:text-[#14110E] hover:bg-[#F2E5D5] transition-all group/item"
+                              className="flex items-center justify-between px-3.5 py-2 rounded-xl text-[10.5px] font-semibold tracking-[0.14em] uppercase text-[#444444] hover:text-[#000000] hover:bg-[#F5F4F0] transition-all group/item"
                             >
                               <span className="truncate pr-2">{cat.title}</span>
-                              <span className="text-xs text-[#9E774C] opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                              <span className="text-xs text-[#666666] opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
                             </Link>
                           ))}
                         </div>
 
-                        <div className="pt-2 border-t border-[#E8DACB] mt-2 px-3 flex items-center justify-between text-[9.5px] font-bold tracking-[0.18em] uppercase text-[#7A6B5D]">
+                        <div className="pt-2 border-t border-[#E5E3DD] mt-2 px-3 flex items-center justify-between text-[9.5px] font-bold tracking-[0.18em] uppercase text-[#666666]">
                           <span>BESPOKE ATELIER</span>
-                          <Link href="/custom-shirt" className="text-[#9E774C] hover:text-[#14110E] transition-colors">
+                          <Link href="/custom-shirt" className="text-[#000000] hover:underline transition-colors">
                             CUSTOM CONFIGURATOR →
                           </Link>
                         </div>
@@ -201,8 +201,8 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                   href={link.href}
                   className={`transition-colors duration-200 pb-1 relative ${
                     active
-                      ? "text-[#14110E] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#9E774C]"
-                      : "text-[#554A3F] hover:text-[#14110E]"
+                      ? "text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
+                      : "text-[#666666] hover:text-[#000000]"
                   }`}
                 >
                   {link.label}
@@ -212,16 +212,16 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           </nav>
 
           {/* Header Right Icons */}
-          <div className="flex items-center space-x-2.5 sm:space-x-4 text-[#14110E] z-10">
-            <button className="p-1 hover:text-[#9E774C] transition-colors cursor-pointer" aria-label="Search">
+          <div className="flex items-center space-x-2.5 sm:space-x-4 text-[#000000] z-10">
+            <button className="p-1 hover:text-[#555555] transition-colors cursor-pointer" aria-label="Search">
               <Search size={18} strokeWidth={1.75} />
             </button>
-            <button className="p-1 hover:text-[#9E774C] transition-colors cursor-pointer" aria-label="Account">
+            <button className="p-1 hover:text-[#555555] transition-colors cursor-pointer" aria-label="Account">
               <User size={18} strokeWidth={1.75} />
             </button>
-            <Link href="/cart" className="relative p-1 hover:text-[#9E774C] transition-colors" aria-label={`Shopping bag, ${bagCount} items`}>
+            <Link href="/cart" className="relative p-1 hover:text-[#555555] transition-colors" aria-label={`Shopping bag, ${bagCount} items`}>
               <ShoppingBag size={18} strokeWidth={1.75} />
-              <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#9E774C] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
+              <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#000000] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
                 {bagCount > 99 ? "99+" : bagCount}
               </span>
             </Link>

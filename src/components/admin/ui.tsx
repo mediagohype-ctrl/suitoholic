@@ -16,13 +16,13 @@ type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "bronze";
 type ButtonSize = "sm" | "md";
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 rounded-[7px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4A202A]/50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap";
+  "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap";
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: "bg-[#4A202A] text-[#FAF8F5] hover:bg-[#34141D]",
-  bronze: "bg-[#9E774C] text-white hover:bg-[#8a6640]",
-  secondary: "bg-white text-[#14110E] border border-[#E5E7EB] hover:bg-[#F9FAFB]",
-  ghost: "text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#14110E]",
-  danger: "bg-[#B4402F] text-white hover:bg-[#9a3527]",
+  primary: "bg-black text-white hover:bg-neutral-800",
+  bronze: "bg-neutral-900 text-white hover:bg-neutral-800",
+  secondary: "bg-white text-black border border-[#E5E3DD] hover:bg-[#F5F4F0]",
+  ghost: "text-[#666666] hover:bg-[#F5F4F0] hover:text-black",
+  danger: "bg-rose-600 text-white hover:bg-rose-700",
 };
 const buttonSizes: Record<ButtonSize, string> = {
   sm: "h-8 px-3 text-xs",

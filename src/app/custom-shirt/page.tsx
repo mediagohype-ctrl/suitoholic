@@ -11,10 +11,11 @@ import ShopByFabricsSection from "@/components/ShopByFabricsSection";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
 import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import CustomOutfitHero from "@/components/CustomOutfitHero";
+import TestimonialsSection from "@/components/TestimonialsSection";
 
 const ShowcaseDivider = () => (
-  <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-6 sm:my-8 lg:my-10">
-    <div className="w-full h-[1px] bg-gradient-to-r from-[#4A202A]/15 via-[#4A202A]/50 to-[#4A202A]/15" />
+  <div className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8 my-6 sm:my-8 lg:my-10">
+    <div className="w-full h-[1px] bg-[#E5E3DD]" />
   </div>
 );
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
@@ -320,18 +321,18 @@ function CustomShirtConfiguratorContent() {
   const viewerSleeve: ViewerSleeve = customFit.sleeveType === "half" ? "half" : "full";
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-clip">
       {/* Header */}
       <Header activeTab="custom-fit" />
 
-      {/* 1. CINEMATIC OUTFIT HERO: Build Your Outfit Interactive Atelier Experience (Matching Reference Design) */}
+      {/* 1. CINEMATIC OUTFIT HERO: Build Your Outfit Interactive Atelier Experience */}
       <CustomOutfitHero />
 
       {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize */}
-      <section className="relative w-full bg-[#FAF5EE] border-b border-[#E2D4C3] py-3.5 sm:py-4 overflow-hidden select-none shadow-2xs">
-        {/* Left and Right Edge Gradient Masks for luxury editorial feathering */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#FAF5EE] to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#FAF5EE] to-transparent z-10" />
+      <section className="relative w-full bg-[#F5F4F0] border-b border-[#E5E3DD] py-3.5 sm:py-4 overflow-hidden select-none">
+        {/* Left and Right Edge Gradient Masks */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#F5F4F0] to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#F5F4F0] to-transparent z-10" />
 
         {/* Marquee Track: Seamless full-width infinite loop */}
         <div className="overflow-hidden w-full">
@@ -339,8 +340,8 @@ function CustomShirtConfiguratorContent() {
             {[...customOfferingsList, ...customOfferingsList, ...customOfferingsList, ...customOfferingsList].map((item, idx) => (
               <div key={idx} className="flex items-center shrink-0">
                 <div className="flex items-center gap-2.5 sm:gap-3 px-4 sm:px-6 group cursor-default">
-                  <span className="w-1.5 h-1.5 rotate-45 bg-[#C59B6A] shrink-0 inline-block opacity-90" />
-                  <span className="font-serif-luxury text-xs sm:text-[13px] font-bold uppercase tracking-[0.18em] text-[#14110E] group-hover:text-[#8C5A28] transition-colors whitespace-nowrap">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-black shrink-0 inline-block opacity-90" />
+                  <span className="font-serif-luxury text-xs sm:text-[13px] font-bold uppercase tracking-[0.18em] text-black group-hover:text-neutral-600 transition-colors whitespace-nowrap">
                     {item.title}
                   </span>
                 </div>
@@ -350,14 +351,13 @@ function CustomShirtConfiguratorContent() {
         </div>
       </section>
 
-
-      {/* CURATED STARTING POINTS: Designer Ensembles Showcase (Matching Reference Design) */}
+      {/* CURATED STARTING POINTS: Designer Ensembles Showcase */}
       <CuratedStartingPoints
         activeProductSlug={activeProduct?.slug}
         onSelectLook={handleSelectCuratedLook}
       />
 
-      {/* THE BESPOKE PILLARS: 3-Tier Split Editorial Banner (Exceptional Fabrics, Bespoke Experience, Elite Service) */}
+      {/* THE BESPOKE PILLARS: 3-Tier Split Editorial Banner */}
       <BespokePillarsBanner />
 
       <ShowcaseDivider />
@@ -370,156 +370,150 @@ function CustomShirtConfiguratorContent() {
       {/* 2. Shop By Fabrics 3-Card Carousel */}
       <ShopByFabricsSection />
 
-      {/* 3. ATELIER APPOINTMENT BOOKING SECTION (Moved right above Reviews) */}
-      <section className="relative w-full py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-[#EEE5EA] via-[#F6F1F4] to-[#EAE0E6] border-y border-[#DDD2D8]">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-            
-            {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}
-            <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
-              {/* Badge: SUITOHOLIC BESPOKE ATELIER • DELHI NCR */}
-              <div
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFFFFF] border border-[#DDD2D8] text-[#4A202A] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] shadow-xs"
-                style={{ borderRadius: "7px" }}
-              >
-                <MapPin size={12} className="text-[#4A202A]" />
-                <span>{heroCopy.badge}</span>
+      {/* 3. ATELIER APPOINTMENT BOOKING SECTION */}
+      <section className="relative w-full py-12 sm:py-16 bg-[#ECEAE5]">
+        <div className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white border border-[#E5E3DD] rounded-[12px] p-8 sm:p-12 lg:p-16 shadow-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+              
+              {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}
+              <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
+                {/* Badge: SUITOHOLIC BESPOKE ATELIER • DELHI NCR */}
+                <div
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#F5F4F0] border border-[#E5E3DD] text-black text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] rounded-full shadow-xs"
+                >
+                  <MapPin size={12} className="text-black" />
+                  <span>{heroCopy.badge}</span>
+                </div>
+
+                {/* Main Headline */}
+                <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-bold text-black tracking-tight leading-[1.14]">
+                  {heroCopy.title}
+                </h2>
+
+                {/* Story Description */}
+                <p className="text-sm sm:text-base text-[#666666] font-sans font-normal leading-[1.75] max-w-2xl">
+                  {heroCopy.description}
+                </p>
               </div>
 
-              {/* Main Headline */}
-              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-bold text-[#14110E] tracking-tight leading-[1.14]">
-                {heroCopy.title}
-              </h2>
-
-              {/* Story Description */}
-              <p className="text-sm sm:text-base text-[#5A4E42] font-sans font-normal leading-[1.75] max-w-2xl">
-                {heroCopy.description}
-              </p>
-            </div>
-
-            {/* RIGHT COLUMN: Appointment Booking Form (Direct layout without card box) */}
-            <div id="appointment-booking" className="lg:col-span-5 scroll-mt-24 text-left">
-              {appointmentSuccess ? (
-                <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
-                  <div
-                    className="w-12 h-12 rounded-full bg-[#EEE5EA] border border-[#DDD2D8] text-[#4A202A] flex items-center justify-center mx-auto shadow-xs"
-                    style={{ borderRadius: "7px" }}
-                  >
-                    <Check size={22} className="stroke-[2.5]" />
-                  </div>
-                  <h3 className="font-serif-luxury text-xl font-bold uppercase text-[#14110E]">
-                    {heroCopy.successTitle}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#5A4E42] max-w-xs mx-auto leading-relaxed">
-                    {heroCopy.successMessage}
-                  </p>
-                  {bookingReference && (
-                    <div className="pt-1">
-                      <span
-                        className="text-[11px] font-mono text-[#4A202A] bg-[#EEE5EA] border border-[#DDD2D8] py-1.5 px-3 inline-block font-bold"
-                        style={{ borderRadius: "7px" }}
-                      >
-                        Ref: {bookingReference}
-                      </span>
-                    </div>
-                  )}
-                  <div className="pt-3 flex flex-col gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAppointmentSuccess(false);
-                        setBookingReference(null);
-                      }}
-                      className="text-xs font-bold text-[#4A202A] hover:underline uppercase tracking-wider cursor-pointer"
+              {/* RIGHT COLUMN: Appointment Booking Form */}
+              <div id="appointment-booking" className="lg:col-span-5 scroll-mt-24 text-left">
+                {appointmentSuccess ? (
+                  <div className="text-center py-8 sm:py-12 space-y-5 animate-in fade-in duration-300">
+                    <div
+                      className="w-14 h-14 rounded-full bg-[#F5F4F0] border border-[#E5E3DD] text-black flex items-center justify-center mx-auto shadow-xs"
                     >
-                      Book Another Session
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleAppointmentSubmit} className="space-y-4 sm:space-y-5">
-                  {/* Name */}
-                  <div>
-                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                      {heroCopy.nameLabel}
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={apptName}
-                      onChange={(e) => setApptName(e.target.value)}
-                      placeholder={heroCopy.namePlaceholder}
-                      style={{ borderRadius: "7px" }}
-                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] placeholder-[#8C7B83] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                    />
-                  </div>
-
-                  {/* Phone */}
-                  <div>
-                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                      {heroCopy.phoneLabel}
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={apptPhone}
-                      onChange={(e) => setApptPhone(e.target.value)}
-                      placeholder={heroCopy.phonePlaceholder}
-                      style={{ borderRadius: "7px" }}
-                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] placeholder-[#8C7B83] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div>
-                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                      {heroCopy.emailLabel}
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={apptEmail}
-                      onChange={(e) => setApptEmail(e.target.value)}
-                      placeholder={heroCopy.emailPlaceholder}
-                      style={{ borderRadius: "7px" }}
-                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] placeholder-[#8C7B83] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs"
-                    />
-                  </div>
-
-                  {/* Preferred Date */}
-                  <div>
-                    <label className="block text-xs sm:text-[13px] font-bold text-[#14110E] mb-2">
-                      {heroCopy.dateLabel}
-                    </label>
-                    <input
-                      type="date"
-                      required
-                      value={apptDate}
-                      onChange={(e) => setApptDate(e.target.value)}
-                      style={{ borderRadius: "7px" }}
-                      className="w-full bg-white border border-[#DDD2D8] text-[#14110E] focus:border-[#4A202A] focus:ring-1 focus:ring-[#4A202A] px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-2xs cursor-pointer"
-                    />
-                  </div>
-
-                  {apptError && (
-                    <p className="text-xs text-[#9B2C2C] font-semibold">
-                      {apptError}
+                      <Check size={24} className="stroke-[2.5]" />
+                    </div>
+                    <h3 className="font-serif-luxury text-xl font-bold uppercase text-black">
+                      {heroCopy.successTitle}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#666666] max-w-xs mx-auto leading-relaxed">
+                      {heroCopy.successMessage}
                     </p>
-                  )}
+                    {bookingReference && (
+                      <div className="pt-1">
+                        <span
+                          className="text-[11px] font-mono text-black bg-[#F5F4F0] border border-[#E5E3DD] py-2 px-4 inline-block font-bold rounded-full"
+                        >
+                          Ref: {bookingReference}
+                        </span>
+                      </div>
+                    )}
+                    <div className="pt-3 flex flex-col gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAppointmentSuccess(false);
+                          setBookingReference(null);
+                        }}
+                        className="text-xs font-bold text-black hover:underline uppercase tracking-wider cursor-pointer"
+                      >
+                        Book Another Session
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleAppointmentSubmit} className="space-y-4 sm:space-y-5">
+                    {/* Name */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-black mb-2">
+                        {heroCopy.nameLabel}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={apptName}
+                        onChange={(e) => setApptName(e.target.value)}
+                        placeholder={heroCopy.namePlaceholder}
+                        className="w-full bg-[#F5F4F0] border border-[#E5E3DD] text-black placeholder:text-[#999999] focus:border-black rounded-xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-xs"
+                      />
+                    </div>
 
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isBooking}
-                    style={{ borderRadius: "7px" }}
-                    className="w-full mt-2 bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.99] text-[#FAF8F5] font-extrabold text-sm sm:text-base py-4 px-6 transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center uppercase tracking-[0.14em]"
-                  >
-                    {isBooking ? "Booking..." : heroCopy.buttonLabel}
-                  </button>
-                </form>
-              )}
+                    {/* Phone */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-black mb-2">
+                        {heroCopy.phoneLabel}
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={apptPhone}
+                        onChange={(e) => setApptPhone(e.target.value)}
+                        placeholder={heroCopy.phonePlaceholder}
+                        className="w-full bg-[#F5F4F0] border border-[#E5E3DD] text-black placeholder:text-[#999999] focus:border-black rounded-xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-xs"
+                      />
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-black mb-2">
+                        {heroCopy.emailLabel}
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={apptEmail}
+                        onChange={(e) => setApptEmail(e.target.value)}
+                        placeholder={heroCopy.emailPlaceholder}
+                        className="w-full bg-[#F5F4F0] border border-[#E5E3DD] text-black placeholder:text-[#999999] focus:border-black rounded-xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-xs"
+                      />
+                    </div>
+
+                    {/* Preferred Date */}
+                    <div>
+                      <label className="block text-xs sm:text-[13px] font-bold text-black mb-2">
+                        {heroCopy.dateLabel}
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={apptDate}
+                        onChange={(e) => setApptDate(e.target.value)}
+                        className="w-full bg-[#F5F4F0] border border-[#E5E3DD] text-black focus:border-black rounded-xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm outline-none transition-all shadow-xs cursor-pointer"
+                      />
+                    </div>
+
+                    {apptError && (
+                      <p className="text-xs text-rose-600 font-semibold">
+                        {apptError}
+                      </p>
+                    )}
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      disabled={isBooking}
+                      className="w-full mt-3 bg-black hover:bg-neutral-800 active:scale-[0.99] text-white font-bold text-xs sm:text-sm py-4 px-6 rounded-full transition-all shadow-sm hover:shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center uppercase tracking-[0.14em]"
+                    >
+                      {isBooking ? "Booking..." : heroCopy.buttonLabel}
+                    </button>
+                  </form>
+                )}
+              </div>
+
             </div>
-
           </div>
         </div>
       </section>
@@ -538,7 +532,7 @@ function CustomShirtConfiguratorContent() {
 
 export default function CustomShirtConfigurator() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#FAF8F5]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[#ECEAE5]" />}>
       <CustomShirtConfiguratorContent />
     </Suspense>
   );

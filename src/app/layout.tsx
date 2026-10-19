@@ -56,8 +56,8 @@ export default async function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-clip flex flex-col bg-white text-[#14110E] relative selection:bg-[#9E774C] selection:text-white font-sans">
-        {/* Global Studio Atmosphere: Clean Crisp White Background */}
+      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-clip flex flex-col bg-[#ECEAE5] text-[#000000] relative selection:bg-[#000000] selection:text-white font-sans">
+        {/* Global BLUORNG Warm Alabaster Canvas Atmosphere */}
         <StudioBackground />
 
         {/* Page Content Container */}

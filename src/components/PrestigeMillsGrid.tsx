@@ -337,23 +337,23 @@ function ParallaxMillCard({ mill, index, scrollProgress }: ParallaxMillCardProps
             : "rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)",
           transition: isHovered ? "transform 0.1s ease-out" : "transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)",
           boxShadow: isHovered
-            ? "0 24px 48px -12px rgba(74, 32, 42, 0.16), 0 0 0 1px rgba(158, 119, 76, 0.45)"
-            : "0 2px 10px -2px rgba(20, 17, 14, 0.05), 0 0 0 1px #DDD2D8",
+            ? "0 20px 35px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px #000000"
+            : "0 2px 8px -2px rgba(0, 0, 0, 0.04), 0 0 0 1px #E5E3DD",
         }}
-        className="group relative bg-[#FAF6F8] hover:bg-white rounded-[6px] p-6 sm:p-8 min-h-[145px] sm:min-h-[165px] flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all duration-300 select-none border border-[#DDD2D8]/40"
+        className="group relative bg-white rounded-[18px] p-6 sm:p-8 min-h-[145px] sm:min-h-[165px] flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all duration-300 select-none border border-[#E5E3DD] shadow-xs"
       >
         {/* Dynamic Specular Spotlight Sheen */}
         {isHovered && (
           <div
-            className="pointer-events-none absolute inset-0 rounded-[6px] transition-opacity duration-300"
+            className="pointer-events-none absolute inset-0 rounded-[18px] transition-opacity duration-300"
             style={{
-              background: `radial-gradient(circle 140px at ${spotlight.x}px ${spotlight.y}px, rgba(158, 119, 76, 0.18), transparent 80%)`,
+              background: `radial-gradient(circle 140px at ${spotlight.x}px ${spotlight.y}px, rgba(0, 0, 0, 0.04), transparent 80%)`,
             }}
           />
         )}
 
         {/* Ambient Top Glow Line */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#9E774C]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         {/* Mill Logo / Emblem with micro-elevation */}
         <div 
@@ -368,7 +368,7 @@ function ParallaxMillCard({ mill, index, scrollProgress }: ParallaxMillCardProps
 
         {/* Hover Provenance Badge */}
         <div className="absolute bottom-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          <span className="text-[8.5px] sm:text-[9.5px] font-mono font-bold tracking-[0.18em] uppercase text-[#9E774C] bg-white/95 px-2.5 py-0.5 rounded-full border border-[#DDD2D8] shadow-2xs">
+          <span className="text-[8.5px] sm:text-[9.5px] font-mono font-bold tracking-[0.18em] uppercase text-black bg-[#F5F4F0] px-2.5 py-0.5 rounded-full border border-[#E5E3DD] shadow-xs">
             {mill.origin}
           </span>
         </div>
@@ -418,18 +418,18 @@ export default function PrestigeMillsGrid() {
       ref={sectionRef}
       onMouseMove={handleSectionMouseMove}
       aria-label="World-Renowned Textile Mills Partner Showcase"
-      className="relative w-full bg-[#FFFFFF] py-14 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 border-b border-[#DDD2D8]/70 select-none overflow-hidden"
+      className="relative w-full bg-[#ECEAE5] py-14 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 border-b border-[#E5E3DD] select-none overflow-hidden"
     >
       {/* Background Floating Luxury Typography Parallax Stream (Layer 1) */}
       <div 
         aria-hidden="true"
-        className="pointer-events-none absolute -top-8 sm:-top-12 left-0 w-full overflow-hidden opacity-[0.06] select-none"
+        className="pointer-events-none absolute -top-8 sm:-top-12 left-0 w-full overflow-hidden opacity-[0.04] select-none"
         style={{
           transform: `translate3d(${scrollYProgress * -130 - mouseParallax.x * 1.5}px, ${scrollYProgress * 35 - mouseParallax.y}px, 0)`,
           willChange: "transform",
         }}
       >
-        <span className="font-serif-luxury text-[130px] sm:text-[190px] lg:text-[230px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-[#4A202A] block leading-none">
+        <span className="font-serif-luxury text-[130px] sm:text-[190px] lg:text-[230px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none">
           SUITOHOLIC • SUITOHOLIC • SUITOHOLIC • SUITOHOLIC • SUITOHOLIC
         </span>
       </div>
@@ -437,13 +437,13 @@ export default function PrestigeMillsGrid() {
       {/* Background Floating Luxury Monogram Stream (Layer 2 - Counter Parallax) */}
       <div 
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-12 sm:-bottom-16 right-0 w-full overflow-hidden opacity-[0.05] select-none"
+        className="pointer-events-none absolute -bottom-12 sm:-bottom-16 right-0 w-full overflow-hidden opacity-[0.03] select-none"
         style={{
           transform: `translate3d(${scrollYProgress * 130 + mouseParallax.x * 1.5}px, ${scrollYProgress * -35 + mouseParallax.y}px, 0)`,
           willChange: "transform",
         }}
       >
-        <span className="font-serif-luxury text-[130px] sm:text-[190px] lg:text-[230px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-[#9E774C] block leading-none">
+        <span className="font-serif-luxury text-[130px] sm:text-[190px] lg:text-[230px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none">
           SUITOHOLIC • BESPOKE ATELIER • SUITOHOLIC • LUXURY FABRICS • SUITOHOLIC
         </span>
       </div>
@@ -453,24 +453,8 @@ export default function PrestigeMillsGrid() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.035]"
         style={{
-          backgroundImage: "repeating-linear-gradient(90deg, #9E774C 0, #9E774C 1px, transparent 1px, transparent 80px)",
+          backgroundImage: "repeating-linear-gradient(90deg, #000000 0, #000000 1px, transparent 1px, transparent 80px)",
           transform: `translate3d(${scrollYProgress * 20}px, 0, 0)`,
-        }}
-      />
-
-      {/* Subtle Atmospheric Ambient Glow Orbs */}
-      <div 
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 -left-32 w-96 h-96 bg-[#4A202A]/5 rounded-full blur-3xl transition-transform duration-700 ease-out"
-        style={{
-          transform: `translate3d(${mouseParallax.x * 1.2}px, ${scrollYProgress * 50 + mouseParallax.y}px, 0)`,
-        }}
-      />
-      <div 
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-1/4 -right-32 w-96 h-96 bg-[#9E774C]/8 rounded-full blur-3xl transition-transform duration-700 ease-out"
-        style={{
-          transform: `translate3d(${-mouseParallax.x * 1.2}px, ${scrollYProgress * -50 - mouseParallax.y}px, 0)`,
         }}
       />
 
@@ -483,11 +467,11 @@ export default function PrestigeMillsGrid() {
             transform: `translate3d(0, ${scrollYProgress * -10}px, 0)`,
           }}
         >
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] uppercase text-[#4A202A] leading-tight">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] uppercase text-black leading-tight">
             OUR ESTEEMED TEXTILE PARTNERS
           </h2>
 
-          <p className="text-sm sm:text-base md:text-[17px] text-[#55473A] font-normal leading-relaxed tracking-normal max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-normal leading-relaxed tracking-normal max-w-2xl mx-auto">
             Woven across historic centuries-old looms in Biella, Como, Lancashire, Naples &amp; Alexandria. Each mill represents the pinnacle of craftsmanship, yarn density, and timeless sartorial prestige.
           </p>
         </div>

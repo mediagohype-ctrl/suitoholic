@@ -196,7 +196,7 @@ export default function FabricsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-clip selection:bg-black selection:text-white">
       {/* Header with active 'fabrics' tab indicator */}
       <Header activeTab="fabrics" />
 
@@ -251,16 +251,16 @@ export default function FabricsPage() {
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-[#14110E] border border-white/20 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl space-y-4 p-6 text-white"
+            className="relative bg-white border border-[#E5E3DD] rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl space-y-4 p-6 text-black"
           >
-            <div className="flex items-center justify-between border-b border-white/15 pb-4">
+            <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-4">
               <div>
-                <span className="font-mono text-xs text-[#C5A069] font-bold block">{activeFabric.code}</span>
-                <h3 className="font-serif-luxury text-2xl font-bold uppercase">{activeFabric.name}</h3>
+                <span className="font-mono text-xs text-[#666666] font-bold block">{activeFabric.code}</span>
+                <h3 className="font-serif-luxury text-2xl font-normal uppercase text-black">{activeFabric.name}</h3>
               </div>
               <button
                 onClick={() => setZoomModalOpen(false)}
-                className="p-2 rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer"
+                className="p-2 rounded-full hover:bg-black/5 text-black transition-colors cursor-pointer"
                 aria-label={zoom?.closeAriaLabel}
               >
                 <X size={20} />
@@ -268,27 +268,26 @@ export default function FabricsPage() {
             </div>
 
             {/* Magnified Image Container */}
-            <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-[#221B16] border border-white/10">
+            <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-[#ECEAE5] border border-[#E5E3DD]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={activeFabric.image}
                 alt={activeFabric.name}
                 className="w-full h-full object-cover object-center scale-125 transition-transform duration-700 cursor-zoom-in"
               />
-              <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono tracking-wider border border-white/20">
+              <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono tracking-wider border border-white/20 text-white">
                 {zoom?.magnificationBadge}
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-2 text-xs text-[#D8C6B3]">
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-2 text-xs text-[#666666]">
               <div>
-                <span className="block font-semibold text-white">{activeFabric.composition}</span>
+                <span className="block font-semibold text-black">{activeFabric.composition}</span>
                 <span>{activeFabric.gsm} • {activeFabric.yarnCount}</span>
               </div>
               <Link
                 href={`${customizeBase}?fabric=${encodeURIComponent(activeFabric.code)}`}
-                style={{ borderRadius: "7px" }}
-                className="bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-widest uppercase px-6 py-3 transition-all shadow-md hover:shadow-lg"
+                className="bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-widest uppercase px-8 py-3.5 rounded-full transition-all shadow-sm"
               >
                 {zoom?.configuratorLabel}
               </Link>
@@ -307,16 +306,16 @@ export default function FabricsPage() {
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-[#FAF5EF] border border-[#D5C2AF] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl text-[#14110E] space-y-5"
+            className="relative bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] max-w-lg w-full p-6 sm:p-8 shadow-2xl text-black space-y-5"
           >
-            <div className="flex items-center justify-between border-b border-[#D5C2AF] pb-3">
+            <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
               <div>
-                <span className="text-[10px] font-bold tracking-[0.2em] text-[#8C6D47] uppercase font-mono block">{swatch?.eyebrow}</span>
-                <h3 className="font-serif-luxury text-xl sm:text-2xl font-bold uppercase">{swatch?.heading}</h3>
+                <span className="text-[10px] font-bold tracking-[0.2em] text-[#666666] uppercase font-mono block">{swatch?.eyebrow}</span>
+                <h3 className="font-serif-luxury text-xl sm:text-2xl font-normal uppercase text-black">{swatch?.heading}</h3>
               </div>
               <button
                 onClick={() => setSwatchModalOpen(false)}
-                className="p-1.5 rounded-full hover:bg-black/5 text-[#14110E] transition-colors cursor-pointer"
+                className="p-1.5 rounded-full hover:bg-black/5 text-black transition-colors cursor-pointer"
                 aria-label={swatch?.closeAriaLabel}
               >
                 <X size={20} />
@@ -325,25 +324,25 @@ export default function FabricsPage() {
 
             {swatchRequested ? (
               <div className="py-8 text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto shadow-sm">
+                <div className="w-12 h-12 rounded-full bg-black/5 text-black flex items-center justify-center mx-auto border border-black/10">
                   <CheckCircle2 size={26} />
                 </div>
-                <h4 className="font-serif-luxury text-lg font-bold uppercase text-[#14110E]">
+                <h4 className="font-serif-luxury text-lg font-normal uppercase text-black">
                   {swatch?.successHeading}
                 </h4>
-                <p className="text-xs text-[#55473A] max-w-sm mx-auto">
+                <p className="text-xs text-[#666666] max-w-sm mx-auto">
                   {swatch?.successTextBefore} <strong>{activeFabric.name} ({activeFabric.code})</strong> {swatch?.successTextAfter}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSwatchRequest} className="space-y-4 text-left">
-                <p className="text-xs text-[#55473A]">
+                <p className="text-xs text-[#666666]">
                   {swatch?.introBefore} <strong>{activeFabric.name}</strong> {swatch?.introAfter}
                 </p>
 
                 <div className="space-y-3 text-xs">
                   <div>
-                    <label className="block font-bold text-[#14110E] uppercase text-[10px] tracking-wider mb-1">
+                    <label className="block font-bold text-black uppercase text-[10px] tracking-wider mb-1">
                       {swatch?.nameLabel}
                     </label>
                     <input
@@ -352,12 +351,12 @@ export default function FabricsPage() {
                       placeholder={swatch?.namePlaceholder}
                       value={swatchName}
                       onChange={(e) => setSwatchName(e.target.value)}
-                      className="w-full bg-white border border-[#D5C2AF] rounded-xl px-3.5 py-2.5 text-xs text-[#14110E] focus:outline-none focus:ring-1 focus:ring-[#9E774C]"
+                      className="w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-4 py-3 text-xs text-black focus:outline-none focus:border-black placeholder:text-[#999999]"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#14110E] uppercase text-[10px] tracking-wider mb-1">
+                    <label className="block font-bold text-black uppercase text-[10px] tracking-wider mb-1">
                       {swatch?.addressLabel}
                     </label>
                     <textarea
@@ -366,12 +365,12 @@ export default function FabricsPage() {
                       placeholder={swatch?.addressPlaceholder}
                       value={swatchAddress}
                       onChange={(e) => setSwatchAddress(e.target.value)}
-                      className="w-full bg-white border border-[#D5C2AF] rounded-xl px-3.5 py-2.5 text-xs text-[#14110E] focus:outline-none focus:ring-1 focus:ring-[#9E774C]"
+                      className="w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-4 py-3 text-xs text-black focus:outline-none focus:border-black placeholder:text-[#999999]"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#14110E] uppercase text-[10px] tracking-wider mb-1">
+                    <label className="block font-bold text-black uppercase text-[10px] tracking-wider mb-1">
                       {swatch?.phoneLabel}
                     </label>
                     <input
@@ -380,12 +379,12 @@ export default function FabricsPage() {
                       placeholder={swatch?.phonePlaceholder}
                       value={swatchPhone}
                       onChange={(e) => setSwatchPhone(e.target.value)}
-                      className="w-full bg-white border border-[#D5C2AF] rounded-xl px-3.5 py-2.5 text-xs text-[#14110E] focus:outline-none focus:ring-1 focus:ring-[#9E774C]"
+                      className="w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-4 py-3 text-xs text-black focus:outline-none focus:border-black placeholder:text-[#999999]"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#14110E] uppercase text-[10px] tracking-wider mb-1">
+                    <label className="block font-bold text-black uppercase text-[10px] tracking-wider mb-1">
                       {swatch?.emailLabel}
                     </label>
                     <input
@@ -393,13 +392,13 @@ export default function FabricsPage() {
                       placeholder={swatch?.emailPlaceholder}
                       value={swatchEmail}
                       onChange={(e) => setSwatchEmail(e.target.value)}
-                      className="w-full bg-white border border-[#D5C2AF] rounded-xl px-3.5 py-2.5 text-xs text-[#14110E] focus:outline-none focus:ring-1 focus:ring-[#9E774C]"
+                      className="w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-4 py-3 text-xs text-black focus:outline-none focus:border-black placeholder:text-[#999999]"
                     />
                   </div>
                 </div>
 
                 {swatchError && (
-                  <p role="alert" className="text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-xl px-3.5 py-2.5">
+                  <p role="alert" className="text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-xl px-3.5 py-2.5">
                     {swatchError}
                   </p>
                 )}
@@ -408,8 +407,7 @@ export default function FabricsPage() {
                   type="submit"
                   disabled={swatchSubmitting}
                   aria-busy={swatchSubmitting}
-                  style={{ borderRadius: "7px" }}
-                  className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.2em] py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+                  className="w-full bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-[0.2em] py-4 rounded-full transition-all duration-300 uppercase shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                 >
                   {swatchSubmitting ? swatch?.submittingLabel : swatch?.submitLabel}
                 </button>
@@ -422,10 +420,10 @@ export default function FabricsPage() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#14110E] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-[#9E774C]/50 flex items-center gap-3 animate-in slide-in-from-bottom-5">
-          <CheckCircle2 size={18} className="text-[#C5A069]" />
+        <div className="fixed bottom-6 right-6 z-50 bg-black text-white px-6 py-3.5 rounded-full shadow-2xl border border-white/20 flex items-center gap-3 animate-in slide-in-from-bottom-5">
+          <CheckCircle2 size={18} className="text-white" />
           <span className="text-xs font-bold tracking-wider">{toastMessage}</span>
-          <Link href="/cart" className="underline text-[#C5A069] text-xs font-bold ml-2">
+          <Link href="/cart" className="underline text-white text-xs font-bold ml-2">
             View Bag
           </Link>
         </div>

@@ -768,33 +768,33 @@ export default function LuxuryClothArchiveSection({
     <section 
       id="swatches-studio" 
       aria-label="Master Luxury Bespoke Cloth Archive"
-      className="w-full bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F8] to-[#EEE5EA]/40 text-[#14110E] py-12 sm:py-16 px-4 sm:px-6 lg:px-10 select-none border-b border-[#DDD2D8]"
+      className="w-full bg-[#ECEAE5] text-black py-12 sm:py-16 px-4 sm:px-6 lg:px-10 select-none border-b border-[#E5E3DD]"
     >
       <div className="max-w-[1720px] mx-auto space-y-6 sm:space-y-8">
         
         {/* =================================================================== */}
         {/* TOP ROW: SEARCH BAR, SORT DROPDOWN, COUNT & RESET BUTTON           */}
         {/* =================================================================== */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#DDD2D8]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#E5E3DD]">
           
           {/* Search Input */}
           <div className="relative w-full md:w-96">
             <Search 
               size={17} 
-              className="absolute left-0 top-1/2 -translate-y-1/2 text-[#9E774C] stroke-[1.8] pointer-events-none" 
+              className="absolute left-0 top-1/2 -translate-y-1/2 text-black/60 stroke-[1.8] pointer-events-none" 
             />
             <input
               type="text"
               value={filters.search}
               onChange={(e) => handleFilterChange("search", e.target.value)}
               placeholder="Search fabric, weave, code, or mill..."
-              className="w-full bg-transparent pl-8 pr-8 py-2 text-xs sm:text-[13px] text-[#14110E] placeholder:text-[#7A6B5D] border-b border-[#DDD2D8] hover:border-[#9E774C] focus:border-[#4A202A] outline-none font-sans tracking-wide transition-colors"
+              className="w-full bg-transparent pl-8 pr-8 py-2 text-xs sm:text-[13px] text-black placeholder:text-[#666666] border-b border-[#E5E3DD] hover:border-black focus:border-black outline-none font-sans tracking-wide transition-colors"
             />
             {filters.search && (
               <button 
                 type="button"
                 onClick={() => handleFilterChange("search", "")}
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-[#7A6B5D] hover:text-[#4A202A] p-1 cursor-pointer"
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-[#666666] hover:text-black p-1 cursor-pointer"
               >
                 <X size={14} />
               </button>
@@ -812,29 +812,29 @@ export default function LuxuryClothArchiveSection({
                   e.stopPropagation();
                   setActiveDropdown(activeDropdown === "sort" ? null : "sort");
                 }}
-                className="flex items-center gap-1.5 text-[#55473A] hover:text-[#14110E] font-mono text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-black hover:text-[#666666] font-mono text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer"
               >
-                <span className="text-[#7A6B5D]">SORT</span>
-                <span className="text-[#4A202A] font-bold">{filters.sort}</span>
-                <ChevronDown size={13} className={`text-[#7A6B5D] transition-transform duration-200 ${activeDropdown === "sort" ? "rotate-180" : ""}`} />
+                <span className="text-[#666666]">SORT</span>
+                <span className="text-black font-bold">{filters.sort}</span>
+                <ChevronDown size={13} className={`text-black transition-transform duration-200 ${activeDropdown === "sort" ? "rotate-180" : ""}`} />
               </button>
 
               {activeDropdown === "sort" && (
                 <div 
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute right-0 top-full mt-2 w-52 bg-white border border-[#DDD2D8] rounded-xl shadow-[0_12px_36px_rgba(74,32,42,0.14)] py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150"
+                  className="absolute right-0 top-full mt-2 w-52 bg-white border border-[#E5E3DD] rounded-2xl shadow-xl py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150"
                 >
                   {sortOptions.map((opt) => (
                     <button
                       key={opt}
                       type="button"
                       onClick={() => handleFilterChange("sort", opt)}
-                      className={`w-full text-left px-3.5 py-2 text-[11px] font-mono tracking-wider flex items-center justify-between hover:bg-[#FAF6F8] transition-colors cursor-pointer ${
-                        filters.sort === opt ? "text-[#4A202A] font-bold bg-[#FAF6F8]" : "text-[#55473A]"
+                      className={`w-full text-left px-4 py-2 text-[11px] font-mono tracking-wider flex items-center justify-between hover:bg-[#F5F4F0] transition-colors cursor-pointer ${
+                        filters.sort === opt ? "text-black font-bold bg-[#F5F4F0]" : "text-[#666666]"
                       }`}
                     >
                       <span>{opt}</span>
-                      {filters.sort === opt && <Check size={12} className="text-[#4A202A]" />}
+                      {filters.sort === opt && <Check size={12} className="text-black" />}
                     </button>
                   ))}
                 </div>
@@ -842,8 +842,8 @@ export default function LuxuryClothArchiveSection({
             </div>
 
             {/* Total Cloths Counter */}
-            <div className="text-[#7A6B5D] font-mono text-[11px] sm:text-xs font-semibold tracking-widest uppercase">
-              <span className="text-[#14110E] font-bold">{filteredCloths.length}</span> CLOTHS
+            <div className="text-[#666666] font-mono text-[11px] sm:text-xs font-semibold tracking-widest uppercase">
+              <span className="text-black font-bold">{filteredCloths.length}</span> CLOTHS
             </div>
 
             {/* Reset Filter Button */}
@@ -851,7 +851,7 @@ export default function LuxuryClothArchiveSection({
               <button
                 type="button"
                 onClick={handleReset}
-                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-[#9E774C] hover:text-[#4A202A] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-black hover:text-[#666666] transition-colors cursor-pointer"
               >
                 <X size={12} />
                 <span>RESET</span>
@@ -880,13 +880,13 @@ export default function LuxuryClothArchiveSection({
                     e.stopPropagation();
                     setActiveDropdown(isOpen ? null : key);
                   }}
-                  className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-4 py-2 rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${
                     isSelected
-                      ? "bg-[#4A202A] text-white border-[#4A202A] shadow-xs"
-                      : "bg-white hover:bg-[#FAF6F8] text-[#14110E] border-[#DDD2D8] hover:border-[#4A202A]/40 shadow-2xs"
+                      ? "bg-black text-white border-black shadow-xs"
+                      : "bg-white hover:bg-[#F5F4F0] text-black border-[#E5E3DD] hover:border-black/40 shadow-xs"
                   }`}
                 >
-                  <span className={isSelected ? "text-[#D5C2AF]" : "text-[#7A6B5D]"}>{label}</span>
+                  <span className={isSelected ? "text-neutral-300" : "text-[#666666]"}>{label}</span>
                   <span className="font-bold">{currentVal}</span>
                   <ChevronDown size={11} className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
                 </button>
@@ -894,7 +894,7 @@ export default function LuxuryClothArchiveSection({
                 {isOpen && (
                   <div 
                     onClick={(e) => e.stopPropagation()}
-                    className="absolute left-0 top-full mt-2 w-60 max-h-72 overflow-y-auto bg-white border border-[#DDD2D8] rounded-xl shadow-[0_12px_36px_rgba(74,32,42,0.14)] py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150"
+                    className="absolute left-0 top-full mt-2 w-60 max-h-72 overflow-y-auto bg-white border border-[#E5E3DD] rounded-2xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150"
                   >
                     {options.map((opt) => {
                       const active = currentVal === opt;
@@ -903,12 +903,12 @@ export default function LuxuryClothArchiveSection({
                           key={opt}
                           type="button"
                           onClick={() => handleFilterChange(key as keyof FilterState, opt)}
-                          className={`w-full text-left px-3.5 py-2 text-[10.5px] font-mono tracking-wider flex items-center justify-between hover:bg-[#FAF6F8] transition-colors cursor-pointer ${
-                            active ? "text-[#4A202A] font-bold bg-[#FAF6F8]" : "text-[#55473A]"
+                          className={`w-full text-left px-4 py-2 text-[10.5px] font-mono tracking-wider flex items-center justify-between hover:bg-[#F5F4F0] transition-colors cursor-pointer ${
+                            active ? "text-black font-bold bg-[#F5F4F0]" : "text-[#666666]"
                           }`}
                         >
                           <span className="truncate pr-2">{opt}</span>
-                          {active && <Check size={12} className="text-[#4A202A] shrink-0" />}
+                          {active && <Check size={12} className="text-black shrink-0" />}
                         </button>
                       );
                     })}
@@ -924,11 +924,11 @@ export default function LuxuryClothArchiveSection({
         {/* =================================================================== */}
         {filteredCloths.length === 0 ? (
           <div className="py-20 text-center space-y-4">
-            <p className="font-serif-luxury text-xl text-[#7A6B5D]">No cloth swatches match your selected filter criteria.</p>
+            <p className="font-serif-luxury text-xl text-[#666666]">No cloth swatches match your selected filter criteria.</p>
             <button
               type="button"
               onClick={handleReset}
-              className="px-6 py-2.5 bg-[#4A202A] hover:bg-[#34141D] text-white rounded-lg font-mono text-xs uppercase tracking-widest transition-colors cursor-pointer shadow-sm"
+              className="px-8 py-3 bg-black hover:bg-neutral-800 text-white rounded-full font-mono text-xs uppercase tracking-widest transition-colors cursor-pointer shadow-sm"
             >
               Reset All Filters
             </button>
@@ -942,7 +942,7 @@ export default function LuxuryClothArchiveSection({
                 className="group relative flex flex-col cursor-pointer select-none"
               >
                 {/* Rectangular Vertical Swatch Image (3:4 ratio) */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#FAF6F8] border border-[#DDD2D8] group-hover:border-[#4A202A]/70 group-hover:shadow-[0_10px_25px_rgba(74,32,42,0.12)] transition-all duration-300 rounded-[3px]">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-white border border-[#E5E3DD] group-hover:border-black group-hover:shadow-md transition-all duration-300 rounded-[16px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={cloth.image}
@@ -954,16 +954,15 @@ export default function LuxuryClothArchiveSection({
                   {/* Subtle ambient lighting overlay */}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 group-hover:opacity-60 transition-opacity" />
 
-
                   {/* Bottom-Right GSM Box Badge */}
-                  <div className="absolute bottom-2 right-2 z-10 px-1.5 py-0.5 bg-white/95 backdrop-blur-xs text-[#4A202A] text-[8.5px] sm:text-[9px] font-mono font-bold tracking-wider border border-[#DDD2D8] shadow-2xs rounded-[2px]">
+                  <div className="absolute bottom-2 right-2 z-10 px-2 py-0.5 bg-white/95 backdrop-blur-xs text-black text-[8.5px] sm:text-[9px] font-mono font-bold tracking-wider border border-[#E5E3DD] shadow-xs rounded-full">
                     {cloth.weightLabel}
                   </div>
 
                   {/* Hover Inspect Pill */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <div className="px-3 py-1.5 bg-[#4A202A]/95 text-white backdrop-blur-md rounded-full border border-[#9E774C]/50 text-[10px] font-mono tracking-widest uppercase flex items-center gap-1.5 shadow-lg">
-                      <ZoomIn size={12} className="text-[#FAF8F5]" />
+                    <div className="px-3.5 py-1.5 bg-black/90 text-white backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono tracking-widest uppercase flex items-center gap-1.5 shadow-lg">
+                      <ZoomIn size={12} className="text-white" />
                       <span>INSPECT</span>
                     </div>
                   </div>
@@ -974,22 +973,22 @@ export default function LuxuryClothArchiveSection({
                   
                   {/* Left Column: Fibre, Price/Metre sublabel, Garment Service Use */}
                   <div className="space-y-0.5 min-w-0 flex-1">
-                    <div className="text-[11px] sm:text-xs font-semibold text-[#14110E] uppercase tracking-wider truncate">
+                    <div className="text-[11px] sm:text-xs font-semibold text-black uppercase tracking-wider truncate">
                       {cloth.fibre}
                     </div>
 
-                    <div className="text-[8px] sm:text-[8.5px] text-[#9E774C] font-mono uppercase tracking-[0.18em]">
+                    <div className="text-[8px] sm:text-[8.5px] text-[#666666] font-mono uppercase tracking-[0.18em]">
                       PRICE / METRE
                     </div>
 
-                    <div className="text-[10px] sm:text-[10.5px] text-[#4A202A] italic font-serif-luxury truncate">
+                    <div className="text-[10px] sm:text-[10.5px] text-[#666666] italic font-serif-luxury truncate">
                       {cloth.use}
                     </div>
                   </div>
 
                   {/* Right Column: Price */}
                   <div className="text-right flex flex-col justify-between items-end self-stretch shrink-0 pt-0.5">
-                    <div className="text-xs sm:text-[13px] font-bold text-[#4A202A] group-hover:text-[#34141D] transition-colors">
+                    <div className="text-xs sm:text-[13px] font-bold text-black transition-colors">
                       {cloth.formattedPrice}
                     </div>
                   </div>
@@ -1014,21 +1013,21 @@ export default function LuxuryClothArchiveSection({
           onClick={() => { setSelectedCloth(null); setZoomScale(1); }}
         >
           <div 
-            className="relative w-full max-w-4xl bg-white border border-[#DDD2D8] rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 text-[#14110E]"
+            className="relative w-full max-w-4xl bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 text-black"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               type="button"
               onClick={() => { setSelectedCloth(null); setZoomScale(1); }}
-              className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#55473A] hover:text-[#14110E] border border-[#DDD2D8] flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+              className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-black border border-[#E5E3DD] flex items-center justify-center transition-colors cursor-pointer shadow-sm"
             >
               <X size={16} />
             </button>
 
             {/* Left 6-Cols: Macro Weave Texture with Interactive Hover Magnification */}
             <div 
-              className="md:col-span-6 h-[320px] md:h-[480px] relative overflow-hidden bg-[#FAF6F8] border-r border-[#DDD2D8] cursor-crosshair group"
+              className="md:col-span-6 h-[320px] md:h-[480px] relative overflow-hidden bg-[#ECEAE5] border-r border-[#E5E3DD] cursor-crosshair group"
               onMouseMove={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -1049,71 +1048,71 @@ export default function LuxuryClothArchiveSection({
                 }}
               />
 
-              <div className="absolute top-3 left-3 bg-white/95 px-2.5 py-1 text-[10px] font-mono tracking-widest text-[#4A202A] border border-[#DDD2D8] shadow-xs">
+              <div className="absolute top-3 left-3 bg-white/95 px-3 py-1 text-[10px] font-mono tracking-widest text-black border border-[#E5E3DD] rounded-full shadow-xs">
                 {selectedCloth.mill} • {selectedCloth.weightLabel}
               </div>
 
               {zoomScale > 1 ? (
-                <div className="absolute bottom-3 right-3 bg-[#4A202A] px-2 py-1 text-[9.5px] font-mono text-white rounded shadow-sm">
+                <div className="absolute bottom-3 right-3 bg-black px-3 py-1 text-[9.5px] font-mono text-white rounded-full shadow-sm">
                   2.4X MACRO ZOOM
                 </div>
               ) : (
-                <div className="absolute bottom-3 left-3 bg-white/90 px-2.5 py-1 text-[10px] font-mono text-[#55473A] border border-[#DDD2D8] rounded shadow-xs">
+                <div className="absolute bottom-3 left-3 bg-white/90 px-3 py-1 text-[10px] font-mono text-[#666666] border border-[#E5E3DD] rounded-full shadow-xs">
                   Hover to inspect weave texture
                 </div>
               )}
             </div>
 
             {/* Right 6-Cols: Specifications & Actions */}
-            <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-5 bg-gradient-to-b from-white via-[#FAF6F8] to-[#EEE5EA]/50">
+            <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-5 bg-white">
               
               <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-[#DDD2D8] pb-3">
+                <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
                   <div>
-                    <span className="text-[10px] font-mono text-[#9E774C] font-bold tracking-[0.2em] uppercase block">
+                    <span className="text-[10px] font-mono text-[#666666] font-bold tracking-[0.2em] uppercase block">
                       {selectedCloth.series}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-bold font-mono tracking-wide text-[#14110E]">
+                    <h3 className="text-xl sm:text-2xl font-bold font-mono tracking-wide text-black">
                       {selectedCloth.code}
                     </h3>
                   </div>
                   <div className="text-right">
-                    <span className="text-[9px] font-mono text-[#7A6B5D] block tracking-widest">
+                    <span className="text-[9px] font-mono text-[#666666] block tracking-widest">
                       PRICE / METRE
                     </span>
-                    <span className="text-xl font-bold text-[#4A202A] font-mono">
+                    <span className="text-xl font-bold text-black font-mono">
                       {selectedCloth.formattedPrice}
                     </span>
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-[13px] text-[#55473A] leading-relaxed font-sans">
+                <p className="text-xs sm:text-[13px] text-[#666666] leading-relaxed font-sans">
                   {selectedCloth.description}
                 </p>
 
                 {/* Spec Grid */}
                 <div className="grid grid-cols-2 gap-2 text-[11px] font-mono pt-1">
-                  <div className="p-2.5 bg-white rounded border border-[#DDD2D8] shadow-2xs">
-                    <span className="text-[#7A6B5D] text-[9px] block">PROVENANCE / MILL</span>
-                    <span className="text-[#14110E] font-semibold">{selectedCloth.mill}</span>
+                  <div className="p-3 bg-[#F5F4F0] rounded-xl border border-[#E5E3DD]">
+                    <span className="text-[#666666] text-[9px] block">PROVENANCE / MILL</span>
+                    <span className="text-black font-semibold">{selectedCloth.mill}</span>
                   </div>
-                  <div className="p-2.5 bg-white rounded border border-[#DDD2D8] shadow-2xs">
-                    <span className="text-[#7A6B5D] text-[9px] block">GARMENT SERVICE</span>
-                    <span className="text-[#4A202A] font-semibold">{selectedCloth.use}</span>
+                  <div className="p-3 bg-[#F5F4F0] rounded-xl border border-[#E5E3DD]">
+                    <span className="text-[#666666] text-[9px] block">GARMENT SERVICE</span>
+                    <span className="text-black font-semibold">{selectedCloth.use}</span>
                   </div>
-                  <div className="p-2.5 bg-white rounded border border-[#DDD2D8] shadow-2xs">
-                    <span className="text-[#7A6B5D] text-[9px] block">COMPOSITION</span>
-                    <span className="text-[#14110E] font-semibold truncate block">{selectedCloth.composition}</span>
+                  <div className="p-3 bg-[#F5F4F0] rounded-xl border border-[#E5E3DD]">
+                    <span className="text-[#666666] text-[9px] block">COMPOSITION</span>
+                    <span className="text-black font-semibold truncate block">{selectedCloth.composition}</span>
                   </div>
-                  <div className="p-2.5 bg-white rounded border border-[#DDD2D8] shadow-2xs">
-                    <span className="text-[#7A6B5D] text-[9px] block">WEIGHT & DRAPE</span>
-                    <span className="text-[#14110E] font-semibold">{selectedCloth.weightLabel} • {selectedCloth.drape}</span>
+                  <div className="p-3 bg-[#F5F4F0] rounded-xl border border-[#E5E3DD]">
+                    <span className="text-[#666666] text-[9px] block">WEIGHT & DRAPE</span>
+                    <span className="text-black font-semibold">{selectedCloth.weightLabel} • {selectedCloth.drape}</span>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-2 pt-2">
+              <div className="space-y-2.5 pt-2">
                 <Link
                   href={
                     selectedCloth.use === "Custom Shirts"
@@ -1121,8 +1120,7 @@ export default function LuxuryClothArchiveSection({
                       : `/shop`
                   }
                   onClick={() => onSelectFabricForCustomizer?.(selectedCloth.code)}
-                  style={{ borderRadius: "6px" }}
-                  className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-bold tracking-[0.2em] py-3 transition-colors uppercase flex items-center justify-center gap-2 cursor-pointer shadow-md group"
+                  className="w-full bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-[0.2em] py-3.5 px-6 rounded-full transition-colors uppercase flex items-center justify-center gap-2 cursor-pointer shadow-sm group"
                 >
                   <Scissors size={14} />
                   <span>
@@ -1141,8 +1139,7 @@ export default function LuxuryClothArchiveSection({
                     }
                     setSelectedCloth(null);
                   }}
-                  style={{ borderRadius: "6px" }}
-                  className="w-full bg-white hover:bg-[#FAF6F8] text-[#14110E] border border-[#DDD2D8] text-[11px] font-mono tracking-wider py-2.5 transition-colors uppercase cursor-pointer shadow-2xs"
+                  className="w-full bg-white hover:bg-[#F5F4F0] text-black border border-[#E5E3DD] text-[11px] font-bold tracking-wider py-3 rounded-full transition-colors uppercase cursor-pointer shadow-xs"
                 >
                   REQUEST PHYSICAL SWATCH SAMPLE
                 </button>

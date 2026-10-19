@@ -19,30 +19,30 @@ export default function OrderTotals({ subtotal, customizationTotal, shippingFee,
   return (
     <div className="space-y-2 text-xs">
       <div className="flex justify-between">
-        <span className="text-[#665749]">{c.subtotalLabel}</span>
-        <span className="font-semibold">{money(subtotal)}</span>
+        <span className="text-[#666666]">{c.subtotalLabel}</span>
+        <span className="font-semibold text-black">{money(subtotal)}</span>
       </div>
       {customizationTotal > 0 && (
         <div className="flex justify-between">
-          <span className="text-[#665749]">{c.customizationLabel}</span>
-          <span className="font-semibold">{money(customizationTotal)}</span>
+          <span className="text-[#666666]">{c.customizationLabel}</span>
+          <span className="font-semibold text-black">{money(customizationTotal)}</span>
         </div>
       )}
       {discount > 0 && (
-        <div className="flex justify-between text-[#2D6A4F]">
+        <div className="flex justify-between text-black font-medium">
           <span>Discount</span>
           <span className="font-semibold">− {money(discount)}</span>
         </div>
       )}
       <div className="flex justify-between">
-        <span className="text-[#665749]">{c.shippingLabel}</span>
-        <span className="font-semibold">{shippingFee > 0 ? money(shippingFee) : c.freeLabel}</span>
+        <span className="text-[#666666]">{c.shippingLabel}</span>
+        <span className="font-semibold text-black">{shippingFee > 0 ? money(shippingFee) : c.freeLabel}</span>
       </div>
-      <div className="flex justify-between items-baseline border-t border-[#E2D4C3] pt-3 mt-1">
-        <span className="text-[11px] font-bold tracking-[0.18em] uppercase">{c.totalLabel}</span>
-        <span className="font-serif-luxury text-2xl font-bold">{money(total)}</span>
+      <div className="flex justify-between items-baseline border-t border-[#E5E3DD] pt-3 mt-1">
+        <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-black">{c.totalLabel}</span>
+        <span className="font-serif-luxury text-2xl font-bold text-black">{money(total)}</span>
       </div>
-      <p className="text-[10px] text-[#7A6B5D] text-right">{c.taxNote}</p>
+      <p className="text-[10px] text-[#666666] text-right">{c.taxNote}</p>
     </div>
   );
 }

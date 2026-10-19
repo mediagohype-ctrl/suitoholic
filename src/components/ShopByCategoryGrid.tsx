@@ -12,7 +12,7 @@ export default function ShopByCategoryGrid() {
     <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12 my-10 sm:my-14 lg:my-18 select-none">
       {/* Title */}
       <div className="text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-[#4A202A] tracking-[0.14em] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           {c.heading}
         </h2>
       </div>
@@ -26,7 +26,7 @@ export default function ShopByCategoryGrid() {
             className="group flex flex-col items-center cursor-pointer"
           >
             {/* Portrait Image Container */}
-            <div className="relative w-full aspect-[3/4.2] rounded-[9px] overflow-hidden bg-[#1E1914] shadow-xs group-hover:shadow-md transition-all duration-500">
+            <div className="relative w-full aspect-[3/4.2] rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-xs group-hover:shadow-md transition-all duration-500">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={item.image}
@@ -35,11 +35,11 @@ export default function ShopByCategoryGrid() {
                 loading="lazy"
               />
               {/* Subtle hover overlay */}
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
             </div>
 
             {/* Sub-label under card */}
-            <span className="text-center font-bold text-[10.5px] sm:text-xs tracking-[0.2em] text-[#14110E] group-hover:text-[#9E774C] uppercase transition-colors pt-3.5 px-1">
+            <span className="text-center font-bold text-[10.5px] sm:text-xs tracking-[0.2em] text-black group-hover:opacity-75 uppercase transition-opacity pt-3.5 px-1">
               {item.title}
             </span>
           </Link>

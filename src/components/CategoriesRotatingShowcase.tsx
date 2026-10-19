@@ -68,12 +68,12 @@ export default function CategoriesRotatingShowcase() {
     >
       {/* Top Heading */}
       <div className="text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-[#4A202A] tracking-[0.14em] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           {c.heading}
         </h2>
       </div>
 
-      {/* 3D Coverflow Revolving Carousel Stage matching reference screenshot */}
+      {/* 3D Coverflow Revolving Carousel Stage */}
       <div className="relative w-full h-[260px] sm:h-[340px] md:h-[380px] lg:h-[420px] flex items-center justify-center [perspective:1400px]">
         
         {/* Anti-Clockwise Left Button */}
@@ -81,7 +81,7 @@ export default function CategoriesRotatingShowcase() {
           onClick={rotateAntiClockwise}
           aria-label={c.previousAriaLabel}
           type="button"
-          className="absolute left-2 sm:left-6 lg:left-12 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#4A202A] hover:bg-[#38161F] text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 active:scale-95 group cursor-pointer"
+          className="absolute left-2 sm:left-6 lg:left-12 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 active:scale-95 group cursor-pointer"
         >
           <ChevronLeft size={20} className="transform group-hover:-translate-x-0.5 transition-transform" />
         </button>
@@ -91,12 +91,12 @@ export default function CategoriesRotatingShowcase() {
           onClick={rotateClockwise}
           aria-label={c.nextAriaLabel}
           type="button"
-          className="absolute right-2 sm:right-6 lg:right-12 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#4A202A] hover:bg-[#38161F] text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 active:scale-95 group cursor-pointer"
+          className="absolute right-2 sm:right-6 lg:right-12 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 active:scale-95 group cursor-pointer"
         >
           <ChevronRight size={20} className="transform group-hover:translate-x-0.5 transition-transform" />
         </button>
 
-        {/* 3D Rotating Category Cards matching reference screenshot */}
+        {/* 3D Rotating Category Cards */}
         <div className="relative w-full max-w-[1280px] h-full flex items-center justify-center">
           {categoriesData.map((category, index) => {
             // Compute shortest circular offset from active index
@@ -108,7 +108,7 @@ export default function CategoriesRotatingShowcase() {
             const isLeft = offset === -1 || (offset < 0 && Math.abs(offset) <= 1);
             const isRight = offset === 1 || (offset > 0 && Math.abs(offset) <= 1);
 
-            // Position & 3D Transform Styles matching reference layout
+            // Position & 3D Transform Styles
             let transformStyle = "";
             let zIndex = 10;
             let opacity = 0;
@@ -151,7 +151,7 @@ export default function CategoriesRotatingShowcase() {
                   pointerEvents,
                 }}
                 className={`absolute w-[280px] sm:w-[380px] md:w-[460px] lg:w-[520px] h-[210px] sm:h-[280px] md:h-[320px] lg:h-[360px] rounded-xl sm:rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ease-out shadow-xl ${
-                  isCenter ? "border border-white/30 shadow-2xl" : "brightness-90 hover:brightness-100"
+                  isCenter ? "border border-white/40 shadow-2xl" : "brightness-90 hover:brightness-100"
                 }`}
               >
                 <Link href={category.href || "/shop"} className="block w-full h-full relative group">
@@ -167,7 +167,7 @@ export default function CategoriesRotatingShowcase() {
                   {/* Gradient Shadow Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:from-black/85" />
 
-                  {/* Category Title Overlay matching reference screenshot */}
+                  {/* Category Title Overlay */}
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 text-center">
                     <h3 className={`text-white tracking-[0.16em] uppercase font-bold drop-shadow-md transition-all ${
                       isCenter ? "text-xl sm:text-2xl lg:text-3xl" : "text-base sm:text-xl lg:text-2xl opacity-90"
@@ -182,7 +182,7 @@ export default function CategoriesRotatingShowcase() {
         </div>
       </div>
 
-      {/* Bottom Horizontal Pagination Bars matching reference screenshot */}
+      {/* Bottom Horizontal Pagination Bars */}
       <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
         {categoriesData.map((_, i) => {
           const isActive = i === activeIndex;
@@ -194,8 +194,8 @@ export default function CategoriesRotatingShowcase() {
               aria-label={(c.dotAriaLabelTemplate || "Go to category {n}").replace("{n}", String(i + 1))}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 isActive
-                  ? "w-8 sm:w-10 bg-[#4A202A] shadow-xs"
-                  : "w-6 sm:w-8 bg-[#DCD4CE] hover:bg-[#4A202A]/50"
+                  ? "w-8 sm:w-10 bg-black shadow-xs"
+                  : "w-6 sm:w-8 bg-[#DCD4CE] hover:bg-black/50"
               }`}
             />
           );

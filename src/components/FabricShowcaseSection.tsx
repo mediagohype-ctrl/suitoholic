@@ -125,13 +125,13 @@ export default function FabricShowcaseSection() {
     <section id="fabrics" className="py-6 sm:py-10 lg:py-14 px-3.5 sm:px-6 lg:px-10 xl:px-12 select-none">
       <div className="max-w-[1720px] mx-auto space-y-8 sm:space-y-10">
         
-        {/* Section Header: Luxury Enterprise Architectural Heading */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 border-b border-[#D5C2AF] pb-6">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 border-b border-[#E5E3DD] pb-6">
           <div className="space-y-2.5">
-            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold uppercase leading-tight text-[#4A202A] tracking-[0.14em]">
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold uppercase leading-tight text-black tracking-[0.14em]">
               THE ATELIER FABRIC ARCHIVE
             </h2>
-            <p className="text-sm sm:text-base md:text-[17px] text-[#55473A] font-sans max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-sans max-w-2xl leading-relaxed">
               Every Suitoholic garment begins at the loom. Explore our authentic hand-curated textile collection of pure Egyptian Giza 140s cottons, Superviola artisanal linens, and lustrous ceremonial weaves.
             </p>
           </div>
@@ -149,10 +149,10 @@ export default function FabricShowcaseSection() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedCategory(tab.id)}
-                  className={`text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-lg transition-all duration-200 border cursor-pointer ${
+                  className={`text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full transition-all duration-200 border cursor-pointer ${
                     isActive
-                      ? "bg-[#14110E] text-[#FAF8F5] border-[#14110E] shadow-sm"
-                      : "bg-[#EFE5D9] hover:bg-white text-[#14110E] border-[#D5C2AF]"
+                      ? "bg-black text-white border-black shadow-sm"
+                      : "bg-white hover:bg-neutral-100 text-black border-[#E5E3DD]"
                   }`}
                 >
                   {tab.label}
@@ -166,23 +166,23 @@ export default function FabricShowcaseSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           
           {/* Left Column (5 Cols): Active Fabric Macro Spec Card */}
-          <div className="lg:col-span-5 bg-[#EFE5D9] border border-[#D5C2AF] rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-sm">
+          <div className="lg:col-span-5 bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-sm">
             
             {/* Top Swatch Header */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between border-b border-[#D5C2AF] pb-3">
-                <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#8C6D47] uppercase font-sans">
+              <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#666666] uppercase font-sans">
                   {activeFabric.categoryLabel}
                 </span>
-                <span className="font-mono text-xs font-bold text-[#14110E] bg-white/80 px-2.5 py-1 rounded border border-[#D5C2AF]">
+                <span className="font-mono text-xs font-bold text-black bg-[#F5F4F0] px-2.5 py-1 rounded border border-[#E5E3DD]">
                   {activeFabric.code}
                 </span>
               </div>
 
-              <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-3xl font-bold uppercase text-[#14110E] leading-snug">
+              <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-3xl font-bold uppercase text-black leading-snug">
                 {activeFabric.name}
               </h3>
-              <p className="text-xs sm:text-[13px] text-[#55473A] font-sans leading-relaxed">
+              <p className="text-xs sm:text-[13px] text-[#666666] font-sans leading-relaxed">
                 {activeFabric.description}
               </p>
             </div>
@@ -190,7 +190,7 @@ export default function FabricShowcaseSection() {
             {/* Macro Texture Preview Box with Zoom Feature */}
             <div 
               onClick={() => setZoomModalOpen(true)}
-              className="relative rounded-xl sm:rounded-2xl overflow-hidden h-[240px] sm:h-[280px] bg-[#1E1914] border border-[#D5C2AF] shadow-inner cursor-zoom-in group"
+              className="relative rounded-2xl overflow-hidden h-[240px] sm:h-[280px] bg-[#1E1914] border border-[#E5E3DD] shadow-inner cursor-zoom-in group"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -199,21 +199,21 @@ export default function FabricShowcaseSection() {
                 className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/15 group-hover:bg-transparent transition-colors" />
-              <div className="absolute bottom-3 right-3 bg-[#14110E]/85 backdrop-blur-md text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-lg border border-white/20 flex items-center gap-1.5 shadow-md">
-                <ZoomIn size={13} className="text-[#C5A069]" />
+              <div className="absolute bottom-3 right-3 bg-black/85 backdrop-blur-md text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 shadow-md">
+                <ZoomIn size={13} className="text-white" />
                 <span>Magnify Swatch</span>
               </div>
             </div>
 
             {/* Fabric Technical Specifications Grid */}
             <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
-              <div className="bg-[#FAF5EF] p-3 rounded-xl border border-[#D5C2AF]/70 space-y-0.5">
-                <span className="text-[9px] uppercase font-bold text-[#8C6D47] block font-sans">Composition</span>
-                <span className="font-semibold text-[#14110E] text-[11px] block">{activeFabric.composition}</span>
+              <div className="bg-[#F5F4F0] p-3.5 rounded-2xl border border-[#E5E3DD] space-y-0.5">
+                <span className="text-[9px] uppercase font-bold text-[#666666] block font-sans">Composition</span>
+                <span className="font-semibold text-black text-[11px] block">{activeFabric.composition}</span>
               </div>
-              <div className="bg-[#FAF5EF] p-3 rounded-xl border border-[#D5C2AF]/70 space-y-0.5">
-                <span className="text-[9px] uppercase font-bold text-[#8C6D47] block font-sans">Weave &amp; Weight</span>
-                <span className="font-semibold text-[#14110E] text-[11px] block">{activeFabric.weight}</span>
+              <div className="bg-[#F5F4F0] p-3.5 rounded-2xl border border-[#E5E3DD] space-y-0.5">
+                <span className="text-[9px] uppercase font-bold text-[#666666] block font-sans">Weave &amp; Weight</span>
+                <span className="font-semibold text-black text-[11px] block">{activeFabric.weight}</span>
               </div>
             </div>
 
@@ -221,8 +221,7 @@ export default function FabricShowcaseSection() {
             <div className="pt-2">
               <Link
                 href={`/custom-shirt?fabric=${encodeURIComponent(activeFabric.code)}`}
-                style={{ borderRadius: "7px" }}
-                className="w-full bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.2em] py-3.5 transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg group/btn"
+                className="w-full bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-[0.2em] py-4 rounded-full transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-sm hover:shadow group/btn"
               >
                 <span>CUSTOMIZE IN THIS FABRIC</span>
                 <ArrowRight size={14} className="transform group-hover/btn:translate-x-1 transition-transform" />
@@ -239,14 +238,14 @@ export default function FabricShowcaseSection() {
                 <div
                   key={fabric.id}
                   onClick={() => setActiveFabric(fabric)}
-                  className={`rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 transition-all duration-300 border flex flex-col justify-between space-y-3 cursor-pointer group ${
+                  className={`rounded-[24px] p-4 transition-all duration-300 border flex flex-col justify-between space-y-3 cursor-pointer group ${
                     isSelected
-                      ? "bg-[#14110E] text-white border-[#14110E] shadow-xl ring-2 ring-[#9E774C]/60 scale-[1.02]"
-                      : "bg-[#EFE5D9] hover:bg-white text-[#14110E] border-[#D5C2AF] hover:border-[#9E774C] shadow-xs"
+                      ? "bg-black text-white border-black shadow-lg ring-2 ring-black scale-[1.02]"
+                      : "bg-white hover:bg-[#F5F4F0] text-black border-[#E5E3DD] shadow-xs"
                   }`}
                 >
                   {/* Swatch Square Image */}
-                  <div className="relative rounded-xl overflow-hidden aspect-square w-full bg-[#221B16] border border-[#D5C2AF]/50">
+                  <div className="relative rounded-2xl overflow-hidden aspect-square w-full bg-[#221B16] border border-[#E5E3DD]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={fabric.image}
@@ -256,7 +255,7 @@ export default function FabricShowcaseSection() {
                     
                     {/* Selected Check Pill */}
                     {isSelected && (
-                      <div className="absolute top-2 right-2 bg-[#9E774C] text-white p-1 rounded-full shadow-md">
+                      <div className="absolute top-2 right-2 bg-white text-black p-1 rounded-full shadow-md">
                         <Check size={12} strokeWidth={3} />
                       </div>
                     )}
@@ -267,14 +266,14 @@ export default function FabricShowcaseSection() {
                     <div className="flex items-center justify-between">
                       <span
                         className={`text-[9px] font-bold tracking-wider uppercase font-mono ${
-                          isSelected ? "text-[#D8C7B5]" : "text-[#8C6D47]"
+                          isSelected ? "text-neutral-300" : "text-[#666666]"
                         }`}
                       >
                         {fabric.code}
                       </span>
                       <span
                         className={`text-[8.5px] font-semibold uppercase ${
-                          isSelected ? "text-white/60" : "text-[#6E5D4F]"
+                          isSelected ? "text-white/60" : "text-[#888888]"
                         }`}
                       >
                         {fabric.category.toUpperCase()}
@@ -287,7 +286,7 @@ export default function FabricShowcaseSection() {
 
                     <p
                       className={`text-[10px] font-sans line-clamp-1 ${
-                        isSelected ? "text-[#CDBEB0]" : "text-[#55473A]"
+                        isSelected ? "text-neutral-300" : "text-[#666666]"
                       }`}
                     >
                       {fabric.composition}

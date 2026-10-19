@@ -81,7 +81,7 @@ export default function BespokePillarsBanner() {
           return (
             <div
               key={pillar.id}
-              className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[620px] border-b border-[#DDD2D8]/70 last:border-b-0"
+              className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[620px] border-b border-[#E5E3DD] last:border-b-0"
             >
               {/* IMAGE COLUMN */}
               <div
@@ -104,8 +104,8 @@ export default function BespokePillarsBanner() {
               <div
                 className={`w-full flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-16 xl:px-24 py-12 sm:py-16 lg:py-20 ${
                   isTint
-                    ? "bg-[#EEE5EA] text-[#14110E]"
-                    : "bg-[#FFFFFF] text-[#14110E]"
+                    ? "bg-[#ECEAE5] text-black"
+                    : "bg-white text-black"
                 } ${isImageLeft ? "order-2" : "order-2 lg:order-1"}`}
               >
                 <div className="max-w-xl mx-auto lg:mx-0 flex flex-col items-start space-y-4 sm:space-y-5">
@@ -113,33 +113,32 @@ export default function BespokePillarsBanner() {
                   {pillar.badge && (
                     <div className="inline-flex items-center gap-2">
                       {pillar.badgeIcon}
-                      <span className="text-[11px] sm:text-[11.5px] font-bold uppercase tracking-[0.24em] text-[#9E774C]">
+                      <span className="text-[11px] sm:text-[11.5px] font-bold uppercase tracking-[0.24em] text-black">
                         {pillar.badge}
                       </span>
                     </div>
                   )}
 
                   {/* Two-Line Luxury Serif Heading with distinct hierarchy */}
-                  <h2 className="font-serif-luxury text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] xl:text-[40px] font-semibold uppercase tracking-[0.025em] leading-[1.12] flex flex-col space-y-1">
-                    <span className="text-[#14110E]">
+                  <h2 className="font-serif-luxury text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] xl:text-[40px] font-bold uppercase tracking-[0.025em] leading-[1.12] flex flex-col space-y-1">
+                    <span className="text-black">
                       {pillar.headingWhite}
                     </span>
-                    <span className="text-[#9E774C]">
+                    <span className="text-neutral-700">
                       {pillar.headingGold}
                     </span>
                   </h2>
 
-                  {/* Subtitle / Description Body Paragraph with distinct professional size */}
-                  <p className="text-[13.5px] sm:text-[14.5px] lg:text-[15px] leading-[1.75] font-sans font-normal text-[#5A4E42] max-w-lg">
+                  {/* Subtitle / Description Body Paragraph */}
+                  <p className="text-[13.5px] sm:text-[14.5px] lg:text-[15px] leading-[1.75] font-sans font-normal text-[#666666] max-w-lg">
                     {pillar.description}
                   </p>
 
                   {/* Call-to-action button */}
-                  <div className="pt-2 sm:pt-3">
+                  <div className="pt-2 sm:pt-4">
                     <Link
                       href={pillar.ctaHref}
-                      style={{ borderRadius: "7px" }}
-                      className="inline-flex items-center gap-2.5 text-[11px] sm:text-xs font-bold tracking-[0.16em] uppercase py-3.5 px-7 bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group"
+                      className="inline-flex items-center gap-2.5 text-xs font-bold tracking-[0.16em] uppercase py-4 px-8 bg-black hover:bg-neutral-800 text-white rounded-full transition-all duration-300 shadow-sm hover:shadow cursor-pointer group"
                     >
                       <span>{pillar.ctaText}</span>
                       <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />

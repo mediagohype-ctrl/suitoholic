@@ -289,17 +289,18 @@ export const aboutPage = {
     ],
   },
 
-  // 7. Atelier salon invitation (closing call to action)
+  // 7. Atelier salon invitation / Commitment banner
   cta: {
-    titleLine: "EXPERIENCE TRUE",
-    titleAccent: "BESPOKE LUXURY.",
+    eyebrow: "OUR COMMITMENT",
+    titleLine: "A Standard We Hold",
+    titleAccent: "Ourselves To.",
     description:
-      "Step into our digital fitting room. Customize your collar shape, cuff style, pocket architecture, and bespoke monogram in under two minutes — tailored by master artisans and delivered with our 100% Fit Guarantee.",
-    primaryButtonLabel: "START YOUR CUSTOM FIT",
-    primaryButtonHref: "/custom-shirt",
-    secondaryButtonLabel: "EXPLORE COLLECTION",
-    secondaryButtonHref: "/shop",
-    image: "/about_atelier_salon_cta.jpg",
-    imageAlt: "Suitoholic Bespoke Sartorial Salon & Fitting Lounge",
+      "Every client who walks through our door receives the same level of attention — whether commissioning a single shirt or a full wardrobe. Precision, honesty, and craft are not reserved for special occasions. They are the baseline.",
+    primaryButtonLabel: "BEGIN YOUR CONSULTATION",
+    primaryButtonHref: "/custom-shirt#appointment-booking",
+    secondaryButtonLabel: "",
+    secondaryButtonHref: "",
+    image: "/about_commitment_light_banner.jpg",
+    imageAlt: "Suitoholic Master Bespoke Tailoring Consultation",
   },
 };

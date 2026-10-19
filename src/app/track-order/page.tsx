@@ -10,7 +10,7 @@ import { apiFetch } from "@/lib/api";
 import type { Order } from "@/lib/types";
 
 const inputClass =
-  "w-full bg-white border border-[#D5C2AF] rounded-xl px-3.5 py-2.5 text-sm text-[#14110E] focus:outline-none focus:ring-2 focus:ring-[#9E774C]";
+  "w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-4 py-3 text-sm text-black focus:outline-none focus:border-black placeholder:text-[#999999]";
 
 function TrackOrderContent() {
   const c = useContent("bag");
@@ -53,29 +53,28 @@ function TrackOrderContent() {
           setError(null);
           handleResult(fetchOrder(orderNumber, email));
         }}
-        className="max-w-2xl mx-auto bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-5 sm:p-6 mb-8 space-y-4"
+        className="max-w-2xl mx-auto bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 mb-8 space-y-5 shadow-sm"
       >
-        <p className="text-sm text-[#55473B] text-center">{c.track.text}</p>
+        <p className="text-sm text-[#666666] text-center">{c.track.text}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <label className="block space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em]">{c.track.orderNumberLabel}</span>
+          <label className="block space-y-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-black">{c.track.orderNumberLabel}</span>
             <input required className={inputClass} value={orderNumber} onChange={(e) => setOrderNumber(e.target.value)} placeholder="SUIT-100001" />
           </label>
-          <label className="block space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em]">{c.track.emailLabel}</span>
-            <input required type="email" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label className="block space-y-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-black">{c.track.emailLabel}</span>
+            <input required type="email" className={inputClass} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="client@example.com" />
           </label>
         </div>
         {error && (
-          <div role="alert" className="flex items-center gap-2 text-[#B23B3B] text-xs font-semibold">
+          <div role="alert" className="flex items-center gap-2 text-rose-600 text-xs font-semibold">
             <AlertCircle size={14} /> {error}
           </div>
         )}
         <button
           type="submit"
           disabled={loading}
-          style={{ borderRadius: "7px" }}
-          className="w-full bg-[#4A202A] hover:bg-[#34141D] disabled:opacity-60 text-[#FAF8F5] py-3.5 text-xs font-extrabold tracking-[0.16em] uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg cursor-pointer transition-all"
+          className="w-full bg-black hover:bg-neutral-800 disabled:opacity-60 text-white rounded-full py-4 text-xs font-bold tracking-[0.16em] uppercase flex items-center justify-center gap-2 shadow-sm hover:shadow transition-all cursor-pointer"
         >
           <Search size={14} /> {c.track.submitLabel}
         </button>

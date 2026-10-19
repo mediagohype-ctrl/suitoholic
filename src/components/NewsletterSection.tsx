@@ -43,16 +43,16 @@ export default function NewsletterSection() {
 
   return (
     <section className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 my-12 sm:my-16 lg:my-20 select-none">
-      <div className="relative w-full bg-[#EDE4DB] rounded-[12px] p-8 sm:p-12 lg:p-16 xl:p-20 border border-[#D6C5B5] shadow-[0_12px_36px_rgba(20,17,14,0.06)] overflow-hidden min-h-[280px] sm:min-h-[320px] lg:min-h-[360px] flex items-center">
+      <div className="relative w-full bg-white rounded-[24px] sm:rounded-[32px] p-8 sm:p-12 lg:p-16 xl:p-20 border border-[#E5E3DD] shadow-sm overflow-hidden min-h-[280px] sm:min-h-[320px] lg:min-h-[360px] flex items-center">
 
         <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 py-3 sm:py-6">
 
           {/* Left Column: Title & Subtitle Information */}
           <div className="w-full lg:w-5/12 space-y-3.5 text-left">
-            <h3 className="text-2xl sm:text-3xl lg:text-[38px] xl:text-[42px] font-bold text-[#3B222E] tracking-tight leading-tight">
+            <h3 className="text-2xl sm:text-3xl lg:text-[38px] xl:text-[42px] font-bold text-black tracking-tight leading-tight">
               {c.heading}
             </h3>
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#523B47] leading-relaxed font-normal">
+            <p className="text-sm sm:text-base lg:text-[17px] text-[#666666] leading-relaxed font-normal">
               {c.subtitle}
             </p>
           </div>
@@ -60,8 +60,8 @@ export default function NewsletterSection() {
           {/* Right Column: Form & Confirmation */}
           <div className="w-full lg:w-7/12 flex-1">
             {submitted ? (
-              <div className="bg-[#2D6A4F]/15 border border-[#2D6A4F]/40 p-4 sm:p-5 rounded-[8px] flex items-center space-x-3 text-[#1B4332] shadow-xs">
-                <CheckCircle2 size={22} className="shrink-0 text-[#2D6A4F]" />
+              <div className="bg-black/5 border border-black/20 p-4 sm:p-5 rounded-[12px] flex items-center space-x-3 text-black shadow-xs">
+                <CheckCircle2 size={22} className="shrink-0 text-black" />
                 <span className="text-xs sm:text-sm font-semibold">
                   {c.successMessage}
                 </span>
@@ -82,23 +82,22 @@ export default function NewsletterSection() {
                       placeholder={c.emailPlaceholder}
                       disabled={loading}
                       required
-                      className="w-full bg-white border border-[#C5B3A0] focus:border-[#3B222E] focus:ring-2 focus:ring-[#3B222E]/10 text-sm sm:text-base px-5 py-4 rounded-[8px] text-[#2C1822] placeholder:text-[#917B87] focus:outline-hidden transition-all shadow-xs"
+                      className="w-full bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black focus:ring-2 focus:ring-black/10 text-sm sm:text-base px-6 py-4 rounded-full text-black placeholder:text-[#888888] focus:outline-hidden transition-all shadow-xs"
                     />
                   </div>
 
-                  {/* Subscribe Button - muted until email is entered and checkbox is ticked */}
+                  {/* Subscribe Button */}
                   <button
                     type="submit"
                     disabled={!isFormValid}
-                    style={{ borderRadius: "7px" }}
-                    className={`text-sm sm:text-base font-extrabold tracking-wide px-7 sm:px-9 py-4 transition-all duration-300 flex items-center justify-center gap-2 shrink-0 ${
+                    className={`text-sm sm:text-base font-bold tracking-wide px-8 sm:px-10 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shrink-0 ${
                       isFormValid
-                        ? "bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] shadow-md hover:shadow-lg cursor-pointer group scale-100"
-                        : "bg-[#4A202A]/40 text-white/60 cursor-not-allowed shadow-none"
+                        ? "bg-black hover:bg-neutral-800 text-white shadow-sm hover:shadow-md cursor-pointer group scale-100"
+                        : "bg-black/40 text-white/60 cursor-not-allowed shadow-none"
                     }`}
                   >
                     <span>{loading ? c.subscribingLabel : c.subscribeLabel}</span>
-                    <Send size={16} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-[#FAF8F5]" : "text-[#8C7684]"}`} />
+                    <Send size={16} className={`transition-transform ${isFormValid ? "group-hover:translate-x-0.5 text-white" : "text-white/40"}`} />
                   </button>
                 </div>
 
@@ -109,11 +108,11 @@ export default function NewsletterSection() {
                     checked={agreed}
                     onChange={(e) => setAgreed(e.target.checked)}
                     required
-                    className="mt-1 w-4 h-4 rounded-sm border-[#A38D99] text-[#4A2635] focus:ring-[#4A2635] accent-[#4A2635] cursor-pointer"
+                    className="mt-1 w-4 h-4 rounded-sm border-[#E5E3DD] text-black focus:ring-black accent-black cursor-pointer"
                   />
-                  <span className="text-xs sm:text-sm text-[#4E3744] font-medium leading-relaxed">
+                  <span className="text-xs sm:text-sm text-[#666666] font-medium leading-relaxed">
                     {c.consentText}{" "}
-                    <Link href={c.privacyHref || "/privacy"} className="text-[#3B222E] font-semibold underline hover:text-[#8C5A28] transition-colors">
+                    <Link href={c.privacyHref || "/privacy"} className="text-black font-semibold underline hover:opacity-75 transition-opacity">
                       {c.privacyLinkLabel}
                     </Link>
                     .
@@ -121,7 +120,7 @@ export default function NewsletterSection() {
                 </label>
 
                 {error && (
-                  <p role="alert" className="text-xs sm:text-sm font-medium text-[#9B2C2C]">
+                  <p role="alert" className="text-xs sm:text-sm font-medium text-red-600">
                     {error}
                   </p>
                 )}

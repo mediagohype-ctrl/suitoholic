@@ -7,7 +7,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 
 const ShowcaseDivider = () => (
   <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-6 sm:my-8 lg:my-10">
-    <div className="w-full h-[1px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+    <div className="w-full h-[1px] bg-[#E5E3DD]" />
   </div>
 );
 

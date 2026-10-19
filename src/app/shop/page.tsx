@@ -94,7 +94,7 @@ function ShopContent() {
   }, [products]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-clip selection:bg-black selection:text-white">
       {/* Transparent Header at top */}
       <Header activeTab="shop" />
 
@@ -111,34 +111,34 @@ function ShopContent() {
 
             {/* Section Heading: Refined Luxury Title */}
             <div className="flex items-center justify-center gap-3 sm:gap-6 w-full pt-1 pb-1">
-              <div className="h-[1.5px] w-8 sm:w-16 md:w-24 bg-gradient-to-r from-transparent to-[#4A202A]/40" />
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-[#4A202A] tracking-[0.14em] uppercase leading-tight text-center drop-shadow-xs">
+              <div className="h-[1px] w-8 sm:w-16 md:w-24 bg-black/30" />
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight text-center">
                 {selectedCategory === "all" ? (c.title || "THE BESPOKE COLLECTION") : `${currentCategoryName} COLLECTION`}
               </h2>
-              <div className="h-[1.5px] w-8 sm:w-16 md:w-24 bg-gradient-to-l from-transparent to-[#4A202A]/40" />
+              <div className="h-[1px] w-8 sm:w-16 md:w-24 bg-black/30" />
             </div>
 
             {/* Top Control Bar */}
-            <div className="relative bg-[#FAF5EE] border border-[#E2D4C3] rounded-xl px-4 py-3 flex flex-wrap gap-2 items-center justify-between text-[11px] text-[#4A3E33] font-medium shadow-xs">
+            <div className="relative bg-white border border-[#E5E3DD] rounded-full px-6 py-3.5 flex flex-wrap gap-2 items-center justify-between text-[11px] text-[#666666] font-medium shadow-sm">
               <div className="flex items-center space-x-2 min-w-0">
-                <span className="font-semibold text-[#14110E] uppercase tracking-wider truncate">{currentCategoryName}</span>
-                <span className="text-[#9E774C]">•</span>
-                <span className="text-[#7A6B5D] whitespace-nowrap">{displayProducts.length} {c.itemsAvailableLabel}</span>
+                <span className="font-semibold text-black uppercase tracking-wider truncate">{currentCategoryName}</span>
+                <span className="text-black/30">•</span>
+                <span className="text-[#666666] whitespace-nowrap">{displayProducts.length} {c.itemsAvailableLabel}</span>
               </div>
 
               <button
                 type="button"
                 onClick={() => setSortOpen((v) => !v)}
                 aria-expanded={sortOpen}
-                className="flex items-center space-x-2 cursor-pointer hover:text-[#14110E]"
+                className="flex items-center space-x-2 cursor-pointer hover:text-black transition-colors"
               >
-                <span className="uppercase text-[#7A6B5D] font-medium tracking-wider">{c.sortLabel}</span>
-                <span className="font-semibold uppercase text-[#14110E] tracking-wider flex items-center gap-1">
-                  {c.sortOptions[sortOption]} <ChevronDown size={14} className={`text-[#9E774C] transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+                <span className="uppercase text-[#666666] font-medium tracking-wider">{c.sortLabel}</span>
+                <span className="font-semibold uppercase text-black tracking-wider flex items-center gap-1">
+                  {c.sortOptions[sortOption]} <ChevronDown size={14} className={`text-black transition-transform ${sortOpen ? "rotate-180" : ""}`} />
                 </span>
               </button>
               {sortOpen && (
-                <div className="absolute right-3 top-full mt-1 z-20 bg-white border border-[#E2D4C3] rounded-xl shadow-lg py-1 min-w-[200px]">
+                <div className="absolute right-3 top-full mt-2 z-20 bg-white border border-[#E5E3DD] rounded-2xl shadow-lg py-2 min-w-[200px]">
                   {(Object.keys(c.sortOptions) as SortKey[]).map((key) => (
                     <button
                       key={key}
@@ -146,7 +146,7 @@ function ShopContent() {
                         setSortOption(key);
                         setSortOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-2 text-[11px] font-semibold uppercase tracking-wider hover:bg-[#FAF5EE] ${sortOption === key ? "text-[#9E774C]" : "text-[#14110E]"}`}
+                      className={`w-full text-left px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-[#F5F4F0] transition-colors ${sortOption === key ? "text-black bg-[#F5F4F0]" : "text-[#666666]"}`}
                     >
                       {c.sortOptions[key]}
                     </button>
@@ -156,12 +156,11 @@ function ShopContent() {
             </div>
 
             {displayProducts.length === 0 && (
-              <div className="bg-[#FAF5EE] border border-[#E2D4C3] rounded-2xl p-10 text-center space-y-4">
-                <p className="text-sm text-[#55473B]">{c.emptyText}</p>
+              <div className="bg-white border border-[#E5E3DD] rounded-[24px] p-10 text-center space-y-4 shadow-sm">
+                <p className="text-sm text-[#666666]">{c.emptyText}</p>
                 <button
                   onClick={resetAll}
-                  style={{ borderRadius: "7px" }}
-                  className="inline-flex items-center gap-2 bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] px-5 py-2.5 text-[10.5px] font-extrabold uppercase tracking-[0.16em] transition-all shadow-md hover:shadow-lg cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-black hover:bg-neutral-800 text-white rounded-full px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] transition-all shadow-sm cursor-pointer"
                 >
                   {c.resetAllLabel} <RotateCcw size={13} />
                 </button>
@@ -183,8 +182,7 @@ function ShopContent() {
                 <button
                   type="button"
                   onClick={() => setVisibleCount((prev) => prev + 12)}
-                  style={{ borderRadius: "7px" }}
-                  className="inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg cursor-pointer active:scale-98"
+                  className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-[0.22em] px-10 sm:px-14 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase shadow-sm cursor-pointer active:scale-98"
                 >
                   LOAD MORE ({sortedProducts.length - visibleCount} MORE)
                 </button>
@@ -198,14 +196,14 @@ function ShopContent() {
             <div className="space-y-12 sm:space-y-16 lg:space-y-20 mb-16 sm:mb-20">
               {/* Major Section Divider before Curated Showcases */}
               <div className="w-full pb-4">
-                <div className="w-full h-[1.5px] bg-gradient-to-r from-[#8C6944]/25 via-[#6E4822]/80 to-[#8C6944]/25" />
+                <div className="w-full h-[1px] bg-[#E5E3DD]" />
               </div>
 
               {showcaseSections.map((sec, sIdx) => (
                 <section key={sec.id} id={sec.id} className="w-full flex flex-col items-center select-none">
                   {/* Centered Heading in Luxury Uppercase */}
                   <div className="text-center mb-6 sm:mb-8 lg:mb-10">
-                    <h2 className="text-base sm:text-lg lg:text-[20px] font-semibold tracking-[0.22em] text-[#4A202A] uppercase leading-tight">
+                    <h2 className="text-base sm:text-lg lg:text-[20px] font-semibold tracking-[0.22em] text-black uppercase leading-tight">
                       {sec.title}
                     </h2>
                   </div>
@@ -230,8 +228,7 @@ function ShopContent() {
                           catalogEl.scrollIntoView({ behavior: "smooth" });
                         }
                       }}
-                      style={{ borderRadius: "7px" }}
-                      className="inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] text-xs font-extrabold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 transition-all duration-300 uppercase shadow-md hover:shadow-lg cursor-pointer active:scale-98"
+                      className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-[0.22em] px-10 sm:px-14 py-3.5 sm:py-4 rounded-full transition-all duration-300 uppercase shadow-sm cursor-pointer active:scale-98"
                     >
                       VIEW ALL
                     </button>
@@ -239,7 +236,7 @@ function ShopContent() {
 
                   {/* Hairline Divider between sections */}
                   {sIdx < showcaseSections.length - 1 && (
-                    <div className="w-full mt-12 sm:mt-16 lg:mt-20 h-[1px] bg-gradient-to-r from-[#8C6944]/20 via-[#6E4822]/45 to-[#8C6944]/20" />
+                    <div className="w-full mt-12 sm:mt-16 lg:mt-20 h-[1px] bg-[#E5E3DD]" />
                   )}
                 </section>
               ))}
@@ -264,7 +261,7 @@ function ShopContent() {
 function ShopLoading() {
   const c = useContent("shopPage");
   return (
-    <div className="min-h-screen bg-[#D7C2AD] flex items-center justify-center text-sm font-semibold tracking-widest uppercase text-[#14110E]">
+    <div className="min-h-screen bg-[#ECEAE5] flex items-center justify-center text-sm font-semibold tracking-widest uppercase text-black">
       {c.loadingText}
     </div>
   );

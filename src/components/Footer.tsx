@@ -24,7 +24,7 @@ function renderSocialIcon(platform: string) {
   );
 }
 
-const PAYMENT_BADGE_CLASS = "h-7 px-2.5 bg-white rounded-md border border-[#DDD2D8] flex items-center justify-center shadow-xs";
+const PAYMENT_BADGE_CLASS = "h-7 px-2.5 bg-white rounded-md border border-[#E5E3DD] flex items-center justify-center shadow-xs";
 
 function renderPaymentBadge(brand: string, title: string) {
   switch ((brand || "").toLowerCase()) {
@@ -57,7 +57,7 @@ function renderPaymentBadge(brand: string, title: string) {
       );
     case "amex":
       return (
-        <div className="h-7 px-2 bg-white rounded-md border border-[#DDD2D8] flex items-center justify-center shadow-xs" title={title}>
+        <div className="h-7 px-2 bg-white rounded-md border border-[#E5E3DD] flex items-center justify-center shadow-xs" title={title}>
           <svg className="h-4 w-auto" viewBox="0 0 32 16" fill="none">
             <rect width="32" height="16" rx="2" fill="#006FCF" />
             <text x="2" y="11.5" fontFamily="sans-serif" fontSize="6.5" fontWeight="900" fill="#FFFFFF" letterSpacing="0.5">AMEX</text>
@@ -92,7 +92,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F8] to-[#EEE5EA] text-[#14110E] rounded-t-[28px] sm:rounded-t-[42px] lg:rounded-t-[52px] border-t border-[#DDD2D8] font-sans antialiased relative z-20 shadow-[0_-20px_50px_rgba(74,32,42,0.04)] overflow-hidden mt-8 sm:mt-12 select-none flex flex-col justify-between">
+    <footer className="w-full bg-gradient-to-b from-[#FFFFFF] via-[#FAF9F6] to-[#ECEAE5] text-[#14110E] rounded-t-[28px] sm:rounded-t-[42px] lg:rounded-t-[52px] border-t border-[#E5E3DD] font-sans antialiased relative z-20 shadow-[0_-20px_50px_rgba(0,0,0,0.03)] overflow-hidden mt-8 sm:mt-12 select-none flex flex-col justify-between">
 
       {/* ========================================================================= */}
       {/* 2. MAIN TIER: REFINED 4-COLUMN EDITORIAL DIRECTORY                        */}
@@ -117,39 +117,39 @@ export default function Footer() {
             {/* Direct Studio Concierge */}
             <div className="space-y-3 pt-1">
 
-              <div className="space-y-2 text-xs text-[#14110E]">
+              <div className="space-y-2 text-xs text-[#000000]">
                 <div className="flex items-center space-x-2.5">
-                  <Phone size={14} className="text-[#4A202A] shrink-0" />
+                  <Phone size={14} className="text-[#000000] shrink-0" />
                   <div>
-                    <span className="text-[9px] uppercase text-[#7A6B74] font-medium block">{c.phoneLabel}</span>
-                    <span className="text-xs sm:text-[13px] text-[#14110E] font-medium">{c.phone}</span>
+                    <span className="text-[9px] uppercase text-[#777777] font-medium block">{c.phoneLabel}</span>
+                    <span className="text-xs sm:text-[13px] text-[#000000] font-medium">{c.phone}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-2.5">
-                  <Mail size={14} className="text-[#4A202A] shrink-0" />
+                  <Mail size={14} className="text-[#000000] shrink-0" />
                   <div>
-                    <span className="text-[9px] uppercase text-[#7A6B74] font-medium block">{c.emailLabel}</span>
-                    <a href={"mailto:" + c.email} className="text-xs sm:text-[13px] text-[#14110E] font-medium hover:text-[#4A202A] transition-colors">
+                    <span className="text-[9px] uppercase text-[#777777] font-medium block">{c.emailLabel}</span>
+                    <a href={"mailto:" + c.email} className="text-xs sm:text-[13px] text-[#000000] font-medium hover:underline transition-colors">
                       {c.email}
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-2.5">
-                  <Clock size={14} className="text-[#4A202A] shrink-0" />
+                  <Clock size={14} className="text-[#000000] shrink-0" />
                   <div>
-                    <span className="text-[9px] uppercase text-[#7A6B74] font-medium block">{c.hoursLabel}</span>
-                    <span className="text-[11px] sm:text-xs font-normal text-[#5A4E42]">{c.hours}</span>
+                    <span className="text-[9px] uppercase text-[#777777] font-medium block">{c.hoursLabel}</span>
+                    <span className="text-[11px] sm:text-xs font-normal text-[#666666]">{c.hours}</span>
                   </div>
                 </div>
 
                 {c.address && (
                   <div className="flex items-center space-x-2.5">
-                    <MapPin size={14} className="text-[#4A202A] shrink-0" />
+                    <MapPin size={14} className="text-[#000000] shrink-0" />
                     <div>
-                      <span className="text-[9px] uppercase text-[#7A6B74] font-medium block">{c.addressLabel}</span>
-                      <span className="text-[11px] sm:text-xs font-normal text-[#5A4E42] whitespace-pre-line">{c.address}</span>
+                      <span className="text-[9px] uppercase text-[#777777] font-medium block">{c.addressLabel}</span>
+                      <span className="text-[11px] sm:text-xs font-normal text-[#666666] whitespace-pre-line">{c.address}</span>
                     </div>
                   </div>
                 )}
@@ -160,14 +160,14 @@ export default function Footer() {
 
           {/* Column 2: Customer Service (lg:col-span-3) */}
           <div className="lg:col-span-3 space-y-3 sm:space-y-4">
-            <h3 className="text-sm sm:text-base font-semibold text-[#14110E] tracking-tight">
+            <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight">
               {c.customerServiceHeading}
             </h3>
-            <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#5A4E42] font-normal">
+            <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#666666] font-normal">
               {(c.customerServiceLinks ?? []).map((link, i) => (
                 <li key={i}>
-                  <Link href={link.href || "/"} className="hover:text-[#4A202A] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
-                    <span className="text-[#4A202A] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                  <Link href={link.href || "/"} className="hover:text-[#000000] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
+                    <span className="text-[#000000] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
                     <span>{link.label}</span>
                   </Link>
                 </li>
@@ -177,14 +177,14 @@ export default function Footer() {
 
           {/* Column 3: Company (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-3 sm:space-y-4">
-            <h3 className="text-sm sm:text-base font-semibold text-[#14110E] tracking-tight">
+            <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight">
               {c.companyHeading}
             </h3>
-            <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#5A4E42] font-normal">
+            <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#666666] font-normal">
               {(c.companyLinks ?? []).map((link, i) => (
                 <li key={i}>
-                  <Link href={link.href || "/"} className="hover:text-[#4A202A] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
-                    <span className="text-[#4A202A] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                  <Link href={link.href || "/"} className="hover:text-[#000000] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
+                    <span className="text-[#000000] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
                     <span>{link.label}</span>
                   </Link>
                 </li>
@@ -194,10 +194,10 @@ export default function Footer() {
 
           {/* Column 4: FOLLOW US (Rightmost Column) */}
           <div className="lg:col-span-3 space-y-4">
-            <h3 className="text-sm sm:text-base font-semibold text-[#14110E] tracking-tight">
+            <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight">
               {c.followHeading}
             </h3>
-            <p className="text-xs text-[#5A4E42] leading-relaxed">
+            <p className="text-xs text-[#666666] leading-relaxed">
               {c.followText}
             </p>
             <div className="flex items-center space-x-2.5 pt-1">
@@ -207,7 +207,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-[#DDD2D8] hover:border-[#4A202A] bg-white/90 hover:bg-[#4A202A] flex items-center justify-center text-[#14110E] hover:text-white transition-all duration-300 shadow-xs hover:scale-105"
+                  className="w-9 h-9 rounded-full border border-[#E5E3DD] hover:border-black bg-white hover:bg-black flex items-center justify-center text-[#000000] hover:text-white transition-all duration-300 shadow-xs hover:scale-105"
                   aria-label={social.label}
                 >
                   {renderSocialIcon(social.platform)}
@@ -222,22 +222,21 @@ export default function Footer() {
       {/* ========================================================================= */}
       {/* 3. BOTTOM TIER: HORIZONTAL SECURE PAYMENT STRIP & COPYRIGHT / LEGAL LINKS */}
       {/* ========================================================================= */}
-      <div className="relative z-10 w-full bg-[#EEE5EA] border-t border-[#DDD2D8] py-5 px-5 sm:px-8 lg:px-12 xl:px-16 space-y-4 overflow-hidden">
+      <div className="relative z-10 w-full bg-[#F5F4F0] border-t border-[#E5E3DD] py-5 px-5 sm:px-8 lg:px-12 xl:px-16 space-y-4 overflow-hidden">
 
         {/* Background Architectural Subtle Watermark in Bottom Tier */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.05] flex items-center justify-center select-none overflow-hidden px-4 z-0">
-          <span className="font-serif-luxury text-[13vw] sm:text-[10vw] lg:text-[8vw] xl:text-[105px] 2xl:text-[125px] font-black tracking-[0.1em] text-[#4A202A] uppercase whitespace-nowrap leading-none text-center select-none">
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03] flex items-center justify-center select-none overflow-hidden px-4 z-0">
+          <span className="font-serif-luxury text-[13vw] sm:text-[10vw] lg:text-[8vw] xl:text-[105px] 2xl:text-[125px] font-black tracking-[0.1em] text-[#000000] uppercase whitespace-nowrap leading-none text-center select-none">
             {c.watermarkText || "SUITOHOLIC"}
           </span>
         </div>
 
         {/* Horizontal Secure Payment Strip */}
-        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 pb-4 border-b border-[#DDD2D8]">
+        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 pb-4 border-b border-[#E5E3DD]">
           <div className="flex items-center space-x-2">
-            <span className="text-xs font-semibold text-[#14110E] tracking-wide uppercase">
+            <span className="text-xs font-semibold text-[#000000] tracking-wide uppercase">
               {c.securePaymentLabel}
             </span>
-
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 justify-center md:justify-end">
@@ -248,12 +247,12 @@ export default function Footer() {
         </div>
 
         {/* Copyright & Estd Note & Legal Links */}
-        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-[#6B5A65] font-normal">
+        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-[#666666] font-normal">
 
           {/* Copyright */}
           <div className="text-center md:text-left flex flex-wrap items-center justify-center md:justify-start gap-1.5">
             <span suppressHydrationWarning>{(c.copyrightText || "").replace("{year}", String(new Date().getFullYear()))}</span>
-            <span className="font-semibold text-[#14110E] tracking-wide uppercase">{c.copyrightBrand}</span>
+            <span className="font-semibold text-[#000000] tracking-wide uppercase">{c.copyrightBrand}</span>
             <span>{c.rightsText}</span>
           </div>
 
@@ -262,8 +261,8 @@ export default function Footer() {
             <div className="flex items-center space-x-3 sm:space-x-4">
               {(c.legalLinks ?? []).map((link, i, arr) => (
                 <React.Fragment key={i}>
-                  <Link href={link.href || "/"} className="hover:text-[#4A202A] transition-colors">{link.label}</Link>
-                  {i < arr.length - 1 && <span className="text-[#C4B5BE]">•</span>}
+                  <Link href={link.href || "/"} className="hover:text-[#000000] transition-colors">{link.label}</Link>
+                  {i < arr.length - 1 && <span className="text-[#CCCCCC]">•</span>}
                 </React.Fragment>
               ))}
             </div>
@@ -272,8 +271,7 @@ export default function Footer() {
               onClick={scrollToTop}
               aria-label="Back to top"
               title="Back to top"
-              style={{ borderRadius: "8px" }}
-              className="w-8 h-8 flex-shrink-0 inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] transition-all shadow-sm hover:shadow-md cursor-pointer group hover:scale-105 active:scale-95"
+              className="w-8 h-8 rounded-full flex-shrink-0 inline-flex items-center justify-center bg-[#000000] hover:bg-[#222222] text-white transition-all shadow-sm hover:shadow-md cursor-pointer group hover:scale-105 active:scale-95"
             >
               <ArrowUp size={14} className="transform group-hover:-translate-y-0.5 transition-transform" />
             </button>
