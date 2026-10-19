@@ -203,7 +203,7 @@ export default function ContactPage() {
                       <button
                         type="button"
                         onClick={handleResetForm}
-                        className="bg-[#C5A069] hover:bg-[#B38F58] active:scale-[0.99] text-[#14110E] text-xs font-bold uppercase tracking-[0.22em] px-8 py-3.5 rounded-[4px] transition-all cursor-pointer shadow-sm"
+                        className="bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.99] text-[#FAF8F5] text-xs font-extrabold uppercase tracking-[0.22em] px-8 py-3.5 rounded-[4px] transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer inline-block"
                       >
                         SEND ANOTHER ENQUIRY
                       </button>
@@ -320,7 +320,7 @@ export default function ContactPage() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="bg-[#C5A069] hover:bg-[#B38F58] active:scale-[0.99] text-[#14110E] text-xs sm:text-[13px] font-bold tracking-[0.22em] uppercase py-3.5 px-9 rounded-[4px] transition-all duration-300 shadow-sm cursor-pointer disabled:opacity-75 inline-block"
+                        className="bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.99] text-[#FAF8F5] text-xs sm:text-[13px] font-extrabold tracking-[0.22em] uppercase py-3.5 px-9 rounded-[4px] transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed inline-block"
                       >
                         {isSubmitting ? "TRANSMITTING..." : "SEND ENQUIRY"}
                       </button>
