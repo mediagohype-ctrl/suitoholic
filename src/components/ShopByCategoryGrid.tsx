@@ -10,14 +10,11 @@ export default function ShopByCategoryGrid() {
 
   return (
     <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12 my-10 sm:my-14 lg:my-18 select-none">
-      {/* Title & Subtitle */}
+      {/* Title */}
       <div className="text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
         <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-[#4A202A] tracking-[0.14em] uppercase leading-tight">
           {c.heading}
         </h2>
-        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#55473A] font-normal leading-relaxed tracking-normal max-w-2xl mx-auto">
-          Explore hand-cut bespoke garments, pristine dress shirts, and sartorial tailoring.
-        </p>
       </div>
 
       {/* 4-Column Editorial Portrait Grid (2 rows of 4 cards) */}

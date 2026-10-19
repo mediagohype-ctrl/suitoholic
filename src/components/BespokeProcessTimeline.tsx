@@ -73,6 +73,8 @@ export default function BespokeProcessTimeline() {
       document.getElementById("fabrics");
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
+    } else if (typeof window !== "undefined") {
+      window.location.href = "/custom-shirt#appointment-booking";
     }
   };
 
@@ -129,7 +131,7 @@ export default function BespokeProcessTimeline() {
           {/* LEFT COLUMN: STICKY / FIXED DISPLAY (Suitoholic Royal Maroon & Obsidian)  */}
           {/* ========================================================================= */}
           <div
-            className="md:col-span-5 md:sticky md:top-24 md:self-start py-2 sm:py-4 z-10"
+            className="md:col-span-5 sticky top-24 self-start py-2 sm:py-4 z-20"
             style={{
               position: "sticky",
               top: "96px",
@@ -156,29 +158,13 @@ export default function BespokeProcessTimeline() {
             </h2>
 
             {/* Tagline / Subtitle with Royal Burgundy Left Border Accent */}
-            <div className="border-l-2 border-[#4A202A] pl-4 py-1 space-y-1.5 mb-6 sm:mb-8">
+            <div className="border-l-2 border-[#4A202A] pl-4 py-1 space-y-1.5">
               <p className="text-sm sm:text-base font-semibold text-[#14110E]">
                 From First Measure to Final Delivery.
               </p>
               <p className="text-xs sm:text-sm text-[#5A4E42] leading-relaxed max-w-sm">
                 Clear enough to trust. Exacting enough for timeless bespoke elegance.
               </p>
-            </div>
-
-            {/* Signature Suitoholic Luxury Burgundy Button */}
-            <div>
-              <button
-                type="button"
-                onClick={handleScrollToConsult}
-                style={{ borderRadius: "7px" }}
-                className="inline-flex items-center space-x-2.5 px-7 sm:px-8 py-3.5 bg-[#4A202A] hover:bg-[#34141D] active:scale-[0.99] text-[#FAF8F5] text-xs sm:text-sm font-extrabold tracking-[0.16em] uppercase transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group"
-              >
-                <span>Book Consult</span>
-                <ArrowUpRight
-                  size={16}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#FAF8F5]"
-                />
-              </button>
             </div>
           </div>
 

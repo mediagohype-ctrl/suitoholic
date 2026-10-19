@@ -954,10 +954,6 @@ export default function LuxuryClothArchiveSection({
                   {/* Subtle ambient lighting overlay */}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 group-hover:opacity-60 transition-opacity" />
 
-                  {/* Top-Left Mill / Collection Box Badge */}
-                  <div className="absolute top-2 left-2 z-10 px-1.5 py-0.5 bg-[#14110E]/90 backdrop-blur-xs text-[#FAF8F5] text-[8.5px] sm:text-[9px] font-mono tracking-[0.16em] uppercase rounded-[2px] shadow-sm">
-                    {cloth.mill}
-                  </div>
 
                   {/* Bottom-Right GSM Box Badge */}
                   <div className="absolute bottom-2 right-2 z-10 px-1.5 py-0.5 bg-white/95 backdrop-blur-xs text-[#4A202A] text-[8.5px] sm:text-[9px] font-mono font-bold tracking-wider border border-[#DDD2D8] shadow-2xs rounded-[2px]">
@@ -976,13 +972,9 @@ export default function LuxuryClothArchiveSection({
                 {/* Information Block Below Swatch */}
                 <div className="pt-2 sm:pt-2.5 pb-1 flex justify-between items-start gap-1.5">
                   
-                  {/* Left Column: Code, Fibre, Price/Metre sublabel, Garment Service Use */}
+                  {/* Left Column: Fibre, Price/Metre sublabel, Garment Service Use */}
                   <div className="space-y-0.5 min-w-0 flex-1">
-                    <div className="text-xs sm:text-[13px] font-bold text-[#14110E] tracking-wider font-mono">
-                      {cloth.code}
-                    </div>
-
-                    <div className="text-[9.5px] sm:text-[10px] font-semibold text-[#55473A] uppercase tracking-wider truncate">
+                    <div className="text-[11px] sm:text-xs font-semibold text-[#14110E] uppercase tracking-wider truncate">
                       {cloth.fibre}
                     </div>
 
@@ -995,12 +987,8 @@ export default function LuxuryClothArchiveSection({
                     </div>
                   </div>
 
-                  {/* Right Column: Season & Price */}
-                  <div className="text-right flex flex-col justify-between items-end self-stretch space-y-1 shrink-0">
-                    <div className="text-[8.5px] sm:text-[9px] font-mono text-[#7A6B5D] uppercase tracking-wider">
-                      {cloth.season}
-                    </div>
-
+                  {/* Right Column: Price */}
+                  <div className="text-right flex flex-col justify-between items-end self-stretch shrink-0 pt-0.5">
                     <div className="text-xs sm:text-[13px] font-bold text-[#4A202A] group-hover:text-[#34141D] transition-colors">
                       {cloth.formattedPrice}
                     </div>

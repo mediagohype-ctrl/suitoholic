@@ -6,10 +6,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import LuxuryClothArchiveSection from "@/components/LuxuryClothArchiveSection";
-import MensFabricShowcaseGrid from "@/components/MensFabricShowcaseGrid";
+import BespokeProcessTimeline from "@/components/BespokeProcessTimeline";
 import FabricHeroShowcaseBanner from "@/components/FabricHeroShowcaseBanner";
 import WorldsFinestFabricsIntro from "@/components/WorldsFinestFabricsIntro";
 import PrestigeMillsGrid from "@/components/PrestigeMillsGrid";
+import AtelierConsultationBanner from "@/components/AtelierConsultationBanner";
 import { 
   ArrowRight, 
   Check, 
@@ -195,7 +196,7 @@ export default function FabricsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-transparent text-[#14110E] antialiased relative overflow-x-clip">
       {/* Header with active 'fabrics' tab indicator */}
       <Header activeTab="fabrics" />
 
@@ -228,68 +229,16 @@ export default function FabricsPage() {
         }}
       />
 
-      <main className="relative flex-1 w-full max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 space-y-10 sm:space-y-14">
-        
-        {/* ========================================================================= */}
-        {/* 4. MENSWEAR BESPOKE FABRICS SHOWCASE (MATCHING REFERENCE 4-CARD GRID)     */}
-        {/* ========================================================================= */}
-        <MensFabricShowcaseGrid
-          onSelectCollection={(colId) => {
-            const el = document.getElementById("swatches-studio");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-        />
+      {/* ========================================================================= */}
+      {/* 4. BESPOKE PROCESS TIMELINE (HOW WE TAILOR PERFECTION)                    */}
+      {/* ========================================================================= */}
+      <BespokeProcessTimeline />
 
-        {/* ========================================================================= */}
-        {/* 4. MID-PAGE EDITORIAL BANNER: BESPOKE CUTTING TABLE                       */}
-        {/* ========================================================================= */}
-        <section className="rounded-3xl border border-[#D5C2AF] bg-[#FAF5EF] p-6 sm:p-10 lg:p-12 shadow-sm overflow-hidden relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
-            {/* Left Column (7 Cols): Narrative & 3 Metric Cards */}
-            <div className="lg:col-span-7 space-y-4 text-left">
-              <div className="inline-flex items-center gap-2 bg-[#EFE5D9] px-3.5 py-1.5 rounded-full border border-[#D5C2AF]">
-                <Scissors size={13} className="text-[#8C6D47]" />
-                <span className="text-[10px] sm:text-[10.5px] font-bold tracking-[0.22em] text-[#8C6D47] uppercase font-mono">
-                  {editorial?.eyebrow}
-                </span>
-              </div>
-
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-normal uppercase leading-[1.1] tracking-tight text-[#14110E]">
-                {editorial?.headingLine1}{" "}<br className="hidden sm:inline" />
-                {editorial?.headingLine2}
-              </h2>
-
-              <p className="text-sm sm:text-base md:text-[16.5px] text-[#55473A] font-sans leading-relaxed max-w-2xl">
-                {editorial?.body}
-              </p>
-
-              {/* 3 Metric Stats Cards */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-1">
-                {(editorial?.stats ?? []).map((stat, idx) => (
-                  <div key={idx} className="bg-white p-3.5 rounded-2xl border border-[#D5C2AF]/80 space-y-0.5 shadow-2xs">
-                    <span className="font-serif-luxury text-base sm:text-xl font-bold text-[#8C6D47] block">{stat.value}</span>
-                    <span className="text-[10px] uppercase font-bold text-[#14110E] block">{stat.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column (5 Cols): Bespoke Cutting Table Photography */}
-            <div className="lg:col-span-5 relative">
-              <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D5C2AF] shadow-md h-[240px] sm:h-[300px] relative bg-[#241D17] group">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={editorial?.image || undefined}
-                  alt={editorial?.imageAlt}
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-            </div>
-
-          </div>
-        </section>
-
+      {/* ========================================================================= */}
+      {/* 5. ATELIER CONSULTATION CTA: READY TO LOOK & FEEL YOUR VERY BEST?          */}
+      {/* ========================================================================= */}
+      <main className="relative flex-1 w-full">
+        <AtelierConsultationBanner />
       </main>
 
       {/* ========================================================================= */}

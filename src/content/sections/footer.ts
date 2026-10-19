@@ -39,8 +39,6 @@ export const footer = {
   socialLinks: [
     { platform: "instagram", label: "Instagram", href: "https://instagram.com" },
     { platform: "facebook", label: "Facebook", href: "https://facebook.com" },
-    { platform: "pinterest", label: "Pinterest", href: "https://pinterest.com" },
-    { platform: "youtube", label: "YouTube", href: "https://youtube.com" },
   ],
   securePaymentLabel: "Secure Payment",
   paymentMethods: [

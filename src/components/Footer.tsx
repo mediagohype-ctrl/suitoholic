@@ -67,10 +67,10 @@ function renderPaymentBadge(brand: string, title: string) {
     case "upi":
       return (
         <div className={PAYMENT_BADGE_CLASS} title={title}>
-          <svg className="h-4 w-auto" viewBox="0 0 36 16" fill="none">
-            <path d="M3.5 1.5L9.5 8L3.5 14.5L0 8L3.5 1.5Z" fill="#097938" />
-            <path d="M7 1.5L13 8L7 14.5L3.5 8L7 1.5Z" fill="#F47920" />
-            <text x="14.5" y="12.5" fontFamily="sans-serif" fontSize="10" fontWeight="900" fill="#0C2340" letterSpacing="0.5">UPI</text>
+          <svg className="h-3.5 w-auto" viewBox="9 15 102 30" fillRule="evenodd" fill="none">
+            <path d="M22.41 16.47l-6.03 21.475 21.407.15 5.88-21.625h5.427l-7.05 25.14c-.27.96-1.298 1.74-2.295 1.74H12.31c-1.664 0-2.65-1.3-2.2-2.9l6.724-23.98zm66.182-.15h5.427l-7.538 27.03h-5.58zM49.698 27.582l27.136-.15 1.81-5.707H51.054l1.658-5.256 29.4-.27c1.83-.017 2.92 1.4 2.438 3.167L81.78 29.49c-.483 1.766-2.36 3.197-4.19 3.197H53.316L50.454 43.8h-5.28z" fill="#0C2340" />
+            <path d="M90.854 42.9l14.322-13.065-6.784-13.516z" fill="#ED752E" />
+            <path d="M95.678 42.9L110 29.835l-6.784-13.516z" fill="#097939" />
           </svg>
         </div>
       );
@@ -258,20 +258,24 @@ export default function Footer() {
           </div>
 
           {/* Quick Legal Links & Smooth Back to Top */}
-          <div className="flex items-center space-x-3.5 sm:space-x-5">
-            {(c.legalLinks ?? []).map((link, i) => (
-              <React.Fragment key={i}>
-                <Link href={link.href || "/"} className="hover:text-[#4A202A] transition-colors">{link.label}</Link>
-                <span>•</span>
-              </React.Fragment>
-            ))}
+          <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-4 sm:gap-6">
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              {(c.legalLinks ?? []).map((link, i, arr) => (
+                <React.Fragment key={i}>
+                  <Link href={link.href || "/"} className="hover:text-[#4A202A] transition-colors">{link.label}</Link>
+                  {i < arr.length - 1 && <span className="text-[#C4B5BE]">•</span>}
+                </React.Fragment>
+              ))}
+            </div>
+
             <button
               onClick={scrollToTop}
-              style={{ borderRadius: "7px" }}
-              className="inline-flex items-center gap-1.5 bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] px-3.5 py-1.5 text-[11px] font-bold transition-all shadow-sm hover:shadow-md cursor-pointer group"
+              aria-label="Back to top"
+              title="Back to top"
+              style={{ borderRadius: "8px" }}
+              className="w-8 h-8 flex-shrink-0 inline-flex items-center justify-center bg-[#4A202A] hover:bg-[#34141D] text-[#FAF8F5] transition-all shadow-sm hover:shadow-md cursor-pointer group hover:scale-105 active:scale-95"
             >
-              <span>{c.backToTopLabel}</span>
-              <ArrowUp size={11} className="transform group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowUp size={14} className="transform group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>
 

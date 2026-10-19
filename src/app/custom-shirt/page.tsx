@@ -12,7 +12,6 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
 import BespokePillarsBanner from "@/components/BespokePillarsBanner";
-import BespokeProcessTimeline from "@/components/BespokeProcessTimeline";
 import CustomOutfitHero from "@/components/CustomOutfitHero";
 
 const ShowcaseDivider = () => (
@@ -364,9 +363,6 @@ function CustomShirtConfiguratorContent() {
 
       {/* THE BESPOKE PILLARS: 3-Tier Split Editorial Banner (Exceptional Fabrics, Bespoke Experience, Elite Service) */}
       <BespokePillarsBanner />
-
-      {/* HOW IT WORKS: From First Measure to Final Delivery (Website Light Theme) */}
-      <BespokeProcessTimeline />
 
       <ShowcaseDivider />
 
