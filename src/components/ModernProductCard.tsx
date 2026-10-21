@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Heart, ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
 import { ProductItem } from "@/data/products";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 interface ModernProductCardProps {
   product: ProductItem;
@@ -13,6 +14,9 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+
+  // Full shirt preview on hover
+  const hoverFullShirt = getMatchingFullShirtImage(product);
 
   // Use gallery if available, or fallback to main image
   const images = product.gallery && product.gallery.length > 0 
@@ -51,15 +55,29 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
       {/* Upper Tall Rounded Image Container */}
       <div className="relative w-full aspect-[3/4.1] min-h-[350px] sm:min-h-[410px] lg:min-h-[470px] xl:min-h-[510px] rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-2xs transition-all duration-300 group-hover:shadow-md">
         
-        {/* Main Product Image */}
-        <Link href={`/product/${product.slug}`} className="block w-full h-full">
+        {/* Main Product Image Container with Full Shirt Hover Reveal */}
+        <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden">
+          {/* Default Product Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={images[currentImgIndex % images.length]}
             alt={product.name}
-            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            className={`w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105 ${
+              hoverFullShirt ? "group-hover:opacity-0" : ""
+            }`}
             loading="lazy"
           />
+
+          {/* Full Shirt Model Reveal on Hover */}
+          {hoverFullShirt && (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={hoverFullShirt}
+              alt={`${product.name} Full Tailored Shirt`}
+              className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
+              loading="lazy"
+            />
+          )}
         </Link>
 
 

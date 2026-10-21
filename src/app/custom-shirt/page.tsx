@@ -9,6 +9,7 @@ import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
 import ShopByFabricsSection from "@/components/ShopByFabricsSection";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
+import BespokeJourneySection from "@/components/BespokeJourneySection";
 import BespokePillarsBanner from "@/components/BespokePillarsBanner";
 import CustomOutfitHero from "@/components/CustomOutfitHero";
 import TestimonialsSection from "@/components/TestimonialsSection";
@@ -356,6 +357,9 @@ function CustomShirtConfiguratorContent() {
         activeProductSlug={activeProduct?.slug}
         onSelectLook={handleSelectCuratedLook}
       />
+
+      {/* THE JOURNEY: Five Steps to a Singular Suit Timeline */}
+      <BespokeJourneySection />
 
       {/* THE BESPOKE PILLARS: 3-Tier Split Editorial Banner */}
       <BespokePillarsBanner />

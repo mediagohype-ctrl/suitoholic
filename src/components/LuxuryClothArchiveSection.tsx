@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Search, ChevronDown, X, ZoomIn, Scissors, ArrowRight, Check } from "lucide-react";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 export interface LuxuryClothItem {
   id: string;
@@ -943,27 +944,37 @@ export default function LuxuryClothArchiveSection({
               >
                 {/* Rectangular Vertical Swatch Image (3:4 ratio) */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden bg-white border border-[#E5E3DD] group-hover:border-black group-hover:shadow-md transition-all duration-300 rounded-[16px]">
+                  {/* Default Swatch Roll */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={cloth.image}
                     alt={`${cloth.mill} ${cloth.code} Swatch`}
-                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-108"
+                    className="w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105 group-hover:opacity-0"
+                    loading="lazy"
+                  />
+
+                  {/* Matching Tailored Full Shirt Revealed on Hover */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={getMatchingFullShirtImage(cloth)}
+                    alt={`${cloth.mill} Full Tailored Shirt`}
+                    className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
                     loading="lazy"
                   />
                   
                   {/* Subtle ambient lighting overlay */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 group-hover:opacity-60 transition-opacity" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 group-hover:opacity-40 transition-opacity" />
 
                   {/* Bottom-Right GSM Box Badge */}
-                  <div className="absolute bottom-2 right-2 z-10 px-2 py-0.5 bg-white/95 backdrop-blur-xs text-black text-[8.5px] sm:text-[9px] font-mono font-bold tracking-wider border border-[#E5E3DD] shadow-xs rounded-full">
+                  <div className="absolute bottom-2 right-2 z-10 px-2 py-0.5 bg-white/95 backdrop-blur-xs text-black text-[8.5px] sm:text-[9px] font-mono font-bold tracking-wider border border-[#E5E3DD] shadow-xs rounded-full group-hover:opacity-0 transition-opacity">
                     {cloth.weightLabel}
                   </div>
 
-                  {/* Hover Inspect Pill */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <div className="px-3.5 py-1.5 bg-black/90 text-white backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono tracking-widest uppercase flex items-center gap-1.5 shadow-lg">
-                      <ZoomIn size={12} className="text-white" />
-                      <span>INSPECT</span>
+                  {/* Bottom-Left Full Shirt Preview Pill */}
+                  <div className="absolute bottom-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <div className="px-2.5 py-1 bg-black/90 text-white backdrop-blur-md rounded-full text-[8.5px] font-mono tracking-wider uppercase flex items-center gap-1 shadow-md">
+                      <ZoomIn size={10} className="text-white" />
+                      <span>FULL SHIRT</span>
                     </div>
                   </div>
                 </div>
