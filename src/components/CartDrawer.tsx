@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, Tag, Check, AlertCircle } from "lucide-react";
@@ -22,11 +23,27 @@ export default function CartDrawer() {
     removeCoupon,
   } = useCart();
 
+  const [mounted, setMounted] = useState(false);
   const [couponInput, setCouponInput] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
   const router = useRouter();
 
-  if (!isDrawerOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isDrawerOpen]);
+
+  if (!isDrawerOpen || !mounted) return null;
 
   const items = cart?.items ?? [];
   const subtotal = cart?.subtotal ?? 0;
@@ -47,17 +64,17 @@ export default function CartDrawer() {
     router.push("/checkout");
   };
 
-  return (
-    <div className="fixed inset-0 z-50 overflow-hidden select-none animate-in fade-in duration-200">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] overflow-hidden select-none animate-in fade-in duration-200">
       {/* Dimmed backdrop */}
       <div
-        className="absolute inset-0 bg-black/65 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/65 backdrop-blur-xs transition-opacity"
         onClick={closeDrawer}
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-6 sm:pl-10">
-        <div className="w-screen max-w-md sm:max-w-lg bg-[#ECEAE5] border-l border-[#E5E3DD] shadow-2xl flex flex-col text-black">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-8">
+        <div className="w-screen max-w-[95vw] sm:max-w-[560px] md:max-w-[620px] lg:max-w-[660px] bg-[#ECEAE5] border-l border-[#E5E3DD] shadow-2xl flex flex-col text-black relative z-10 animate-in slide-in-from-right duration-300">
           {/* Drawer Header */}
           <div className="flex items-center justify-between px-6 py-4.5 bg-white border-b border-[#E5E3DD]">
             <div className="flex items-center gap-2.5">
@@ -287,6 +304,7 @@ export default function CartDrawer() {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

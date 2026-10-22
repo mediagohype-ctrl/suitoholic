@@ -10,8 +10,6 @@ import { useCart } from "@/context/CartProvider";
 import { useWishlist } from "@/context/WishlistProvider";
 import CartDrawer from "@/components/CartDrawer";
 import SearchModal from "@/components/SearchModal";
-import AccountDrawer from "@/components/AccountDrawer";
-import WishlistDrawer from "@/components/WishlistDrawer";
 
 interface HeaderProps {
   /** Legacy tab id ("shop", "custom-fit", "fabrics", "about") forcing the highlighted link. */
@@ -33,7 +31,6 @@ const TAB_PATHS: Record<string, string> = {
 export default function Header({ activeTab, cartCount, forceSolid = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const [accountDrawerOpen, setAccountDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const pathname = usePathname();
@@ -72,15 +69,16 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
     !href.includes("#") && href !== "/" && (activePath === href || activePath.startsWith(`${href}/`));
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 w-full z-50 transition-transform duration-300 ease-in-out ${
-        visible ? "translate-y-0" : "-translate-y-full"
-      } ${
-        scrolled || forceSolid
-          ? "shadow-sm bg-white/95 backdrop-blur-md"
-          : "bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
-      }`}
-    >
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-transform duration-300 ease-in-out ${
+          visible ? "translate-y-0" : "-translate-y-full"
+        } ${
+          scrolled || forceSolid
+            ? "shadow-sm bg-white/95 backdrop-blur-md"
+            : "bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
+        }`}
+      >
       {/* Top Announcement Bar */}
       <div className="hidden sm:block bg-[#000000] text-[#FFFFFF] border-b border-[#222222] py-1.5 px-4 sm:px-8 text-[10px] font-medium tracking-[0.18em] uppercase z-50 relative shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -230,9 +228,9 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
               <Search size={18} strokeWidth={1.75} />
             </button>
 
-            {/* Wishlist Button */}
-            <button
-              onClick={openWishlist}
+            {/* Wishlist Link (Opens Full Page) */}
+            <Link
+              href="/wishlist"
               className="relative p-1 hover:text-[#726254] transition-colors cursor-pointer"
               aria-label={`Wishlist, ${wishlistCount} saved items`}
             >
@@ -242,16 +240,16 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                   {wishlistCount}
                 </span>
               )}
-            </button>
+            </Link>
 
-            {/* Client Concierge / Account Button */}
-            <button
-              onClick={() => setAccountDrawerOpen(true)}
+            {/* Client Concierge / Account Link (Opens Full Page) */}
+            <Link
+              href="/account"
               className="p-1 hover:text-[#726254] transition-colors cursor-pointer"
-              aria-label="Client Concierge"
+              aria-label="Client Concierge Account"
             >
               <User size={18} strokeWidth={1.75} />
-            </button>
+            </Link>
 
             {/* Shopping Bag Button (Opens Slide-over Drawer) */}
             <button
@@ -328,18 +326,13 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           </div>
         </div>
       )}
-
-      {/* Slide-over Mini Cart Drawer */}
-      <CartDrawer />
-
-      {/* Global Live Search Overlay */}
-      <SearchModal isOpen={searchModalOpen} onClose={() => setSearchModalOpen(false)} />
-
-      {/* Client Concierge / Account Drawer */}
-      <AccountDrawer isOpen={accountDrawerOpen} onClose={() => setAccountDrawerOpen(false)} />
-
-      {/* Saved Pieces / Wishlist Drawer */}
-      <WishlistDrawer />
     </header>
+
+    {/* Slide-over Mini Cart Drawer */}
+    <CartDrawer />
+
+    {/* Global Live Search Overlay */}
+    <SearchModal isOpen={searchModalOpen} onClose={() => setSearchModalOpen(false)} />
+  </>
   );
 }

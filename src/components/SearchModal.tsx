@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, X, ArrowRight, Sparkles, Tag } from "lucide-react";
+import { Search, X, ArrowRight, ShoppingBag } from "lucide-react";
 import { useCatalog } from "@/context/SiteDataProvider";
 
 interface SearchModalProps {
@@ -11,26 +12,20 @@ interface SearchModalProps {
   onClose: () => void;
 }
 
-const TRENDING_TAGS = [
-  "Sky Blue",
-  "Bengal Stripe",
-  "Crisp White",
-  "Espresso",
-  "Normandy Linen",
-  "French Cuff",
-  "Egyptian Giza",
-  "Royal Oxford",
-];
-
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const { products } = useCatalog();
+  const { products, categories } = useCatalog();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => inputRef.current?.focus(), 80);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -52,11 +47,45 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
+
+  // Curated collections list matching user reference screenshot
+  const curatedCollections = [
+    {
+      id: "winter_2026",
+      title: "Winter Collection 2026",
+      href: "/shop?category=formal_shirts",
+      image: "/new_shirts/shirt_1.jpg",
+    },
+    {
+      id: "formal_stripes",
+      title: "Bengal Stripe Collection",
+      href: "/shop?category=formal_stripes",
+      image: "/new_shirts/shirt_2.jpg",
+    },
+    {
+      id: "formal_bespoke",
+      title: "Bespoke Cutaway & Twill Shirts",
+      href: "/shop?category=formal_bespoke",
+      image: "/new_shirts/shirt_3.jpg",
+    },
+    {
+      id: "fabrics",
+      title: "Pure Bespoke Fabrics & Linens",
+      href: "/fabrics",
+      image: "/fabric_cat_suits_sets.jpg",
+    },
+    {
+      id: "trousers",
+      title: "Handcrafted Luxury Trousers",
+      href: "/shop?category=trousers",
+      image: "/pant_charcoal_dress.jpg",
+    },
+  ];
 
   const trimmed = query.trim().toLowerCase();
 
-  const filteredProducts = trimmed
+  const matchingProducts = trimmed
     ? products
         .filter((p) => {
           const name = p.name?.toLowerCase() ?? "";
@@ -70,152 +99,191 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             cat.includes(trimmed)
           );
         })
-        .slice(0, 8)
+        .slice(0, 10)
     : [];
 
-  const handleSelectProduct = (slug: string) => {
-    onClose();
-    router.push(`/product/${slug}`);
-  };
+  const matchingCollections = trimmed
+    ? curatedCollections.filter((c) => c.title.toLowerCase().includes(trimmed))
+    : [];
 
-  const handleSearchTag = (tag: string) => {
-    setQuery(tag);
-  };
-
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex flex-col items-center justify-start p-4 sm:p-6 lg:p-10 bg-black/75 backdrop-blur-md animate-in fade-in duration-200 select-none overflow-y-auto"
-      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex flex-col justify-start select-none animate-in fade-in duration-200"
     >
+      {/* Dark semi-transparent backdrop below header panel */}
       <div
-        className="w-full max-w-3xl bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden mt-6 sm:mt-12 animate-in zoom-in-95 duration-200"
+        className="fixed inset-0 bg-black/55 backdrop-blur-xs transition-opacity"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* Top Slide-Down White Search Panel matching reference design */}
+      <div
+        className="relative z-10 w-full bg-white shadow-2xl border-b border-[#E5E3DD] animate-in slide-in-from-top duration-300 max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Search Header Bar */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-[#E5E3DD] bg-[#FAF8F5]">
-          <Search size={22} className="text-[#666666] shrink-0" />
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search bespoke shirts, luxury fabrics, weaves..."
-            className="flex-1 bg-transparent text-base sm:text-lg text-black outline-none placeholder:text-[#999999] font-sans"
-          />
-          {query && (
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 pt-5 pb-6">
+          {/* Top Search Input Row with wide pill and close button */}
+          <div className="flex items-center gap-3 sm:gap-4 w-full">
+            <div className="relative flex-1">
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search here...."
+                className="w-full bg-[#EFEFEF] hover:bg-[#EAEAEA] focus:bg-[#F3F3F3] text-black text-sm sm:text-base px-5 py-3 sm:py-3.5 rounded-full outline-none pr-12 placeholder:text-[#999999] transition-colors"
+              />
+              <Search
+                size={18}
+                className="absolute right-4.5 top-1/2 -translate-y-1/2 text-[#888888] pointer-events-none"
+              />
+            </div>
             <button
               type="button"
-              onClick={() => setQuery("")}
-              className="p-1 hover:bg-neutral-200 rounded-full text-[#666666] cursor-pointer"
-              aria-label="Clear query"
+              onClick={onClose}
+              className="p-1.5 sm:p-2 text-black hover:text-[#8C7355] transition-colors cursor-pointer shrink-0"
+              aria-label="Close Search"
             >
-              <X size={16} />
+              <X size={24} className="stroke-[2.5]" />
             </button>
-          )}
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 hover:bg-neutral-200 rounded-full text-black transition-colors cursor-pointer shrink-0"
-            aria-label="Close search"
-          >
-            <X size={20} />
-          </button>
-        </div>
+          </div>
 
-        {/* Search Body Content */}
-        <div className="p-6 sm:p-8 max-h-[70vh] overflow-y-auto space-y-6">
-          {/* Trending Searches */}
-          {!trimmed && (
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#726254]">
-                <Sparkles size={13} />
-                <span>POPULAR SEARCHES</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {TRENDING_TAGS.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => handleSearchTag(tag)}
-                    className="px-4 py-2 bg-[#F5F4F0] hover:bg-black hover:text-white border border-[#E5E3DD] rounded-full text-xs font-medium text-black transition-all cursor-pointer"
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Results List */}
-          {trimmed && filteredProducts.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between text-xs text-[#666666]">
-                <span className="font-semibold text-black uppercase tracking-wider">
-                  MATCHING BESPOKE SHIRTS ({filteredProducts.length})
-                </span>
-                <span className="text-[11px]">Click to view details</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {filteredProducts.map((p) => (
-                  <div
-                    key={p.id}
-                    onClick={() => handleSelectProduct(p.slug)}
-                    className="flex items-center gap-3 p-3 rounded-2xl border border-[#E5E3DD] hover:border-black/50 hover:bg-[#FAF8F5] transition-all cursor-pointer group"
-                  >
-                    <div className="w-16 h-20 rounded-xl overflow-hidden bg-[#ECEAE5] shrink-0 border border-[#E5E3DD]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0 space-y-1">
-                      <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#726254] block truncate">
-                        {p.category.replace("_", " ")}
+          {/* Content Body: Collections list (default) OR Live Search Results */}
+          <div className="mt-6 overflow-y-auto max-h-[62vh] pr-1">
+            {trimmed === "" ? (
+              /* Default State: Collections list as in user reference screenshot */
+              <div className="max-w-2xl">
+                <h3 className="text-base sm:text-lg font-bold text-black tracking-tight mb-3">
+                  Collections
+                </h3>
+                <div className="flex flex-col">
+                  {curatedCollections.map((col) => (
+                    <Link
+                      key={col.id}
+                      href={col.href}
+                      onClick={onClose}
+                      className="flex items-center gap-4 py-3 border-b border-[#ECEAE5] hover:bg-[#FAF9F6] px-2 rounded-xl transition-colors group cursor-pointer"
+                    >
+                      <div className="w-12 h-12 rounded-lg overflow-hidden bg-[#ECEAE5] shrink-0 border border-[#E5E3DD]">
+                        <img
+                          src={col.image}
+                          alt={col.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <span className="text-sm sm:text-[15px] font-medium text-black group-hover:text-[#8C7355] transition-colors">
+                        {col.title}
                       </span>
-                      <h4 className="font-serif-luxury text-sm font-bold uppercase text-black group-hover:text-neutral-800 truncate leading-snug">
-                        {p.name}
-                      </h4>
-                      <p className="text-xs font-bold text-black">{p.price}</p>
-                    </div>
-                    <ArrowRight
-                      size={14}
-                      className="text-[#999999] group-hover:text-black group-hover:translate-x-1 transition-all shrink-0"
-                    />
-                  </div>
-                ))}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            ) : (
+              /* Search Results State */
+              <div className="space-y-6">
+                {matchingCollections.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#888888] mb-3">
+                      Matching Collections
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                      {matchingCollections.map((col) => (
+                        <Link
+                          key={col.id}
+                          href={col.href}
+                          onClick={onClose}
+                          className="flex items-center gap-3 p-2.5 rounded-xl border border-[#E5E3DD] hover:border-black hover:bg-[#FAF9F6] transition-all group"
+                        >
+                          <img
+                            src={col.image}
+                            alt={col.title}
+                            className="w-10 h-10 rounded-md object-cover shrink-0"
+                          />
+                          <span className="text-xs font-semibold text-black group-hover:text-[#8C7355]">
+                            {col.title}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-          {/* No Results Fallback */}
-          {trimmed && filteredProducts.length === 0 && (
-            <div className="py-12 text-center space-y-3">
-              <p className="font-serif-luxury text-xl text-black">
-                No bespoke shirts found for &ldquo;{query}&rdquo;
-              </p>
-              <p className="text-xs text-[#666666] max-w-sm mx-auto">
-                Try searching for fabric weaves like &ldquo;Oxford&rdquo;, &ldquo;Linen&rdquo;, &ldquo;Stripes&rdquo; or explore all shirts in our collection.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  router.push("/shop");
-                }}
-                className="mt-2 inline-flex items-center gap-2 px-6 py-2.5 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-full hover:bg-neutral-800 transition-colors cursor-pointer"
-              >
-                <span>VIEW FULL SHOP</span>
-                <ArrowRight size={13} />
-              </button>
-            </div>
-          )}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#888888]">
+                      Products ({matchingProducts.length})
+                    </h4>
+                    {matchingProducts.length > 0 && (
+                      <button
+                        onClick={() => {
+                          onClose();
+                          router.push(`/shop`);
+                        }}
+                        className="text-xs text-[#8C7355] hover:text-black font-semibold underline cursor-pointer"
+                      >
+                        View all in Shop
+                      </button>
+                    )}
+                  </div>
+
+                  {matchingProducts.length === 0 ? (
+                    <div className="py-10 text-center space-y-2">
+                      <p className="text-sm text-[#666666]">
+                        No tailored shirts found matching &ldquo;<span className="font-semibold text-black">{query}</span>&rdquo;
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onClose();
+                          router.push("/shop");
+                        }}
+                        className="inline-flex items-center gap-2 mt-2 px-6 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-full hover:bg-neutral-800 transition-colors cursor-pointer"
+                      >
+                        <span>Browse Entire Catalog</span>
+                        <ArrowRight size={13} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {matchingProducts.map((p) => (
+                        <Link
+                          key={p.id}
+                          href={`/product/${p.slug}`}
+                          onClick={onClose}
+                          className="flex items-center gap-3 p-3 rounded-xl border border-[#E5E3DD] hover:border-black hover:bg-[#FAF9F6] transition-all group cursor-pointer shadow-2xs"
+                        >
+                          <div className="w-14 h-16 rounded-lg overflow-hidden bg-[#ECEAE5] shrink-0 border border-[#E5E3DD]">
+                            <img
+                              src={p.image}
+                              alt={p.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h5 className="font-semibold text-xs sm:text-sm text-black truncate group-hover:text-[#8C7355] transition-colors">
+                              {p.name}
+                            </h5>
+                            <span className="text-[10px] text-[#666666] block truncate">
+                              {p.fabric}
+                            </span>
+                            <span className="text-xs font-bold text-black mt-1 block">
+                              {p.price}
+                            </span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

@@ -248,13 +248,6 @@ export default function HeroVideoBanner() {
               </span>
             </div>
 
-            {/* Active Variant Label */}
-            <div className="hidden sm:flex flex-col justify-center pl-1">
-              <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-black/70 font-semibold">
-                {currentVariant?.shortLabel}
-              </span>
-            </div>
-
           </div>
 
         </div>

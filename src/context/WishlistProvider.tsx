@@ -10,6 +10,7 @@ interface WishlistContextValue {
   isInWishlist: (productId: number) => boolean;
   toggleWishlist: (productId: number) => void;
   removeFromWishlist: (productId: number) => void;
+  clearWishlist: () => void;
   isWishlistOpen: boolean;
   openWishlist: () => void;
   closeWishlist: () => void;
@@ -62,6 +63,10 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     setWishlistIds((prev) => prev.filter((id) => id !== productId));
   }, []);
 
+  const clearWishlist = useCallback(() => {
+    setWishlistIds([]);
+  }, []);
+
   const openWishlist = useCallback(() => setIsWishlistOpen(true), []);
   const closeWishlist = useCallback(() => setIsWishlistOpen(false), []);
 
@@ -73,6 +78,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         isInWishlist,
         toggleWishlist,
         removeFromWishlist,
+        clearWishlist,
         isWishlistOpen,
         openWishlist,
         closeWishlist,
@@ -83,15 +89,16 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useWishlist() {
+export function useWishlist(): WishlistContextValue {
   const ctx = useContext(WishlistContext);
   if (!ctx) {
     return {
-      wishlistIds: [],
+      wishlistIds: [] as number[],
       wishlistCount: 0,
       isInWishlist: () => false,
       toggleWishlist: () => {},
       removeFromWishlist: () => {},
+      clearWishlist: () => {},
       isWishlistOpen: false,
       openWishlist: () => {},
       closeWishlist: () => {},

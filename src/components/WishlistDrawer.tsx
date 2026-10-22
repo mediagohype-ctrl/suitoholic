@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { X, Heart, Trash2, ArrowRight, ShoppingBag } from "lucide-react";
 import { useWishlist } from "@/context/WishlistProvider";
@@ -9,22 +10,38 @@ import { useCatalog } from "@/context/SiteDataProvider";
 export default function WishlistDrawer() {
   const { wishlistIds, isWishlistOpen, closeWishlist, removeFromWishlist } = useWishlist();
   const { products } = useCatalog();
+  const [mounted, setMounted] = useState(false);
 
-  if (!isWishlistOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isWishlistOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isWishlistOpen]);
+
+  if (!isWishlistOpen || !mounted) return null;
 
   const savedProducts = products.filter((p) => wishlistIds.includes(p.id));
 
-  return (
-    <div className="fixed inset-0 z-50 overflow-hidden select-none animate-in fade-in duration-200">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] overflow-hidden select-none animate-in fade-in duration-200">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/65 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/65 backdrop-blur-xs transition-opacity"
         onClick={closeWishlist}
         aria-hidden="true"
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-6 sm:pl-10">
-        <div className="w-screen max-w-md bg-[#ECEAE5] border-l border-[#E5E3DD] shadow-2xl flex flex-col text-black">
+        <div className="w-screen max-w-md bg-[#ECEAE5] border-l border-[#E5E3DD] shadow-2xl flex flex-col text-black relative z-10 animate-in slide-in-from-right duration-300">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4.5 bg-white border-b border-[#E5E3DD]">
             <div className="flex items-center gap-2.5">
@@ -116,6 +133,7 @@ export default function WishlistDrawer() {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
