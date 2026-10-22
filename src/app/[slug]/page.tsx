@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { notFound, useParams } from "next/navigation";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, ChevronDown, HelpCircle, Sparkles } from "lucide-react";
 import PageShell from "@/components/bag/PageShell";
 import { useContent } from "@/context/SiteDataProvider";
 import { apiFetch } from "@/lib/api";
@@ -31,6 +31,100 @@ function RichText({ text }: { text: string }) {
                 );
               return <p key={j}>{line}</p>;
             })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function FaqAccordion({ text }: { text: string }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  // Parse questions from markdown body (## Question\nAnswer)
+  const parsedSections = useMemo(() => {
+    const rawBlocks = text.split(/\n\s*##\s+/).filter(Boolean);
+    const list: { q: string; a: string }[] = [];
+
+    rawBlocks.forEach((b) => {
+      const clean = b.startsWith("## ") ? b.slice(3) : b;
+      const parts = clean.split("\n");
+      const question = parts[0]?.trim();
+      const answer = parts.slice(1).join("\n").trim();
+      if (question && answer) {
+        list.push({ q: question, a: answer });
+      }
+    });
+
+    // Curated bespoke concierge FAQs
+    const defaultCurated = [
+      {
+        q: "How does the 30-Day Perfect Fit Guarantee work?",
+        a: "If your custom garment doesn't fit flawlessly upon arrival, our master tailors provide complimentary alterations or a remake within 30 days of delivery. Reach out to concierge@suitoholic.com with photos.",
+      },
+      {
+        q: "What payment methods are supported?",
+        a: "We accept all major UPI apps (Google Pay, PhonePe, Paytm, BHIM), Net Banking, and Partial Cash on Delivery (a 25% advance commitment with the balance settled upon doorstep delivery).",
+      },
+      {
+        q: "What fabrics do you use?",
+        a: "We curate 100% certified Egyptian Giza Cotton, American Supima Cotton, Normandy Linen, and Australian Merino wool sourced from heritage mills including Albini, Thomas Mason, and Monti.",
+      },
+      {
+        q: "Can I customize the collar, cuffs, and monogram?",
+        a: "Yes. Every shirt can be customized with 8 collar variants, 4 cuff profiles, placket styles, back darts, and personalized monogram embroidery in gold, white, or tonal silk thread.",
+      },
+      {
+        q: "How long does tailoring and delivery take?",
+        a: "Each bespoke piece is precision cut and handcrafted individually. Standard dispatch takes 7–10 business days, followed by complimentary insured courier delivery across India.",
+      },
+    ];
+
+    // Merge without duplicates
+    const combined = [...list];
+    defaultCurated.forEach((c) => {
+      if (!combined.some((item) => item.q.toLowerCase() === c.q.toLowerCase())) {
+        combined.push(c);
+      }
+    });
+
+    return combined;
+  }, [text]);
+
+  return (
+    <div className="space-y-3">
+      {parsedSections.map((item, idx) => {
+        const isOpen = openIndex === idx;
+        return (
+          <div
+            key={idx}
+            className={`border rounded-2xl transition-all duration-200 overflow-hidden ${
+              isOpen ? "bg-white border-black/40 shadow-sm" : "bg-white/90 border-[#E5E3DD] hover:border-black/20"
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenIndex(isOpen ? null : idx)}
+              className="w-full text-left px-5 sm:px-6 py-4.5 flex items-center justify-between gap-4 cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#FAF9F6] border border-[#E5E3DD] text-[#8C7355] text-xs font-bold flex items-center justify-center shrink-0">
+                  {idx + 1}
+                </span>
+                <span className="font-serif-luxury text-base sm:text-lg font-bold text-black tracking-wide">
+                  {item.q}
+                </span>
+              </div>
+              <ChevronDown
+                size={18}
+                className={`text-black shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            {isOpen && (
+              <div className="px-5 sm:px-6 pb-5 pt-1 text-sm text-[#555555] leading-relaxed border-t border-[#F5F4F0] animate-in fade-in duration-150">
+                <p className="whitespace-pre-line">{item.a}</p>
+              </div>
+            )}
           </div>
         );
       })}
@@ -113,13 +207,21 @@ export default function InfoPage() {
   const page = pages.find((p) => p.slug === slug);
   if (!page) notFound();
 
+  const isFaq = slug === "faq";
+
   return (
     <PageShell eyebrow={page.eyebrow} title={page.title}>
       <div className="max-w-3xl mx-auto space-y-8">
         {page.intro && <p className="text-center text-base text-[#666666]">{page.intro}</p>}
-        <div className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 shadow-sm">
-          <RichText text={page.body} />
-        </div>
+
+        {isFaq ? (
+          <FaqAccordion text={page.body} />
+        ) : (
+          <div className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 shadow-sm">
+            <RichText text={page.body} />
+          </div>
+        )}
+
         {page.showContactForm && <ContactForm />}
       </div>
     </PageShell>

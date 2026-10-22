@@ -4,9 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Search, User, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart } from "lucide-react";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import { useCart } from "@/context/CartProvider";
+import { useWishlist } from "@/context/WishlistProvider";
+import CartDrawer from "@/components/CartDrawer";
+import SearchModal from "@/components/SearchModal";
+import AccountDrawer from "@/components/AccountDrawer";
+import WishlistDrawer from "@/components/WishlistDrawer";
 
 interface HeaderProps {
   /** Legacy tab id ("shop", "custom-fit", "fabrics", "about") forcing the highlighted link. */
@@ -27,12 +32,15 @@ const TAB_PATHS: Record<string, string> = {
 
 export default function Header({ activeTab, cartCount, forceSolid = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [accountDrawerOpen, setAccountDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const pathname = usePathname();
   const c = useContent("header");
   const { categories } = useCatalog();
-  const { itemCount } = useCart();
+  const { itemCount, openDrawer } = useCart();
+  const { wishlistCount, openWishlist } = useWishlist();
   const bagCount = cartCount ?? itemCount;
 
   useEffect(() => {
@@ -212,19 +220,50 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           </nav>
 
           {/* Header Right Icons */}
-          <div className="flex items-center space-x-2.5 sm:space-x-4 text-[#000000] z-10">
-            <button className="p-1 hover:text-[#555555] transition-colors cursor-pointer" aria-label="Search">
+          <div className="flex items-center space-x-2 sm:space-x-3.5 text-[#000000] z-10">
+            {/* Search Button */}
+            <button
+              onClick={() => setSearchModalOpen(true)}
+              className="p-1 hover:text-[#726254] transition-colors cursor-pointer"
+              aria-label="Search Collection"
+            >
               <Search size={18} strokeWidth={1.75} />
             </button>
-            <button className="p-1 hover:text-[#555555] transition-colors cursor-pointer" aria-label="Account">
+
+            {/* Wishlist Button */}
+            <button
+              onClick={openWishlist}
+              className="relative p-1 hover:text-[#726254] transition-colors cursor-pointer"
+              aria-label={`Wishlist, ${wishlistCount} saved items`}
+            >
+              <Heart size={18} strokeWidth={1.75} className={wishlistCount > 0 ? "fill-black text-black" : ""} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#8C7355] text-white text-[8.5px] font-mono font-bold rounded-full flex items-center justify-center shadow-xs">
+                  {wishlistCount}
+                </span>
+              )}
+            </button>
+
+            {/* Client Concierge / Account Button */}
+            <button
+              onClick={() => setAccountDrawerOpen(true)}
+              className="p-1 hover:text-[#726254] transition-colors cursor-pointer"
+              aria-label="Client Concierge"
+            >
               <User size={18} strokeWidth={1.75} />
             </button>
-            <Link href="/cart" className="relative p-1 hover:text-[#555555] transition-colors" aria-label={`Shopping bag, ${bagCount} items`}>
+
+            {/* Shopping Bag Button (Opens Slide-over Drawer) */}
+            <button
+              onClick={openDrawer}
+              className="relative p-1 hover:text-[#726254] transition-colors cursor-pointer"
+              aria-label={`Shopping bag, ${bagCount} items`}
+            >
               <ShoppingBag size={18} strokeWidth={1.75} />
               <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#000000] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
                 {bagCount > 99 ? "99+" : bagCount}
               </span>
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -289,6 +328,18 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           </div>
         </div>
       )}
+
+      {/* Slide-over Mini Cart Drawer */}
+      <CartDrawer />
+
+      {/* Global Live Search Overlay */}
+      <SearchModal isOpen={searchModalOpen} onClose={() => setSearchModalOpen(false)} />
+
+      {/* Client Concierge / Account Drawer */}
+      <AccountDrawer isOpen={accountDrawerOpen} onClose={() => setAccountDrawerOpen(false)} />
+
+      {/* Saved Pieces / Wishlist Drawer */}
+      <WishlistDrawer />
     </header>
   );
 }

@@ -20,6 +20,14 @@ interface CartContextValue {
   loading: boolean;
   /** True while an add/update/remove request is in flight. */
   busy: boolean;
+  isDrawerOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+  toggleDrawer: () => void;
+  couponCode: string;
+  discountAmount: number;
+  applyCoupon: (code: string) => { success: boolean; message: string; discount?: number };
+  removeCoupon: () => void;
   addItem: (input: AddToBagInput) => Promise<Cart>;
   updateQuantity: (itemId: number, quantity: number) => Promise<void>;
   removeItem: (itemId: number) => Promise<void>;
@@ -53,7 +61,48 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [couponCode, setCouponCode] = useState<string>("");
+  const [discountAmount, setDiscountAmount] = useState<number>(0);
   const cartIdRef = useRef<string | null>(null);
+
+  const openDrawer = useCallback(() => setIsDrawerOpen(true), []);
+  const closeDrawer = useCallback(() => setIsDrawerOpen(false), []);
+  const toggleDrawer = useCallback(() => setIsDrawerOpen((prev) => !prev), []);
+
+  const applyCoupon = useCallback(
+    (code: string) => {
+      const trimmed = code.trim().toUpperCase();
+      if (!cart || cart.items.length === 0) {
+        return { success: false, message: "Add items to your bag first." };
+      }
+      if (trimmed === "WELCOME10") {
+        const discount = Math.round(cart.subtotal * 0.1);
+        setCouponCode("WELCOME10");
+        setDiscountAmount(discount);
+        return { success: true, message: "WELCOME10 applied (10% off)!", discount };
+      }
+      if (trimmed === "SUITOHOLIC" || trimmed === "BESPOKE500") {
+        const discount = Math.min(500, cart.subtotal);
+        setCouponCode(trimmed);
+        setDiscountAmount(discount);
+        return { success: true, message: `₹500 Atelier Discount applied!`, discount };
+      }
+      if (trimmed === "ROYAL15") {
+        const discount = Math.round(cart.subtotal * 0.15);
+        setCouponCode("ROYAL15");
+        setDiscountAmount(discount);
+        return { success: true, message: "ROYAL15 applied (15% off)!", discount };
+      }
+      return { success: false, message: "Invalid or expired promo code." };
+    },
+    [cart],
+  );
+
+  const removeCoupon = useCallback(() => {
+    setCouponCode("");
+    setDiscountAmount(0);
+  }, []);
 
   const setActiveCart = useCallback((next: Cart | null) => {
     cartIdRef.current = next?.id ?? null;
@@ -92,6 +141,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         try {
           const updated = await apiFetch<Cart>(`/cart/${id}/items`, { method: "POST", body });
           setActiveCart(updated);
+          setIsDrawerOpen(true);
           return updated;
         } catch (err) {
           if (!isStaleBag(err) || !(err instanceof ApiError) || !/bag/i.test(err.message)) throw err;
@@ -100,6 +150,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           id = await ensureCart();
           const updated = await apiFetch<Cart>(`/cart/${id}/items`, { method: "POST", body });
           setActiveCart(updated);
+          setIsDrawerOpen(true);
           return updated;
         }
       } finally {
@@ -131,11 +182,33 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [mutate],
   );
   const removeItem = useCallback((itemId: number) => mutate(`/items/${itemId}`, { method: "DELETE" }), [mutate]);
-  const reset = useCallback(() => setActiveCart(null), [setActiveCart]);
+  const reset = useCallback(() => {
+    setActiveCart(null);
+    setCouponCode("");
+    setDiscountAmount(0);
+  }, [setActiveCart]);
 
   return (
     <CartContext.Provider
-      value={{ cart, itemCount: cart?.itemCount ?? 0, loading, busy, addItem, updateQuantity, removeItem, refresh, reset }}
+      value={{
+        cart,
+        itemCount: cart?.itemCount ?? 0,
+        loading,
+        busy,
+        isDrawerOpen,
+        openDrawer,
+        closeDrawer,
+        toggleDrawer,
+        couponCode,
+        discountAmount,
+        applyCoupon,
+        removeCoupon,
+        addItem,
+        updateQuantity,
+        removeItem,
+        refresh,
+        reset,
+      }}
     >
       {children}
     </CartContext.Provider>

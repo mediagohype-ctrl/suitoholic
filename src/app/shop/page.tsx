@@ -13,6 +13,10 @@ import ShopNatureHeroBanner from "@/components/ShopNatureHeroBanner";
 import {
   RotateCcw,
   ChevronDown,
+  SlidersHorizontal,
+  X,
+  Check,
+  Filter,
 } from "lucide-react";
 
 type SortKey = "featured" | "priceAsc" | "priceDesc" | "rating";
@@ -29,25 +33,87 @@ function ShopContent() {
   const [sortOpen, setSortOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(12);
 
+  // Advanced Shop Filters
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedFabric, setSelectedFabric] = useState<string | null>(null);
+  const [selectedPriceRange, setSelectedPriceRange] = useState<string | null>(null);
+
+  const COLOR_OPTIONS = [
+    { label: "White", hex: "#FFFFFF", border: "#D1D5DB" },
+    { label: "Blue", hex: "#2B4C7E" },
+    { label: "Black", hex: "#111111" },
+    { label: "Pink", hex: "#E8B4B8" },
+    { label: "Brown", hex: "#6E473B" },
+    { label: "Green", hex: "#2E523A" },
+    { label: "Grey", hex: "#7E8287" },
+  ];
+
+  const FABRIC_OPTIONS = ["Giza Cotton", "Supima", "Linen", "Egyptian", "Twill", "Oxford", "Poplin"];
+
+  const PRICE_OPTIONS = [
+    { id: "under-3000", label: "Under ₹3,000", min: 0, max: 2999 },
+    { id: "3000-5000", label: "₹3,000 – ₹5,000", min: 3000, max: 5000 },
+    { id: "above-5000", label: "Above ₹5,000", min: 5001, max: Infinity },
+  ];
+
+  const activeFiltersCount = (selectedColor ? 1 : 0) + (selectedFabric ? 1 : 0) + (selectedPriceRange ? 1 : 0);
+
   useEffect(() => {
     setVisibleCount(12);
-  }, [selectedCategory]);
+  }, [selectedCategory, selectedColor, selectedFabric, selectedPriceRange]);
 
   const handleCategorySelect = (id: string) => {
     setVisibleCount(12);
     router.push(id === "all" ? "/shop" : `/shop?category=${id}`, { scroll: false });
   };
 
+  const clearFilters = () => {
+    setSelectedColor(null);
+    setSelectedFabric(null);
+    setSelectedPriceRange(null);
+    setVisibleCount(12);
+  };
+
   const resetAll = () => {
     setVisibleCount(12);
     setSortOption("featured");
+    clearFilters();
     handleCategorySelect("all");
   };
 
-  const categoryProducts = useMemo(
-    () => (selectedCategory !== "all" ? products.filter((p) => p.category === selectedCategory) : products),
-    [products, selectedCategory],
-  );
+  const categoryProducts = useMemo(() => {
+    let list = selectedCategory !== "all" ? products.filter((p) => p.category === selectedCategory) : products;
+
+    if (selectedColor) {
+      const q = selectedColor.toLowerCase();
+      list = list.filter((p) => {
+        const inName = p.name.toLowerCase().includes(q);
+        const inDesc = p.description?.toLowerCase().includes(q);
+        const inColorways = p.colorways?.some((c) => c.name.toLowerCase().includes(q));
+        return inName || inDesc || inColorways;
+      });
+    }
+
+    if (selectedFabric) {
+      const q = selectedFabric.toLowerCase();
+      list = list.filter((p) => {
+        const inFabric = p.fabric?.toLowerCase().includes(q);
+        const inName = p.name?.toLowerCase().includes(q);
+        const inDesc = p.description?.toLowerCase().includes(q);
+        return inFabric || inName || inDesc;
+      });
+    }
+
+    if (selectedPriceRange) {
+      const tier = PRICE_OPTIONS.find((t) => t.id === selectedPriceRange);
+      if (tier) {
+        list = list.filter((p) => p.rawPrice >= tier.min && p.rawPrice <= tier.max);
+      }
+    }
+
+    return list;
+  }, [products, selectedCategory, selectedColor, selectedFabric, selectedPriceRange]);
 
   const sortedProducts = useMemo(() => {
     const sorted = [...categoryProducts];
@@ -118,42 +184,202 @@ function ShopContent() {
               <div className="h-[1px] w-8 sm:w-16 md:w-24 bg-black/30" />
             </div>
 
-            {/* Top Control Bar */}
-            <div className="relative bg-white border border-[#E5E3DD] rounded-full px-6 py-3.5 flex flex-wrap gap-2 items-center justify-between text-[11px] text-[#666666] font-medium shadow-sm">
+            {/* Top Control Bar with Filters & Sorting */}
+            <div className="bg-white border border-[#E5E3DD] rounded-2xl md:rounded-full px-5 sm:px-6 py-3.5 flex flex-wrap gap-3 items-center justify-between text-[11px] text-[#666666] font-medium shadow-sm">
               <div className="flex items-center space-x-2 min-w-0">
                 <span className="font-semibold text-black uppercase tracking-wider truncate">{currentCategoryName}</span>
                 <span className="text-black/30">•</span>
-                <span className="text-[#666666] whitespace-nowrap">{displayProducts.length} {c.itemsAvailableLabel}</span>
+                <span className="text-[#666666] whitespace-nowrap">{sortedProducts.length} {c.itemsAvailableLabel}</span>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setSortOpen((v) => !v)}
-                aria-expanded={sortOpen}
-                className="flex items-center space-x-2 cursor-pointer hover:text-black transition-colors"
-              >
-                <span className="uppercase text-[#666666] font-medium tracking-wider">{c.sortLabel}</span>
-                <span className="font-semibold uppercase text-black tracking-wider flex items-center gap-1">
-                  {c.sortOptions[sortOption]} <ChevronDown size={14} className={`text-black transition-transform ${sortOpen ? "rotate-180" : ""}`} />
-                </span>
-              </button>
-              {sortOpen && (
-                <div className="absolute right-3 top-full mt-2 z-20 bg-white border border-[#E5E3DD] rounded-2xl shadow-lg py-2 min-w-[200px]">
-                  {(Object.keys(c.sortOptions) as SortKey[]).map((key) => (
-                    <button
-                      key={key}
-                      onClick={() => {
-                        setSortOption(key);
-                        setSortOpen(false);
-                      }}
-                      className={`w-full text-left px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-[#F5F4F0] transition-colors ${sortOption === key ? "text-black bg-[#F5F4F0]" : "text-[#666666]"}`}
-                    >
-                      {c.sortOptions[key]}
-                    </button>
-                  ))}
+              <div className="flex items-center gap-3">
+                {/* Filter Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => setFiltersOpen((prev) => !prev)}
+                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    filtersOpen || activeFiltersCount > 0
+                      ? "bg-black text-white border-black"
+                      : "bg-[#F7F6F3] text-black border-[#E5E3DD] hover:border-black"
+                  }`}
+                >
+                  <SlidersHorizontal size={12} />
+                  <span>Filters</span>
+                  {activeFiltersCount > 0 && (
+                    <span className="w-4 h-4 rounded-full bg-[#8C7355] text-white text-[9px] flex items-center justify-center font-bold">
+                      {activeFiltersCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Sort Dropdown */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setSortOpen((v) => !v)}
+                    aria-expanded={sortOpen}
+                    className="flex items-center space-x-1.5 cursor-pointer hover:text-black transition-colors px-2 py-1"
+                  >
+                    <span className="uppercase text-[#666666] font-medium tracking-wider">{c.sortLabel}:</span>
+                    <span className="font-semibold uppercase text-black tracking-wider flex items-center gap-1">
+                      {c.sortOptions[sortOption]} <ChevronDown size={14} className={`text-black transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+                    </span>
+                  </button>
+                  {sortOpen && (
+                    <div className="absolute right-0 top-full mt-2 z-30 bg-white border border-[#E5E3DD] rounded-2xl shadow-xl py-2 min-w-[210px]">
+                      {(Object.keys(c.sortOptions) as SortKey[]).map((key) => (
+                        <button
+                          key={key}
+                          onClick={() => {
+                            setSortOption(key);
+                            setSortOpen(false);
+                          }}
+                          className={`w-full text-left px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-[#F5F4F0] transition-colors ${sortOption === key ? "text-black bg-[#F5F4F0]" : "text-[#666666]"}`}
+                        >
+                          {c.sortOptions[key]}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
+
+            {/* Expandable Filter Drawer */}
+            {filtersOpen && (
+              <div className="bg-white border border-[#E5E3DD] rounded-2xl p-5 sm:p-6 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200 space-y-6">
+                <div className="flex items-center justify-between pb-3 border-b border-[#F0EFEA]">
+                  <div className="flex items-center gap-2">
+                    <Filter size={14} className="text-[#8C7355]" />
+                    <span className="text-xs font-bold uppercase tracking-[0.16em] text-black">Refine Selection</span>
+                  </div>
+                  {activeFiltersCount > 0 && (
+                    <button
+                      onClick={clearFilters}
+                      className="text-[11px] text-[#8C7355] hover:text-black font-semibold uppercase tracking-wider underline cursor-pointer"
+                    >
+                      Clear All Filters
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Price Filter */}
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#888888] mb-3">Price Range</p>
+                    <div className="flex flex-wrap gap-2">
+                      {PRICE_OPTIONS.map((tier) => {
+                        const isSelected = selectedPriceRange === tier.id;
+                        return (
+                          <button
+                            key={tier.id}
+                            onClick={() => setSelectedPriceRange(isSelected ? null : tier.id)}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer border ${
+                              isSelected
+                                ? "bg-black text-white border-black shadow-xs"
+                                : "bg-[#FAF9F6] text-[#444] border-[#E8E6E0] hover:border-black"
+                            }`}
+                          >
+                            {tier.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Fabric / Material Filter */}
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#888888] mb-3">Fabric & Weave</p>
+                    <div className="flex flex-wrap gap-2">
+                      {FABRIC_OPTIONS.map((fab) => {
+                        const isSelected = selectedFabric === fab;
+                        return (
+                          <button
+                            key={fab}
+                            onClick={() => setSelectedFabric(isSelected ? null : fab)}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer border ${
+                              isSelected
+                                ? "bg-black text-white border-black shadow-xs"
+                                : "bg-[#FAF9F6] text-[#444] border-[#E8E6E0] hover:border-black"
+                            }`}
+                          >
+                            {fab}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Color Swatch Filter */}
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#888888] mb-3">Color Shade</p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {COLOR_OPTIONS.map((col) => {
+                        const isSelected = selectedColor === col.label;
+                        return (
+                          <button
+                            key={col.label}
+                            onClick={() => setSelectedColor(isSelected ? null : col.label)}
+                            title={col.label}
+                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer ${
+                              isSelected
+                                ? "bg-black text-white border-black"
+                                : "bg-[#FAF9F6] text-[#444] border-[#E8E6E0] hover:border-black"
+                            }`}
+                          >
+                            <span
+                              className="w-3.5 h-3.5 rounded-full shadow-inner inline-block"
+                              style={{
+                                backgroundColor: col.hex,
+                                border: col.border ? `1px solid ${col.border}` : "1px solid rgba(0,0,0,0.15)",
+                              }}
+                            />
+                            <span>{col.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Active Filters Pill Bar (when filters are active) */}
+            {activeFiltersCount > 0 && (
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#888888]">Active:</span>
+                {selectedPriceRange && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-white border border-[#E5E3DD] text-black shadow-xs">
+                    {PRICE_OPTIONS.find((t) => t.id === selectedPriceRange)?.label}
+                    <button onClick={() => setSelectedPriceRange(null)} className="hover:text-red-500 cursor-pointer">
+                      <X size={12} />
+                    </button>
+                  </span>
+                )}
+                {selectedFabric && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-white border border-[#E5E3DD] text-black shadow-xs">
+                    {selectedFabric}
+                    <button onClick={() => setSelectedFabric(null)} className="hover:text-red-500 cursor-pointer">
+                      <X size={12} />
+                    </button>
+                  </span>
+                )}
+                {selectedColor && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-white border border-[#E5E3DD] text-black shadow-xs">
+                    Color: {selectedColor}
+                    <button onClick={() => setSelectedColor(null)} className="hover:text-red-500 cursor-pointer">
+                      <X size={12} />
+                    </button>
+                  </span>
+                )}
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-[#8C7355] hover:text-black font-semibold ml-2 underline cursor-pointer"
+                >
+                  Clear all
+                </button>
+              </div>
+            )}
 
             {displayProducts.length === 0 && (
               <div className="bg-white border border-[#E5E3DD] rounded-[24px] p-10 text-center space-y-4 shadow-sm">

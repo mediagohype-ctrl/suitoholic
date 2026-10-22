@@ -20,10 +20,10 @@ export default function HeroVideoBanner() {
 
   const currentVariant = variants[Math.min(activeIndex, variants.length - 1)];
 
-  // Apply slow-motion luxury playback rate (0.75x)
+  // Apply native high-definition playback rate (1.0x)
   const applyPlaybackRate = useCallback(() => {
     if (videoRef.current) {
-      videoRef.current.playbackRate = 0.75;
+      videoRef.current.playbackRate = 1.0;
     }
   }, []);
 
@@ -33,12 +33,16 @@ export default function HeroVideoBanner() {
 
     if (videoRef.current) {
       isSeekingRef.current = true;
-      videoRef.current.playbackRate = 0.75;
-      videoRef.current.currentTime = variants[index]?.startTime ?? 0;
-      videoRef.current.play().catch(() => {});
+      videoRef.current.playbackRate = 1.0;
+      const targetTime = variants[index]?.startTime ?? 0;
+      videoRef.current.currentTime = targetTime;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
       setTimeout(() => {
         isSeekingRef.current = false;
-      }, 150);
+      }, 350);
     }
   }, [variants]);
 
@@ -65,7 +69,7 @@ export default function HeroVideoBanner() {
       video.defaultMuted = true;
       video.playsInline = true;
       video.volume = 0;
-      video.playbackRate = 0.75;
+      video.playbackRate = 1.0;
       video.currentTime = 0.0;
       const playPromise = video.play();
       if (playPromise !== undefined) {
@@ -83,7 +87,7 @@ export default function HeroVideoBanner() {
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
           ref={videoRef}
-          src={c.video}
+          src={c.video || "/video/Suitoholic%20Approved.mp4"}
           autoPlay
           loop
           muted
@@ -97,7 +101,11 @@ export default function HeroVideoBanner() {
           style={{
             opacity: isVideoLoaded ? 1 : 0.85,
           }}
-        />
+        >
+          <source src={c.video || "/video/Suitoholic%20Approved.mp4"} type="video/mp4" />
+          <source src="/video/Suitoholic_Approved.mp4" type="video/mp4" />
+          <source src="/video/Suitoholic Approved.mp4" type="video/mp4" />
+        </video>
 
         {/* Soft natural ambient gradient on left for crystal clear readability */}
         <div
@@ -140,11 +148,11 @@ export default function HeroVideoBanner() {
             </Link>
           </div>
 
-          {/* Color Swatches & 01-05 Range Tracker (Positioned on the Left under Buttons) */}
-          <div className="flex items-center gap-3.5 sm:gap-4 mt-4 sm:mt-5 md:mt-6 select-none">
+          {/* Color Swatches & 01-04 Range Tracker (Positioned on the Left under Buttons) */}
+          <div className="flex items-center gap-3.5 sm:gap-4.5 mt-4 sm:mt-5 md:mt-6 select-none">
             
-            {/* Color Swatches */}
-            <div className="flex flex-col items-center gap-2 sm:gap-2.5 bg-transparent p-0">
+            {/* Color Swatches (in exact order of video shirts) */}
+            <div className="flex flex-col items-center gap-2.5 sm:gap-3 bg-transparent p-0">
               {variants.map((variant, idx) => {
                 const isActive = activeIndex === idx;
                 const isHovered = hoveredIndex === idx;
@@ -163,7 +171,7 @@ export default function HeroVideoBanner() {
                     <div
                       className={`rounded-full p-0.5 transition-all duration-300 flex items-center justify-center ${
                         isActive
-                          ? "ring-1 ring-[#14110E] ring-offset-1.5 ring-offset-transparent scale-105 shadow-xs"
+                          ? "ring-1 ring-black ring-offset-2 ring-offset-[#DDD1C3] scale-105"
                           : "ring-0 ring-transparent ring-offset-0"
                       }`}
                     >
@@ -172,7 +180,7 @@ export default function HeroVideoBanner() {
                         onClick={() => selectVariant(idx)}
                         onMouseEnter={() => setHoveredIndex(idx)}
                         onMouseLeave={() => setHoveredIndex(null)}
-                        className={`w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full transition-all duration-300 cursor-pointer relative shadow-xs ${
+                        className={`w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full transition-all duration-300 cursor-pointer relative shadow-xs active:scale-90 ${
                           isActive
                             ? "opacity-100"
                             : "opacity-75 hover:opacity-100 hover:scale-105"
@@ -189,13 +197,13 @@ export default function HeroVideoBanner() {
               })}
             </div>
 
-            {/* 01 ... 05 Vertical Range Dynamic Tracker */}
+            {/* 01 ... 04 Vertical Range Dynamic Tracker */}
             <div className="flex flex-col items-center select-none py-0.5">
               <span className="text-[9px] sm:text-[9.5px] font-normal text-black/80 tracking-wider mb-1 font-mono">
                 {c.trackerStartLabel}
               </span>
               
-              <div className="relative w-3 h-16 sm:h-20 my-0.5">
+              <div className="relative w-3 h-20 sm:h-24 my-0.5">
                 <div className="absolute top-0 bottom-0 w-[1px] bg-black/20 left-1/2 -translate-x-1/2" />
                 <div
                   className="absolute top-0 w-[1px] bg-black/70 left-1/2 -translate-x-1/2 transition-all duration-500 ease-out origin-top"
@@ -226,7 +234,7 @@ export default function HeroVideoBanner() {
                 })}
 
                 <div
-                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full border border-black bg-white/90 pointer-events-none transition-all duration-500 ease-out z-20 flex items-center justify-center"
+                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full border border-black bg-white/90 pointer-events-none transition-all duration-500 ease-out z-20 flex items-center justify-center shadow-xs"
                   style={{
                     top: `${(activeIndex / lastIndex) * 100}%`,
                   }}
@@ -237,6 +245,13 @@ export default function HeroVideoBanner() {
 
               <span className="text-[9px] sm:text-[9.5px] font-normal text-black/80 tracking-wider mt-1 font-mono">
                 {c.trackerEndLabel}
+              </span>
+            </div>
+
+            {/* Active Variant Label */}
+            <div className="hidden sm:flex flex-col justify-center pl-1">
+              <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-black/70 font-semibold">
+                {currentVariant?.shortLabel}
               </span>
             </div>
 

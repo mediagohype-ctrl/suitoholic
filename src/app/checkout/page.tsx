@@ -29,8 +29,10 @@ function Field({ label, error, children }: { label: string; error?: string; chil
 export default function CheckoutPage() {
   const c = useContent("bag");
   const settings = useSettings();
-  const { cart, loading, reset } = useCart();
+  const { cart, loading, reset, couponCode, discountAmount, applyCoupon, removeCoupon } = useCart();
   const router = useRouter();
+  const [couponInput, setCouponInput] = useState("");
+  const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
 
   const advancePercent = Number(settings.advancePaymentPercentage || 20);
   const paymentOptions = [
@@ -222,28 +224,91 @@ export default function CheckoutPage() {
               subtotal={cart.subtotal}
               customizationTotal={cart.customizationTotal}
               shippingFee={cart.shippingFee}
-              total={cart.total}
+              discount={discountAmount}
+              total={Math.max(0, cart.total - discountAmount)}
               currencySymbol={cart.currencySymbol}
             />
           )}
+
+          {/* Promo Code Box */}
+          <div className="pt-2 border-t border-[#E5E3DD]">
+            {couponCode ? (
+              <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3.5 py-2.5 rounded-xl text-xs text-emerald-800">
+                <div className="flex items-center gap-1.5 font-mono font-bold">
+                  <span>{couponCode}</span>
+                  <span className="font-sans font-normal text-[11px]">(-₹{discountAmount.toLocaleString("en-IN")})</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={removeCoupon}
+                  className="text-xs text-emerald-900 underline font-semibold cursor-pointer"
+                >
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!couponInput.trim()) return;
+                  const res = applyCoupon(couponInput);
+                  setCouponFeedback(res);
+                  if (res.success) setCouponInput("");
+                }}
+                className="space-y-1.5"
+              >
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={couponInput}
+                    onChange={(e) => {
+                      setCouponInput(e.target.value);
+                      if (couponFeedback) setCouponFeedback(null);
+                    }}
+                    placeholder="Promo Code"
+                    className="flex-1 bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black rounded-full px-4 py-2 text-xs outline-none uppercase font-mono placeholder:normal-case placeholder:font-sans"
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-neutral-800 transition-colors cursor-pointer shrink-0"
+                  >
+                    APPLY
+                  </button>
+                </div>
+                {couponFeedback && !couponCode && (
+                  <p className={`text-[10px] ${couponFeedback.success ? "text-emerald-700" : "text-rose-600"}`}>
+                    {couponFeedback.message}
+                  </p>
+                )}
+              </form>
+            )}
+          </div>
+
           {paymentMethod === "partial_cod" && cart && (
             <div className="rounded-2xl border border-[#E5E3DD] bg-[#F5F4F0] p-4 space-y-2 text-xs">
-              <div className="flex justify-between font-semibold text-black">
-                <span>Pay Online Now ({advancePercent}% Advance):</span>
-                <span>
-                  {cart.currencySymbol}
-                  {(Math.round((cart.total * (advancePercent / 100)) * 100) / 100).toLocaleString("en-IN")}
-                </span>
-              </div>
-              <div className="flex justify-between font-bold text-black border-t border-[#E5E3DD] pt-2">
-                <span>Remaining on Delivery (COD):</span>
-                <span>
-                  {cart.currencySymbol}
-                  {(
-                    Math.round((cart.total - Math.round((cart.total * (advancePercent / 100)) * 100) / 100) * 100) / 100
-                  ).toLocaleString("en-IN")}
-                </span>
-              </div>
+              {(() => {
+                const payable = Math.max(0, cart.total - discountAmount);
+                const advance = Math.round(payable * (advancePercent / 100));
+                const remaining = payable - advance;
+                return (
+                  <>
+                    <div className="flex justify-between font-semibold text-black">
+                      <span>Pay Online Now ({advancePercent}% Advance):</span>
+                      <span>
+                        {cart.currencySymbol}
+                        {advance.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                    <div className="flex justify-between font-bold text-black border-t border-[#E5E3DD] pt-2">
+                      <span>Remaining on Delivery (COD):</span>
+                      <span>
+                        {cart.currencySymbol}
+                        {remaining.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           )}
           {settings.orderNotice && <p className="text-[11px] text-[#666666] bg-[#F5F4F0] rounded-xl p-3 border border-[#E5E3DD]">{settings.orderNotice}</p>}

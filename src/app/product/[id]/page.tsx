@@ -10,6 +10,7 @@ import ShopByCategoryGrid from "@/components/ShopByCategoryGrid";
 import ModernProductCard from "@/components/ModernProductCard";
 import { useCart } from "@/context/CartProvider";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
+import { useWishlist } from "@/context/WishlistProvider";
 import { fillTemplate } from "@/content/merge";
 import type { CustomFit, ProductItem } from "@/lib/types";
 import {
@@ -81,7 +82,8 @@ export default function ProductDetailPage() {
 
   const selectedSize = 38;
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
-  const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const isWishlisted = activeProduct ? isInWishlist(activeProduct.id) : false;
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastError, setToastError] = useState<boolean>(false);
@@ -210,7 +212,7 @@ export default function ProductDetailPage() {
 
                 {/* Wishlist Button */}
                 <button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
+                  onClick={() => activeProduct && toggleWishlist(activeProduct.id)}
                   className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md flex items-center justify-center text-white transition-all shadow-md cursor-pointer z-10"
                   aria-label="Add to wishlist"
                 >

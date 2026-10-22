@@ -6,6 +6,7 @@ import StudioBackground from "@/components/StudioBackground";
 import { mergeContent } from "@/content/merge";
 import { contentDefaults } from "@/content/registry";
 import { CartProvider } from "@/context/CartProvider";
+import { WishlistProvider } from "@/context/WishlistProvider";
 import { SiteDataProvider } from "@/context/SiteDataProvider";
 import { getSiteBundle } from "@/lib/site-data";
 
@@ -63,7 +64,9 @@ export default async function RootLayout({
         {/* Page Content Container */}
         <div className="relative z-10 flex-1 flex flex-col min-h-screen w-full overflow-x-clip">
           <SiteDataProvider value={site}>
-            <CartProvider>{children}</CartProvider>
+            <CartProvider>
+              <WishlistProvider>{children}</WishlistProvider>
+            </CartProvider>
           </SiteDataProvider>
         </div>
       </body>

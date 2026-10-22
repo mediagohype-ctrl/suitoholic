@@ -11,8 +11,10 @@ import { useContent } from "@/context/SiteDataProvider";
 
 export default function CartPage() {
   const c = useContent("bag");
-  const { cart, loading, busy, updateQuantity, removeItem } = useCart();
+  const { cart, loading, busy, updateQuantity, removeItem, couponCode, discountAmount, applyCoupon, removeCoupon } = useCart();
   const [error, setError] = useState<string | null>(null);
+  const [couponInput, setCouponInput] = useState("");
+  const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
 
   const run = async (fn: () => Promise<void>) => {
     setError(null);
@@ -143,10 +145,65 @@ export default function CartPage() {
                 subtotal={cart.subtotal}
                 customizationTotal={cart.customizationTotal}
                 shippingFee={cart.shippingFee}
-                total={cart.total}
+                discount={discountAmount}
+                total={Math.max(0, cart.total - discountAmount)}
                 currencySymbol={cart.currencySymbol}
               />
             )}
+
+            {/* Promo Code Box */}
+            <div className="pt-2 border-t border-[#E5E3DD]">
+              {couponCode ? (
+                <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3.5 py-2.5 rounded-xl text-xs text-emerald-800">
+                  <div className="flex items-center gap-1.5 font-mono font-bold">
+                    <span>{couponCode}</span>
+                    <span className="font-sans font-normal text-[11px]">(-₹{discountAmount.toLocaleString("en-IN")})</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeCoupon}
+                    className="text-xs text-emerald-900 underline font-semibold cursor-pointer"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!couponInput.trim()) return;
+                    const res = applyCoupon(couponInput);
+                    setCouponFeedback(res);
+                    if (res.success) setCouponInput("");
+                  }}
+                  className="space-y-1.5"
+                >
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponInput}
+                      onChange={(e) => {
+                        setCouponInput(e.target.value);
+                        if (couponFeedback) setCouponFeedback(null);
+                      }}
+                      placeholder="Promo Code (e.g. WELCOME10)"
+                      className="flex-1 bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black rounded-full px-4 py-2 text-xs outline-none uppercase font-mono placeholder:normal-case placeholder:font-sans"
+                    />
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-neutral-800 transition-colors cursor-pointer shrink-0"
+                    >
+                      APPLY
+                    </button>
+                  </div>
+                  {couponFeedback && !couponCode && (
+                    <p className={`text-[10px] ${couponFeedback.success ? "text-emerald-700" : "text-rose-600"}`}>
+                      {couponFeedback.message}
+                    </p>
+                  )}
+                </form>
+              )}
+            </div>
             {hasUnavailable ? (
               <button disabled className="w-full bg-black/40 text-white py-4 text-xs font-bold tracking-[0.16em] uppercase rounded-full cursor-not-allowed">
                 {c.checkoutLabel}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Heart, ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
 import { ProductItem } from "@/data/products";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
+import { useWishlist } from "@/context/WishlistProvider";
 
 interface ModernProductCardProps {
   product: ProductItem;
@@ -12,8 +13,9 @@ interface ModernProductCardProps {
 
 export default function ModernProductCard({ product }: ModernProductCardProps) {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
-  const [isSaved, setIsSaved] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const isSaved = isInWishlist(product.id);
 
   // Full shirt preview on hover
   const hoverFullShirt = getMatchingFullShirtImage(product);
@@ -40,7 +42,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   const handleToggleSave = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsSaved((prev) => !prev);
+    toggleWishlist(product.id);
   };
 
   const handleQuickAdd = (e: React.MouseEvent) => {
