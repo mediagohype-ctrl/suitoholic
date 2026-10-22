@@ -82,6 +82,15 @@ export default function CustomizationModal({
   const totalSteps = 6;
   const stepCopy = (n: number) => c.steps[n - 1] ?? { breadcrumb: "", title: "", subtitle: "" };
 
+  // Selections in "YOUR SELECTION" are shown strictly up to the active step;
+  // going back (e.g. from Step 6 to Step 2) dynamically hides future step choices.
+  const showBodyType = currentStep >= 2;
+  const showHeight = currentStep >= 3;
+  const showSleeve = currentStep >= 4;
+  const showCollar = currentStep >= 5 && !!customFit.collarStyle;
+  const showCuff = currentStep >= 5 && isFullSleeve && !!customFit.cuffStyle;
+  const showMonogram = currentStep >= 5 && !!customFit.initials?.trim();
+
   const handleNextStep = () => {
     if (currentStep < totalSteps) {
       setCurrentStep((prev) => prev + 1);
@@ -165,67 +174,84 @@ export default function CustomizationModal({
             {/* LEFT COLUMN: 3D Interactive Mannequin Shirt Viewer & Selection Panel */}
             <div className="lg:col-span-6 flex flex-col justify-center relative h-full min-h-[470px] sm:min-h-[520px]">
               
-              {/* Top Row: Inscription & Selection Summary (Shown only on Step 6 Review) */}
-              {currentStep >= 6 && (
-                <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
-                  <div className="select-none">
-                    <h3 className="font-serif-luxury text-xl sm:text-2xl font-bold text-black tracking-[0.06em] uppercase leading-tight">
-                      {c.studioTitleLines.map((line, i) => (
-                        <React.Fragment key={i}>
-                          {i > 0 && <br />}
-                          {line}
-                        </React.Fragment>
-                      ))}
-                    </h3>
-                    <div className="w-12 h-[2px] bg-black mt-2" />
-                  </div>
+              {/* Top Row: Inscription & Selection Summary (Shown from Step 1 onwards) */}
+              <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
+                <div className="select-none">
+                  <h3 className="font-serif-luxury text-xl sm:text-2xl font-bold text-black tracking-[0.06em] uppercase leading-tight">
+                    {c.studioTitleLines.map((line, i) => (
+                      <React.Fragment key={i}>
+                        {i > 0 && <br />}
+                        {line}
+                      </React.Fragment>
+                    ))}
+                  </h3>
+                  <div className="w-12 h-[2px] bg-black mt-2" />
+                </div>
 
-                  {/* Floating "Your Selection" Box */}
-                  <div className="select-none text-left min-w-[130px] bg-white p-3 rounded-2xl border border-[#E5E3DD] shadow-sm">
-                    <h5 className="text-[11px] font-bold tracking-[0.14em] text-black uppercase mb-1">
-                      {c.selectionTitle}
-                    </h5>
-                    <div className="space-y-1 text-[11px]">
-                      <div className="flex justify-between items-center gap-3">
-                        <span className="text-[#666666] font-medium">Chest Size</span>
-                        <strong className="text-black font-bold">{customFit.chestSize}&quot;</strong>
-                      </div>
-                      <div className="flex justify-between items-center gap-3">
+                {/* Floating "Your Selection" Box - Dynamically reveals selections per step */}
+                <div className="select-none text-left min-w-[130px] sm:min-w-[155px] bg-white p-3 rounded-2xl border border-[#E5E3DD] shadow-sm transition-all duration-300">
+                  <h5 className="text-[11px] font-bold tracking-[0.14em] text-black uppercase mb-1.5 pb-1 border-b border-[#E5E3DD]">
+                    {c.selectionTitle}
+                  </h5>
+                  <div className="space-y-1.5 text-[11px]">
+                    {/* Step 1: Chest Size (always shown) */}
+                    <div className="flex justify-between items-center gap-3">
+                      <span className="text-[#666666] font-medium">Chest Size</span>
+                      <strong className="text-black font-bold">{customFit.chestSize}&quot;</strong>
+                    </div>
+
+                    {/* Step 2: Body Type */}
+                    {showBodyType && (
+                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
                         <span className="text-[#666666] font-medium">Body Type</span>
                         <strong className="text-black font-bold capitalize">{customFit.bodyFit} Fit</strong>
                       </div>
-                      <div className="flex justify-between items-center gap-3">
+                    )}
+
+                    {/* Step 3: Height */}
+                    {showHeight && (
+                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
                         <span className="text-[#666666] font-medium">Height</span>
                         <strong className="text-black font-bold">{getHeightCleanTitle(customFit.height)}</strong>
                       </div>
-                      <div className="flex justify-between items-center gap-3">
+                    )}
+
+                    {/* Step 4: Sleeve */}
+                    {showSleeve && (
+                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
                         <span className="text-[#666666] font-medium">Sleeve</span>
                         <strong className="text-black font-bold capitalize">
                           {customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve"}
                         </strong>
                       </div>
-                      {customFit.collarStyle && (
-                        <div className="flex justify-between items-center gap-3">
-                          <span className="text-[#666666] font-medium">Collar</span>
-                          <strong className="text-black font-bold">{customFit.collarStyle.split(" ")[0]}</strong>
-                        </div>
-                      )}
-                      {isFullSleeve && customFit.cuffStyle && (
-                        <div className="flex justify-between items-center gap-3">
-                          <span className="text-[#666666] font-medium">Cuff</span>
-                          <strong className="text-black font-bold">{customFit.cuffStyle.split(" ")[0]}</strong>
-                        </div>
-                      )}
-                      {customFit.initials && (
-                        <div className="flex justify-between items-center gap-3">
-                          <span className="text-[#666666] font-medium">Monogram</span>
-                          <strong className="text-black font-bold uppercase">{customFit.initials}</strong>
-                        </div>
-                      )}
-                    </div>
+                    )}
+
+                    {/* Step 5: Collar */}
+                    {showCollar && (
+                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
+                        <span className="text-[#666666] font-medium">Collar</span>
+                        <strong className="text-black font-bold">{customFit.collarStyle.split(" ")[0]}</strong>
+                      </div>
+                    )}
+
+                    {/* Step 5: Cuff */}
+                    {showCuff && (
+                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
+                        <span className="text-[#666666] font-medium">Cuff</span>
+                        <strong className="text-black font-bold">{customFit.cuffStyle.split(" ")[0]}</strong>
+                      </div>
+                    )}
+
+                    {/* Step 5: Monogram */}
+                    {showMonogram && (
+                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
+                        <span className="text-[#666666] font-medium">Monogram</span>
+                        <strong className="text-black font-bold uppercase">{customFit.initials}</strong>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
+              </div>
 
               {/* Center: 3D Interactive Mannequin Shirt */}
               <div className="relative w-full h-full flex flex-col items-center justify-center flex-1">

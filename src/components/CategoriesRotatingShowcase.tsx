@@ -56,6 +56,18 @@ export default function CategoriesRotatingShowcase() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isHovered, rotateClockwise, rotateAntiClockwise]);
 
+  // Autoplay rotation every 2 seconds
+  useEffect(() => {
+    if (total <= 1) return;
+    if (isHovered) return;
+
+    const interval = setInterval(() => {
+      rotateClockwise();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [total, isHovered, rotateClockwise]);
+
   if (total === 0) return null;
 
   return (
