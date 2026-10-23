@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -28,17 +28,20 @@ const TAB_PATHS: Record<string, string> = {
   contact: "/contact",
 };
 
+const emptySubscribe = () => () => {};
+
 export default function Header({ activeTab, cartCount, forceSolid = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
+  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const pathname = usePathname();
   const c = useContent("header");
   const { categories } = useCatalog();
-  const { itemCount, openDrawer } = useCart();
-  const { wishlistCount, openWishlist } = useWishlist();
-  const bagCount = cartCount ?? itemCount;
+  const { itemCount } = useCart();
+  const { wishlistCount } = useWishlist();
+  const bagCount = isClient ? (cartCount ?? itemCount) : (cartCount ?? 0);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -251,17 +254,21 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
               <User size={18} strokeWidth={1.75} />
             </Link>
 
-            {/* Shopping Bag Button (Opens Slide-over Drawer) */}
-            <button
-              onClick={openDrawer}
+            {/* Shopping Bag Link (Opens Full Page) */}
+            <Link
+              href="/cart"
               className="relative p-1 hover:text-[#726254] transition-colors cursor-pointer"
               aria-label={`Shopping bag, ${bagCount} items`}
+              suppressHydrationWarning
             >
               <ShoppingBag size={18} strokeWidth={1.75} />
-              <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#000000] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
+              <span
+                className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#000000] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs"
+                suppressHydrationWarning
+              >
                 {bagCount > 99 ? "99+" : bagCount}
               </span>
-            </button>
+            </Link>
           </div>
         </div>
       </div>

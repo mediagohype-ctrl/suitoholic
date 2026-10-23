@@ -1,31 +1,75 @@
 "use client";
 
 import React, { useState } from "react";
-import MannequinShirtViewer from "@/components/MannequinShirtViewer";
+import MannequinShirtViewer, { getShirtColorFamily } from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
-import { ArrowLeft, Check, X, Scissors } from "lucide-react";
+import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, Sparkles } from "lucide-react";
 import confetti from "canvas-confetti";
 import { fillTemplate } from "@/content/merge";
-import { useContent, useSettings } from "@/context/SiteDataProvider";
+import { useCatalog, useContent, useSettings } from "@/context/SiteDataProvider";
+import { useCart } from "@/context/CartProvider";
 import { formatMoney } from "@/lib/api";
-import type { CustomFit } from "@/lib/types";
+import type { CustomFit, ProductItem } from "@/lib/types";
+
+import { EIGHT_CANONICAL_SISTER_SHIRTS } from "@/data/products";
 
 export type CustomFitState = CustomFit;
+
+export interface CustomizationModalProduct {
+  id?: number;
+  name: string;
+  image: string;
+  gallery?: string[];
+  slug?: string;
+  price?: string;
+  rawPrice?: number;
+  category?: string;
+  fabric?: string;
+  colorways?: unknown[];
+}
 
 interface CustomizationModalProps {
   isOpen: boolean;
   onClose: () => void;
   productName?: string;
   /** The product being customised; its photo drives the fabric chip and the detail/review previews. */
-  product?: { name: string; image: string; gallery?: string[] } | null;
+  product?: CustomizationModalProduct | null;
   initialChestSize?: number;
   /** Disables the final button while the bag request is in flight. */
   submitting?: boolean;
-  onConfirmCustomization: (customFit: CustomFitState) => void | Promise<void>;
+  onConfirmCustomization: (customFit: CustomFitState, chosenProduct?: CustomizationModalProduct | ProductItem | null) => void | Promise<void>;
 }
 
 type MannequinFit = "lean" | "regular" | "tummy";
 const asMannequinFit = (fit: string): MannequinFit => (fit === "regular" || fit === "tummy" ? fit : "lean");
+
+function getSuggestionThumbnail(sister: ProductItem): string {
+  if (sister.image) return sister.image;
+  if (sister.gallery && sister.gallery.length > 0) return sister.gallery[0];
+  const fam = getShirtColorFamily(sister);
+  if (fam === "espresso") return "/new_shirts/shirt_2.jpg";
+  if (fam === "bengal_blue") return "/new_shirts/shirt_3.jpg";
+  if (fam === "sandstone_linen") return "/new_shirts/shirt_4.jpg";
+  if (fam === "coral_stripe") return "/new_shirts/shirt_1.jpg";
+  if (fam === "white") return "/new_shirts/shirt_5.jpg";
+  if (fam === "skyblue") return "/new_shirts/shirt_9.jpg";
+  if (fam === "navy_solid") return "/new_shirts/shirt_7.jpg";
+  if (fam === "charcoal") return "/new_shirts/shirt_8.jpg";
+  return "/new_shirts/shirt_2.jpg";
+}
+
+function getShortShirtTitle(name: string): string {
+  const n = (name || "").toUpperCase();
+  if (n.includes("TERRACOTTA") || n.includes("CORAL")) return "Terracotta Coral";
+  if (n.includes("ESPRESSO") || n.includes("DARK")) return "Dark Espresso";
+  if (n.includes("SANDSTONE") || n.includes("LINEN") || n.includes("OATMEAL")) return "Sandstone Linen";
+  if (n.includes("WHITE") || n.includes("CRISP")) return "Crisp White";
+  if (n.includes("SKY") || n.includes("OXFORD")) return "Sky Blue Oxford";
+  if (n.includes("SOLID") || (n.includes("MIDNIGHT") && n.includes("NAVY"))) return "Midnight Navy";
+  if (n.includes("CHARCOAL") || n.includes("ANTHRACITE")) return "Charcoal Twill";
+  if (n.includes("PINSTRIPE") || n.includes("BENGAL") || n.includes("NAVY")) return "Navy Pinstripe";
+  return name.replace(/FORMAL|SAVILE ROW/gi, "").trim();
+}
 
 export default function CustomizationModal({
   isOpen,
@@ -38,8 +82,28 @@ export default function CustomizationModal({
 }: CustomizationModalProps) {
   const c = useContent("customizer");
   const { customizationFee, currencySymbol } = useSettings();
+  const { products } = useCatalog();
+  const { addItem } = useCart();
+
   const startChest = initialChestSize ?? c.defaults.chestSize;
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const [activeItem, setActiveItem] = useState<CustomizationModalProduct | ProductItem | null>(() => product);
+  const [activeItemName, setActiveItemName] = useState<string>(() => productName);
+
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    if (isOpen) {
+      setCurrentStep(1);
+      setActiveItem(product);
+      setActiveItemName(productName);
+    }
+  }
+
+  const [addedBagIds, setAddedBagIds] = useState<Record<number, number>>({});
+  const [addingId, setAddingId] = useState<number | null>(null);
+  const [quickAddToast, setQuickAddToast] = useState<{ message: string; visible: boolean } | null>(null);
+
   const [customFit, setCustomFit] = useState<CustomFitState>(() => {
     const m = c.chestSizes.find((x) => x.size === startChest);
     return {
@@ -69,11 +133,96 @@ export default function CustomizationModal({
     }));
   };
 
-  React.useEffect(() => {
-    if (isOpen) {
-      setCurrentStep(1);
+  const sisterProducts = React.useMemo(() => {
+    if (!products || products.length === 0) return EIGHT_CANONICAL_SISTER_SHIRTS;
+
+    const curated = products.filter((p) => {
+      const cat = (p.category || "").toLowerCase();
+      const slug = (p.slug || "").toLowerCase();
+      return (
+        cat === "formal_shirts" ||
+        cat === "formal_stripes" ||
+        cat === "formal_bespoke" ||
+        slug.includes("shirt")
+      );
+    });
+
+    const pool = curated.length > 0 ? curated : products;
+    const seenFamilies = new Set<string>();
+    const uniqueByFamily: ProductItem[] = [];
+
+    for (const p of pool) {
+      const fam = getShirtColorFamily(p);
+      if (!seenFamilies.has(fam)) {
+        seenFamilies.add(fam);
+        uniqueByFamily.push(p);
+      }
+      if (uniqueByFamily.length === 8) break;
     }
-  }, [isOpen]);
+
+    if (uniqueByFamily.length < 8) {
+      for (const canon of EIGHT_CANONICAL_SISTER_SHIRTS) {
+        const fam = getShirtColorFamily(canon);
+        if (!seenFamilies.has(fam)) {
+          seenFamilies.add(fam);
+          uniqueByFamily.push(canon);
+        }
+        if (uniqueByFamily.length === 8) break;
+      }
+    }
+
+    return uniqueByFamily;
+  }, [products]);
+
+  const handleSelectSisterProduct = (sister: ProductItem) => {
+    setActiveItem(sister);
+    setActiveItemName(sister.name);
+  };
+
+  const handleQuickAddWithSameFit = async (e: React.MouseEvent, sister: ProductItem) => {
+    e.stopPropagation();
+    setAddingId(sister.id);
+    try {
+      await addItem({
+        productId: sister.id,
+        quantity: 1,
+        size: String(customFit.chestSize),
+        customization: {
+          ...customFit,
+          shirtColor: sister.name,
+        },
+      });
+
+      setAddedBagIds((prev) => ({
+        ...prev,
+        [sister.id]: (prev[sister.id] || 0) + 1,
+      }));
+
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.7 },
+      });
+
+      setQuickAddToast({
+        message: `Added ${sister.name} with your exact bespoke measurements to bag!`,
+        visible: true,
+      });
+      setTimeout(() => {
+        setQuickAddToast(null);
+      }, 4000);
+    } catch (err) {
+      setQuickAddToast({
+        message: (err as Error).message || "Could not add item to bag",
+        visible: true,
+      });
+      setTimeout(() => {
+        setQuickAddToast(null);
+      }, 4000);
+    } finally {
+      setAddingId(null);
+    }
+  };
 
   // The initial state is seeded from initialChestSize; selections are kept if the modal is closed and reopened.
   if (!isOpen) return null;
@@ -97,7 +246,7 @@ export default function CustomizationModal({
     } else if (!submitting) {
       // Step 6: Complete — the parent adds the configured shirt to the bag
       triggerCelebration();
-      void onConfirmCustomization(customFit);
+      void onConfirmCustomization(customFit, activeItem);
     }
   };
 
@@ -157,7 +306,7 @@ export default function CustomizationModal({
 
         {/* Modal Scrollable Content Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
-          <div className="w-full max-w-[1184px] mx-auto space-y-4 sm:space-y-6">
+          <div className={`w-full ${currentStep >= 5 ? "max-w-[1360px]" : "max-w-[1184px]"} mx-auto space-y-4 sm:space-y-6 transition-all duration-300`}>
             
             {/* Breadcrumb Steps Header */}
             <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
@@ -172,7 +321,7 @@ export default function CustomizationModal({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch min-h-[490px] sm:min-h-[530px] lg:min-h-[560px]">
             
             {/* LEFT COLUMN: 3D Interactive Mannequin Shirt Viewer & Selection Panel */}
-            <div className="lg:col-span-6 flex flex-col justify-center relative h-full min-h-[470px] sm:min-h-[520px]">
+            <div className={`${currentStep >= 5 ? "lg:col-span-7" : "lg:col-span-6"} flex flex-col justify-center relative h-full min-h-[470px] sm:min-h-[520px] transition-all duration-300`}>
               
               {/* Top Row: Inscription & Selection Summary (Shown from Step 1 onwards) */}
               <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
@@ -266,14 +415,14 @@ export default function CustomizationModal({
                   initials={customFit.initials}
                   threadColor={customFit.threadColor}
                   currentStep={currentStep}
-                  product={product}
+                  product={activeItem}
                 />
               </div>
 
             </div>
 
             {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
-            <div className="lg:col-span-6 relative flex flex-col h-full min-h-[470px] sm:min-h-[520px]">
+            <div className={`${currentStep >= 5 ? "lg:col-span-5" : "lg:col-span-6"} relative flex flex-col h-full min-h-[470px] sm:min-h-[520px] transition-all duration-300`}>
               
               <div className="bg-white border border-[#E5E3DD] rounded-[24px] p-5 sm:p-7 shadow-sm relative z-10 flex-1 flex flex-col justify-between h-full">
                 
@@ -559,15 +708,15 @@ export default function CustomizationModal({
 
                 {/* STEP 6: REVIEW */}
                 {currentStep === 6 && (
-                  <div className="space-y-3.5 animate-in fade-in duration-200">
+                  <div className="space-y-3 animate-in fade-in duration-200">
                     {/* Selected Garment Summary Strip */}
-                    <div className="flex items-center gap-3 bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-3">
-                      {product?.image && (
+                    <div className="flex items-center gap-3 bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-2.5">
+                      {(activeItem?.image || product?.image) && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={product.image}
-                          alt={productName}
-                          className="w-12 h-12 rounded-xl object-cover border border-[#E5E3DD] shrink-0"
+                          src={activeItem?.image || product?.image}
+                          alt={activeItemName || productName}
+                          className="w-11 h-11 rounded-xl object-cover border border-[#E5E3DD] shrink-0"
                         />
                       )}
                       <div className="min-w-0 flex-1">
@@ -575,45 +724,52 @@ export default function CustomizationModal({
                           Tailoring Garment
                         </span>
                         <h4 className="text-xs font-bold uppercase text-black truncate">
-                          {productName}
+                          {activeItemName || productName}
                         </h4>
                       </div>
                     </div>
 
+                    {/* Bespoke Tailoring Specifications List */}
                     <div className="bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-4 space-y-2 text-xs shadow-xs">
-                      <div className="flex justify-between border-b border-[#E5E3DD] pb-1.5">
+                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
                         <span className="text-[#666666]">{c.reviewLabels.measurements}</span>
                         <strong className="text-black">{customFit.chestSize}&quot; / {customFit.collarSize}&quot; / {customFit.shoulderSize}&quot;</strong>
                       </div>
-                      <div className="flex justify-between border-b border-[#E5E3DD] pb-1.5">
+                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
                         <span className="text-[#666666]">{c.reviewLabels.bodyFit}</span>
                         <strong className="text-black uppercase">{customFit.bodyFit} Fit</strong>
                       </div>
-                      <div className="flex justify-between border-b border-[#E5E3DD] pb-1.5">
+                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
                         <span className="text-[#666666]">{c.reviewLabels.height}</span>
                         <strong className="text-black">{getHeightCleanTitle(customFit.height)}</strong>
                       </div>
-                      <div className="flex justify-between border-b border-[#E5E3DD] pb-1.5">
+                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
                         <span className="text-[#666666]">{c.reviewLabels.sleevesCollar}</span>
                         <strong className="text-black uppercase">{customFit.sleeveType} Sleeve | {customFit.collarStyle}</strong>
                       </div>
-                      {isFullSleeve && (
-                        <div className="flex justify-between border-b border-[#E5E3DD] pb-1.5">
+                      {isFullSleeve ? (
+                        <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
                           <span className="text-[#666666]">{c.reviewLabels.cuffPocket}</span>
                           <strong className="text-black uppercase">{customFit.cuffStyle} | {customFit.pocket}</strong>
                         </div>
+                      ) : (
+                        <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
+                          <span className="text-[#666666]">Pocket:</span>
+                          <strong className="text-black uppercase">{customFit.pocket}</strong>
+                        </div>
                       )}
-                      <div className="flex justify-between">
+                      <div className="flex justify-between items-center">
                         <span className="text-[#666666]">{c.reviewLabels.monogram}</span>
                         <strong className="text-black uppercase">{customFit.initials || "None"} ({customFit.threadColor})</strong>
                       </div>
                       {customizationFee > 0 && (
-                        <div className="flex justify-between border-t border-[#E5E3DD] pt-1.5">
+                        <div className="flex justify-between items-center border-t border-[#E5E3DD] pt-1.5">
                           <span className="text-[#666666]">{c.reviewLabels.customizationFee}</span>
                           <strong className="text-black">+ {formatMoney(customizationFee, currencySymbol)}</strong>
                         </div>
                       )}
                     </div>
+
                   </div>
                 )}
 
@@ -644,6 +800,112 @@ export default function CustomizationModal({
             </div>
 
           </div>
+
+          {/* SISTER FABRICS & COLORS - SEPARATE ROW SECTION BELOW THE GRID (NO OUTER BOX) */}
+          {currentStep === 6 && sisterProducts.length > 0 && (
+            <div className="space-y-3.5 pt-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="text-center pb-1">
+                <div className="flex items-center justify-center space-x-2">
+                  <Sparkles size={14} className="text-black" />
+                  <h4 className="text-xs sm:text-sm font-extrabold tracking-[0.18em] uppercase text-black font-serif-luxury">
+                    ADD MORE SHIRTS IN DIFFERENT FABRICS
+                  </h4>
+                </div>
+              </div>
+
+              {/* Quick Add Inline Feedback Banner */}
+              {quickAddToast && (
+                <div className="bg-black text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-between shadow-md animate-in fade-in duration-200">
+                  <div className="flex items-center space-x-2">
+                    <Check size={14} className="text-white shrink-0" />
+                    <span>{quickAddToast.message}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* 4 Cards in a Single Row */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                {sisterProducts.map((sister) => {
+                  const isSelected = (activeItem?.slug && activeItem.slug === sister.slug) || (activeItem?.id && activeItem.id === sister.id);
+                  const count = addedBagIds[sister.id] || 0;
+                  const thumb = getSuggestionThumbnail(sister);
+                  const shortTitle = getShortShirtTitle(sister.name);
+
+                  return (
+                    <div
+                      key={sister.id}
+                      onClick={() => handleSelectSisterProduct(sister)}
+                      className={`group p-3 rounded-2xl border transition-all flex flex-col justify-between cursor-pointer relative ${
+                        isSelected
+                          ? "bg-[#F5F4F0] border-black ring-2 ring-black shadow-sm"
+                          : "bg-white hover:bg-[#F5F4F0]/60 border-[#E5E3DD]"
+                      }`}
+                    >
+                      {/* Top: High-Res Shirt Photo */}
+                      <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-white border border-[#E5E3DD] relative shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={thumb}
+                          alt={sister.name}
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                        />
+                        {isSelected && (
+                          <span className="absolute top-1.5 left-1.5 bg-black text-white text-[8.5px] font-extrabold px-2 py-0.5 rounded tracking-wider uppercase shadow-xs">
+                            Viewing
+                          </span>
+                        )}
+                        {count > 0 && (
+                          <span className="absolute top-1.5 right-1.5 bg-black text-white text-[8.5px] font-bold px-2 py-0.5 rounded shadow-xs flex items-center gap-1">
+                            <Check size={10} strokeWidth={2.5} /> {count} in bag
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Middle: Details */}
+                      <div className="mt-2 min-w-0 flex-1">
+                        <h5 className="text-xs font-bold text-black uppercase truncate leading-tight" title={sister.name}>
+                          {shortTitle}
+                        </h5>
+                        <div className="flex items-center justify-between text-[11px] mt-1">
+                          <span className="font-extrabold text-black">{sister.price}</span>
+                          <span className="text-[#888888] text-[10px] uppercase truncate max-w-[80px]">
+                            {sister.fabric?.includes("Linen") ? "Linen Blend" : "100% Giza Cotton"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Bottom: Quick Add Button */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleQuickAddWithSameFit(e, sister)}
+                        disabled={addingId === sister.id}
+                        className={`mt-2.5 w-full h-8 rounded-xl text-[10px] font-bold tracking-wider uppercase transition-all flex items-center justify-center space-x-1.5 shadow-xs cursor-pointer ${
+                          count > 0
+                            ? "bg-black text-white hover:bg-neutral-800"
+                            : "bg-[#F5F4F0] hover:bg-black hover:text-white text-black border border-[#E5E3DD]"
+                        }`}
+                        title="Add with exact same bespoke measurements to bag"
+                      >
+                        {addingId === sister.id ? (
+                          <RefreshCw size={11} className="animate-spin" />
+                        ) : count > 0 ? (
+                          <>
+                            <Check size={11} />
+                            <span>Added ({count})</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus size={12} className="stroke-[2.5]" />
+                            <span>Add in Fit</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           </div>
 

@@ -34,17 +34,6 @@ export default function CheckoutPage() {
   const [couponInput, setCouponInput] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
 
-  const advancePercent = Number(settings.advancePaymentPercentage || 20);
-  const paymentOptions = [
-    settings.codEnabled && { id: "cod", label: c.checkout.codLabel, hint: c.checkout.codHint },
-    settings.upiEnabled && { id: "upi", label: c.checkout.upiLabel, hint: c.checkout.upiHint },
-    settings.partialPaymentEnabled && {
-      id: "partial_cod",
-      label: `Pay ${advancePercent}% Advance + Cash on Delivery`,
-      hint: `Pay ${advancePercent}% online deposit now; pay remaining ${100 - advancePercent}% on delivery.`,
-    },
-  ].filter(Boolean) as { id: string; label: string; hint: string }[];
-
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -57,7 +46,7 @@ export default function CheckoutPage() {
     country: "India",
     notes: "",
   });
-  const [paymentMethod, setPaymentMethod] = useState(paymentOptions[0]?.id ?? "cod");
+  const paymentMethod = "cod";
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -164,29 +153,6 @@ export default function CheckoutPage() {
           </section>
 
           <section className="bg-white border border-[#E5E3DD] rounded-[24px] p-6 sm:p-7 shadow-sm space-y-3">
-            <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase text-black">{c.checkout.paymentHeading}</h2>
-            {paymentOptions.map((opt) => (
-              <label
-                key={opt.id}
-                className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === opt.id ? "border-black bg-[#F5F4F0] ring-1 ring-black" : "border-[#E5E3DD] bg-white hover:border-black/40"}`}
-              >
-                <input
-                  type="radio"
-                  name="payment"
-                  value={opt.id}
-                  checked={paymentMethod === opt.id}
-                  onChange={() => setPaymentMethod(opt.id)}
-                  className="mt-1 accent-black"
-                />
-                <span>
-                  <span className="block text-xs font-bold uppercase tracking-wider text-black">{opt.label}</span>
-                  <span className="block text-[11px] text-[#666666] mt-0.5">
-                    {opt.hint}
-                    {opt.id === "upi" && settings.upiId ? ` (${settings.upiId})` : ""}
-                  </span>
-                </span>
-              </label>
-            ))}
             <Field label={c.checkout.notesLabel}>
               <textarea rows={3} className={inputClass} value={form.notes} onChange={set("notes")} placeholder={c.checkout.notesPlaceholder} />
             </Field>
@@ -284,33 +250,6 @@ export default function CheckoutPage() {
             )}
           </div>
 
-          {paymentMethod === "partial_cod" && cart && (
-            <div className="rounded-2xl border border-[#E5E3DD] bg-[#F5F4F0] p-4 space-y-2 text-xs">
-              {(() => {
-                const payable = Math.max(0, cart.total - discountAmount);
-                const advance = Math.round(payable * (advancePercent / 100));
-                const remaining = payable - advance;
-                return (
-                  <>
-                    <div className="flex justify-between font-semibold text-black">
-                      <span>Pay Online Now ({advancePercent}% Advance):</span>
-                      <span>
-                        {cart.currencySymbol}
-                        {advance.toLocaleString("en-IN")}
-                      </span>
-                    </div>
-                    <div className="flex justify-between font-bold text-black border-t border-[#E5E3DD] pt-2">
-                      <span>Remaining on Delivery (COD):</span>
-                      <span>
-                        {cart.currencySymbol}
-                        {remaining.toLocaleString("en-IN")}
-                      </span>
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
-          )}
           {settings.orderNotice && <p className="text-[11px] text-[#666666] bg-[#F5F4F0] rounded-xl p-3 border border-[#E5E3DD]">{settings.orderNotice}</p>}
           {error && (
             <div role="alert" className="flex items-start gap-2 bg-red-600 text-white text-xs font-semibold rounded-xl px-4 py-3">
@@ -319,17 +258,11 @@ export default function CheckoutPage() {
           )}
           <button
             type="submit"
-            disabled={submitting || loading || paymentOptions.length === 0}
+            disabled={submitting || loading}
             className="w-full bg-black hover:bg-neutral-800 disabled:opacity-60 text-white py-4 px-6 rounded-full text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
           >
             <Lock size={14} />{" "}
-            {submitting
-              ? c.checkout.placingLabel
-              : paymentMethod === "partial_cod" && cart
-              ? `Pay ${cart.currencySymbol}${(
-                  Math.round((cart.total * (advancePercent / 100)) * 100) / 100
-                ).toLocaleString("en-IN")} Advance & Place Order`
-              : c.checkout.placeOrderLabel}
+            {submitting ? c.checkout.placingLabel : c.checkout.placeOrderLabel}
           </button>
           <Link href="/cart" className="inline-flex items-center gap-1 text-[11px] font-bold tracking-widest text-black hover:text-[#666666] uppercase transition-colors">
             <ArrowLeft size={12} /> {c.checkout.backToBagLabel}

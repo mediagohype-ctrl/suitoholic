@@ -18,7 +18,7 @@ interface MatchableItem {
 }
 
 export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
-  if (!item) return "/customizer/shirt_model_white.jpg";
+  if (!item) return "/customizer/shirt_model_espresso.jpg";
 
   // Check if item has a secondary gallery image that is explicitly a shirt model
   if (item.gallery && item.gallery.length > 1) {
@@ -27,6 +27,13 @@ export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
     );
     if (galleryModel) return galleryModel;
   }
+
+  const img = (item.image || "").toLowerCase();
+  // 1. DIRECT IMAGE MATCHING FIRST (Absolute priority)
+  if (img.includes("shirt_2") || img.includes("espresso")) return "/customizer/shirt_model_espresso.jpg";
+  if (img.includes("shirt_3") || img.includes("bengal_blue")) return "/customizer/shirt_model_bengal_blue.jpg";
+  if (img.includes("shirt_4") || img.includes("sandstone")) return "/customizer/shirt_model_sandstone_linen.jpg";
+  if (img.includes("shirt_1") || img.includes("coral")) return "/customizer/shirt_model_coral_stripe.jpg";
 
   // Combine all textual cues into a lowercase string for unified inspection
   const combined = [
@@ -45,34 +52,45 @@ export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
     .join(" ")
     .toLowerCase();
 
-  // 1. Bengal Stripe / Sky Blue Pinstripe / Banker Stripes
+  // 1. Rich Espresso / Dark Chocolate Brown
+  if (
+    combined.includes("shirt_2") ||
+    combined.includes("espresso") ||
+    combined.includes("chocolate") ||
+    combined.includes("bengal-stripe-blue-business-shirt")
+  ) {
+    return "/customizer/shirt_model_espresso.jpg";
+  }
+
+  // 2. Bengal Stripe / Navy Banker Stripes
   if (
     combined.includes("shirt_3") ||
     combined.includes("bengal_blue") ||
-    combined.includes("bengal_stripe") ||
-    combined.includes("bengal stripe") ||
-    combined.includes("pinstripe") ||
-    combined.includes("banker stripe") ||
-    combined.includes("banker_stripe") ||
-    combined.includes("aegean") ||
-    combined.includes("sky blue pinstripe") ||
-    combined.includes("navy_stripe") ||
-    combined.includes("prod_navy_stripe")
+    combined.includes("navy_executive") ||
+    combined.includes("banker") ||
+    combined.includes("bengal")
   ) {
     return "/customizer/shirt_model_bengal_blue.jpg";
   }
 
-  // 2. Coral / Rose / Terracotta / Maroon Stripes
+  // 3. Sandstone / Oatmeal Linen
+  if (
+    combined.includes("shirt_4") ||
+    combined.includes("sandstone") ||
+    combined.includes("oatmeal") ||
+    combined.includes("sky-blue-poplin-striped-formal") ||
+    combined.includes("linen")
+  ) {
+    return "/customizer/shirt_model_sandstone_linen.jpg";
+  }
+
+  // 4. Coral / Terracotta / Rust Stripes
   if (
     combined.includes("shirt_1") ||
     combined.includes("coral_stripe") ||
     combined.includes("coral") ||
-    combined.includes("maroon") ||
-    combined.includes("rose") ||
     combined.includes("terracotta") ||
-    combined.includes("sh403_rose") ||
-    combined.includes("st16974") ||
-    combined.includes("prod_maroon_stripe")
+    combined.includes("savile-row-charcoal-pinstripe")
   ) {
     return "/customizer/shirt_model_coral_stripe.jpg";
   }

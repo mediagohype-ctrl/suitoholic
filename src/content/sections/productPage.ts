@@ -15,6 +15,7 @@ export const productPage = {
   addToBagLabel: "ADD TO BAG",
   addToBagHint: "6 STEPS →",
   buyNowLabel: "BUY NOW",
+  buyNowHint: "6 STEPS →",
   outOfStockLabel: "OUT OF STOCK",
   lowStockTemplate: "Only {stock} left in stock",
   addedToBagTemplate: "{name} ({details}) ADDED TO BAG!",

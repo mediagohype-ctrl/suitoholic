@@ -72,7 +72,7 @@ export const customShirtPage = {
   },
 
   // The catalog product (slug or id) used as the base for custom-fit orders added to the bag.
-  bagProductSlug: "royal-formal-crisp-white-shirt",
+  bagProductSlug: "savile-row-dark-espresso-twill",
 
   // Left column inscription, one entry per line
   inscriptionLines: ["A SHIRT", "MADE", "FOR YOU."],

@@ -15,7 +15,77 @@ export interface MannequinShirtViewerProps {
   threadColor?: string;
   currentStep?: number;
   /** The product being customised; its photo is used across all 6 steps so the chosen fabric and color stay consistent end-to-end. */
-  product?: { name: string; image: string; gallery?: string[]; slug?: string; colorways?: any[] } | null;
+  product?: { name: string; image: string; gallery?: string[]; slug?: string; colorways?: unknown[] } | null;
+}
+
+export type ShirtColorFamily =
+  | "bengal_blue"
+  | "espresso"
+  | "sandstone_linen"
+  | "coral_stripe"
+  | "white"
+  | "skyblue"
+  | "navy_solid"
+  | "charcoal";
+
+/**
+ * Resolves the complete made shirt model based on the chosen product, fabric, or colorway.
+ * Ensures the shirt displayed on the ghost mannequin is tailored in the exact selected color, pattern, and sleeve length.
+ */
+export function getShirtColorFamily(
+  product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null
+): ShirtColorFamily {
+  if (!product) return "espresso";
+
+  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
+  const slug = (product.slug || "").toLowerCase();
+  const name = (product.name || "").toLowerCase();
+
+  // 1. Primary Source of Truth: Image URL (Prevents any color drift across steps!)
+  if (img.includes("shirt_2") || img.includes("espresso")) return "espresso";
+  if (img.includes("shirt_3") || img.includes("bengal_blue") || img.includes("banker")) return "bengal_blue";
+  if (img.includes("shirt_4") || img.includes("sandstone") || img.includes("linen") || img.includes("oatmeal")) return "sandstone_linen";
+  if (img.includes("shirt_1") || img.includes("coral") || img.includes("terracotta") || img.includes("rose")) return "coral_stripe";
+  if (img.includes("shirt_5") || img.includes("white")) return "white";
+  if (img.includes("shirt_9") || img.includes("skyblue") || img.includes("sky-blue")) return "skyblue";
+  if (img.includes("shirt_7") || img.includes("navy_solid") || img.includes("midnight")) return "navy_solid";
+  if (img.includes("shirt_8") || img.includes("charcoal") || img.includes("anthracite")) return "charcoal";
+
+  // 2. Specific Product Slugs (including legacy aliases)
+  if (slug.includes("espresso") || slug.includes("chocolate")) return "espresso";
+  if (slug.includes("navy-executive") || slug.includes("bengal") || slug.includes("pinstripe")) return "bengal_blue";
+  if (slug.includes("sandstone") || slug.includes("oatmeal") || slug.includes("linen")) return "sandstone_linen";
+  if (slug.includes("terracotta") || slug.includes("coral")) return "coral_stripe";
+  if (slug.includes("white")) return "white";
+  if (slug.includes("sky-blue") || slug.includes("skyblue") || slug.includes("oxford")) return "skyblue";
+  if (slug.includes("midnight-navy") || slug.includes("navy-solid")) return "navy_solid";
+  if (slug.includes("charcoal") || slug.includes("anthracite")) return "charcoal";
+
+  // 3. Product Names
+  if (name.includes("espresso") || name.includes("chocolate") || name.includes("dark")) return "espresso";
+  if (name.includes("bengal") || (name.includes("navy") && name.includes("pinstripe"))) return "bengal_blue";
+  if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen") || name.includes("beige")) return "sandstone_linen";
+  if (name.includes("coral") || name.includes("terracotta") || name.includes("rust")) return "coral_stripe";
+  if (name.includes("white") || name.includes("crisp")) return "white";
+  if (name.includes("sky") || name.includes("oxford")) return "skyblue";
+  if (name.includes("midnight") || (name.includes("navy") && name.includes("solid"))) return "navy_solid";
+  if (name.includes("charcoal") || name.includes("anthracite")) return "charcoal";
+
+  return "espresso";
+}
+
+function getCollarKey(collarStyle: string): "mandarin" | "buttondown" | "spread" {
+  const norm = (collarStyle || "").toLowerCase();
+  if (norm.includes("mandarin") || norm.includes("band")) return "mandarin";
+  if (norm.includes("button")) return "buttondown";
+  return "spread";
+}
+
+function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
+  const norm = (cuffStyle || "").toLowerCase();
+  if (norm.includes("french") || norm.includes("double")) return "french";
+  if (norm.includes("rounded") || norm.includes("round")) return "rounded";
+  return "classic";
 }
 
 /**
@@ -48,205 +118,28 @@ function getMatchingShirtModel(
     return `/customizer/${base}${halfSuffix}${fitSuffix}${cPart}.png`;
   };
 
-  if (!product) return resolveModel("shirt_model_white");
+  const colorFamily = getShirtColorFamily(product);
 
-  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
-  const name = (product.name || "").toLowerCase();
-  const slug = (product.slug || "").toLowerCase();
-
-  // 1. DIRECT IMAGE MATCHING (Highest priority - reflects the exact visual shirt the customer clicked)
-  // 1.1 Coral / Rose / Terracotta / Maroon Stripes (matches shirt_1.jpg and prod_maroon_stripe.jpg)
-  if (
-    img.includes("shirt_1.jpg") ||
-    img.includes("shirt_1.png") ||
-    img.includes("prod_maroon_stripe") ||
-    img.includes("rose_stripe") ||
-    img.includes("terracotta_stripe") ||
-    img.includes("st16974_terracotta") ||
-    img.includes("sh403_rose") ||
-    img.includes("maroon") ||
-    img.includes("coral") ||
-    img.includes("terracotta")
-  ) {
-    return resolveModel("shirt_model_coral_stripe");
+  switch (colorFamily) {
+    case "espresso":
+      return resolveModel("shirt_model_espresso");
+    case "bengal_blue":
+      return resolveModel("shirt_model_bengal_blue");
+    case "sandstone_linen":
+      return resolveModel("shirt_model_sandstone_linen");
+    case "coral_stripe":
+      return resolveModel("shirt_model_coral_stripe");
+    case "white":
+      return resolveModel("shirt_model_white");
+    case "skyblue":
+      return resolveModel("shirt_model_skyblue");
+    case "navy_solid":
+      return resolveModel("shirt_model_navy_solid");
+    case "charcoal":
+      return resolveModel("shirt_model_charcoal");
+    default:
+      return resolveModel("shirt_model_espresso");
   }
-
-  // 1.2 Rich Dark Chocolate / Espresso Brown (matches shirt_2.jpg, formal_charcoal_boardroom.jpg, prod_charcoal_stripe.jpg)
-  if (
-    img.includes("shirt_2.jpg") ||
-    img.includes("shirt_2.png") ||
-    img.includes("formal_charcoal_boardroom") ||
-    img.includes("prod_charcoal_stripe") ||
-    img.includes("charcoal_oxford") ||
-    img.includes("black_minimal") ||
-    img.includes("espresso_polo") ||
-    img.includes("espresso") ||
-    img.includes("dark_fabric") ||
-    img.includes("charcoal") ||
-    img.includes("obsidian")
-  ) {
-    return resolveModel("shirt_model_espresso");
-  }
-
-  // 1.3 Blue Bengal Stripe / Executive Navy Banker Pinstripe (matches shirt_3.jpg, prod_navy_stripe.jpg, formal_banker_stripe.jpg)
-  if (
-    img.includes("shirt_3.jpg") ||
-    img.includes("shirt_3.png") ||
-    img.includes("prod_navy_stripe") ||
-    img.includes("formal_banker_stripe") ||
-    img.includes("bengal_stripe") ||
-    img.includes("banker_stripe") ||
-    img.includes("luxury_pinstripe")
-  ) {
-    return resolveModel("shirt_model_bengal_blue");
-  }
-
-  // 1.4 Fine Sandstone / Oatmeal Linen / Ivory (matches shirt_4.jpg, formal_ivory_herringbone.jpg, prod_beige_stripe.jpg)
-  if (
-    img.includes("shirt_4.jpg") ||
-    img.includes("shirt_4.png") ||
-    img.includes("formal_ivory_herringbone") ||
-    img.includes("prod_beige_stripe") ||
-    img.includes("dove_grey_linen") ||
-    img.includes("sand_linen") ||
-    img.includes("linen_oatmeal") ||
-    img.includes("supima_cream") ||
-    img.includes("sandstone") ||
-    img.includes("oatmeal") ||
-    img.includes("linen") ||
-    img.includes("beige") ||
-    img.includes("ivory")
-  ) {
-    return resolveModel("shirt_model_sandstone_linen");
-  }
-
-  // 1.5 Executive Sky Blue / French Cuff Blue (matches formal_french_cuff_blue.jpg, prod_skyblue_stripe.jpg)
-  if (
-    img.includes("french_cuff_blue") ||
-    img.includes("prod_skyblue_stripe") ||
-    img.includes("sky_blue_model") ||
-    img.includes("iceblue") ||
-    img.includes("skyblue") ||
-    img.includes("sky_blue")
-  ) {
-    return resolveModel("shirt_model_skyblue");
-  }
-
-  // 1.6 Solid Navy (matches blazer_navy_wool.jpg, navy apparel)
-  if (
-    img.includes("blazer_navy") ||
-    img.includes("navy_wool") ||
-    img.includes("navy_chinos") ||
-    img.includes("knit_navy_polo") ||
-    img.includes("navy_solid")
-  ) {
-    return resolveModel("shirt_model_navy_solid");
-  }
-
-  // 1.7 Pure Crisp White (matches formal_white_twill.jpg, prod_classic_white.jpg, shirt_classic_white.jpg)
-  if (
-    img.includes("white_twill") ||
-    img.includes("prod_classic_white") ||
-    img.includes("shirt_classic_white") ||
-    img.includes("oxford_white") ||
-    img.includes("white")
-  ) {
-    return resolveModel("shirt_model_white");
-  }
-
-  // 2. PRODUCT SLUG & NAME FALLBACK (Used if image path is an external or unspecified URL)
-  // 2.1 Coral / Rose / Terracotta
-  if (
-    slug.includes("coral") ||
-    slug.includes("rose") ||
-    slug.includes("terracotta") ||
-    slug.includes("maroon") ||
-    name.includes("rose") ||
-    name.includes("coral") ||
-    name.includes("terracotta")
-  ) {
-    return resolveModel("shirt_model_coral_stripe");
-  }
-
-  // 2.2 Rich Dark Chocolate / Espresso / Obsidian
-  if (
-    slug.includes("charcoal") ||
-    slug.includes("espresso") ||
-    slug.includes("midnight") ||
-    slug.includes("obsidian") ||
-    slug.includes("black") ||
-    name.includes("charcoal") ||
-    name.includes("espresso") ||
-    name.includes("obsidian") ||
-    name.includes("midnight")
-  ) {
-    return resolveModel("shirt_model_espresso");
-  }
-
-  // 2.3 Bengal / Banker / Pinstripe
-  if (
-    slug.includes("bengal") ||
-    slug.includes("banker") ||
-    slug.includes("pinstripe") ||
-    name.includes("bengal") ||
-    name.includes("banker") ||
-    name.includes("pinstripe")
-  ) {
-    return resolveModel("shirt_model_bengal_blue");
-  }
-
-  // 2.4 Sandstone / Oatmeal Linen / Ivory
-  if (
-    slug.includes("ivory") ||
-    slug.includes("linen") ||
-    slug.includes("sandstone") ||
-    slug.includes("oatmeal") ||
-    slug.includes("beige") ||
-    slug.includes("taupe") ||
-    name.includes("ivory") ||
-    name.includes("linen") ||
-    name.includes("sandstone") ||
-    name.includes("oatmeal") ||
-    name.includes("herringbone")
-  ) {
-    return resolveModel("shirt_model_sandstone_linen");
-  }
-
-  // 2.5 Sky Blue
-  if (
-    slug.includes("sky-blue") ||
-    slug.includes("french-cuff") ||
-    name.includes("sky blue") ||
-    name.includes("french cuff")
-  ) {
-    return resolveModel("shirt_model_skyblue");
-  }
-
-  // 2.6 Solid Navy
-  if (slug.includes("navy") || name.includes("navy")) {
-    return resolveModel("shirt_model_navy_solid");
-  }
-
-  // 2.7 Pure Crisp White
-  if (slug.includes("white") || name.includes("white")) {
-    return resolveModel("shirt_model_white");
-  }
-
-  return resolveModel("shirt_model_white");
-}
-
-function getCollarKey(collarStyle: string): "mandarin" | "buttondown" | "spread" {
-  const norm = (collarStyle || "").toLowerCase();
-  if (norm.includes("mandarin") || norm.includes("band")) return "mandarin";
-  if (norm.includes("button")) return "buttondown";
-  return "spread";
-}
-
-function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
-  const norm = (cuffStyle || "").toLowerCase();
-  if (norm.includes("french") || norm.includes("double")) return "french";
-  if (norm.includes("rounded") || norm.includes("round")) return "rounded";
-  return "classic";
 }
 
 function getFoldedAndCuffAssets(
@@ -256,26 +149,11 @@ function getFoldedAndCuffAssets(
 ): { foldedImage: string; cuffDetailImage: string } {
   const cuffKey = getCuffKey(cuffStyle);
   const collarKey = getCollarKey(collarStyle);
-  const img = (product?.image || (product?.gallery && product.gallery[0]) || "").toLowerCase();
-  const name = (product?.name || "").toLowerCase();
-  const slug = (product?.slug || "").toLowerCase();
+  const colorKey = getShirtColorFamily(product);
 
-  const isWhite =
-    img.includes("white") ||
-    name.includes("white") ||
-    slug.includes("white");
-
-  if (isWhite) {
-    return {
-      foldedImage: `/customizer/shirt_folded_white_${collarKey}_${cuffKey}.png`,
-      cuffDetailImage: `/customizer/cuff_detail_white_${cuffKey}.png`,
-    };
-  }
-
-  // Bengal Blue Stripe (Matches default custom shirt fabric)
   return {
-    foldedImage: `/customizer/shirt_folded_bengal_blue_${collarKey}_${cuffKey}.jpg`,
-    cuffDetailImage: `/customizer/cuff_detail_bengal_blue_${cuffKey}.jpg`,
+    foldedImage: `/customizer/shirt_folded_${colorKey}_${collarKey}_${cuffKey}.jpg`,
+    cuffDetailImage: `/customizer/cuff_detail_${colorKey}_${cuffKey}.jpg`,
   };
 }
 
@@ -286,18 +164,16 @@ export default function MannequinShirtViewer({
   sleeveType = "full",
   collarStyle = "",
   cuffStyle = "",
-  pocket = "pocket",
-  initials = "",
-  threadColor = "black",
   currentStep = 1,
   product = null,
 }: MannequinShirtViewerProps) {
   const c = useContent("customizer");
-  const v = c.visuals;
 
   const isHalfSleeve = sleeveType === "half";
 
   // Step 5: High-end luxury folded shirt (showing collar & cuff) and macro cuff close-up
+  const colorKey = getShirtColorFamily(product);
+  const cuffKey = getCuffKey(cuffStyle);
   const { foldedImage, cuffDetailImage } = getFoldedAndCuffAssets(product, cuffStyle, collarStyle);
 
   // Complete bespoke tailored made-shirt photo dynamically resolved to the chosen product/colorway, sleeve length, body fit & collar style!
@@ -365,135 +241,68 @@ export default function MannequinShirtViewer({
   const chestLeftLineEnd = chestBadgeX - 4; // 152
   const chestRightLineStart = chestBadgeX + chestBadgeWidth + 4; // 248
 
-  // Active collar resolution
-  const normCollar = (collarStyle || "").toLowerCase();
-  const activeCollarKind: "cutaway" | "spread" | "band" | "buttonDown" =
-    normCollar.includes("mandarin") || normCollar.includes("band")
-      ? "band"
-      : normCollar.includes("button")
-      ? "buttonDown"
-      : normCollar.includes("spread") || normCollar.includes("classic")
-      ? "spread"
-      : "cutaway";
-
-  // Shirt fabric base tone and stripe accent for SVG collar styling & blending
-  const fabricColorInfo = (() => {
-    const src = fullShirtPhoto.toLowerCase();
-    if (src.includes("coral_stripe")) return { base: "#FCF8F6", stripe: "#C86358", isStriped: true };
-    if (src.includes("espresso")) return { base: "#27221E", stripe: "#38312B", isStriped: false };
-    if (src.includes("sandstone_linen")) return { base: "#E8E1D2", stripe: "#D8CEBC", isStriped: false };
-    if (src.includes("skyblue")) return { base: "#BDD5EC", stripe: "#8CB5DA", isStriped: false };
-    if (src.includes("navy_solid")) return { base: "#172338", stripe: "#1F2E48", isStriped: false };
-    if (src.includes("charcoal")) return { base: "#2B2B2D", stripe: "#3C3C40", isStriped: false };
-    if (src.includes("ivory")) return { base: "#F9F5EB", stripe: "#EDE5D4", isStriped: false };
-    if (src.includes("navy_pinstripe")) return { base: "#1A253A", stripe: "#CBD8EC", isStriped: true };
-    if (src.includes("bengal_blue")) return { base: "#F4F7FC", stripe: "#2F5899", isStriped: true };
-    return { base: "#FFFFFF", stripe: "#E5E5E5", isStriped: false };
-  })();
-  const shirtBaseTone = fabricColorInfo.base;
-
-  const threadHex = c.threadColors.find((t) => t.value === threadColor)?.hex ?? "#14110E";
-
   // Completely uniform drop-shadow so the chest and shirt tone never change between fits
   const shirtFilter = "contrast(1.0) drop-shadow(0 16px 28px rgba(20,17,14,0.25))";
 
   return (
-    <div className="relative w-full max-w-[520px] h-full mx-auto flex flex-col items-center justify-center select-none py-1 flex-1">
+    <div className={`relative w-full ${currentStep === 5 ? "max-w-none" : "max-w-[520px]"} h-full mx-auto flex flex-col items-center justify-center select-none py-1 flex-1`}>
 
       {/* ============================================================ */}
       {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
       {/* ============================================================ */}
       {currentStep === 5 ? (
-        <div className="relative w-full h-full min-h-[420px] sm:min-h-[470px] lg:min-h-[510px] flex flex-col justify-center items-center py-1 sm:py-2 animate-in fade-in duration-300">
-          {/* Dual Image Presentation */}
-          <div className="w-full grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-3.5 items-stretch flex-1 max-h-[460px]">
-            {/* 1. Primary Folded Shirt Presentation (Collar & Cuff shown together) */}
-            <div className="sm:col-span-7 relative rounded-2xl overflow-hidden bg-[#110E0C] border border-[#C68A4C]/35 shadow-2xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C]/70">
-              <div className="relative w-full h-full min-h-[260px] sm:min-h-[360px] overflow-hidden bg-[#16120F] flex items-center justify-center">
+        <div className="relative w-full h-full min-h-[380px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center items-center py-1 sm:py-2 animate-in fade-in duration-300">
+          {/* Dual Image Presentation - Always 2-Column Side-by-Side Responsive */}
+          <div className="w-full grid grid-cols-2 gap-2.5 sm:gap-4 items-stretch flex-1 max-h-[520px]">
+            {/* 1. Primary Folded Shirt Presentation (Collar View) */}
+            <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-[4/5] sm:aspect-auto">
+              <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8.5px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C]" />
+                <span>Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Spread"}</span>
+              </div>
+              <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] lg:min-h-[440px] overflow-hidden bg-[#161311] flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={`folded-${foldedImage}`}
                   src={foldedImage}
                   alt="Folded Bespoke Shirt Presentation"
-                  className="w-full h-full object-cover object-center transition-all duration-500 ease-out animate-in fade-in zoom-in-95"
+                  className="w-full h-full object-cover object-center transition-all duration-300 ease-out animate-in fade-in"
                   loading="eager"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = `/customizer/shirt_folded_${colorKey}_spread_classic.jpg`;
+                  }}
                 />
-                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#110E0C] via-[#110E0C]/70 to-transparent pointer-events-none" />
-
-                {/* Top Badge: Folded Presentation */}
-                <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 bg-[#14110E]/90 backdrop-blur-md border border-[#C68A4C]/50 px-2.5 py-1 rounded-full shadow-lg">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C] animate-pulse" />
-                  <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#E5E3DD]">
-                    Folded Presentation
-                  </span>
-                </div>
-
-                {/* Monogram Badge (if provided) */}
-                {initials?.trim() && (
-                  <div className="absolute top-2.5 right-2.5 z-10 bg-[#14110E]/90 backdrop-blur-md border border-[#C68A4C]/60 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-lg">
-                    <span className="text-[8px] font-bold tracking-widest text-[#C68A4C] uppercase">Mono:</span>
-                    <span
-                      className="text-xs font-serif-luxury font-black uppercase tracking-widest drop-shadow"
-                      style={{ color: threadHex }}
-                    >
-                      {initials.trim().toUpperCase()}
-                    </span>
-                  </div>
-                )}
-
-                {/* Bottom Bar: Collar & Cuff */}
-                <div className="absolute bottom-2.5 inset-x-2.5 z-10 bg-[#14110E]/92 backdrop-blur-md border border-[#E5E3DD]/15 rounded-xl px-3 py-2 flex flex-col gap-0.5 shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-bold text-[#A09A93] tracking-widest uppercase">Collar &amp; Cuff</span>
-                    <span className="text-[10px] font-black text-[#C68A4C] tracking-wider uppercase">
-                      {cuffStyle || "Classic Cuff"}
-                    </span>
-                  </div>
-                  <div className="text-[10px] font-bold text-white uppercase tracking-wide truncate">
-                    {collarStyle || "Spread Collar"} • Italian Presentation
-                  </div>
-                </div>
+              </div>
+              <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] text-white">
+                <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider">Folded Shirt</span>
+                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{collarStyle || "Classic Spread"}</span>
               </div>
             </div>
 
             {/* 2. Side Macro Cuff Detail (Only Cuff shown) */}
-            <div className="sm:col-span-5 relative rounded-2xl overflow-hidden bg-[#110E0C] border border-[#C68A4C]/35 shadow-2xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C]/70">
-              <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] overflow-hidden bg-[#16120F] flex items-center justify-center">
+            <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-[4/5] sm:aspect-auto">
+              <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8.5px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C]" />
+                <span>Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic"}</span>
+              </div>
+              <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] lg:min-h-[440px] overflow-hidden bg-[#161311] flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={`macro-${cuffDetailImage}`}
                   src={cuffDetailImage}
                   alt="Cuff Construction Close-Up"
-                  className="w-full h-full object-cover object-center transition-all duration-500 ease-out animate-in fade-in zoom-in-95"
+                  className="w-full h-full object-cover object-center transition-all duration-300 ease-out animate-in fade-in"
                   loading="eager"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = `/customizer/cuff_detail_${colorKey}_${cuffKey}.jpg`;
+                  }}
                 />
-                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#110E0C] via-[#110E0C]/70 to-transparent pointer-events-none" />
-
-                {/* Top Badge: Macro Detail */}
-                <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 bg-[#14110E]/90 backdrop-blur-md border border-[#C68A4C]/50 px-2.5 py-1 rounded-full shadow-lg">
-                  <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#E5E3DD]">
-                    Cuff Detail Only
-                  </span>
-                </div>
-
-                {/* Bottom Bar: Construction */}
-                <div className="absolute bottom-2.5 inset-x-2.5 z-10 bg-[#14110E]/92 backdrop-blur-md border border-[#E5E3DD]/15 rounded-xl px-3 py-2 flex flex-col gap-0.5 shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-bold text-[#A09A93] tracking-widest uppercase">Tailoring</span>
-                    <span className="text-[10px] font-black text-[#C68A4C] tracking-wider uppercase">Bespoke</span>
-                  </div>
-                  <div className="text-[10px] font-bold text-white uppercase tracking-wide truncate">
-                    Fused Interlining &amp; Edging
-                  </div>
-                </div>
+              </div>
+              <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] text-white">
+                <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider">Wrist Cuff</span>
+                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{cuffStyle || "Classic Cuff"}</span>
               </div>
             </div>
-          </div>
-
-          {/* Subtitle Footnote */}
-          <div className="mt-2 text-center text-[10.5px] text-[#777777] font-medium tracking-wide flex items-center justify-center gap-1.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#C68A4C]" />
-            <span>Updates dynamically when you change Collar or Cuff style</span>
           </div>
         </div>
       ) : (

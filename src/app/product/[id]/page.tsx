@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
@@ -25,9 +25,7 @@ import {
   RefreshCw,
   Check,
   Sparkles,
-  Eye,
   Layers,
-  ZoomIn,
   type LucideIcon,
 } from "lucide-react";
 import confetti from "canvas-confetti";
@@ -70,18 +68,20 @@ export default function ProductDetailPage() {
   const { addItem, busy } = useCart();
   const router = useRouter();
 
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [activeProduct, setActiveProduct] = useState<ProductItem | undefined>(() => getProduct(idOrSlug));
+  const [prevIdOrSlug, setPrevIdOrSlug] = useState(idOrSlug);
 
-  useEffect(() => {
+  if (idOrSlug !== prevIdOrSlug) {
+    setPrevIdOrSlug(idOrSlug);
     const target = getProduct(idOrSlug);
     if (target) {
       setActiveProduct(target);
       setSelectedImageIndex(0);
     }
-  }, [idOrSlug, getProduct]);
+  }
 
   const selectedSize = 38;
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isWishlisted = activeProduct ? isInWishlist(activeProduct.id) : false;
   const [toastVisible, setToastVisible] = useState<boolean>(false);
@@ -127,10 +127,11 @@ export default function ProductDetailPage() {
     setIsCustomizerOpen(true);
   };
 
-  const handleConfirmCustomization = async (customFit: CustomFit) => {
+  const handleConfirmCustomization = async (customFit: CustomFit, chosenProduct?: { id?: number; name?: string } | null) => {
+    const targetProduct = (chosenProduct && chosenProduct.id) ? (products.find((p) => p.id === chosenProduct.id) || activeProduct) : activeProduct;
     try {
       await addItem({
-        productId: activeProduct.id,
+        productId: targetProduct.id,
         quantity: 1,
         size: String(customFit.chestSize),
         customization: customFit,
@@ -148,7 +149,7 @@ export default function ProductDetailPage() {
     }
     showToast(
       fillTemplate(c.addedToBagTemplate, {
-        name: activeProduct.name,
+        name: targetProduct.name,
         details: `CHEST ${customFit.chestSize}" • ${customFit.bodyFit.toUpperCase()} FIT • BESPOKE CUSTOMIZED`,
       }),
     );
@@ -368,10 +369,12 @@ export default function ProductDetailPage() {
                   <button
                     onClick={() => handleOpenCustomizer(true)}
                     disabled={outOfStock || busy}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-black hover:bg-neutral-800 text-white rounded-full py-4 px-6 text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm"
+                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-black hover:bg-neutral-800 text-white rounded-full py-4 px-6 text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-sm cursor-pointer group"
                   >
                     <span>{c.buyNowLabel}</span>
-                    <ArrowRight size={16} />
+                    <span className="text-[10px] text-white/70 font-bold tracking-widest">
+                      {(c as { buyNowHint?: string }).buyNowHint || c.addToBagHint}
+                    </span>
                   </button>
                 </div>
 

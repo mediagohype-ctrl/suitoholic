@@ -22,11 +22,14 @@ export const DEFAULT_SETTINGS: StoreSettings = {
 };
 
 const FORMAL_COLORWAYS = [
-  { name: "Crisp Royal White", hex: "#FFFFFF", productSlug: "royal-formal-crisp-white-shirt" },
-  { name: "Boardroom Sky Blue", hex: "#7DA6CE", productSlug: "executive-french-cuff-blue-shirt" },
-  { name: "Banker Navy Stripe", hex: "#2A3C54", productSlug: "boardroom-banker-pinstripe-formal" },
-  { name: "Fine Ivory Herringbone", hex: "#EAE2D8", productSlug: "fine-ivory-herringbone-formal" },
-  { name: "Executive Charcoal", hex: "#3A3836", productSlug: "midnight-charcoal-formal-shirt" },
+  { name: "Dark Espresso Twill", hex: "#2B1A16", productSlug: "savile-row-dark-espresso-twill" },
+  { name: "Navy Bengal Stripe", hex: "#385286", productSlug: "navy-executive-pinstripe-formal" },
+  { name: "Sandstone Oatmeal Linen", hex: "#D2C5B5", productSlug: "sandstone-oatmeal-linen-formal" },
+  { name: "Terracotta Coral Stripe", hex: "#B86B5A", productSlug: "terracotta-coral-pinstripe-formal" },
+  { name: "Crisp Egyptian White", hex: "#F8F8F8", productSlug: "royal-formal-crisp-white-shirt" },
+  { name: "Sky Blue Oxford", hex: "#C7DBEC", productSlug: "classic-sky-blue-oxford-formal" },
+  { name: "Midnight Navy Solid", hex: "#1C2E52", productSlug: "midnight-navy-corporate-solid" },
+  { name: "Anthracite Charcoal Twill", hex: "#4B4D50", productSlug: "anthracite-charcoal-twill-formal" },
 ];
 
 function fallbackBundle(): SiteBundle {
