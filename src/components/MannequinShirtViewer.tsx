@@ -254,11 +254,13 @@ export default function MannequinShirtViewer({
         <div className="relative w-full h-full min-h-[380px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center items-center py-1 sm:py-2 animate-in fade-in duration-300">
           {/* Dual Image Presentation - Always 2-Column Side-by-Side Responsive */}
           <div className="w-full grid grid-cols-2 gap-2.5 sm:gap-4 items-stretch flex-1 max-h-[520px]">
-            {/* 1. Primary Folded Shirt Presentation (Collar View) */}
+            {/* 1. Primary Folded Shirt Presentation (Collar & Cuff View) */}
             <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-[4/5] sm:aspect-auto">
-              <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8.5px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C]" />
-                <span>Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Spread"}</span>
+              <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10 max-w-[calc(100%-16px)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C] shrink-0" />
+                <span className="truncate">
+                  Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Spread"} &nbsp;•&nbsp; Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic"}
+                </span>
               </div>
               <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] lg:min-h-[440px] overflow-hidden bg-[#161311] flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -274,8 +276,10 @@ export default function MannequinShirtViewer({
                 />
               </div>
               <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] text-white">
-                <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider">Folded Shirt</span>
-                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{collarStyle || "Classic Spread"}</span>
+                <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider shrink-0">Folded Shirt</span>
+                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate ml-2">
+                  {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Classic Spread"} • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic Cuff"}
+                </span>
               </div>
             </div>
 
