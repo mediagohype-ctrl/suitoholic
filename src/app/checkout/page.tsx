@@ -213,16 +213,7 @@ export default function CheckoutPage() {
                 </button>
               </div>
             ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (!couponInput.trim()) return;
-                  const res = applyCoupon(couponInput);
-                  setCouponFeedback(res);
-                  if (res.success) setCouponInput("");
-                }}
-                className="space-y-1.5"
-              >
+              <div className="space-y-1.5">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -231,11 +222,26 @@ export default function CheckoutPage() {
                       setCouponInput(e.target.value);
                       if (couponFeedback) setCouponFeedback(null);
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        if (!couponInput.trim()) return;
+                        const res = applyCoupon(couponInput);
+                        setCouponFeedback(res);
+                        if (res.success) setCouponInput("");
+                      }
+                    }}
                     placeholder="Promo Code"
                     className="flex-1 bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black rounded-full px-4 py-2 text-xs outline-none uppercase font-mono placeholder:normal-case placeholder:font-sans"
                   />
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={() => {
+                      if (!couponInput.trim()) return;
+                      const res = applyCoupon(couponInput);
+                      setCouponFeedback(res);
+                      if (res.success) setCouponInput("");
+                    }}
                     className="px-4 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-neutral-800 transition-colors cursor-pointer shrink-0"
                   >
                     APPLY
@@ -246,7 +252,7 @@ export default function CheckoutPage() {
                     {couponFeedback.message}
                   </p>
                 )}
-              </form>
+              </div>
             )}
           </div>
 

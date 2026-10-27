@@ -35,43 +35,42 @@ export type ShirtColorFamily =
 export function getShirtColorFamily(
   product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null
 ): ShirtColorFamily {
-  if (!product) return "espresso";
+  if (!product) return "bengal_blue";
 
   const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
   const slug = (product.slug || "").toLowerCase();
   const name = (product.name || "").toLowerCase();
 
-  // 1. Primary Source of Truth: Image URL (Prevents any color drift across steps!)
-  if (img.includes("shirt_2") || img.includes("espresso")) return "espresso";
-  if (img.includes("shirt_3") || img.includes("bengal_blue") || img.includes("banker")) return "bengal_blue";
-  if (img.includes("shirt_4") || img.includes("sandstone") || img.includes("linen") || img.includes("oatmeal")) return "sandstone_linen";
-  if (img.includes("shirt_1") || img.includes("coral") || img.includes("terracotta") || img.includes("rose")) return "coral_stripe";
-  if (img.includes("shirt_5") || img.includes("white")) return "white";
-  if (img.includes("shirt_9") || img.includes("skyblue") || img.includes("sky-blue")) return "skyblue";
-  if (img.includes("shirt_7") || img.includes("navy_solid") || img.includes("midnight")) return "navy_solid";
-  if (img.includes("shirt_8") || img.includes("charcoal") || img.includes("anthracite")) return "charcoal";
+  // 1. Direct matching by user uploaded shirt images (13 to 25)
+  if (img.includes("shirt_13") || img.includes("sandstone") || img.includes("linen")) return "sandstone_linen";
+  if (img.includes("shirt_14") || img.includes("terracotta") || img.includes("coral")) return "coral_stripe";
+  if (img.includes("shirt_15") || img.includes("rose") || img.includes("pink")) return "coral_stripe";
+  if (img.includes("shirt_16") || img.includes("magenta") || img.includes("wine")) return "coral_stripe";
+  if (img.includes("shirt_17") || img.includes("charcoal")) return "charcoal";
+  if (img.includes("shirt_18") || img.includes("sage") || img.includes("mint")) return "bengal_blue";
+  if (img.includes("shirt_19") || img.includes("espresso") || img.includes("dark")) return "espresso";
+  if (img.includes("shirt_20") || img.includes("navy")) return "bengal_blue";
+  if (img.includes("shirt_21") || img.includes("azure") || img.includes("bengal")) return "bengal_blue";
+  if (img.includes("shirt_22") || img.includes("violet") || img.includes("purple")) return "bengal_blue";
+  if (img.includes("shirt_23") || img.includes("shadow")) return "charcoal";
+  if (img.includes("shirt_24") || img.includes("chocolate")) return "espresso";
+  if (img.includes("shirt_25") || img.includes("steel") || img.includes("grey")) return "charcoal";
 
-  // 2. Specific Product Slugs (including legacy aliases)
+  // 2. Specific Product Slugs
   if (slug.includes("espresso") || slug.includes("chocolate")) return "espresso";
-  if (slug.includes("navy-executive") || slug.includes("bengal") || slug.includes("pinstripe")) return "bengal_blue";
+  if (slug.includes("navy") || slug.includes("bengal") || slug.includes("azure")) return "bengal_blue";
   if (slug.includes("sandstone") || slug.includes("oatmeal") || slug.includes("linen")) return "sandstone_linen";
-  if (slug.includes("terracotta") || slug.includes("coral")) return "coral_stripe";
-  if (slug.includes("white")) return "white";
-  if (slug.includes("sky-blue") || slug.includes("skyblue") || slug.includes("oxford")) return "skyblue";
-  if (slug.includes("midnight-navy") || slug.includes("navy-solid")) return "navy_solid";
-  if (slug.includes("charcoal") || slug.includes("anthracite")) return "charcoal";
+  if (slug.includes("terracotta") || slug.includes("coral") || slug.includes("rose") || slug.includes("magenta")) return "coral_stripe";
+  if (slug.includes("charcoal") || slug.includes("shadow") || slug.includes("steel")) return "charcoal";
 
   // 3. Product Names
-  if (name.includes("espresso") || name.includes("chocolate") || name.includes("dark")) return "espresso";
-  if (name.includes("bengal") || (name.includes("navy") && name.includes("pinstripe"))) return "bengal_blue";
-  if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen") || name.includes("beige")) return "sandstone_linen";
-  if (name.includes("coral") || name.includes("terracotta") || name.includes("rust")) return "coral_stripe";
-  if (name.includes("white") || name.includes("crisp")) return "white";
-  if (name.includes("sky") || name.includes("oxford")) return "skyblue";
-  if (name.includes("midnight") || (name.includes("navy") && name.includes("solid"))) return "navy_solid";
-  if (name.includes("charcoal") || name.includes("anthracite")) return "charcoal";
+  if (name.includes("espresso") || name.includes("chocolate")) return "espresso";
+  if (name.includes("bengal") || name.includes("azure") || name.includes("navy")) return "bengal_blue";
+  if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen")) return "sandstone_linen";
+  if (name.includes("coral") || name.includes("terracotta") || name.includes("rose") || name.includes("wine")) return "coral_stripe";
+  if (name.includes("charcoal") || name.includes("shadow") || name.includes("grey")) return "charcoal";
 
-  return "espresso";
+  return "bengal_blue";
 }
 
 function getCollarKey(collarStyle: string): "mandarin" | "buttondown" | "spread" {
@@ -91,6 +90,7 @@ function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
 /**
  * Resolves the complete made shirt model based on the chosen product, fabric, or colorway.
  * Ensures the shirt displayed on the ghost mannequin is tailored in the exact selected color, pattern, and sleeve length.
+ * 100% color-consistent end-to-end from card hover to Step 1 customizer.
  */
 function getMatchingShirtModel(
   product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null,
@@ -98,48 +98,46 @@ function getMatchingShirtModel(
   bodyFit: "lean" | "regular" | "tummy" = "lean",
   collarStyle: string = ""
 ): string {
-  const fitSuffix = bodyFit === "tummy" ? "_tummy" : bodyFit === "regular" ? "_regular" : "";
-  const halfSuffix = isHalfSleeve ? "_half" : "";
+  if (!product) return "/customizer/full_shirt_21.png";
 
-  const normCollar = (collarStyle || "").toLowerCase();
-  const collarSuffix =
-    normCollar.includes("mandarin") || normCollar.includes("band")
-      ? "_mandarin"
-      : normCollar.includes("button")
-      ? "_buttondown"
-      : normCollar.includes("spread") || (normCollar.includes("classic") && !normCollar.includes("cuff"))
-      ? "_spread"
-      : "";
+  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
 
-  const resolveModel = (base: string) => {
-    // Fabrics with dedicated photorealistic collar variations
-    const supportsCollar = base.includes("bengal_blue") || base.includes("white");
-    const cPart = supportsCollar ? collarSuffix : "";
-    return `/customizer/${base}${halfSuffix}${fitSuffix}${cPart}.png`;
-  };
-
-  const colorFamily = getShirtColorFamily(product);
-
-  switch (colorFamily) {
-    case "espresso":
-      return resolveModel("shirt_model_espresso");
-    case "bengal_blue":
-      return resolveModel("shirt_model_bengal_blue");
-    case "sandstone_linen":
-      return resolveModel("shirt_model_sandstone_linen");
-    case "coral_stripe":
-      return resolveModel("shirt_model_coral_stripe");
-    case "white":
-      return resolveModel("shirt_model_white");
-    case "skyblue":
-      return resolveModel("shirt_model_skyblue");
-    case "navy_solid":
-      return resolveModel("shirt_model_navy_solid");
-    case "charcoal":
-      return resolveModel("shirt_model_charcoal");
-    default:
-      return resolveModel("shirt_model_espresso");
+  // 1. Direct 1-to-1 matching for user's 13 real shirts (shirt_13 to shirt_25)
+  for (let i = 13; i <= 25; i++) {
+    if (img.includes(`shirt_${i}`) || img.includes(`full_shirt_${i}`)) {
+      return `/customizer/full_shirt_${i}.png`;
+    }
   }
+
+  // 2. Direct matching from gallery array
+  if (product.gallery) {
+    for (const g of product.gallery) {
+      const gLower = (g || "").toLowerCase();
+      for (let i = 13; i <= 25; i++) {
+        if (gLower.includes(`shirt_${i}`) || gLower.includes(`full_shirt_${i}`)) {
+          return `/customizer/full_shirt_${i}.png`;
+        }
+      }
+    }
+  }
+
+  // 3. Fallback slug matching
+  const slug = (product.slug || "").toLowerCase();
+  if (slug.includes("azure") || slug.includes("bengal-stripe")) return "/customizer/full_shirt_21.png";
+  if (slug.includes("terracotta") || slug.includes("brick")) return "/customizer/full_shirt_14.png";
+  if (slug.includes("charcoal-executive")) return "/customizer/full_shirt_17.png";
+  if (slug.includes("steel-grey")) return "/customizer/full_shirt_25.png";
+  if (slug.includes("espresso") || slug.includes("savile-row-dark")) return "/customizer/full_shirt_19.png";
+  if (slug.includes("navy-executive") || slug.includes("navy-banker")) return "/customizer/full_shirt_20.png";
+  if (slug.includes("rose") || slug.includes("pastel")) return "/customizer/full_shirt_15.png";
+  if (slug.includes("magenta") || slug.includes("wine")) return "/customizer/full_shirt_16.png";
+  if (slug.includes("sage") || slug.includes("mint")) return "/customizer/full_shirt_18.png";
+  if (slug.includes("imperial") || slug.includes("violet")) return "/customizer/full_shirt_22.png";
+  if (slug.includes("shadow") || slug.includes("monochrome")) return "/customizer/full_shirt_23.png";
+  if (slug.includes("chocolate") || slug.includes("fine-tweed")) return "/customizer/full_shirt_24.png";
+  if (slug.includes("sandstone") || slug.includes("linen")) return "/customizer/full_shirt_13.png";
+
+  return "/customizer/full_shirt_21.png";
 }
 
 function getFoldedAndCuffAssets(

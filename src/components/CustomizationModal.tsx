@@ -43,19 +43,10 @@ interface CustomizationModalProps {
 type MannequinFit = "lean" | "regular" | "tummy";
 const asMannequinFit = (fit: string): MannequinFit => (fit === "regular" || fit === "tummy" ? fit : "lean");
 
-function getSuggestionThumbnail(sister: ProductItem): string {
-  if (sister.image) return sister.image;
-  if (sister.gallery && sister.gallery.length > 0) return sister.gallery[0];
-  const fam = getShirtColorFamily(sister);
-  if (fam === "espresso") return "/new_shirts/shirt_2.jpg";
-  if (fam === "bengal_blue") return "/new_shirts/shirt_3.jpg";
-  if (fam === "sandstone_linen") return "/new_shirts/shirt_4.jpg";
-  if (fam === "coral_stripe") return "/new_shirts/shirt_1.jpg";
-  if (fam === "white") return "/new_shirts/shirt_5.jpg";
-  if (fam === "skyblue") return "/new_shirts/shirt_9.jpg";
-  if (fam === "navy_solid") return "/new_shirts/shirt_7.jpg";
-  if (fam === "charcoal") return "/new_shirts/shirt_8.jpg";
-  return "/new_shirts/shirt_2.jpg";
+function getSuggestionThumbnail(p: any): string {
+  if (p?.image) return p.image;
+  if (p?.gallery && p.gallery.length > 0) return p.gallery[0];
+  return "/new_shirts/shirt_21.jpg";
 }
 
 function getShortShirtTitle(name: string): string {
@@ -74,7 +65,7 @@ function getShortShirtTitle(name: string): string {
 export default function CustomizationModal({
   isOpen,
   onClose,
-  productName = "Royal Formal Crisp White Shirt",
+  productName = "Azure Sky Blue Bengal Stripe",
   product = null,
   initialChestSize,
   submitting = false,

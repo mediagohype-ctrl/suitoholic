@@ -1,291 +1,315 @@
 [
   {
     "id": 1,
+    "slug": "azure-bengal-stripe-formal",
+    "name": "AZURE SKY BLUE BENGAL STRIPE",
+    "category": "formal_shirts",
+    "price": 2799,
+    "subtitle": "Italian 130s Pure Egyptian Cotton Bengal Stripe.",
+    "description": "Crisp sky blue and white executive Bengal stripe tailored from Italian-spun double-ply Egyptian Giza cotton with semi-spread collar.",
+    "fabric": "100% Egyptian Giza Cotton",
+    "threadCount": "130s / 2-Ply Fine Twill",
+    "collar": "Classic English Spread Collar",
+    "cuff": "Dual-Use Mitred Cuff",
+    "image": "/new_shirts/shirt_21.jpg",
+    "gallery": [
+      "/new_shirts/shirt_21.jpg",
+      "/customizer/full_shirt_21.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 112,
+    "tag": "BESTSELLER",
+    "active": true,
+    "featured": true,
+    "customizable": true
+  },
+  {
+    "id": 2,
+    "slug": "terracotta-brick-bengal-stripe",
+    "name": "TERRACOTTA BRICK BENGAL STRIPE",
+    "category": "formal_shirts",
+    "price": 2699,
+    "subtitle": "Warm Terracotta Brick & Ecru Heritage Bengal Stripe.",
+    "description": "Distinguished warm terracotta stripe weave designed for distinctive daytime tailoring. Breathable drape with silky finish.",
+    "fabric": "100% Egyptian Cotton Sateen",
+    "threadCount": "120s / 2-Ply Fine Twill",
+    "collar": "Semi-Spread Formal Collar",
+    "cuff": "Rounded Single-Button Cuff",
+    "image": "/new_shirts/shirt_14.jpg",
+    "gallery": [
+      "/new_shirts/shirt_14.jpg",
+      "/customizer/full_shirt_14.jpg"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 65,
+    "tag": "HERITAGE STRIPE",
+    "active": true,
+    "featured": true,
+    "customizable": true
+  },
+  {
+    "id": 3,
+    "slug": "charcoal-executive-pinstripe-formal",
+    "name": "CHARCOAL EXECUTIVE PINSTRIPE FORMAL",
+    "category": "formal_shirts",
+    "price": 2699,
+    "subtitle": "Architectural Graphite Charcoal Shadow Pinstripe.",
+    "description": "Refined dark charcoal pinstripes with immaculate collar roll and mother-of-pearl buttons. Ideal for commanding board meetings.",
+    "fabric": "100% Long-Staple Pinpoint Cotton",
+    "threadCount": "120s / 2-Ply Pinpoint Weave",
+    "collar": "Semi-Spread Formal Collar",
+    "cuff": "French Double Cuff",
+    "image": "/new_shirts/shirt_17.jpg",
+    "gallery": [
+      "/new_shirts/shirt_17.jpg",
+      "/customizer/full_shirt_17.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 94,
+    "tag": "EXECUTIVE STRIPE",
+    "active": true,
+    "featured": true,
+    "customizable": true
+  },
+  {
+    "id": 4,
+    "slug": "navy-executive-bengal-stripe-formal",
+    "name": "NAVY EXECUTIVE BENGAL STRIPE FORMAL",
+    "category": "formal_shirts",
+    "price": 2799,
+    "subtitle": "High-Contrast Steel Grey & Crisp White Banker Stripe.",
+    "description": "Commanding corporate banker stripe shirt cut from lustrous poplin. Retains a pristine razor-sharp crease throughout the day.",
+    "fabric": "100% Supima Combed Cotton",
+    "threadCount": "130s / 2-Ply Poplin",
+    "collar": "Classic English Spread Collar",
+    "cuff": "Convertible Barrel Cuff",
+    "image": "/new_shirts/shirt_20.jpg",
+    "gallery": [
+      "/new_shirts/shirt_20.jpg",
+      "/customizer/full_shirt_20.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 88,
+    "tag": "POWER STRIPE",
+    "active": true,
+    "featured": true,
+    "customizable": true
+  },
+  {
+    "id": 5,
     "slug": "savile-row-dark-espresso-twill",
     "name": "SAVILE ROW DARK ESPRESSO TWILL",
     "category": "formal_shirts",
     "price": 2799,
-    "subtitle": "Superfine 140s Egyptian Giza Dark Espresso Twill.",
-    "description": "The supreme executive formal dress shirt. Tailored from 140s double-ply Egyptian Giza cotton with non-iron natural drape, reinforced split yoke, English spread collar, and mother-of-pearl buttons.",
-    "fabric": "100% Egyptian Giza Cotton",
-    "threadCount": "140s / 2-Ply Fine Formal Twill",
-    "collar": "Classic English Spread Collar",
-    "cuff": "Dual-Use Convertible French Cuff",
-    "image": "/new_shirts/shirt_2.jpg",
+    "subtitle": "Rich Dark Espresso Brown Sartorial Twill.",
+    "description": "Rich pitch-black formal shirt cut with floating canvas collar and seamless placket for gala evening occasions.",
+    "fabric": "100% Extra-Long Staple Cotton",
+    "threadCount": "140s / 2-Ply Sateen Weave",
+    "collar": "English Spread Collar",
+    "cuff": "French Double Cuff",
+    "image": "/new_shirts/shirt_19.jpg",
     "gallery": [
-      "/new_shirts/shirt_2.jpg"
+      "/new_shirts/shirt_19.jpg",
+      "/customizer/full_shirt_19.jpg"
     ],
     "rating": 4.9,
-    "reviewsCount": 184,
-    "tag": "FORMAL ICON",
-    "sortOrder": 1,
-    "colorways": [
-      {
-        "name": "Dark Espresso Twill",
-        "hex": "#2B1A16",
-        "productSlug": "savile-row-dark-espresso-twill"
-      },
-      {
-        "name": "Navy Bengal Stripe",
-        "hex": "#385286",
-        "productSlug": "navy-executive-pinstripe-formal"
-      },
-      {
-        "name": "Sandstone Oatmeal Linen",
-        "hex": "#D2C5B5",
-        "productSlug": "sandstone-oatmeal-linen-formal"
-      },
-      {
-        "name": "Terracotta Coral Stripe",
-        "hex": "#B86B5A",
-        "productSlug": "terracotta-coral-pinstripe-formal"
-      }
-    ],
+    "reviewsCount": 114,
+    "tag": "BLACK TIE LUXE",
     "active": true,
     "featured": true,
-    "customizable": true,
-    "stock": null
+    "customizable": true
   },
   {
-    "id": 2,
-    "slug": "navy-executive-pinstripe-formal",
-    "name": "NAVY EXECUTIVE PINSTRIPE FORMAL",
+    "id": 6,
+    "slug": "imperial-violet-executive-stripe",
+    "name": "IMPERIAL VIOLET EXECUTIVE STRIPE",
     "category": "formal_shirts",
-    "price": 2699,
-    "subtitle": "Italian 120s Double-Ply Poplin Bengal Stripe.",
-    "description": "Designed for high-stakes boardroom meetings. Crisp navy and white banker stripe weave paired with formal French double cuffs for signature cufflink styling and an immaculate collar roll.",
-    "fabric": "100% Long-Staple Pinpoint Cotton",
-    "threadCount": "120s / 2-Ply Pinpoint Weave",
-    "collar": "Semi-Spread Formal Collar",
-    "cuff": "Double French Cuff (For Cufflinks)",
-    "image": "/new_shirts/shirt_3.jpg",
+    "price": 2999,
+    "subtitle": "Deep Cobalt Violet High-Density Twill Stripe.",
+    "description": "Rich, saturated cobalt pencil stripes on luminous Italian twill. Built with floating canvas collar for enduring roll.",
+    "fabric": "100% Long-Staple Combed Cotton",
+    "threadCount": "140s / 2-Ply Royal Twill",
+    "collar": "Cutaway Formal Collar",
+    "cuff": "Convertible French Cuff",
+    "image": "/new_shirts/shirt_22.jpg",
     "gallery": [
-      "/new_shirts/shirt_3.jpg"
+      "/new_shirts/shirt_22.jpg",
+      "/customizer/full_shirt_22.jpg"
     ],
     "rating": 4.9,
-    "reviewsCount": 128,
-    "tag": "BOARDROOM BESTSELLER",
-    "sortOrder": 2,
-    "colorways": [
-      {
-        "name": "Dark Espresso Twill",
-        "hex": "#2B1A16",
-        "productSlug": "savile-row-dark-espresso-twill"
-      },
-      {
-        "name": "Navy Bengal Stripe",
-        "hex": "#385286",
-        "productSlug": "navy-executive-pinstripe-formal"
-      },
-      {
-        "name": "Sandstone Oatmeal Linen",
-        "hex": "#D2C5B5",
-        "productSlug": "sandstone-oatmeal-linen-formal"
-      },
-      {
-        "name": "Terracotta Coral Stripe",
-        "hex": "#B86B5A",
-        "productSlug": "terracotta-coral-pinstripe-formal"
-      }
-    ],
+    "reviewsCount": 104,
+    "tag": "EVENING BESPOKE",
     "active": true,
     "featured": true,
-    "customizable": true,
-    "stock": null
+    "customizable": true
   },
   {
-    "id": 3,
+    "id": 7,
     "slug": "sandstone-oatmeal-linen-formal",
     "name": "SANDSTONE OATMEAL LINEN FORMAL",
     "category": "formal_shirts",
-    "price": 2599,
-    "subtitle": "Breathable French Linen & Giza Cotton Blend.",
-    "description": "Sartorial heritage warm oatmeal and sandstone linen blend. Silky soft handfeel with all-day natural drape and breathable elegance.",
-    "fabric": "80% Giza Cotton, 20% French Linen",
-    "threadCount": "110s Luxury Linen Blend",
-    "collar": "Wide Cutaway Formal Collar",
-    "cuff": "Mitred Dual-Button Cuff",
-    "image": "/new_shirts/shirt_4.jpg",
-    "gallery": [
-      "/new_shirts/shirt_4.jpg"
-    ],
-    "rating": 4.9,
-    "reviewsCount": 145,
-    "tag": "EXECUTIVE FORMAL",
-    "sortOrder": 3,
-    "colorways": [
-      {
-        "name": "Dark Espresso Twill",
-        "hex": "#2B1A16",
-        "productSlug": "savile-row-dark-espresso-twill"
-      },
-      {
-        "name": "Navy Bengal Stripe",
-        "hex": "#385286",
-        "productSlug": "navy-executive-pinstripe-formal"
-      },
-      {
-        "name": "Sandstone Oatmeal Linen",
-        "hex": "#D2C5B5",
-        "productSlug": "sandstone-oatmeal-linen-formal"
-      },
-      {
-        "name": "Terracotta Coral Stripe",
-        "hex": "#B86B5A",
-        "productSlug": "terracotta-coral-pinstripe-formal"
-      }
-    ],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 4,
-    "slug": "terracotta-coral-pinstripe-formal",
-    "name": "TERRACOTTA CORAL PINSTRIPE FORMAL",
-    "category": "formal_shirts",
     "price": 2899,
-    "subtitle": "Architectural Coral Rust Executive Pinstripes.",
-    "description": "Deep terracotta shadow pinstripes offering subtle contrast and unmatched sartorial authority. Styled with German interlining for a flawless collar arch.",
-    "fabric": "100% Superfine Combed Cotton",
+    "subtitle": "Sartorial Pastel Rose & Lilac Pinpoint Stripe.",
+    "description": "Subtle blush rose hairline pinstripes offering fresh contemporary elegance. Crafted with German interlining and reinforced side gussets.",
+    "fabric": "100% Giza 88 Long-Staple Cotton",
     "threadCount": "140s / 2-Ply Royal Twill",
-    "collar": "Semi-Spread Formal Collar",
-    "cuff": "Beveled Button Cuff",
-    "image": "/new_shirts/shirt_1.jpg",
+    "collar": "Milano Cutaway Collar",
+    "cuff": "Two-Button Mitred Cuff",
+    "image": "/new_shirts/shirt_13.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg"
+      "/new_shirts/shirt_13.jpg",
+      "/customizer/full_shirt_13.jpg"
     ],
     "rating": 4.8,
-    "reviewsCount": 96,
-    "tag": "LUXURY FORMAL",
-    "sortOrder": 4,
-    "colorways": [
-      {
-        "name": "Dark Espresso Twill",
-        "hex": "#2B1A16",
-        "productSlug": "savile-row-dark-espresso-twill"
-      },
-      {
-        "name": "Navy Bengal Stripe",
-        "hex": "#385286",
-        "productSlug": "navy-executive-pinstripe-formal"
-      },
-      {
-        "name": "Sandstone Oatmeal Linen",
-        "hex": "#D2C5B5",
-        "productSlug": "sandstone-oatmeal-linen-formal"
-      },
-      {
-        "name": "Terracotta Coral Stripe",
-        "hex": "#B86B5A",
-        "productSlug": "terracotta-coral-pinstripe-formal"
-      }
-    ],
+    "reviewsCount": 76,
+    "tag": "CONTEMPORARY LUXURY",
     "active": true,
     "featured": true,
-    "customizable": true,
-    "stock": null
+    "customizable": true
   },
   {
-    "id": 5,
-    "slug": "royal-formal-crisp-white-shirt",
-    "name": "ROYAL CRISP EGYPTIAN WHITE TWILL",
+    "id": 8,
+    "slug": "sage-mint-executive-stripe",
+    "name": "SAGE MINT SARTORIAL STRIPE",
     "category": "formal_shirts",
-    "price": 2499,
-    "subtitle": "100% Egyptian Giza 140s 2-Ply Formal Twill.",
-    "description": "Timeless brilliant white formal dress shirt crafted from double-ply Egyptian Giza cotton with luminous drape, reinforced split yoke, and mother-of-pearl buttons.",
-    "fabric": "100% Egyptian Giza Cotton",
-    "threadCount": "140s / 2-Ply Royal Twill",
-    "collar": "Classic English Spread Collar",
-    "cuff": "Dual-Use Convertible French Cuff",
-    "image": "/new_shirts/shirt_5.jpg",
+    "price": 2899,
+    "subtitle": "Subtle Sage Mint Hairline Stripe on Compact Twill.",
+    "description": "Bespoke executive shirt in a calming sage green hairline weave. Mother-of-pearl buttons and split yoke construction.",
+    "fabric": "80% Giza Cotton, 20% French Flax",
+    "threadCount": "120s Luxury Weave",
+    "collar": "Milano Full Cutaway Collar",
+    "cuff": "Dual-Use Mitred Cuff",
+    "image": "/new_shirts/shirt_18.jpg",
     "gallery": [
-      "/new_shirts/shirt_5.jpg"
+      "/new_shirts/shirt_18.jpg",
+      "/customizer/full_shirt_18.jpg"
     ],
-    "rating": 4.9,
-    "reviewsCount": 210,
-    "tag": "HERITAGE ICON",
-    "sortOrder": 5,
+    "rating": 4.8,
+    "reviewsCount": 82,
+    "tag": "SARTORIAL SAGE",
     "active": true,
     "featured": true,
-    "customizable": true,
-    "stock": null
+    "customizable": true
   },
   {
-    "id": 35,
-    "slug": "classic-sky-blue-oxford-formal",
-    "name": "CLASSIC SKY BLUE OXFORD FORMAL",
+    "id": 9,
+    "slug": "rose-pastel-pinstripe-formal",
+    "name": "ROSE PASTEL PINSTRIPE FORMAL",
     "category": "formal_shirts",
-    "price": 2599,
-    "subtitle": "Superfine 120s Pinpoint Oxford Weave.",
-    "description": "Refined pastel sky blue pinpoint oxford tailored for boardroom versatility and breathable comfort with mother-of-pearl buttons.",
-    "fabric": "100% Combed Pinpoint Cotton",
-    "threadCount": "120s / 2-Ply Oxford Weave",
+    "price": 2999,
+    "subtitle": "Cool Silvered Lavender Basketweave Texture.",
+    "description": "Subtle chevron and basketweave micro-texture that introduces sartorial dimension under solid bespoke suits.",
+    "fabric": "100% Alpine Pima Cotton",
+    "threadCount": "130s / 2-Ply Micro-Weave",
     "collar": "Semi-Spread Formal Collar",
     "cuff": "Mitred Two-Button Cuff",
-    "image": "/new_shirts/shirt_9.jpg",
+    "image": "/new_shirts/shirt_15.jpg",
     "gallery": [
-      "/new_shirts/shirt_9.jpg"
+      "/new_shirts/shirt_15.jpg",
+      "/customizer/full_shirt_15.jpg"
     ],
     "rating": 4.9,
-    "reviewsCount": 112,
-    "tag": "SUMMER CLASSIC",
-    "sortOrder": 6,
+    "reviewsCount": 91,
+    "tag": "TEXTURED LUXURY",
     "active": true,
     "featured": true,
-    "customizable": true,
-    "stock": null
+    "customizable": true
   },
   {
-    "id": 36,
-    "slug": "midnight-navy-corporate-solid",
-    "name": "MIDNIGHT NAVY CORPORATE SOLID",
+    "id": 10,
+    "slug": "magenta-wine-royal-stripe",
+    "name": "MAGENTA WINE ROYAL STRIPE",
     "category": "formal_shirts",
-    "price": 2699,
-    "subtitle": "Super 120s Long-Staple Sateen Weave.",
-    "description": "Deep commanding midnight navy dress shirt offering rich lustrous drape under bespoke tailoring with German interlining.",
-    "fabric": "100% Long-Staple Giza Cotton",
-    "threadCount": "120s / 2-Ply Sateen Weave",
-    "collar": "Semi-Cutaway Formal Collar",
-    "cuff": "French Double Cuff",
-    "image": "/new_shirts/shirt_7.jpg",
+    "price": 3099,
+    "subtitle": "Deep Magenta & Wine Executive Pinstripe.",
+    "description": "Opulent wine pinstripes with high-sheen satin finish. Finished with Australian mother-of-pearl buttons.",
+    "fabric": "100% Egyptian Giza Sateen",
+    "threadCount": "140s / 2-Ply Royal Twill",
+    "collar": "English Spread Collar",
+    "cuff": "Dual-Use Mitred Cuff",
+    "image": "/new_shirts/shirt_16.jpg",
     "gallery": [
-      "/new_shirts/shirt_7.jpg"
+      "/new_shirts/shirt_16.jpg",
+      "/customizer/full_shirt_16.jpg"
     ],
-    "rating": 4.8,
-    "reviewsCount": 88,
-    "tag": "EVENING ICON",
-    "sortOrder": 7,
+    "rating": 5.0,
+    "reviewsCount": 68,
+    "tag": "ROYAL STRIPE",
     "active": true,
     "featured": true,
-    "customizable": true,
-    "stock": null
+    "customizable": true
   },
   {
-    "id": 37,
-    "slug": "anthracite-charcoal-twill-formal",
-    "name": "ANTHRACITE CHARCOAL TWILL FORMAL",
+    "id": 11,
+    "slug": "shadow-monochrome-stripe-formal",
+    "name": "SHADOW MONOCHROME STRIPE FORMAL",
+    "category": "formal_shirts",
+    "price": 2799,
+    "subtitle": "Architectural Shadow Monochrome Pinstripe Weave.",
+    "description": "Subtle black and charcoal shadow pinstripes offering sharp authority under bespoke tailored jackets.",
+    "fabric": "100% Long-Staple Combed Cotton",
+    "threadCount": "130s / 2-Ply Poplin",
+    "collar": "English Spread Collar",
+    "cuff": "Mitred Two-Button Cuff",
+    "image": "/new_shirts/shirt_23.jpg",
+    "gallery": [
+      "/new_shirts/shirt_23.jpg",
+      "/customizer/full_shirt_23.jpg"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 94,
+    "tag": "EXECUTIVE STRIPE",
+    "active": true,
+    "featured": true,
+    "customizable": true
+  },
+  {
+    "id": 12,
+    "slug": "espresso-chocolate-bengal-stripe",
+    "name": "ESPRESSO CHOCOLATE BENGAL STRIPE",
     "category": "formal_shirts",
     "price": 2899,
-    "subtitle": "Executive Sateen Micro-Twill Drape.",
-    "description": "Sleek charcoal formal shirt tailored from high-density sateen twill with contemporary authority and split yoke.",
-    "fabric": "100% Compact Egyptian Cotton",
-    "threadCount": "130s / 2-Ply Micro-Twill",
-    "collar": "English Spread Collar",
-    "cuff": "Convertible Barrel Cuff",
-    "image": "/new_shirts/shirt_8.jpg",
+    "subtitle": "Textured Micro-Tweed Stripe in Soft Slate.",
+    "description": "Refined textured micro-stripe weave offering exceptional drape and structured silhouette.",
+    "fabric": "100% Compact Supima Cotton",
+    "threadCount": "130s Luxury Weave",
+    "collar": "Semi-Spread Formal Collar",
+    "cuff": "Convertible French Cuff",
+    "image": "/new_shirts/shirt_24.jpg",
     "gallery": [
-      "/new_shirts/shirt_8.jpg"
+      "/new_shirts/shirt_24.jpg",
+      "/customizer/full_shirt_24.jpg"
     ],
-    "rating": 4.9,
-    "reviewsCount": 74,
-    "tag": "BLACK TIE LUXE",
-    "sortOrder": 8,
+    "rating": 4.8,
+    "reviewsCount": 71,
+    "tag": "TEXTURED STRIPE",
     "active": true,
     "featured": true,
-    "customizable": true,
-    "stock": null
+    "customizable": true
+  },
+  {
+    "id": 13,
+    "slug": "steel-grey-royal-stripe-formal",
+    "name": "STEEL GREY ROYAL STRIPE FORMAL",
+    "category": "formal_shirts",
+    "price": 3199,
+    "subtitle": "Dimensional Micro-Geometric Texture in Pearl Ice White.",
+    "description": "Masterwork jacquard dobby weave featuring subtle diamond geometric facets.",
+    "fabric": "100% Egyptian Giza 140s Cotton",
+    "threadCount": "140s / 2-Ply Dobby Weave",
+    "collar": "English Spread Collar",
+    "cuff": "French Double Cuff",
+    "image": "/new_shirts/shirt_25.jpg",
+    "gallery": [
+      "/new_shirts/shirt_25.jpg",
+      "/customizer/full_shirt_25.jpg"
+    ],
+    "rating": 5.0,
+    "reviewsCount": 156,
+    "tag": "ROYAL DOBBY",
+    "active": true,
+    "featured": true,
+    "customizable": true
   },
   {
     "id": 6,
@@ -298,12 +322,9 @@
     "fabric": "90% Super 120s Wool, 10% Cashmere",
     "threadCount": "Sartorial 320 GSM Drape",
     "fit": "Classic Sartorial Pleated",
-    "image": "/new_shirts/shirt_3.jpg",
+    "image": "/pant_pleated_beige.jpg",
     "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
+      "/pant_pleated_beige.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 162,
@@ -326,12 +347,9 @@
     "fabric": "100% Heavy Cotton Cavalry Twill",
     "threadCount": "380 GSM Heavy Twill",
     "fit": "High-Rise Tailored Fit",
-    "image": "/new_shirts/shirt_4.jpg",
+    "image": "/pant_gurkha_olive.jpg",
     "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
+      "/pant_gurkha_olive.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 118,
@@ -354,12 +372,9 @@
     "fabric": "98% Egyptian Combed Cotton, 2% Elastane",
     "threadCount": "290 GSM Satin Chino Weave",
     "fit": "Modern Slim-Straight Fit",
-    "image": "/new_shirts/shirt_1.jpg",
+    "image": "/pant_navy_chinos.jpg",
     "gallery": [
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg"
+      "/pant_navy_chinos.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 204,
@@ -382,12 +397,9 @@
     "fabric": "100% Super 130s Worsted Wool",
     "threadCount": "260 GSM All-Season Wool",
     "fit": "Tailored Straight Fit",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/pant_charcoal_dress.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
+      "/pant_charcoal_dress.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 88,
@@ -410,12 +422,9 @@
     "fabric": "100% European Normandy Flax",
     "threadCount": "240 GSM Slub Linen",
     "fit": "Relaxed Tapered Fit",
-    "image": "/new_shirts/shirt_3.jpg",
+    "image": "/pant_linen_oatmeal.jpg",
     "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
+      "/pant_linen_oatmeal.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 79,
@@ -438,12 +447,9 @@
     "fabric": "100% American Supima Cotton",
     "threadCount": "260 GSM Heavyweight Interlock",
     "fit": "Relaxed Boxy Fit",
-    "image": "/new_shirts/shirt_4.jpg",
+    "image": "/tshirt_supima_cream.jpg",
     "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
+      "/tshirt_supima_cream.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 230,
@@ -466,12 +472,9 @@
     "fabric": "70% Mulberry Silk, 30% Long-Staple Cotton",
     "threadCount": "16-Gauge Fine Knit",
     "fit": "Tailored Knit Fit",
-    "image": "/new_shirts/shirt_1.jpg",
+    "image": "/tshirt_knit_navy_polo.jpg",
     "gallery": [
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg"
+      "/tshirt_knit_navy_polo.jpg"
     ],
     "rating": 5,
     "reviewsCount": 142,
@@ -494,12 +497,9 @@
     "fabric": "100% Long-Staple Peruvian Pima",
     "threadCount": "220 GSM Single Jersey",
     "fit": "Custom Slim Fit",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/tshirt_black_minimal.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
+      "/tshirt_black_minimal.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 175,
@@ -522,12 +522,9 @@
     "fabric": "100% Organic Cotton Waffle",
     "threadCount": "250 GSM Micro-Honeycomb",
     "fit": "Classic Athletic Fit",
-    "image": "/new_shirts/shirt_3.jpg",
+    "image": "/tshirt_sage_waffle.jpg",
     "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
+      "/tshirt_sage_waffle.jpg"
     ],
     "rating": 4.7,
     "reviewsCount": 88,
@@ -550,12 +547,9 @@
     "fabric": "100% Extra-Fine Australian Merino",
     "threadCount": "18-Gauge Sartorial Knit",
     "fit": "Tailored Smart Fit",
-    "image": "/new_shirts/shirt_4.jpg",
+    "image": "/tshirt_espresso_polo.jpg",
     "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
+      "/tshirt_espresso_polo.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 94,
@@ -578,12 +572,9 @@
     "fabric": "100% Super 130s Italian Wool",
     "threadCount": "280 GSM Structured Weave",
     "fit": "Tailored Neapolitan Cut",
-    "image": "/new_shirts/shirt_1.jpg",
+    "image": "/blazer_navy_wool.jpg",
     "gallery": [
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg"
+      "/blazer_navy_wool.jpg"
     ],
     "rating": 5,
     "reviewsCount": 189,
@@ -606,12 +597,9 @@
     "fabric": "85% Scottish Wool, 15% Silk",
     "threadCount": "340 GSM Autumn Tweed",
     "fit": "Classic British Silhouette",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/blazer_houndstooth.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
+      "/blazer_houndstooth.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 76,
@@ -634,12 +622,9 @@
     "fabric": "100% Super 150s Wool with Pure Silk Lapels",
     "threadCount": "290 GSM Evening Worsted",
     "fit": "Slim Sartorial Black-Tie",
-    "image": "/new_shirts/shirt_3.jpg",
+    "image": "/blazer_charcoal_tux.jpg",
     "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
+      "/blazer_charcoal_tux.jpg"
     ],
     "rating": 5,
     "reviewsCount": 120,
@@ -662,12 +647,9 @@
     "fabric": "100% Pure Irish Linen",
     "threadCount": "270 GSM Summer Weave",
     "fit": "Unstructured Neapolitan",
-    "image": "/new_shirts/shirt_4.jpg",
+    "image": "/blazer_sand_linen.jpg",
     "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
+      "/blazer_sand_linen.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 95,
@@ -690,12 +672,9 @@
     "fabric": "60% Baby Camel Hair, 40% Virgin Wool",
     "threadCount": "360 GSM Heavy Sartorial",
     "fit": "Structured Double-Breasted",
-    "image": "/new_shirts/shirt_1.jpg",
+    "image": "/blazer_double_breasted.jpg",
     "gallery": [
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg"
+      "/blazer_double_breasted.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 64,
@@ -719,12 +698,9 @@
     "threadCount": "Artisanal Handloom Silk",
     "collar": "Royal Mandarin Collar",
     "cuff": "Straight Embroidered Cuff",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/ceremonial_kurta_silk.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
+      "/ceremonial_kurta_silk.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 165,
@@ -747,12 +723,9 @@
     "fabric": "70% Virgin Wool, 30% Cashmere",
     "threadCount": "350 GSM Regal Blend",
     "collar": "High Bandhgala Stand Collar",
-    "image": "/new_shirts/shirt_3.jpg",
+    "image": "/ceremonial_bandhgala.jpg",
     "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
+      "/ceremonial_bandhgala.jpg"
     ],
     "rating": 5,
     "reviewsCount": 198,
@@ -776,12 +749,9 @@
     "threadCount": "160s / 2-Ply Fine Poplin",
     "collar": "Classic Wing Collar",
     "cuff": "French Double Cuff",
-    "image": "/new_shirts/shirt_4.jpg",
+    "image": "/ceremonial_ivory_tux.jpg",
     "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
+      "/ceremonial_ivory_tux.jpg"
     ],
     "rating": 4.9,
     "reviewsCount": 140,
@@ -803,12 +773,9 @@
     "description": "Subtle textured shimmer with unparalleled cultural heritage. Designed for luxury weddings, receptions, and red-carpet ceremonies.",
     "fabric": "100% Hand-Spun Matka Silk",
     "threadCount": "Handloom Luxury Weave",
-    "image": "/new_shirts/shirt_1.jpg",
+    "image": "/ceremonial_silk_blend.jpg",
     "gallery": [
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg"
+      "/ceremonial_silk_blend.jpg"
     ],
     "rating": 4.8,
     "reviewsCount": 82,
@@ -830,295 +797,14 @@
     "description": "Decadent evening luxury. Deep ruby burgundy cotton velvet with quilted black satin shawl lapels and silk-braided frogging closure.",
     "fabric": "100% Italian Cotton Velvet",
     "threadCount": "420 GSM Rich Pile Velvet",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/ceremonial_velvet.jpg",
     "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
+      "/ceremonial_velvet.jpg"
     ],
     "rating": 5,
     "reviewsCount": 112,
     "tag": "LIMITED EDITION",
     "sortOrder": 25,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 26,
-    "slug": "bengal-stripe-blue-business-shirt",
-    "name": "SAVILE ROW DARK ESPRESSO TWILL",
-    "category": "formal_stripes",
-    "price": 2799,
-    "subtitle": "Superfine 140s Egyptian Giza Dark Espresso Twill.",
-    "description": "Deep dark chocolate espresso executive dress shirt crafted from double-ply 140s Egyptian Giza cotton with lustrous micro-sateen twill and spread collar.",
-    "fabric": "100% Egyptian Giza Sateen Twill",
-    "threadCount": "140s / 2-Ply Fine Twill",
-    "collar": "Classic London Cutaway Collar",
-    "cuff": "Dual Button Mitred Cuff",
-    "image": "/new_shirts/shirt_2.jpg",
-    "gallery": [
-      "/new_shirts/shirt_2.jpg"
-    ],
-    "rating": 4.9,
-    "reviewsCount": 96,
-    "tag": "EXECUTIVE STRIPE",
-    "sortOrder": 26,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 27,
-    "slug": "navy-executive-pinstripe-formal",
-    "name": "NAVY EXECUTIVE PINSTRIPE FORMAL",
-    "category": "formal_stripes",
-    "price": 2699,
-    "subtitle": "Italian 120s Double-Ply Poplin Bengal Stripe.",
-    "description": "Refined navy pencil pinstripes on brilliant white twill. Features single-needle tailoring, removable brass collar stays, and mother-of-pearl buttons.",
-    "fabric": "100% Egyptian Cotton",
-    "threadCount": "130s / 2-Ply Fine Twill",
-    "collar": "English Spread Collar",
-    "cuff": "Convertible Barrel Cuff",
-    "image": "/new_shirts/shirt_3.jpg",
-    "gallery": [
-      "/new_shirts/shirt_3.jpg"
-    ],
-    "rating": 4.8,
-    "reviewsCount": 78,
-    "tag": "POWER PINSTRIPE",
-    "sortOrder": 27,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 28,
-    "slug": "sky-blue-poplin-striped-formal",
-    "name": "SANDSTONE OATMEAL LINEN FORMAL",
-    "category": "formal_stripes",
-    "price": 2599,
-    "subtitle": "Breathable French Linen & Giza Cotton Blend.",
-    "description": "Subtle oatmeal and sandstone linen texture designed for sharp corporate style. Silky soft handfeel with all-day wrinkle resistance.",
-    "fabric": "80% Giza Cotton, 20% French Linen",
-    "threadCount": "110s Luxury Weave",
-    "collar": "Semi-Cutaway Collar",
-    "cuff": "Single Button Rounded Cuff",
-    "image": "/new_shirts/shirt_4.jpg",
-    "gallery": [
-      "/new_shirts/shirt_4.jpg"
-    ],
-    "rating": 4.9,
-    "reviewsCount": 64,
-    "tag": "SUMMER ESSENTIAL",
-    "sortOrder": 28,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 29,
-    "slug": "savile-row-charcoal-pinstripe",
-    "name": "TERRACOTTA CORAL PINSTRIPE FORMAL",
-    "category": "formal_stripes",
-    "price": 2899,
-    "subtitle": "Architectural Coral Rust Executive Pinstripes.",
-    "description": "Deep terracotta shadow pinstripes offering subtle contrast and unmatched sartorial authority. Styled with German interlining for a flawless collar arch.",
-    "fabric": "100% Giza 88 Long-Staple Cotton",
-    "threadCount": "140s / 2-Ply Royal Twill",
-    "collar": "Semi-Spread Formal Collar",
-    "cuff": "French Double Cuff",
-    "image": "/new_shirts/shirt_1.jpg",
-    "gallery": [
-      "/new_shirts/shirt_1.jpg"
-    ],
-    "rating": 5,
-    "reviewsCount": 110,
-    "tag": "BESTSELLER",
-    "sortOrder": 29,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 30,
-    "slug": "sandstone-linen-blend-formal-stripe",
-    "name": "SANDSTONE SARTORIAL STRIPED SHIRT",
-    "category": "formal_stripes",
-    "price": 2799,
-    "subtitle": "Warm Taupe & Cream Business Stripe.",
-    "description": "A warm, sophisticated alternate to classic blue. Micro taupe stripes tailored for executive brunches and business casual boardroom conferences.",
-    "fabric": "80% Giza Cotton, 20% French Linen",
-    "threadCount": "110s Luxury Weave",
-    "collar": "Classic Button-Down Formal",
-    "cuff": "Two-Button Mitred Cuff",
-    "image": "/new_shirts/shirt_3.jpg",
-    "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
-    ],
-    "rating": 4.8,
-    "reviewsCount": 58,
-    "tag": "EXCLUSIVE",
-    "sortOrder": 30,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 31,
-    "slug": "royal-dobby-weave-crisp-formal",
-    "name": "ROYAL DOBBY WEAVE CRISP FORMAL",
-    "category": "formal_bespoke",
-    "price": 2999,
-    "subtitle": "Micro Geometric Dobby Texture in Pure White.",
-    "description": "Intricate micro-geometric dobby structure that catches studio lighting with multidimensional depth. Luxurious mother-of-pearl buttons and split yoke.",
-    "fabric": "100% Egyptian Giza 140s Cotton",
-    "threadCount": "140s / 2-Ply Dobby Weave",
-    "collar": "English Spread Collar",
-    "cuff": "French Double Cuff",
-    "image": "/new_shirts/shirt_4.jpg",
-    "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
-    ],
-    "rating": 4.9,
-    "reviewsCount": 142,
-    "tag": "ROYAL TEXTURE",
-    "sortOrder": 31,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 32,
-    "slug": "french-cuff-noble-charcoal-formal",
-    "name": "FRENCH CUFF NOBLE CHARCOAL FORMAL",
-    "category": "formal_bespoke",
-    "price": 2899,
-    "subtitle": "Rich Anthracite Charcoal Twill with French Cuffs.",
-    "description": "Dark, commanding, and impeccably sharp. Deep anthracite twill designed to complement black tie suits and platinum cufflinks.",
-    "fabric": "100% Long-Staple Combed Cotton",
-    "threadCount": "130s / 2-Ply Heavy Twill",
-    "collar": "Cutaway Formal Collar",
-    "cuff": "Convertible French Cuff",
-    "image": "/new_shirts/shirt_1.jpg",
-    "gallery": [
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg"
-    ],
-    "rating": 4.9,
-    "reviewsCount": 88,
-    "tag": "EVENING BESPOKE",
-    "sortOrder": 32,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 33,
-    "slug": "milano-cutaway-sea-island-white",
-    "name": "MILANO CUTAWAY SEA ISLAND WHITE",
-    "category": "formal_bespoke",
-    "price": 3199,
-    "subtitle": "Rare West Indian Sea Island Cotton.",
-    "description": "The gold standard of luxury dress shirts. Silken touch, natural lustre, and reinforced side gussets tailored by master shirtmakers.",
-    "fabric": "100% West Indian Sea Island Cotton",
-    "threadCount": "160s Ultra-Fine Poplin",
-    "collar": "Milano Full Cutaway Collar",
-    "cuff": "Dual-Use Mitred Cuff",
-    "image": "/new_shirts/shirt_2.jpg",
-    "gallery": [
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg"
-    ],
-    "rating": 5,
-    "reviewsCount": 164,
-    "tag": "ULTRA LUXURY",
-    "sortOrder": 33,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 34,
-    "slug": "austrian-herringbone-sky-formal",
-    "name": "AUSTRIAN HERRINGBONE SKY FORMAL",
-    "category": "formal_bespoke",
-    "price": 2899,
-    "subtitle": "Textured V-Weave Herringbone in Sky Blue.",
-    "description": "Subtle chevron herringbone weave offering exceptional drape and structured silhouette under bespoke tailored jackets.",
-    "fabric": "100% Austrian Alpine Cotton",
-    "threadCount": "120s / 2-Ply Herringbone",
-    "collar": "Semi-Spread Formal Collar",
-    "cuff": "Mitred Two-Button Cuff",
-    "image": "/new_shirts/shirt_3.jpg",
-    "gallery": [
-      "/new_shirts/shirt_2.jpg",
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg"
-    ],
-    "rating": 4.8,
-    "reviewsCount": 74,
-    "tag": "HERRINGBONE WEAVE",
-    "sortOrder": 34,
-    "colorways": [],
-    "active": true,
-    "featured": true,
-    "customizable": true,
-    "stock": null
-  },
-  {
-    "id": 35,
-    "slug": "monogrammed-satin-twill-dress-shirt",
-    "name": "MONOGRAMMED SATIN TWILL FORMAL",
-    "category": "formal_bespoke",
-    "price": 3299,
-    "subtitle": "High-Lustre Formal Satin Twill with Monogramming.",
-    "description": "Signature boardroom dress shirt featuring high-lustre satin twill weave and complimentary personalized cuff monogramming.",
-    "fabric": "100% Extra-Long Staple Cotton",
-    "threadCount": "150s / 2-Ply Satin Twill",
-    "collar": "Classic English Spread",
-    "cuff": "French Double Cuff",
-    "image": "/new_shirts/shirt_4.jpg",
-    "gallery": [
-      "/new_shirts/shirt_3.jpg",
-      "/new_shirts/shirt_4.jpg",
-      "/new_shirts/shirt_1.jpg",
-      "/new_shirts/shirt_2.jpg"
-    ],
-    "rating": 4.9,
-    "reviewsCount": 120,
-    "tag": "MONOGRAM ICON",
-    "sortOrder": 35,
     "colorways": [],
     "active": true,
     "featured": true,

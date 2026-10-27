@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Heart, ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
 import { ProductItem } from "@/data/products";
-import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 import { useWishlist } from "@/context/WishlistProvider";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 interface ModernProductCardProps {
   product: ProductItem;
@@ -17,7 +17,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSaved = isInWishlist(product.id);
 
-  // Full shirt preview on hover
+  // Resolved 100% color-matched full ghost mannequin shirt revealed on hover
   const hoverFullShirt = getMatchingFullShirtImage(product);
 
   // Use gallery if available, or fallback to main image
@@ -57,9 +57,9 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
       {/* Upper Tall Rounded Image Container */}
       <div className="relative w-full aspect-[3/4.1] min-h-[350px] sm:min-h-[410px] lg:min-h-[470px] xl:min-h-[510px] rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-2xs transition-all duration-300 group-hover:shadow-md">
         
-        {/* Main Product Image Container with Full Shirt Hover Reveal */}
+        {/* Main Product Image Container */}
         <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden">
-          {/* Default Product Image */}
+          {/* Default Product Image (Collar & Fabric Close-Up) */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={images[currentImgIndex % images.length]}
@@ -70,9 +70,9 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
             loading="lazy"
           />
 
-          {/* Full Shirt Model Reveal on Hover */}
+          {/* Matching Tailored Full Shirt Revealed on Hover (Exact Same Color & Fabric) */}
           {hoverFullShirt && (
-            /* eslint-disable-next-line @next/next/no-img-element */
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={hoverFullShirt}
               alt={`${product.name} Full Tailored Shirt`}

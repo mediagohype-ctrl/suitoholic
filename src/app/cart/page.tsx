@@ -43,14 +43,14 @@ function getShirtImage(p: ProductItem): string {
   if (p.image) return p.image;
   if (p.gallery && p.gallery.length > 0) return p.gallery[0];
   const fam = getShirtColorFamily(p);
-  if (fam === "espresso") return "/new_shirts/shirt_2.jpg";
-  if (fam === "bengal_blue") return "/new_shirts/shirt_3.jpg";
-  if (fam === "sandstone_linen") return "/new_shirts/shirt_4.jpg";
-  if (fam === "coral_stripe") return "/new_shirts/shirt_1.jpg";
-  if (fam === "white") return "/new_shirts/shirt_5.jpg";
-  if (fam === "skyblue") return "/new_shirts/shirt_9.jpg";
-  if (fam === "navy_solid") return "/new_shirts/shirt_7.jpg";
-  if (fam === "charcoal") return "/new_shirts/shirt_8.jpg";
+  if (fam === "espresso") return "/new_shirts/shirt_19.jpg";
+  if (fam === "bengal_blue") return "/new_shirts/shirt_20.jpg";
+  if (fam === "sandstone_linen") return "/new_shirts/shirt_15.jpg";
+  if (fam === "coral_stripe") return "/new_shirts/shirt_14.jpg";
+  if (fam === "white") return "/new_shirts/shirt_25.jpg";
+  if (fam === "skyblue") return "/new_shirts/shirt_21.jpg";
+  if (fam === "navy_solid") return "/new_shirts/shirt_22.jpg";
+  if (fam === "charcoal") return "/new_shirts/shirt_17.jpg";
   return "/new_shirts/shirt_2.jpg";
 }
 

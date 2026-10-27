@@ -22,14 +22,19 @@ export const DEFAULT_SETTINGS: StoreSettings = {
 };
 
 const FORMAL_COLORWAYS = [
-  { name: "Dark Espresso Twill", hex: "#2B1A16", productSlug: "savile-row-dark-espresso-twill" },
-  { name: "Navy Bengal Stripe", hex: "#385286", productSlug: "navy-executive-pinstripe-formal" },
-  { name: "Sandstone Oatmeal Linen", hex: "#D2C5B5", productSlug: "sandstone-oatmeal-linen-formal" },
-  { name: "Terracotta Coral Stripe", hex: "#B86B5A", productSlug: "terracotta-coral-pinstripe-formal" },
-  { name: "Crisp Egyptian White", hex: "#F8F8F8", productSlug: "royal-formal-crisp-white-shirt" },
-  { name: "Sky Blue Oxford", hex: "#C7DBEC", productSlug: "classic-sky-blue-oxford-formal" },
-  { name: "Midnight Navy Solid", hex: "#1C2E52", productSlug: "midnight-navy-corporate-solid" },
-  { name: "Anthracite Charcoal Twill", hex: "#4B4D50", productSlug: "anthracite-charcoal-twill-formal" },
+  { name: "Azure Sky Blue Stripe", hex: "#7E9CB9", productSlug: "azure-bengal-stripe-formal" },
+  { name: "Terracotta Brick Stripe", hex: "#B86B5A", productSlug: "terracotta-brick-bengal-stripe" },
+  { name: "Charcoal Executive Pinstripe", hex: "#4B4D50", productSlug: "charcoal-executive-pinstripe-formal" },
+  { name: "Navy Banker Stripe", hex: "#162340", productSlug: "navy-executive-bengal-stripe-formal" },
+  { name: "Savile Row Dark Espresso", hex: "#281813", productSlug: "savile-row-dark-espresso-twill" },
+  { name: "Imperial Violet Stripe", hex: "#5A3D66", productSlug: "imperial-violet-executive-stripe" },
+  { name: "Sandstone Oatmeal Linen", hex: "#B5A695", productSlug: "sandstone-oatmeal-linen-formal" },
+  { name: "Sage Mint Sartorial Stripe", hex: "#7D9488", productSlug: "sage-mint-sartorial-stripe" },
+  { name: "Rose Pastel Pinstripe", hex: "#C49A9A", productSlug: "rose-pastel-pinstripe-formal" },
+  { name: "Magenta Wine Royal Stripe", hex: "#8B3A62", productSlug: "magenta-wine-royal-stripe" },
+  { name: "Shadow Monochrome Stripe", hex: "#3A3D40", productSlug: "shadow-monochrome-stripe-formal" },
+  { name: "Espresso Chocolate Stripe", hex: "#38241D", productSlug: "espresso-chocolate-bengal-stripe" },
+  { name: "Steel Grey Royal Stripe", hex: "#7D8187", productSlug: "steel-grey-royal-stripe-formal" },
 ];
 
 function fallbackBundle(): SiteBundle {

@@ -8,11 +8,11 @@
       "FORMAL SHIRTS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/new_shirts/shirt_19.jpg",
     "homeTitle": "Exclusive Formal Shirts",
     "description": "",
-    "tag": "COLLECTION 01 • PURE FORMAL DRESS SHIRTS",
-    "bgImage": "/new_shirts/shirt_2.jpg",
+    "tag": "COLLECTION 01 \u2022 PURE FORMAL DRESS SHIRTS",
+    "bgImage": "/new_shirts/shirt_19.jpg",
     "showOnHome": true,
     "sortOrder": 1,
     "active": true
@@ -29,8 +29,8 @@
     "image": "/new_shirts/shirt_3.jpg",
     "homeTitle": "Best Sellers",
     "description": "",
-    "tag": "COLLECTION 02 • BEST SELLERS",
-    "bgImage": "/new_shirts/shirt_3.jpg",
+    "tag": "COLLECTION 02 \u2022 BEST SELLERS",
+    "bgImage": "/new_shirts/shirt_21.jpg",
     "showOnHome": true,
     "sortOrder": 2,
     "active": true
@@ -47,8 +47,8 @@
     "image": "/new_shirts/shirt_4.jpg",
     "homeTitle": "SHOP BY FABRICS",
     "description": "",
-    "tag": "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
-    "bgImage": "/new_shirts/shirt_4.jpg",
+    "tag": "COLLECTION 03 \u2022 SARTORIAL FORMAL SHIRTS",
+    "bgImage": "/new_shirts/shirt_18.jpg",
     "showOnHome": true,
     "sortOrder": 3,
     "active": true
@@ -65,8 +65,8 @@
     "image": "/pant_pleated_beige.jpg",
     "homeTitle": "Tailored Trousers & Pants",
     "description": "Italian pleated wool dress pants, sartorial Gurkha trousers, and premium stretch chinos.",
-    "tag": "COLLECTION 04 • TAILORED PANTS",
-    "bgImage": "/new_shirts/shirt_4.jpg",
+    "tag": "COLLECTION 04 \u2022 TAILORED PANTS",
+    "bgImage": "/pant_pleated_beige.jpg",
     "showOnHome": false,
     "sortOrder": 4,
     "active": true
@@ -83,8 +83,8 @@
     "image": "/tshirt_knit_navy_polo.jpg",
     "homeTitle": "Premium Polos & T-Shirts",
     "description": "Heavyweight Supima cotton tees, silk-blend knit polos, and fine-gauge textured casuals.",
-    "tag": "COLLECTION 05 • LUXURY CASUALS",
-    "bgImage": "/new_shirts/shirt_1.jpg",
+    "tag": "COLLECTION 05 \u2022 LUXURY CASUALS",
+    "bgImage": "/tshirt_knit_navy_polo.jpg",
     "showOnHome": false,
     "sortOrder": 5,
     "active": true

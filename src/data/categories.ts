@@ -11,11 +11,11 @@ export const fallbackCategories: Category[] = [
       "FORMAL SHIRTS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_2.jpg",
+    "image": "/new_shirts/shirt_19.jpg",
     "homeTitle": "Exclusive Formal Shirts",
     "description": "",
     "tag": "COLLECTION 01 • PURE FORMAL DRESS SHIRTS",
-    "bgImage": "/new_shirts/shirt_2.jpg",
+    "bgImage": "/new_shirts/shirt_19.jpg",
     "showOnHome": true,
     "sortOrder": 1,
     "active": true
@@ -33,7 +33,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Best Sellers",
     "description": "",
     "tag": "COLLECTION 02 • BEST SELLERS",
-    "bgImage": "/new_shirts/shirt_3.jpg",
+    "bgImage": "/new_shirts/shirt_20.jpg",
     "showOnHome": true,
     "sortOrder": 2,
     "active": true
@@ -51,7 +51,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "SHOP BY FABRICS",
     "description": "",
     "tag": "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
-    "bgImage": "/new_shirts/shirt_4.jpg",
+    "bgImage": "/new_shirts/shirt_18.jpg",
     "showOnHome": true,
     "sortOrder": 3,
     "active": true
@@ -69,7 +69,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Tailored Trousers & Pants",
     "description": "Italian pleated wool dress pants, sartorial Gurkha trousers, and premium stretch chinos.",
     "tag": "COLLECTION 04 • TAILORED PANTS",
-    "bgImage": "/new_shirts/shirt_4.jpg",
+    "bgImage": "/pant_pleated_beige.jpg",
     "showOnHome": false,
     "sortOrder": 4,
     "active": true
@@ -87,7 +87,7 @@ export const fallbackCategories: Category[] = [
     "homeTitle": "Premium Polos & T-Shirts",
     "description": "Heavyweight Supima cotton tees, silk-blend knit polos, and fine-gauge textured casuals.",
     "tag": "COLLECTION 05 • LUXURY CASUALS",
-    "bgImage": "/new_shirts/shirt_1.jpg",
+    "bgImage": "/tshirt_knit_navy_polo.jpg",
     "showOnHome": false,
     "sortOrder": 5,
     "active": true
