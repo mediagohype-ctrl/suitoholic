@@ -23,7 +23,7 @@ import CustomizationModal, { CustomFitState, CustomizationModalProduct } from "@
 import { useCart } from "@/context/CartProvider";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import { allProducts, EIGHT_CANONICAL_SISTER_SHIRTS } from "@/data/products";
-import { getShirtColorFamily } from "@/components/MannequinShirtViewer";
+import { getShirtId, getShirtColorFamily } from "@/components/MannequinShirtViewer";
 import type { CustomFit, ProductItem } from "@/lib/types";
 
 function getShortShirtTitle(name: string): string {
@@ -42,16 +42,8 @@ function getShortShirtTitle(name: string): string {
 function getShirtImage(p: ProductItem): string {
   if (p.image) return p.image;
   if (p.gallery && p.gallery.length > 0) return p.gallery[0];
-  const fam = getShirtColorFamily(p);
-  if (fam === "espresso") return "/new_shirts/shirt_19.jpg";
-  if (fam === "bengal_blue") return "/new_shirts/shirt_20.jpg";
-  if (fam === "sandstone_linen") return "/new_shirts/shirt_15.jpg";
-  if (fam === "coral_stripe") return "/new_shirts/shirt_14.jpg";
-  if (fam === "white") return "/new_shirts/shirt_25.jpg";
-  if (fam === "skyblue") return "/new_shirts/shirt_21.jpg";
-  if (fam === "navy_solid") return "/new_shirts/shirt_22.jpg";
-  if (fam === "charcoal") return "/new_shirts/shirt_17.jpg";
-  return "/new_shirts/shirt_2.jpg";
+  const shirtId = getShirtId(p);
+  return `/new_shirts/shirt_${shirtId}.jpg`;
 }
 
 export default function CartPage() {

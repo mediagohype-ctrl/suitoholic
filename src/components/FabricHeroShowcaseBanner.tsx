@@ -34,7 +34,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 88,
     durability: 96,
     drape: 92,
-    image: "/new_shirts/shirt_4.jpg",
+    image: "/new_shirts/shirt_13.jpg",
     code: "V-13672/06",
   },
   {
@@ -50,7 +50,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 94,
     durability: 91,
     drape: 95,
-    image: "/new_shirts/shirt_3.jpg",
+    image: "/new_shirts/shirt_20.jpg",
     code: "SH-403-BL",
   },
   {
@@ -66,7 +66,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 95,
     durability: 90,
     drape: 93,
-    image: "/new_shirts/shirt_1.jpg",
+    image: "/new_shirts/shirt_15.jpg",
     code: "SH-403-RS",
   },
   {
@@ -82,7 +82,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 97,
     durability: 89,
     drape: 96,
-    image: "/new_shirts/shirt_2.jpg",
+    image: "/new_shirts/shirt_19.jpg",
     code: "SJ-200-BX",
   },
 ];

@@ -18,7 +18,7 @@ export default function ShopByFabricsSection() {
       title: "SHOP BY FABRICS",
       subtitle: "Explore our curated bespoke luxury fabrics.",
       tag: "FABRICS",
-      bgImage: "/new_shirts/shirt_3.jpg",
+      bgImage: "/new_shirts/shirt_18.jpg",
     };
 
   const fabricProducts = products.filter(

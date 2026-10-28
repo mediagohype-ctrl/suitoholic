@@ -115,7 +115,7 @@ export default function CuratedStartingPoints({
   onSelectLook,
 }: CuratedStartingPointsProps) {
   return (
-    <section id="curated-looks" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden select-none">
+    <section id="curated-starting-points" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden select-none">
       <div className="relative z-10 w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header: Eyebrow, Ornate Calligraphic Title, Subtitle */}

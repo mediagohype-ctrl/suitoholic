@@ -82,10 +82,12 @@ export default function CustomizationModal({
   const [activeItemName, setActiveItemName] = useState<string>(() => productName);
 
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
-  if (isOpen !== prevIsOpen) {
+  const [prevProduct, setPrevProduct] = useState(product);
+  if (isOpen !== prevIsOpen || product !== prevProduct) {
     setPrevIsOpen(isOpen);
+    setPrevProduct(product);
     if (isOpen) {
-      setCurrentStep(1);
+      if (isOpen !== prevIsOpen) setCurrentStep(1);
       setActiveItem(product);
       setActiveItemName(productName);
     }

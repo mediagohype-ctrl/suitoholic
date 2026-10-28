@@ -20,6 +20,7 @@ const ShowcaseDivider = () => (
   </div>
 );
 import MannequinShirtViewer from "@/components/MannequinShirtViewer";
+import CustomizationModal from "@/components/CustomizationModal";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, Scissors, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import confetti from "canvas-confetti";
@@ -120,6 +121,8 @@ function CustomShirtConfiguratorContent() {
     return list.length > 0 ? list : products;
   }, [products]);
 
+  const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+
   const handleSelectCuratedLook = (item: CuratedLookItem) => {
     const found = products.find((p) => p.slug === item.slug);
     if (found) {
@@ -137,16 +140,12 @@ function CustomShirtConfiguratorContent() {
         category: "formal_shirts",
         threadCount: "140s",
         image: item.image,
-        gallery: [item.image],
+        gallery: [item.image, item.hoverImage || item.image],
         rating: 5,
         reviewsCount: 150,
       } as ProductItem);
     }
-
-    const target = document.getElementById("appointment-booking") || document.getElementById("curated-looks");
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setIsCustomizerOpen(true);
   };
 
   // Chest measurement mapping (chest -> collar/shoulder) from the customizer section
@@ -530,6 +529,28 @@ function CustomShirtConfiguratorContent() {
 
       {/* Comprehensive Luxury E-Commerce Footer */}
       <Footer />
+
+      {/* 6-Step Bespoke Customization Popup Modal */}
+      {activeProduct && (
+        <CustomizationModal
+          isOpen={isCustomizerOpen}
+          onClose={() => setIsCustomizerOpen(false)}
+          productName={activeProduct.name}
+          product={activeProduct}
+          initialChestSize={customFit.chestSize}
+          submitting={busy}
+          onConfirmCustomization={async (fit) => {
+            await addItem({
+              productId: activeProduct.id,
+              quantity: 1,
+              size: String(fit.chestSize),
+              customization: fit,
+            });
+            setIsCustomizerOpen(false);
+            triggerCelebration();
+          }}
+        />
+      )}
     </div>
   );
 }

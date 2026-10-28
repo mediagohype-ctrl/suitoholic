@@ -43,7 +43,7 @@ function fallbackBundle(): SiteBundle {
     categories: fallbackCategories,
     products: allProducts.map((p) => ({
       ...p,
-      colorways: p.category === "formal_shirts" ? FORMAL_COLORWAYS : [],
+      colorways: p.category.startsWith("formal") ? FORMAL_COLORWAYS : [],
       customizable: true,
     })),
     settings: DEFAULT_SETTINGS,

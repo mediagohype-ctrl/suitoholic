@@ -11,11 +11,11 @@ export const fallbackCategories: Category[] = [
       "FORMAL SHIRTS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_19.jpg",
+    "image": "/new_shirts/shirt_21.jpg",
     "homeTitle": "Exclusive Formal Shirts",
     "description": "",
     "tag": "COLLECTION 01 • PURE FORMAL DRESS SHIRTS",
-    "bgImage": "/new_shirts/shirt_19.jpg",
+    "bgImage": "/new_shirts/shirt_21.jpg",
     "showOnHome": true,
     "sortOrder": 1,
     "active": true
@@ -29,7 +29,7 @@ export const fallbackCategories: Category[] = [
       "SELLERS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_3.jpg",
+    "image": "/new_shirts/shirt_20.jpg",
     "homeTitle": "Best Sellers",
     "description": "",
     "tag": "COLLECTION 02 • BEST SELLERS",
@@ -47,7 +47,7 @@ export const fallbackCategories: Category[] = [
       "TWILL SHIRTS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_4.jpg",
+    "image": "/new_shirts/shirt_18.jpg",
     "homeTitle": "SHOP BY FABRICS",
     "description": "",
     "tag": "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",

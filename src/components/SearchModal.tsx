@@ -55,19 +55,19 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       id: "winter_2026",
       title: "Winter Collection 2026",
       href: "/shop?category=formal_shirts",
-      image: "/new_shirts/shirt_1.jpg",
+      image: "/new_shirts/shirt_21.jpg",
     },
     {
       id: "formal_stripes",
       title: "Bengal Stripe Collection",
       href: "/shop?category=formal_stripes",
-      image: "/new_shirts/shirt_2.jpg",
+      image: "/new_shirts/shirt_20.jpg",
     },
     {
       id: "formal_bespoke",
       title: "Bespoke Cutaway & Twill Shirts",
       href: "/shop?category=formal_bespoke",
-      image: "/new_shirts/shirt_3.jpg",
+      image: "/new_shirts/shirt_14.jpg",
     },
     {
       id: "fabrics",

@@ -73,10 +73,84 @@ export function getShirtColorFamily(
   return "bengal_blue";
 }
 
-function getCollarKey(collarStyle: string): "mandarin" | "buttondown" | "spread" {
+const ID_TO_SHIRT_NUM: Record<number, number> = {
+  1: 21,  // Azure Sky Blue Bengal Stripe
+  2: 14,  // Terracotta Brick Bengal Stripe
+  3: 17,  // Charcoal Executive Pinstripe
+  4: 20,  // Navy Executive Bengal Stripe
+  5: 19,  // Savile Row Dark Espresso Twill
+  6: 22,  // Imperial Violet Executive Stripe
+  7: 13,  // Sandstone Oatmeal Linen
+  8: 18,  // Sage Mint Sartorial Stripe
+  9: 15,  // Rose Pastel Pinstripe
+  10: 16, // Magenta Wine Royal Stripe
+  11: 23, // Shadow Monochrome Stripe
+  12: 24, // Espresso Chocolate Bengal Stripe
+  13: 25, // Steel Grey Royal Stripe
+};
+
+export function getShirtId(
+  product?: { id?: number | string; name?: string; image?: string; gallery?: string[]; slug?: string } | null
+): number {
+  if (!product) return 21;
+
+  // 1. Check direct numeric ID (1 to 13)
+  if (typeof product.id === "number" && ID_TO_SHIRT_NUM[product.id]) {
+    return ID_TO_SHIRT_NUM[product.id];
+  }
+  if (typeof product.id === "string") {
+    const parsed = parseInt(product.id, 10);
+    if (!isNaN(parsed) && ID_TO_SHIRT_NUM[parsed]) {
+      return ID_TO_SHIRT_NUM[parsed];
+    }
+  }
+
+  // 2. Direct matching from image path (shirt_13 to shirt_25)
+  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
+  for (let i = 13; i <= 25; i++) {
+    if (img.includes(`shirt_${i}`) || img.includes(`full_shirt_${i}`)) {
+      return i;
+    }
+  }
+
+  // 3. Direct matching from gallery array
+  if (product.gallery) {
+    for (const g of product.gallery) {
+      const gLower = (g || "").toLowerCase();
+      for (let i = 13; i <= 25; i++) {
+        if (gLower.includes(`shirt_${i}`) || gLower.includes(`full_shirt_${i}`)) {
+          return i;
+        }
+      }
+    }
+  }
+
+  // 4. Exact slug matching (CRITICAL: specific colors first, NEVER generic "bengal"!)
+  const slug = (product.slug || "").toLowerCase();
+  const name = (product.name || "").toLowerCase();
+
+  if (slug.includes("terracotta") || slug.includes("brick") || name.includes("terracotta")) return 14;
+  if (slug.includes("rose") || slug.includes("pastel") || name.includes("rose")) return 15;
+  if (slug.includes("magenta") || slug.includes("wine") || name.includes("magenta")) return 16;
+  if (slug.includes("charcoal") || name.includes("charcoal")) return 17;
+  if (slug.includes("sage") || slug.includes("mint") || name.includes("sage")) return 18;
+  if (slug.includes("chocolate") || name.includes("chocolate")) return 24;
+  if (slug.includes("espresso") || name.includes("espresso")) return 19;
+  if (slug.includes("navy") || name.includes("navy")) return 20;
+  if (slug.includes("azure") || slug.includes("sky") || name.includes("azure")) return 21;
+  if (slug.includes("violet") || slug.includes("imperial") || name.includes("violet")) return 22;
+  if (slug.includes("shadow") || slug.includes("monochrome") || name.includes("shadow")) return 23;
+  if (slug.includes("steel") || slug.includes("grey") || slug.includes("gray") || name.includes("steel")) return 25;
+  if (slug.includes("sandstone") || slug.includes("linen") || slug.includes("oatmeal") || name.includes("sandstone")) return 13;
+
+  return 21;
+}
+
+function getCollarKey(collarStyle: string): "mandarin" | "buttondown" | "cutaway" | "spread" {
   const norm = (collarStyle || "").toLowerCase();
   if (norm.includes("mandarin") || norm.includes("band")) return "mandarin";
   if (norm.includes("button")) return "buttondown";
+  if (norm.includes("cutaway")) return "cutaway";
   return "spread";
 }
 
@@ -93,65 +167,30 @@ function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
  * 100% color-consistent end-to-end from card hover to Step 1 customizer.
  */
 function getMatchingShirtModel(
-  product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null,
+  product?: { id?: number | string; name?: string; image?: string; gallery?: string[]; slug?: string } | null,
   isHalfSleeve: boolean = false,
   bodyFit: "lean" | "regular" | "tummy" = "lean",
   collarStyle: string = ""
 ): string {
-  if (!product) return "/customizer/full_shirt_21.png";
-
-  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
-
-  // 1. Direct 1-to-1 matching for user's 13 real shirts (shirt_13 to shirt_25)
-  for (let i = 13; i <= 25; i++) {
-    if (img.includes(`shirt_${i}`) || img.includes(`full_shirt_${i}`)) {
-      return `/customizer/full_shirt_${i}.png`;
-    }
-  }
-
-  // 2. Direct matching from gallery array
-  if (product.gallery) {
-    for (const g of product.gallery) {
-      const gLower = (g || "").toLowerCase();
-      for (let i = 13; i <= 25; i++) {
-        if (gLower.includes(`shirt_${i}`) || gLower.includes(`full_shirt_${i}`)) {
-          return `/customizer/full_shirt_${i}.png`;
-        }
-      }
-    }
-  }
-
-  // 3. Fallback slug matching
-  const slug = (product.slug || "").toLowerCase();
-  if (slug.includes("azure") || slug.includes("bengal-stripe")) return "/customizer/full_shirt_21.png";
-  if (slug.includes("terracotta") || slug.includes("brick")) return "/customizer/full_shirt_14.png";
-  if (slug.includes("charcoal-executive")) return "/customizer/full_shirt_17.png";
-  if (slug.includes("steel-grey")) return "/customizer/full_shirt_25.png";
-  if (slug.includes("espresso") || slug.includes("savile-row-dark")) return "/customizer/full_shirt_19.png";
-  if (slug.includes("navy-executive") || slug.includes("navy-banker")) return "/customizer/full_shirt_20.png";
-  if (slug.includes("rose") || slug.includes("pastel")) return "/customizer/full_shirt_15.png";
-  if (slug.includes("magenta") || slug.includes("wine")) return "/customizer/full_shirt_16.png";
-  if (slug.includes("sage") || slug.includes("mint")) return "/customizer/full_shirt_18.png";
-  if (slug.includes("imperial") || slug.includes("violet")) return "/customizer/full_shirt_22.png";
-  if (slug.includes("shadow") || slug.includes("monochrome")) return "/customizer/full_shirt_23.png";
-  if (slug.includes("chocolate") || slug.includes("fine-tweed")) return "/customizer/full_shirt_24.png";
-  if (slug.includes("sandstone") || slug.includes("linen")) return "/customizer/full_shirt_13.png";
-
-  return "/customizer/full_shirt_21.png";
+  const shirtId = getShirtId(product);
+  return `/customizer/full_shirt_${shirtId}.png`;
 }
 
 function getFoldedAndCuffAssets(
   product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null,
   cuffStyle: string = "CLASSIC CUFF",
   collarStyle: string = "SPREAD"
-): { foldedImage: string; cuffDetailImage: string } {
+): { foldedImage: string; cuffDetailImage: string; shirtId: number; colorKey: string } {
+  const shirtId = getShirtId(product);
   const cuffKey = getCuffKey(cuffStyle);
   const collarKey = getCollarKey(collarStyle);
   const colorKey = getShirtColorFamily(product);
 
   return {
-    foldedImage: `/customizer/shirt_folded_${colorKey}_${collarKey}_${cuffKey}.jpg`,
-    cuffDetailImage: `/customizer/cuff_detail_${colorKey}_${cuffKey}.jpg`,
+    shirtId,
+    colorKey,
+    foldedImage: `/customizer/shirt_folded_${shirtId}_${collarKey}_${cuffKey}.jpg`,
+    cuffDetailImage: `/customizer/cuff_detail_${shirtId}_${cuffKey}.jpg`,
   };
 }
 
@@ -170,9 +209,8 @@ export default function MannequinShirtViewer({
   const isHalfSleeve = sleeveType === "half";
 
   // Step 5: High-end luxury folded shirt (showing collar & cuff) and macro cuff close-up
-  const colorKey = getShirtColorFamily(product);
   const cuffKey = getCuffKey(cuffStyle);
-  const { foldedImage, cuffDetailImage } = getFoldedAndCuffAssets(product, cuffStyle, collarStyle);
+  const { foldedImage, cuffDetailImage, shirtId, colorKey } = getFoldedAndCuffAssets(product, cuffStyle, collarStyle);
 
   // Complete bespoke tailored made-shirt photo dynamically resolved to the chosen product/colorway, sleeve length, body fit & collar style!
   const fullShirtPhoto = getMatchingShirtModel(product, false, bodyFit, collarStyle);
@@ -269,7 +307,7 @@ export default function MannequinShirtViewer({
                   className="w-full h-full object-cover object-center transition-all duration-300 ease-out animate-in fade-in"
                   loading="eager"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = `/customizer/shirt_folded_${colorKey}_spread_classic.jpg`;
+                    (e.currentTarget as HTMLImageElement).src = `/customizer/shirt_folded_${shirtId}_spread_classic.jpg`;
                   }}
                 />
               </div>
@@ -296,7 +334,7 @@ export default function MannequinShirtViewer({
                   className="w-full h-full object-cover object-center transition-all duration-300 ease-out animate-in fade-in"
                   loading="eager"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = `/customizer/cuff_detail_${colorKey}_${cuffKey}.jpg`;
+                    (e.currentTarget as HTMLImageElement).src = `/customizer/cuff_detail_${shirtId}_${cuffKey}.jpg`;
                   }}
                 />
               </div>
