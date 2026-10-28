@@ -715,14 +715,4 @@ export const allProducts: ProductItem[] = [
     reviewsCount: 112,
     tag: "LIMITED EDITION",
   },
-
-  // ==========================================
-  // 6. BEST SELLERS (USER BATCH)
-  // ==========================================
-  ...USER_CATALOG_SHIRTS.filter((p) => p.category === "formal_stripes"),
-
-  // ==========================================
-  // 7. LUXURY TEXTURED & BESPOKE (USER BATCH)
-  // ==========================================
-  ...USER_CATALOG_SHIRTS.filter((p) => p.category === "formal_bespoke"),
 ];

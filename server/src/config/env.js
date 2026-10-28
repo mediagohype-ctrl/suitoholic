@@ -1,4 +1,12 @@
-import "dotenv/config";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+import dotenv from "dotenv";
+
+dotenv.config();
+if (!process.env.DATABASE_URL) {
+  const dir = dirname(fileURLToPath(import.meta.url));
+  dotenv.config({ path: resolve(dir, "../../.env") });
+}
 
 const toBool = (v, fallback) => (v === undefined || v === "" ? fallback : ["1", "true", "yes"].includes(String(v).toLowerCase()));
 const toList = (v) => (v ? v.split(",").map((s) => s.trim()).filter(Boolean) : []);

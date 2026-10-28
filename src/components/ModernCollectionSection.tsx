@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CollectionCategory, ProductItem } from "@/data/products";
@@ -92,8 +92,19 @@ export default function ModernCollectionSection({
     colId === "formal_bespoke" ||
     (headerTitle && headerTitle.toLowerCase().includes("fabric"));
 
+  const uniqueProducts = useMemo(() => {
+    if (!products || products.length === 0) return [];
+    const seen = new Set<string | number>();
+    return products.filter((p) => {
+      const key = p?.id ?? p?.slug;
+      if (key === undefined || key === null || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [products]);
+
   const displayProducts =
-    products && products.length >= 3 ? products : FALLBACK_FABRIC_ITEMS;
+    uniqueProducts.length >= 3 ? uniqueProducts : FALLBACK_FABRIC_ITEMS;
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -172,9 +183,9 @@ export default function ModernCollectionSection({
             ref={scrollRef}
             className="flex items-start gap-3 sm:gap-4 lg:gap-5 overflow-x-auto scrollbar-none scroll-smooth pb-3 pt-1 px-0.5"
           >
-            {displayProducts.map((product) => (
+            {displayProducts.map((product, idx) => (
               <Link
-                key={product.id}
+                key={`${product.id}-${product.slug || idx}`}
                 href={`/product/${product.slug}`}
                 className="group flex flex-col items-center cursor-pointer w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)] shrink-0"
               >
@@ -205,8 +216,8 @@ export default function ModernCollectionSection({
         /* ======================================================== */
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
-            {products.slice(0, 4).map((product) => (
-              <div key={product.id} className="w-full">
+            {uniqueProducts.slice(0, 4).map((product, idx) => (
+              <div key={`${product.id}-${product.slug || idx}`} className="w-full">
                 <ModernProductCard product={product} />
               </div>
             ))}
