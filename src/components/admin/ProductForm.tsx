@@ -27,54 +27,54 @@ import { Badge, Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
 
 export interface ImageStepDef {
   step: number;
+  breadcrumb: string;
   title: string;
-  easyName: string;
-  hint: string;
+  subtitle: string;
   shortLabel: string;
 }
 
 export const PRODUCT_IMAGE_STEPS: ImageStepDef[] = [
   {
     step: 1,
-    title: "Step 1: Front Fabric & Main Look",
-    easyName: "Front View (Main Card Photo)",
-    hint: "Close-up front view of collar & shirt fabric. This is the main photo shown on catalog cards and product listings.",
-    shortLabel: "Front View",
+    breadcrumb: "CHEST SIZE",
+    title: "SELECT YOUR CHEST SIZE",
+    subtitle: "Choose your chest size for the perfect fit.",
+    shortLabel: "Chest Size",
   },
   {
     step: 2,
-    title: "Step 2: Full Body & Fit (Mannequin)",
-    easyName: "Full Shirt Fit (Silhouette View)",
-    hint: "Full-length mannequin or model view showing garment drape, body cut, and overall fit silhouette.",
-    shortLabel: "Full Body Fit",
+    breadcrumb: "BODY TYPE",
+    title: "CHOOSE YOUR BODY TYPE",
+    subtitle: "Find the fit that matches your body shape and comfort preference.",
+    shortLabel: "Body Type",
   },
   {
     step: 3,
-    title: "Step 3: Collar Style Detail",
-    easyName: "Collar Close-Up (Cut & Stitching)",
-    hint: "Detailed close-up showing collar spread, band height, and neckline craftsmanship.",
-    shortLabel: "Collar Detail",
+    breadcrumb: "HEIGHT",
+    title: "SELECT YOUR HEIGHT",
+    subtitle: "Choose the height option that fits you.",
+    shortLabel: "Height",
   },
   {
     step: 4,
-    title: "Step 4: Sleeves & Cuffs Detail",
-    easyName: "Sleeve & Wrist Cuffs (Buttons)",
-    hint: "Close-up view of sleeve fall, cuff barrel/french double style, and button craftsmanship.",
-    shortLabel: "Sleeves & Cuffs",
+    breadcrumb: "SLEEVES",
+    title: "SELECT YOUR SLEEVES",
+    subtitle: "Choose the sleeve type that you prefer.",
+    shortLabel: "Sleeves",
   },
   {
     step: 5,
-    title: "Step 5: Back & Tailoring Construction",
-    easyName: "Back Tailoring (Yoke & Pleats)",
-    hint: "Back view showing shoulder yoke, tailoring pleats, and precise seam finishes.",
-    shortLabel: "Back Tailoring",
+    breadcrumb: "COLLAR & DETAILS",
+    title: "COLLAR, CUFFS & DETAILS",
+    subtitle: "Customize collar style, wrist cuffs, and personalized monogram initials.",
+    shortLabel: "Collar & Details",
   },
   {
     step: 6,
-    title: "Step 6: Complete Final Look (Review)",
-    easyName: "Final Styled Look (Confirmation View)",
-    hint: "Complete styled shirt on model or hanger for customer review and bespoke confirmation.",
-    shortLabel: "Final Look",
+    breadcrumb: "REVIEW & ADD TO BAG",
+    title: "REVIEW & CONFIRM BESPOKE FIT",
+    subtitle: "Verify your bespoke specifications before adding to bag.",
+    shortLabel: "Review & Confirm",
   },
 ];
 
@@ -456,7 +456,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                                 : "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]"
                             )}
                           >
-                            Step {stepDef.step} of 6
+                            Step {stepDef.step} of 6 • {stepDef.breadcrumb}
                           </span>
                           {isFilled ? (
                             <span className="flex items-center gap-1 text-[11px] font-semibold text-[#2F6B3B]">
@@ -469,12 +469,12 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                           )}
                         </div>
 
-                        {/* Step Title & Hint */}
-                        <h4 className="text-xs font-bold text-[#14110E] leading-snug">
-                          {stepDef.easyName}
+                        {/* Step Title & Subtitle */}
+                        <h4 className="text-xs font-bold text-[#14110E] uppercase tracking-wide leading-snug">
+                          {stepDef.title}
                         </h4>
                         <p className="mt-1 text-[11px] text-[#6B7280] leading-snug">
-                          {stepDef.hint}
+                          {stepDef.subtitle}
                         </p>
                       </div>
 
@@ -620,7 +620,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
         onClose={() => setActiveStepIndex(null)}
         title={
           activeStepIndex !== null
-            ? `Choose Image for Step ${activeStepIndex + 1}: ${PRODUCT_IMAGE_STEPS[activeStepIndex].easyName}`
+            ? `Choose Image for Step ${activeStepIndex + 1} (${PRODUCT_IMAGE_STEPS[activeStepIndex].breadcrumb}): ${PRODUCT_IMAGE_STEPS[activeStepIndex].title}`
             : "Choose an image"
         }
         onSelect={(url) => {

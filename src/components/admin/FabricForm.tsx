@@ -31,54 +31,54 @@ export const CATEGORY_OPTIONS = [
 
 export interface FabricImageStepDef {
   step: number;
+  breadcrumb: string;
   title: string;
-  easyName: string;
-  hint: string;
+  subtitle: string;
   shortLabel: string;
 }
 
 export const FABRIC_IMAGE_STEPS: FabricImageStepDef[] = [
   {
     step: 1,
-    title: "Step 1: Main Fabric Swatch",
-    easyName: "Main Swatch (Color & Pattern)",
-    hint: "Primary fabric swatch photo shown on catalog cards and bespoke customizer swatches.",
-    shortLabel: "Main Swatch",
+    breadcrumb: "CHEST SIZE",
+    title: "SELECT YOUR CHEST SIZE",
+    subtitle: "Choose your chest size for the perfect fit.",
+    shortLabel: "Chest Size",
   },
   {
     step: 2,
-    title: "Step 2: Weave & Texture Detail",
-    easyName: "Micro Weave (Yarn & Thread Detail)",
-    hint: "Ultra close-up showing fabric weave structure, yarn count, and fiber texture.",
-    shortLabel: "Weave Detail",
+    breadcrumb: "BODY TYPE",
+    title: "CHOOSE YOUR BODY TYPE",
+    subtitle: "Find the fit that matches your body shape and comfort preference.",
+    shortLabel: "Body Type",
   },
   {
     step: 3,
-    title: "Step 3: Fabric Drape & Fall",
-    easyName: "Fabric Drape (Natural Fall & Hand)",
-    hint: "Fabric draped over hand or tailor stand showing flexibility, weight, and softness.",
-    shortLabel: "Fabric Drape",
+    breadcrumb: "HEIGHT",
+    title: "SELECT YOUR HEIGHT",
+    subtitle: "Choose the height option that fits you.",
+    shortLabel: "Height",
   },
   {
     step: 4,
-    title: "Step 4: Light & Transparency",
-    easyName: "Light & Opacity (Sheerness Check)",
-    hint: "Fabric held against light showing yarn density, breathability, and opacity.",
-    shortLabel: "Light & Opacity",
+    breadcrumb: "SLEEVES",
+    title: "SELECT YOUR SLEEVES",
+    subtitle: "Choose the sleeve type that you prefer.",
+    shortLabel: "Sleeves",
   },
   {
     step: 5,
-    title: "Step 5: Sample Tailored Garment",
-    easyName: "Sample Shirt View (Tailored Result)",
-    hint: "Sample shirt, collar or cuff tailored with this fabric showing finished appearance.",
-    shortLabel: "Sample Shirt",
+    breadcrumb: "COLLAR & DETAILS",
+    title: "COLLAR, CUFFS & DETAILS",
+    subtitle: "Customize collar style, wrist cuffs, and personalized monogram initials.",
+    shortLabel: "Collar & Details",
   },
   {
     step: 6,
-    title: "Step 6: Full Fabric Roll / Bolt",
-    easyName: "Full Roll (Atelier Bolt View)",
-    hint: "Complete fabric roll or bundle from the mill showing full width and pattern repeat.",
-    shortLabel: "Full Roll",
+    breadcrumb: "REVIEW & ADD TO BAG",
+    title: "REVIEW & CONFIRM BESPOKE FIT",
+    subtitle: "Verify your bespoke specifications before adding to bag.",
+    shortLabel: "Review & Confirm",
   },
 ];
 
@@ -655,7 +655,7 @@ export default function FabricForm({
                                 : "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]"
                             )}
                           >
-                            Step {stepDef.step} of 6
+                            Step {stepDef.step} of 6 • {stepDef.breadcrumb}
                           </span>
                           {isFilled ? (
                             <span className="flex items-center gap-1 text-[11px] font-semibold text-[#2F6B3B]">
@@ -668,12 +668,12 @@ export default function FabricForm({
                           )}
                         </div>
 
-                        {/* Step Title & Hint */}
-                        <h4 className="text-xs font-bold text-[#14110E] leading-snug">
-                          {stepDef.easyName}
+                        {/* Step Title & Subtitle */}
+                        <h4 className="text-xs font-bold text-[#14110E] uppercase tracking-wide leading-snug">
+                          {stepDef.title}
                         </h4>
                         <p className="mt-1 text-[11px] text-[#6B7280] leading-snug">
-                          {stepDef.hint}
+                          {stepDef.subtitle}
                         </p>
                       </div>
 
@@ -785,7 +785,7 @@ export default function FabricForm({
         onClose={() => setActiveStepIndex(null)}
         title={
           activeStepIndex !== null
-            ? `Choose Image for Step ${activeStepIndex + 1}: ${FABRIC_IMAGE_STEPS[activeStepIndex].easyName}`
+            ? `Choose Image for Step ${activeStepIndex + 1} (${FABRIC_IMAGE_STEPS[activeStepIndex].breadcrumb}): ${FABRIC_IMAGE_STEPS[activeStepIndex].title}`
             : "Choose an image"
         }
         onSelect={(url) => {
