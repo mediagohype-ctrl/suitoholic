@@ -37,7 +37,7 @@ const toMedia = (r) => ({
   mimeType: r.mime_type,
   size: r.size,
   alt: r.alt,
-  url: `${env.publicUrl}/api/media/${r.id}/${r.filename}`,
+  url: `/api/media/${r.id}/${r.filename}`,
   createdAt: r.created_at,
 });
 
@@ -57,6 +57,14 @@ export async function saveFiles(files) {
       fs.writeFileSync(diskPath, f.buffer);
     } catch (e) {
       console.warn("Failed to write to media cache:", e.message);
+    }
+    // Also copy to Next.js public/api/media folder so static assets are always available
+    const publicMediaDir = path.resolve(__dirname, "../../../public/api/media", String(row.id));
+    try {
+      fs.mkdirSync(publicMediaDir, { recursive: true });
+      fs.writeFileSync(path.join(publicMediaDir, row.filename), f.buffer);
+    } catch (e) {
+      // ignore
     }
     fileCache.set(row.id, {
       mime_type: f.mimetype,

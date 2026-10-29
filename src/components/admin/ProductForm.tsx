@@ -10,7 +10,7 @@ import type { AdminCategory, AdminColorway, AdminProduct, Paginated } from "@/li
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
 import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
-import { ImageField, MediaPickerModal, MediaPreview } from "./media";
+import { ImageField, MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
 import { Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
 
 interface FormState {
@@ -54,8 +54,8 @@ function toForm(p?: AdminProduct | null): FormState {
     collar: p?.collar ?? "",
     cuff: p?.cuff ?? "",
     fit: p?.fit ?? "",
-    image: p?.image ?? "",
-    gallery: p?.gallery ? [...p.gallery] : [],
+    image: cleanMediaUrl(p?.image ?? ""),
+    gallery: p?.gallery ? p.gallery.map(cleanMediaUrl) : [],
     colorways: p?.colorways ? p.colorways.map((c) => ({ ...c })) : [],
     rating: p?.rating ?? 5,
     reviewsCount: p?.reviewsCount ?? 0,
@@ -84,8 +84,8 @@ function toBody(f: FormState) {
     collar: f.collar,
     cuff: f.cuff,
     fit: f.fit,
-    image: f.image.trim(),
-    gallery: f.gallery.map((g) => g.trim()).filter(Boolean),
+    image: cleanMediaUrl(f.image.trim()),
+    gallery: f.gallery.map((g) => cleanMediaUrl(g.trim())).filter(Boolean),
     colorways: f.colorways.map((c) => ({ name: c.name.trim(), hex: c.hex.trim(), productSlug: c.productSlug })),
     rating: f.rating === "" ? 0 : Number(f.rating),
     reviewsCount: int(f.reviewsCount),

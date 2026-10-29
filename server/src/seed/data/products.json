@@ -822,9 +822,9 @@
     "description": "Crafted with precision, this custom-made shirt features prominent coral red and white Bengal stripes woven in an ultra-smooth twill texture. Ideal for formal meetings and sophisticated evening wear, it offers a refined drape, all-day comfort, and a crisp tailored finish.",
     "fabric": "100% Fine Twill Cotton",
     "threadCount": "130s Luxury Twill",
-    "image": "http://localhost:4000/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg",
+    "image": "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg",
     "gallery": [
-      "http://localhost:4000/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg"
+      "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg"
     ],
     "colorways": [],
     "rating": 5,
@@ -842,9 +842,9 @@
     "description": "Woven from a premium linen-cotton blend, this subtle textured beige shirt combines breathable comfort with an understated elegance. Designed with a natural melange texture and tailored finish, it is perfect for smart-casual outings, summer events, and laid-back office days",
     "fabric": "Premium Linen-Cotton Blend",
     "threadCount": "Breathable Melange Texture",
-    "image": "http://localhost:4000/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg",
+    "image": "/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg",
     "gallery": [
-      "http://localhost:4000/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg"
+      "/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg"
     ],
     "colorways": [],
     "rating": 5,
@@ -862,9 +862,9 @@
     "description": "Tailored from an ultra-fine cotton satin twill blend, this rich dark chocolate brown shirt exudes pure luxury and refinement. Featuring an opulent silky sheen, smooth drape, and crisp detailing, it is the perfect statement piece for black-tie gatherings, cocktail parties, and sophisticated formal events",
     "fabric": "Ultra-Fine Cotton Satin Twill Blend",
     "threadCount": "140s Silk-Touch Sateen",
-    "image": "http://localhost:4000/api/media/7/whatsapp-image-2026-10-27-at-2-47-01-pm-1.jpeg",
+    "image": "/api/media/7/whatsapp-image-2026-10-27-at-2-47-01-pm-1.jpeg",
     "gallery": [
-      "http://localhost:4000/api/media/7/whatsapp-image-2026-10-27-at-2-47-01-pm-1.jpeg"
+      "/api/media/7/whatsapp-image-2026-10-27-at-2-47-01-pm-1.jpeg"
     ],
     "colorways": [],
     "rating": 5,
@@ -882,9 +882,9 @@
     "description": "Woven from high-grade cotton in a diagonal twill weave, this shirt features vibrant royal blue and white Bengal stripes. Designed for business executives and modern professionals, it delivers structured elegance, exceptional breathability, and all-day comfort.",
     "fabric": "100% High-Grade Cotton",
     "threadCount": "Diagonal Twill Weave",
-    "image": "http://localhost:4000/api/media/8/whatsapp-image-2026-10-27-at-2-47-02-pm-2.jpeg",
+    "image": "/api/media/8/whatsapp-image-2026-10-27-at-2-47-02-pm-2.jpeg",
     "gallery": [
-      "http://localhost:4000/api/media/8/whatsapp-image-2026-10-27-at-2-47-02-pm-2.jpeg"
+      "/api/media/8/whatsapp-image-2026-10-27-at-2-47-02-pm-2.jpeg"
     ],
     "colorways": [],
     "rating": 5,
@@ -902,9 +902,9 @@
     "description": "Tailored from high-grade pure cotton in a durable diagonal twill weave, this shirt features distinct navy blue and crisp white Bengal stripes. Designed for boardrooms, formal presentations, and refined smart-casual styling, it provides outstanding structure, rich drape, and breathable all-day comfort",
     "fabric": "100% Pure Cotton",
     "threadCount": "Durable Diagonal Twill",
-    "image": "http://localhost:4000/api/media/9/whatsapp-image-2026-10-27-at-2-47-02-pm-3.jpeg",
+    "image": "/api/media/9/whatsapp-image-2026-10-27-at-2-47-02-pm-3.jpeg",
     "gallery": [
-      "http://localhost:4000/api/media/9/whatsapp-image-2026-10-27-at-2-47-02-pm-3.jpeg"
+      "/api/media/9/whatsapp-image-2026-10-27-at-2-47-02-pm-3.jpeg"
     ],
     "colorways": [],
     "rating": 5,
@@ -922,9 +922,9 @@
     "description": "Expertly tailored in a distinctive diagonal twill weave, this shirt showcases bold charcoal black and crisp white Bengal stripes. Designed to offer sharp contrasts and structural finesse, it brings unmatched sophistication to modern business suits and evening formals.",
     "fabric": "100% Cotton Twill",
     "threadCount": "Distinctive Diagonal Twill",
-    "image": "http://localhost:4000/api/media/10/whatsapp-image-2026-10-27-at-2-47-04-pm-2.jpeg",
+    "image": "/api/media/10/whatsapp-image-2026-10-27-at-2-47-04-pm-2.jpeg",
     "gallery": [
-      "http://localhost:4000/api/media/10/whatsapp-image-2026-10-27-at-2-47-04-pm-2.jpeg"
+      "/api/media/10/whatsapp-image-2026-10-27-at-2-47-04-pm-2.jpeg"
     ],
     "colorways": [],
     "rating": 5,

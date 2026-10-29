@@ -20,10 +20,11 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   // Resolved 100% color-matched full ghost mannequin shirt revealed on hover
   const hoverFullShirt = getMatchingFullShirtImage(product);
 
-  // Use gallery if available, or fallback to main image
-  const images = product.gallery && product.gallery.length > 0 
+  // Use gallery if available, or fallback to main image (clean any localhost URLs)
+  const rawImages = product.gallery && product.gallery.length > 0 
     ? product.gallery 
     : [product.image];
+  const images = rawImages.map(img => img ? img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : "");
 
   const totalDots = Math.min(images.length, 3);
 

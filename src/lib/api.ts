@@ -1,5 +1,18 @@
 /** Base URL of the Express API (server/). */
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000").replace(/\/$/, "");
+function getApiUrl(): string {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
+  }
+  if (typeof window !== "undefined") {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return "http://localhost:4000";
+    }
+    return "";
+  }
+  return process.env.NODE_ENV === "development" ? "http://localhost:4000" : "";
+}
+
+export const API_URL = getApiUrl();
 
 export class ApiError extends Error {
   status: number;
@@ -22,8 +35,9 @@ type FetchOptions = Omit<RequestInit, "body"> & {
 export async function apiFetch<T>(path: string, { body, token, timeoutMs = 15000, headers, ...init }: FetchOptions = {}): Promise<T> {
   const isForm = typeof FormData !== "undefined" && body instanceof FormData;
   let res: Response;
+  const url = `${API_URL}/api${path}`;
   try {
-    res = await fetch(`${API_URL}/api${path}`, {
+    res = await fetch(url, {
       ...init,
       headers: {
         ...(body !== undefined && !isForm ? { "Content-Type": "application/json" } : {}),

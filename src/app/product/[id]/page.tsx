@@ -110,7 +110,8 @@ export default function ProductDetailPage() {
   }
 
   const colorways = activeProduct.colorways ?? [];
-  const gallery = activeProduct.gallery?.length ? activeProduct.gallery : [activeProduct.image];
+  const rawGallery = activeProduct.gallery?.length ? activeProduct.gallery : [activeProduct.image];
+  const gallery = rawGallery.map((g) => (g ? g.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : ""));
   const outOfStock = activeProduct.stock === 0;
   const lowStock = typeof activeProduct.stock === "number" && activeProduct.stock > 0 && activeProduct.stock <= 5;
 
@@ -205,7 +206,7 @@ export default function ProductDetailPage() {
               <div className="relative w-full aspect-[4/4.1] sm:aspect-[4/4.1] lg:aspect-[4/4] max-h-[485px] sm:max-h-[520px] lg:max-h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden bg-white border border-[#E5E3DD] shadow-sm flex items-center justify-center group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={gallery[selectedImageIndex] || activeProduct.image}
+                  src={gallery[selectedImageIndex] || (activeProduct.image ? activeProduct.image.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : "")}
                   alt={activeProduct.name}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   loading="eager"

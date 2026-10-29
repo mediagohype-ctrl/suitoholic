@@ -57,6 +57,7 @@ function fallbackBundle(): SiteBundle {
  * site still renders using the built-in catalog and copy.
  */
 export async function getSiteBundle(): Promise<SiteBundle> {
+  if (!API_URL) return fallbackBundle();
   try {
     const res = await fetch(`${API_URL}/api/site`, { cache: "no-store", signal: AbortSignal.timeout(5000) });
     if (!res.ok) throw new Error(`API responded ${res.status}`);

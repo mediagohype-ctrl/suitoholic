@@ -15,8 +15,15 @@ export type MediaKind = "image" | "video" | "any";
 export const isVideoUrl = (url: string) => /\.(mp4|webm|mov|ogg)(\?|#|$)/i.test(url);
 export const isVideoMedia = (m: MediaItem) => m.mimeType.startsWith("video/");
 
+/** Clean localhost or remote host prefix from media URLs so they are root-relative (/api/media/...) */
+export function cleanMediaUrl(url: string | null | undefined): string {
+  if (!url) return "";
+  return url.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/");
+}
+
 /** Preview of an image or video URL (storefront-relative paths render as-is). */
-export function MediaPreview({ src, kind = "image", className }: { src?: string; kind?: MediaKind; className?: string }) {
+export function MediaPreview({ src: rawSrc, kind = "image", className }: { src?: string; kind?: MediaKind; className?: string }) {
+  const src = cleanMediaUrl(rawSrc);
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const failed = !!src && failedSrc === src;
@@ -220,7 +227,7 @@ function PickerBody({ kind, onSelect, onClose }: { kind: MediaKind; onSelect: (u
   const items = (data?.items ?? []).filter((m) => (kind === "image" ? !isVideoMedia(m) : kind === "video" ? isVideoMedia(m) : true));
 
   const pick = (url: string, item?: MediaItem) => {
-    onSelect(url, item);
+    onSelect(cleanMediaUrl(url), item);
     onClose();
   };
 
@@ -312,26 +319,28 @@ export function ImageField({
   previewClassName?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const cleanVal = cleanMediaUrl(value);
+
   return (
     <FieldShell label={label} hint={hint} error={error} className={className}>
       <div className="flex items-start gap-3">
         <button type="button" onClick={() => setOpen(true)} className="shrink-0" title="Choose from media library">
-          <MediaPreview src={value} kind={kind} className={cn("h-20 w-20", previewClassName)} />
+          <MediaPreview src={cleanVal} kind={kind} className={cn("h-20 w-20", previewClassName)} />
         </button>
         <div className="min-w-0 flex-1 space-y-2">
           <input
             className={cn(inputClass, error && "border-[#B4402F]")}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
+            value={cleanVal}
+            onChange={(e) => onChange(cleanMediaUrl(e.target.value))}
             placeholder={kind === "video" ? "/video.mp4 or https://…" : "/image.jpg or https://…"}
           />
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={() => setOpen(true)} icon={kind === "video" ? <Film className="h-3.5 w-3.5" /> : <ImagePlus className="h-3.5 w-3.5" />}>
-              {value ? "Replace" : "Choose"}
+              {cleanVal ? "Replace" : "Choose"}
             </Button>
-            {value && (
+            {cleanVal && (
               <>
-                <a href={value} target="_blank" rel="noreferrer" className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs text-[#6B7280] hover:bg-[#F3F4F6]">
+                <a href={cleanVal} target="_blank" rel="noreferrer" className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs text-[#6B7280] hover:bg-[#F3F4F6]">
                   <ExternalLink className="h-3.5 w-3.5" /> Open
                 </a>
                 <Button size="sm" variant="ghost" onClick={() => onChange("")} icon={<X className="h-3.5 w-3.5" />}>
@@ -342,8 +351,7 @@ export function ImageField({
           </div>
         </div>
       </div>
-      <MediaPickerModal open={open} onClose={() => setOpen(false)} onSelect={(url) => onChange(url)} kind={kind} />
+      <MediaPickerModal open={open} onClose={() => setOpen(false)} onSelect={(url) => onChange(cleanMediaUrl(url))} kind={kind} />
     </FieldShell>
   );
 }
-
