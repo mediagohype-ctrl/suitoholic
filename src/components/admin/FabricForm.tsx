@@ -2,15 +2,24 @@
 
 import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { ExternalLink, Eye, Save, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  ExternalLink,
+  Eye,
+  ImagePlus,
+  Save,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useAdminApi } from "@/lib/admin/api";
 import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminFabric } from "@/lib/admin/types";
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
-import { ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
-import { ImageField, MediaPreview } from "./media";
-import { Button, Card, CardHeader, Notice, cn } from "./ui";
+import { ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle, inputClass } from "./fields";
+import { MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
+import { Badge, Button, Card, CardHeader, Notice, cn } from "./ui";
 
 export const CATEGORY_OPTIONS = [
   { value: "oxford_twill", label: "Oxford & Twill" },
@@ -18,6 +27,59 @@ export const CATEGORY_OPTIONS = [
   { value: "linen", label: "Normandy Linen" },
   { value: "wool", label: "Merino & Cashmere" },
   { value: "velvet_silk", label: "Velvet & Silk" },
+];
+
+export interface FabricImageStepDef {
+  step: number;
+  title: string;
+  easyName: string;
+  hint: string;
+  shortLabel: string;
+}
+
+export const FABRIC_IMAGE_STEPS: FabricImageStepDef[] = [
+  {
+    step: 1,
+    title: "Step 1: Main Fabric Swatch",
+    easyName: "Main Swatch (Color & Pattern)",
+    hint: "Primary fabric swatch photo shown on catalog cards and bespoke customizer swatches.",
+    shortLabel: "Main Swatch",
+  },
+  {
+    step: 2,
+    title: "Step 2: Weave & Texture Detail",
+    easyName: "Micro Weave (Yarn & Thread Detail)",
+    hint: "Ultra close-up showing fabric weave structure, yarn count, and fiber texture.",
+    shortLabel: "Weave Detail",
+  },
+  {
+    step: 3,
+    title: "Step 3: Fabric Drape & Fall",
+    easyName: "Fabric Drape (Natural Fall & Hand)",
+    hint: "Fabric draped over hand or tailor stand showing flexibility, weight, and softness.",
+    shortLabel: "Fabric Drape",
+  },
+  {
+    step: 4,
+    title: "Step 4: Light & Transparency",
+    easyName: "Light & Opacity (Sheerness Check)",
+    hint: "Fabric held against light showing yarn density, breathability, and opacity.",
+    shortLabel: "Light & Opacity",
+  },
+  {
+    step: 5,
+    title: "Step 5: Sample Tailored Garment",
+    easyName: "Sample Shirt View (Tailored Result)",
+    hint: "Sample shirt, collar or cuff tailored with this fabric showing finished appearance.",
+    shortLabel: "Sample Shirt",
+  },
+  {
+    step: 6,
+    title: "Step 6: Full Fabric Roll / Bolt",
+    easyName: "Full Roll (Atelier Bolt View)",
+    hint: "Complete fabric roll or bundle from the mill showing full width and pattern repeat.",
+    shortLabel: "Full Roll",
+  },
 ];
 
 interface FormState {
@@ -35,6 +97,8 @@ interface FormState {
   breathability: string;
   wrinkleResistance: string;
   image: string;
+  stepImages: string[];
+  gallery: string[];
   description: string;
   shortInfo: string;
   price: string;
@@ -48,7 +112,23 @@ interface FormState {
   sortOrder: number | "";
 }
 
+function initStepImages(f?: AdminFabric | null): string[] {
+  const steps = ["", "", "", "", "", ""];
+  if (!f) return steps;
+
+  if (f.gallery && f.gallery.length >= 6) {
+    return f.gallery.slice(0, 6).map(cleanMediaUrl);
+  }
+
+  const pool = [cleanMediaUrl(f.image), ...(f.gallery ? f.gallery.map(cleanMediaUrl) : [])].filter(Boolean);
+  for (let i = 0; i < pool.length && i < 6; i++) {
+    steps[i] = pool[i];
+  }
+  return steps;
+}
+
 function toForm(f?: AdminFabric | null): FormState {
+  const stepImages = initStepImages(f);
   return {
     code: f?.code ?? "",
     name: f?.name ?? "",
@@ -63,7 +143,9 @@ function toForm(f?: AdminFabric | null): FormState {
     opacity: f?.opacity ?? "100% Opaque",
     breathability: f?.breathability ?? "High (4.8 / 5.0)",
     wrinkleResistance: f?.wrinkleResistance ?? "Natural Resilient Drape",
-    image: f?.image ?? "",
+    stepImages,
+    image: stepImages[0] || cleanMediaUrl(f?.image ?? ""),
+    gallery: f?.gallery ? f.gallery.map(cleanMediaUrl) : stepImages.filter(Boolean),
     description: f?.description ?? "",
     shortInfo: f?.shortInfo ?? "",
     price: f?.price ?? "Rs. 3,290 • BESPOKE FIT",
@@ -81,6 +163,9 @@ function toForm(f?: AdminFabric | null): FormState {
 function toBody(f: FormState) {
   const int = (v: number | "") => (v === "" ? 0 : Math.round(Number(v)));
   const num = (v: number | "") => (v === "" ? 5.0 : Number(v));
+  const cleanedSteps = f.stepImages.map((s) => cleanMediaUrl(s.trim()));
+  const primaryImage = cleanedSteps[0] || cleanMediaUrl(f.image.trim());
+
   return {
     code: f.code.trim().toUpperCase(),
     name: f.name.trim(),
@@ -95,7 +180,8 @@ function toBody(f: FormState) {
     opacity: f.opacity.trim(),
     breathability: f.breathability.trim(),
     wrinkleResistance: f.wrinkleResistance.trim(),
-    image: f.image.trim(),
+    image: primaryImage,
+    gallery: cleanedSteps.filter(Boolean),
     description: f.description.trim(),
     shortInfo: f.shortInfo.trim(),
     price: f.price.trim(),
@@ -127,12 +213,36 @@ export default function FabricForm({
   const [form, setForm] = useState(baseline);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
 
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
   useUnsavedChanges(dirty && !saving);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
+
+  const setStepImage = (stepIndex: number, url: string) => {
+    setForm((prev) => {
+      const nextSteps = [...prev.stepImages];
+      nextSteps[stepIndex] = cleanMediaUrl(url);
+      return {
+        ...prev,
+        stepImages: nextSteps,
+        image: nextSteps[0] || "",
+        gallery: nextSteps.filter(Boolean),
+      };
+    });
+    setErrors((prev) => {
+      const copy = { ...prev };
+      delete copy[`stepImage_${stepIndex}`];
+      delete copy.stepImages;
+      return copy;
+    });
+  };
+
+  const completedStepsCount = useMemo(() => {
+    return form.stepImages.filter((s) => s && s.trim().length > 0).length;
+  }, [form.stepImages]);
 
   const categoryOptions = useMemo(() => {
     const list = [...CATEGORY_OPTIONS];
@@ -150,9 +260,31 @@ export default function FabricForm({
     if (!form.category) local.category = "Category is required";
     if (!form.price.trim()) local.price = "Price / Label is required";
 
+    // Enforce all 6 step images
+    const missingSteps: { step: number; name: string }[] = [];
+    form.stepImages.forEach((img, idx) => {
+      if (!img || !img.trim()) {
+        missingSteps.push({
+          step: idx + 1,
+          name: FABRIC_IMAGE_STEPS[idx].shortLabel,
+        });
+        local[`stepImage_${idx}`] = `Step ${idx + 1} (${FABRIC_IMAGE_STEPS[idx].shortLabel}) is required`;
+      }
+    });
+
+    if (missingSteps.length > 0) {
+      local.stepImages = `All 6 step images must be uploaded before saving. Missing: ${missingSteps
+        .map((m) => `Step ${m.step} (${m.name})`)
+        .join(", ")}`;
+    }
+
     if (Object.keys(local).length) {
       setErrors(local);
-      toast.error("Please fill in the required fields highlighted below.");
+      if (missingSteps.length > 0) {
+        toast.error(`Please upload all 6 step images! (${missingSteps.length} missing)`);
+      } else {
+        toast.error("Please fill in the required fields highlighted below.");
+      }
       return;
     }
 
@@ -168,7 +300,7 @@ export default function FabricForm({
       setBaseline(next);
       setForm(next);
       onSaved?.(saved);
-      toast.success(isNew ? "Fabric created successfully" : "Fabric changes saved");
+      toast.success(isNew ? "Fabric created successfully with all 6 step images" : "Fabric changes saved successfully");
       if (isNew) {
         router.replace(`/admin/fabrics/${saved.id}`);
       }
@@ -219,44 +351,43 @@ export default function FabricForm({
             />
             <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
               <TextField
-                label="Fabric Name"
+                label="Fabric Code / SKU"
+                value={form.code}
+                onChange={(e) => set("code", e.target.value.toUpperCase())}
+                error={errors.code}
+                placeholder="e.g. OX-140-WH"
+                maxLength={60}
                 required
+                hint="Unique identifier for internal references."
+              />
+              <TextField
+                label="Fabric Name"
                 value={form.name}
                 onChange={(e) => set("name", e.target.value)}
                 error={errors.name}
                 placeholder="e.g. Optic White Royal Oxford"
                 maxLength={200}
-              />
-              <TextField
-                label="Fabric Code / SKU"
                 required
-                value={form.code}
-                onChange={(e) => set("code", e.target.value.toUpperCase())}
-                error={errors.code}
-                placeholder="e.g. OX-140-WH"
-                hint="Unique code shown on swatch cards and search."
-                maxLength={60}
               />
               <SelectField
                 label="Category"
-                required
                 value={form.category}
                 onChange={(e) => set("category", e.target.value)}
                 options={categoryOptions}
                 error={errors.category}
+                required
               />
               <TextField
-                label="Category Sub-Title (Badge)"
+                label="Category Label (Shown on badge)"
                 value={form.categoryLabel}
                 onChange={(e) => set("categoryLabel", e.target.value)}
                 error={errors.categoryLabel}
                 placeholder="e.g. 2-PLY ROYAL OXFORD"
-                hint="Upper badge shown above the fabric name."
                 maxLength={120}
+                hint="Uppercase subtitle displayed directly above the name."
               />
               <TextField
-                label="Price / Display Label"
-                required
+                label="Price / Label"
                 value={form.price}
                 onChange={(e) => set("price", e.target.value)}
                 error={errors.price}
@@ -308,74 +439,64 @@ export default function FabricForm({
           <Card>
             <CardHeader
               title="Ratings & Reviews"
-              description="Customer rating out of 5 and client review count displayed on the fabric card."
+              description="Social proof displayed on the fabric card."
             />
             <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
               <NumberField
-                label="Rating (out of 5)"
+                label="Rating (0.0 to 5.0)"
                 value={form.rating}
                 onValue={(v) => set("rating", v)}
                 error={errors.rating}
                 min={0}
                 max={5}
                 step={0.1}
-                placeholder="5.0"
-                hint="Rating score from 0.0 to 5.0 (e.g. 4.9)."
+                hint="Customer rating displayed with stars (e.g. 4.9)."
               />
               <NumberField
-                label="Client Reviews Count"
+                label="Reviews Count"
                 value={form.reviewsCount}
                 onValue={(v) => set("reviewsCount", v)}
                 error={errors.reviewsCount}
                 min={0}
                 step={1}
-                placeholder="0"
-                hint="Total verified customer reviews (e.g. 24)."
+                hint="Number of customer reviews."
               />
             </div>
           </Card>
 
-          {/* Section 2: Material & Specifications */}
+          {/* Section 2: Technical Specifications */}
           <Card>
             <CardHeader
-              title="Material & Specifications"
-              description="Technical fabric qualities that sartorial clients look for."
+              title="Technical Specifications"
+              description="Yarn, weave, weight, and origin details shown in technical badges."
             />
             <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
               <TextField
-                label="Material / Composition"
+                label="Composition"
                 value={form.composition}
                 onChange={(e) => set("composition", e.target.value)}
                 error={errors.composition}
-                placeholder="e.g. 100% Egyptian Giza 140s Cotton (2-Ply)"
+                placeholder="e.g. 100% Egyptian Giza Cotton"
                 maxLength={250}
               />
               <TextField
-                label="Yarn Count & Ply"
+                label="Yarn Count"
                 value={form.yarnCount}
                 onChange={(e) => set("yarnCount", e.target.value)}
                 error={errors.yarnCount}
-                placeholder="e.g. 140/2 Ne Compact Spun"
+                placeholder="e.g. 140/2 Ne Compact Double-Twist"
                 maxLength={160}
               />
               <TextField
-                label="Weave Type"
+                label="Weave"
                 value={form.weave}
                 onChange={(e) => set("weave", e.target.value)}
                 error={errors.weave}
-                placeholder="e.g. High-Density Fine Twill Weave"
+                placeholder="e.g. 2x2 Royal Micro-Basketweave"
                 maxLength={160}
               />
               <TextField
-                label="Weight (GSM)"
-                value={form.gsm}
-                onChange={(e) => set("gsm", e.target.value)}
-                error={errors.gsm}
-                placeholder="e.g. 135 GSM"
-                maxLength={80}
-              />
-              <TextField
-                label="Fabric Weight Classification"
+                label="Weight Description"
                 value={form.weight}
                 onChange={(e) => set("weight", e.target.value)}
                 error={errors.weight}
@@ -383,12 +504,47 @@ export default function FabricForm({
                 maxLength={160}
               />
               <TextField
+                label="GSM (Grams per Square Meter)"
+                value={form.gsm}
+                onChange={(e) => set("gsm", e.target.value)}
+                error={errors.gsm}
+                placeholder="e.g. 130 GSM"
+                maxLength={80}
+              />
+              <TextField
                 label="Origin / Mill"
                 value={form.origin}
                 onChange={(e) => set("origin", e.target.value)}
                 error={errors.origin}
-                placeholder="e.g. Nile Delta Harvest · Spun in Italy"
+                placeholder="e.g. Nile Delta Harvest · Spun in Biella, Italy"
                 maxLength={200}
+              />
+              <TextField
+                label="Accent Color (Hex code)"
+                value={form.accentColor}
+                onChange={(e) => set("accentColor", e.target.value)}
+                error={errors.accentColor}
+                placeholder="#FAF8F5"
+                maxLength={40}
+                hint="Light hex color used for subtle background tint on the card."
+              />
+            </div>
+          </Card>
+
+          {/* Section 3: Performance & Care */}
+          <Card>
+            <CardHeader
+              title="Performance & Care"
+              description="Fabric qualities like opacity, breathability, and washing instructions."
+            />
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
+              <TextField
+                label="Opacity"
+                value={form.opacity}
+                onChange={(e) => set("opacity", e.target.value)}
+                error={errors.opacity}
+                placeholder="e.g. 100% Solid Opaque"
+                maxLength={120}
               />
               <TextField
                 label="Breathability"
@@ -403,38 +559,17 @@ export default function FabricForm({
                 value={form.wrinkleResistance}
                 onChange={(e) => set("wrinkleResistance", e.target.value)}
                 error={errors.wrinkleResistance}
-                placeholder="e.g. Natural Resilient Twill Drape"
+                placeholder="e.g. Natural Resilient Basketweave"
                 maxLength={160}
               />
               <TextField
-                label="Opacity"
-                value={form.opacity}
-                onChange={(e) => set("opacity", e.target.value)}
-                error={errors.opacity}
-                placeholder="e.g. 100% Opaque"
-                maxLength={120}
-                className="sm:col-span-2"
+                label="Best For (Garment Types)"
+                value={form.bestFor}
+                onChange={(e) => set("bestFor", e.target.value)}
+                error={errors.bestFor}
+                placeholder="e.g. Classic White Dress Shirts, Spread Collars"
+                maxLength={400}
               />
-            </div>
-          </Card>
-
-          {/* Section 3: Tailoring & Care */}
-          <Card>
-            <CardHeader
-              title="Tailoring Advice & Care"
-              description="Garment recommendations and washing instructions."
-            />
-            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-              <div className="sm:col-span-2">
-                <TextField
-                  label="Best For (Garments)"
-                  value={form.bestFor}
-                  onChange={(e) => set("bestFor", e.target.value)}
-                  error={errors.bestFor}
-                  placeholder="e.g. Executive Boardroom Shirts, French Cuff Formals, Spread Collars"
-                  maxLength={400}
-                />
-              </div>
               <div className="sm:col-span-2">
                 <TextField
                   label="Care Instructions"
@@ -448,21 +583,162 @@ export default function FabricForm({
             </div>
           </Card>
 
-          {/* Section 4: Image */}
+          {/* Section 4: 6-Step Image Upload Studio */}
           <Card>
             <CardHeader
-              title="Fabric Swatch Image"
-              description="Choose an image from your media library or enter an image link."
+              title="6-Step Fabric Showcase Images (All 6 Required)"
+              description="Upload an image for each of the 6 fabric showcase stages below. All 6 steps must have an image before the fabric can be added or updated."
+              actions={
+                <Badge tone={completedStepsCount === 6 ? "green" : "amber"}>
+                  {completedStepsCount === 6 ? "✓ All 6 Steps Complete" : `${completedStepsCount} of 6 Uploaded`}
+                </Badge>
+              }
             />
-            <div className="p-4 sm:p-5">
-              <ImageField
-                label="Swatch image URL"
-                value={form.image}
-                onChange={(v) => set("image", v)}
-                error={errors.image}
-                previewClassName="h-32 w-32 rounded-lg"
-                hint="Relative path (e.g. /fabric_roll_oxford_white.jpg) or full uploaded image link."
-              />
+            <div className="space-y-5 p-4 sm:p-5">
+              {/* Progress Bar & Status */}
+              <div className="rounded-xl border border-[#EEF0F3] bg-[#F9FAFB] p-4">
+                <div className="mb-2 flex items-center justify-between text-xs">
+                  <span className="font-semibold text-[#374151]">
+                    Required Images Progress:{" "}
+                    <strong className={completedStepsCount === 6 ? "text-[#2F6B3B]" : "text-[#9E774C]"}>
+                      {completedStepsCount} of 6 Completed
+                    </strong>
+                  </span>
+                  <span className="font-semibold text-[#8B93A1]">
+                    {Math.round((completedStepsCount / 6) * 100)}%
+                  </span>
+                </div>
+                <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
+                  <div
+                    className={cn(
+                      "h-full rounded-full transition-all duration-300",
+                      completedStepsCount === 6 ? "bg-[#2F6B3B]" : "bg-[#9E774C]"
+                    )}
+                    style={{ width: `${(completedStepsCount / 6) * 100}%` }}
+                  />
+                </div>
+                {errors.stepImages && (
+                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-[#FBE9E6] p-2.5 text-xs font-medium text-[#A3352A]">
+                    <AlertCircle className="h-4 w-4 shrink-0 text-[#A3352A] mt-0.5" />
+                    <span>{errors.stepImages}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* 6 Step Upload Grid */}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {FABRIC_IMAGE_STEPS.map((stepDef, idx) => {
+                  const val = form.stepImages[idx] || "";
+                  const isFilled = !!val.trim();
+                  const stepError = errors[`stepImage_${idx}`];
+
+                  return (
+                    <div
+                      key={stepDef.step}
+                      className={cn(
+                        "flex flex-col justify-between rounded-xl border p-4 transition-all bg-white shadow-xs",
+                        stepError
+                          ? "border-[#B4402F] ring-1 ring-[#B4402F] bg-[#FFFBFB]"
+                          : isFilled
+                          ? "border-[#C6E0CB] hover:border-[#2F6B3B]"
+                          : "border-[#E5E7EB] hover:border-[#9E774C]"
+                      )}
+                    >
+                      <div>
+                        {/* Step Header Badge */}
+                        <div className="mb-2 flex items-center justify-between gap-2">
+                          <span
+                            className={cn(
+                              "rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase",
+                              isFilled
+                                ? "bg-[#E8F3EA] text-[#2F6B3B] border-[#C6E0CB]"
+                                : "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]"
+                            )}
+                          >
+                            Step {stepDef.step} of 6
+                          </span>
+                          {isFilled ? (
+                            <span className="flex items-center gap-1 text-[11px] font-semibold text-[#2F6B3B]">
+                              <CheckCircle2 className="h-3.5 w-3.5" /> Ready
+                            </span>
+                          ) : (
+                            <span className="text-[11px] font-semibold text-[#B4402F]">
+                              Required *
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Step Title & Hint */}
+                        <h4 className="text-xs font-bold text-[#14110E] leading-snug">
+                          {stepDef.easyName}
+                        </h4>
+                        <p className="mt-1 text-[11px] text-[#6B7280] leading-snug">
+                          {stepDef.hint}
+                        </p>
+                      </div>
+
+                      {/* Image Preview & Controls */}
+                      <div className="mt-4 flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setActiveStepIndex(idx)}
+                          className="group relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-[#E5E7EB] hover:border-[#9E774C] transition"
+                          title="Click to choose or upload"
+                        >
+                          <MediaPreview src={val} className="h-full w-full aspect-square rounded-none border-0" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/45 text-[10px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
+                            {isFilled ? "Change" : "Upload"}
+                          </div>
+                        </button>
+
+                        <div className="min-w-0 flex-1 space-y-1.5">
+                          <input
+                            type="text"
+                            className={cn(
+                              inputClass,
+                              "text-xs py-1.5 px-2.5",
+                              stepError && "border-[#B4402F]"
+                            )}
+                            placeholder="Storefront path or /api/media/..."
+                            value={val}
+                            onChange={(e) => setStepImage(idx, e.target.value)}
+                          />
+
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <Button
+                              type="button"
+                              size="sm"
+                              className="h-7 text-xs px-2.5"
+                              onClick={() => setActiveStepIndex(idx)}
+                              icon={<ImagePlus className="h-3 w-3" />}
+                            >
+                              {isFilled ? "Replace" : "Upload / Choose"}
+                            </Button>
+                            {isFilled && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 text-xs px-2 text-[#6B7280] hover:text-[#B4402F]"
+                                onClick={() => setStepImage(idx, "")}
+                                icon={<X className="h-3 w-3" />}
+                              >
+                                Clear
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {stepError && (
+                        <p className="mt-2 text-[11px] font-semibold text-[#B4402F]">
+                          {stepError}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </Card>
         </div>
@@ -502,6 +778,22 @@ export default function FabricForm({
           </Card>
         </div>
       </div>
+
+      {/* Media Picker Modal for Step Image Selection */}
+      <MediaPickerModal
+        open={activeStepIndex !== null}
+        onClose={() => setActiveStepIndex(null)}
+        title={
+          activeStepIndex !== null
+            ? `Choose Image for Step ${activeStepIndex + 1}: ${FABRIC_IMAGE_STEPS[activeStepIndex].easyName}`
+            : "Choose an image"
+        }
+        onSelect={(url) => {
+          if (activeStepIndex !== null) {
+            setStepImage(activeStepIndex, url);
+          }
+        }}
+      />
 
       {/* Sticky Bottom Action Bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64 print:hidden">
@@ -548,6 +840,8 @@ export default function FabricForm({
 }
 
 function FabricPreviewCard({ form }: { form: FormState }) {
+  const mainImage = form.stepImages[0] || form.image;
+
   return (
     <div
       className={cn(
@@ -558,7 +852,7 @@ function FabricPreviewCard({ form }: { form: FormState }) {
     >
       {/* Top Swatch Image */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F3F4F6]">
-        <MediaPreview src={form.image} className="h-full w-full rounded-none border-0" />
+        <MediaPreview src={mainImage} className="h-full w-full rounded-none border-0" />
         <span className="absolute left-2.5 top-2.5 rounded bg-[#14110E]/90 px-2 py-0.5 font-mono text-[10px] font-semibold tracking-wider text-white backdrop-blur">
           {form.code || "FABRIC-CODE"}
         </span>

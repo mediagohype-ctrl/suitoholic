@@ -74,6 +74,7 @@ export interface AdminFabric {
   breathability?: string;
   wrinkleResistance?: string;
   image?: string;
+  gallery?: string[];
   description?: string;
   shortInfo?: string;
   price?: string;

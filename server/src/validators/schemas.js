@@ -92,6 +92,7 @@ export const fabricInput = z.object({
   breathability: optionalText(120),
   wrinkleResistance: optionalText(160),
   image: imageRef.optional(),
+  gallery: z.array(imageRef).max(20).optional(),
   description: optionalText(5000),
   shortInfo: optionalText(300),
   price: optionalText(120),

@@ -16,8 +16,11 @@ const MIME_MAP: Record<string, string> = {
 };
 
 let pool: Pool | null = null;
+const NEON_FALLBACK_URL =
+  "postgresql://neondb_owner:npg_4xZcCH8IVzqm@ep-square-dream-b4ujdefr-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=verify-full&channel_binding=require";
+
 function getPool(): Pool | null {
-  const dbUrl = process.env.DATABASE_URL;
+  const dbUrl = process.env.DATABASE_URL || NEON_FALLBACK_URL;
   if (!dbUrl) return null;
   if (!pool) {
     pool = new Pool({

@@ -28,6 +28,7 @@ export const FABRIC_COLUMNS = {
   reviewsCount: "reviews_count",
   compareAtPrice: "compare_at_price",
   stock: "stock",
+  gallery: "gallery",
 };
 
 export function toFabric(row) {
@@ -47,6 +48,7 @@ export function toFabric(row) {
     breathability: row.breathability,
     wrinkleResistance: row.wrinkle_resistance,
     image: row.image,
+    gallery: Array.isArray(row.gallery) ? row.gallery : [],
     description: row.description,
     shortInfo: row.short_info,
     price: row.price,

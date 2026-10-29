@@ -2,16 +2,81 @@
 
 import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowDown, ArrowUp, ExternalLink, ImagePlus, Plus, Save, Star, Trash2, X } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowDown,
+  ArrowUp,
+  CheckCircle2,
+  ExternalLink,
+  ImagePlus,
+  Plus,
+  Save,
+  Star,
+  Trash2,
+  X,
+} from "lucide-react";
 import { formatMoney } from "@/lib/api";
 import { useAdminApi, useAdminQuery } from "@/lib/admin/api";
 import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminCategory, AdminColorway, AdminProduct, Paginated } from "@/lib/admin/types";
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
-import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
-import { ImageField, MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
-import { Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
+import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle, inputClass } from "./fields";
+import { MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
+import { Badge, Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
+
+export interface ImageStepDef {
+  step: number;
+  title: string;
+  easyName: string;
+  hint: string;
+  shortLabel: string;
+}
+
+export const PRODUCT_IMAGE_STEPS: ImageStepDef[] = [
+  {
+    step: 1,
+    title: "Step 1: Front Fabric & Main Look",
+    easyName: "Front View (Main Card Photo)",
+    hint: "Close-up front view of collar & shirt fabric. This is the main photo shown on catalog cards and product listings.",
+    shortLabel: "Front View",
+  },
+  {
+    step: 2,
+    title: "Step 2: Full Body & Fit (Mannequin)",
+    easyName: "Full Shirt Fit (Silhouette View)",
+    hint: "Full-length mannequin or model view showing garment drape, body cut, and overall fit silhouette.",
+    shortLabel: "Full Body Fit",
+  },
+  {
+    step: 3,
+    title: "Step 3: Collar Style Detail",
+    easyName: "Collar Close-Up (Cut & Stitching)",
+    hint: "Detailed close-up showing collar spread, band height, and neckline craftsmanship.",
+    shortLabel: "Collar Detail",
+  },
+  {
+    step: 4,
+    title: "Step 4: Sleeves & Cuffs Detail",
+    easyName: "Sleeve & Wrist Cuffs (Buttons)",
+    hint: "Close-up view of sleeve fall, cuff barrel/french double style, and button craftsmanship.",
+    shortLabel: "Sleeves & Cuffs",
+  },
+  {
+    step: 5,
+    title: "Step 5: Back & Tailoring Construction",
+    easyName: "Back Tailoring (Yoke & Pleats)",
+    hint: "Back view showing shoulder yoke, tailoring pleats, and precise seam finishes.",
+    shortLabel: "Back Tailoring",
+  },
+  {
+    step: 6,
+    title: "Step 6: Complete Final Look (Review)",
+    easyName: "Final Styled Look (Confirmation View)",
+    hint: "Complete styled shirt on model or hanger for customer review and bespoke confirmation.",
+    shortLabel: "Final Look",
+  },
+];
 
 interface FormState {
   name: string;
@@ -27,6 +92,7 @@ interface FormState {
   cuff: string;
   fit: string;
   image: string;
+  stepImages: string[];
   gallery: string[];
   colorways: AdminColorway[];
   rating: number | "";
@@ -40,7 +106,23 @@ interface FormState {
   sortOrder: number | "";
 }
 
+function initStepImages(p?: AdminProduct | null): string[] {
+  const steps = ["", "", "", "", "", ""];
+  if (!p) return steps;
+
+  if (p.gallery && p.gallery.length >= 6) {
+    return p.gallery.slice(0, 6).map(cleanMediaUrl);
+  }
+
+  const pool = [cleanMediaUrl(p.image), ...(p.gallery ? p.gallery.map(cleanMediaUrl) : [])].filter(Boolean);
+  for (let i = 0; i < pool.length && i < 6; i++) {
+    steps[i] = pool[i];
+  }
+  return steps;
+}
+
 function toForm(p?: AdminProduct | null): FormState {
+  const stepImages = initStepImages(p);
   return {
     name: p?.name ?? "",
     slug: p?.slug ?? "",
@@ -54,8 +136,9 @@ function toForm(p?: AdminProduct | null): FormState {
     collar: p?.collar ?? "",
     cuff: p?.cuff ?? "",
     fit: p?.fit ?? "",
-    image: cleanMediaUrl(p?.image ?? ""),
-    gallery: p?.gallery ? p.gallery.map(cleanMediaUrl) : [],
+    stepImages,
+    image: stepImages[0] || cleanMediaUrl(p?.image ?? ""),
+    gallery: p?.gallery ? p.gallery.map(cleanMediaUrl) : stepImages.filter(Boolean),
     colorways: p?.colorways ? p.colorways.map((c) => ({ ...c })) : [],
     rating: p?.rating ?? 5,
     reviewsCount: p?.reviewsCount ?? 0,
@@ -71,6 +154,9 @@ function toForm(p?: AdminProduct | null): FormState {
 
 function toBody(f: FormState) {
   const int = (v: number | "") => (v === "" ? 0 : Math.round(Number(v)));
+  const cleanedSteps = f.stepImages.map((s) => cleanMediaUrl(s.trim()));
+  const primaryImage = cleanedSteps[0] || cleanMediaUrl(f.image.trim());
+
   return {
     ...(f.slug.trim() ? { slug: f.slug.trim() } : {}),
     name: f.name.trim(),
@@ -84,8 +170,8 @@ function toBody(f: FormState) {
     collar: f.collar,
     cuff: f.cuff,
     fit: f.fit,
-    image: cleanMediaUrl(f.image.trim()),
-    gallery: f.gallery.map((g) => cleanMediaUrl(g.trim())).filter(Boolean),
+    image: primaryImage,
+    gallery: cleanedSteps.filter(Boolean),
     colorways: f.colorways.map((c) => ({ name: c.name.trim(), hex: c.hex.trim(), productSlug: c.productSlug })),
     rating: f.rating === "" ? 0 : Number(f.rating),
     reviewsCount: int(f.reviewsCount),
@@ -108,7 +194,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
   const [form, setForm] = useState(baseline);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
-  const [pickerOpen, setPickerOpen] = useState(false);
+  const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
 
   const categories = useAdminQuery<AdminCategory[]>("/categories");
   const products = useAdminQuery<Paginated<AdminProduct>>("/products?limit=200");
@@ -118,8 +204,34 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((f) => ({ ...f, [key]: value }));
 
+  const setStepImage = (stepIndex: number, url: string) => {
+    setForm((prev) => {
+      const nextSteps = [...prev.stepImages];
+      nextSteps[stepIndex] = cleanMediaUrl(url);
+      return {
+        ...prev,
+        stepImages: nextSteps,
+        image: nextSteps[0] || "",
+        gallery: nextSteps.filter(Boolean),
+      };
+    });
+    setErrors((prev) => {
+      const copy = { ...prev };
+      delete copy[`stepImage_${stepIndex}`];
+      delete copy.stepImages;
+      return copy;
+    });
+  };
+
+  const completedStepsCount = useMemo(() => {
+    return form.stepImages.filter((s) => s && s.trim().length > 0).length;
+  }, [form.stepImages]);
+
   const categoryOptions = useMemo(() => {
-    const opts = (categories.data ?? []).map((c) => ({ value: c.id, label: `${c.shortTitle || c.title}${c.active ? "" : " (hidden)"}` }));
+    const opts = (categories.data ?? []).map((c) => ({
+      value: c.id,
+      label: `${c.shortTitle || c.title}${c.active ? "" : " (hidden)"}`,
+    }));
     if (form.category && !opts.some((o) => o.value === form.category)) opts.unshift({ value: form.category, label: form.category });
     return [{ value: "", label: "Select a category…" }, ...opts];
   }, [categories.data, form.category]);
@@ -135,15 +247,40 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
     if (!form.name.trim()) local.name = "Name is required";
     if (!form.category) local.category = "Choose a category";
     if (form.price === "") local.price = "Price is required";
+
+    // Enforce 6 step images requirement
+    const missingSteps: { step: number; name: string }[] = [];
+    form.stepImages.forEach((img, idx) => {
+      if (!img || !img.trim()) {
+        missingSteps.push({
+          step: idx + 1,
+          name: PRODUCT_IMAGE_STEPS[idx].shortLabel,
+        });
+        local[`stepImage_${idx}`] = `Step ${idx + 1} (${PRODUCT_IMAGE_STEPS[idx].shortLabel}) is required`;
+      }
+    });
+
+    if (missingSteps.length > 0) {
+      local.stepImages = `All 6 step images must be uploaded before saving. Missing: ${missingSteps
+        .map((m) => `Step ${m.step} (${m.name})`)
+        .join(", ")}`;
+    }
+
     form.colorways.forEach((c, i) => {
       if (!c.name.trim()) local[`colorways.${i}.name`] = "Name is required";
       if (!/^#[0-9a-fA-F]{3,8}$/.test(c.hex.trim())) local[`colorways.${i}.hex`] = "Use a hex colour like #FFFFFF";
     });
+
     if (Object.keys(local).length) {
       setErrors(local);
-      toast.error("Please fix the highlighted fields.");
+      if (missingSteps.length > 0) {
+        toast.error(`Please upload all 6 step images! (${missingSteps.length} missing)`);
+      } else {
+        toast.error("Please fix the highlighted fields.");
+      }
       return;
     }
+
     setSaving(true);
     setErrors({});
     try {
@@ -155,7 +292,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       setBaseline(next);
       setForm(next);
       onSaved?.(saved);
-      toast.success(isNew ? "Product created" : "Product saved");
+      toast.success(isNew ? "Product created successfully with all 6 step images" : "Product saved successfully");
       if (isNew) router.replace(`/admin/products/${saved.id}`);
     } catch (err) {
       const fe = fieldErrors(err);
@@ -168,7 +305,12 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
 
   const remove = async () => {
     if (!product) return;
-    const ok = await confirm({ title: `Delete “${product.name}”?`, message: "This can't be undone. Consider hiding the product instead.", confirmLabel: "Delete", danger: true });
+    const ok = await confirm({
+      title: `Delete “${product.name}”?`,
+      message: "This can't be undone. Consider hiding the product instead.",
+      confirmLabel: "Delete",
+      danger: true,
+    });
     if (!ok) return;
     try {
       await request(`/products/${product.id}`, { method: "DELETE" });
@@ -179,15 +321,6 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       toast.error(err);
     }
   };
-
-  const moveGallery = (i: number, dir: -1 | 1) =>
-    setForm((f) => {
-      const g = [...f.gallery];
-      const j = i + dir;
-      if (j < 0 || j >= g.length) return f;
-      [g[i], g[j]] = [g[j], g[i]];
-      return { ...f, gallery: g };
-    });
 
   const setColorway = (i: number, patch: Partial<AdminColorway>) =>
     setForm((f) => ({ ...f, colorways: f.colorways.map((c, idx) => (idx === i ? { ...c, ...patch } : c)) }));
@@ -206,57 +339,35 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-6">
           {errors._ && <Notice tone="red">{errors._}</Notice>}
-          {Object.keys(errors).filter((k) => k !== "_").length > 0 && <ErrorList errors={Object.fromEntries(Object.entries(errors).filter(([k]) => k !== "_"))} />}
+          {Object.keys(errors).filter((k) => k !== "_").length > 0 && (
+            <ErrorList errors={Object.fromEntries(Object.entries(errors).filter(([k]) => k !== "_"))} />
+          )}
 
           <Card>
-            <CardHeader title="Basics" />
+            <CardHeader title="Basics" description="Product title, URL and categorisation." />
             <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-              <TextField label="Name" required value={form.name} onChange={(e) => set("name", e.target.value)} error={errors.name} className="sm:col-span-2" maxLength={200} />
-              <TextField
-                label="URL slug"
-                value={form.slug}
-                onChange={(e) => set("slug", e.target.value.toLowerCase())}
-                error={errors.slug}
-                hint={isNew ? "Leave empty to generate from the name." : "Changing the slug changes the product URL."}
-                placeholder="royal-white-twill-shirt"
-                aside={
-                  !isNew && form.slug ? (
-                    <a href={`/product/${form.slug}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[11px] text-[#9E774C] hover:underline">
-                      View <ExternalLink className="h-3 w-3" />
-                    </a>
-                  ) : undefined
-                }
-              />
-              <SelectField label="Category" value={form.category} onChange={(e) => set("category", e.target.value)} options={categoryOptions} error={errors.category} />
-              <TextField label="Subtitle" value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} error={errors.subtitle} className="sm:col-span-2" maxLength={300} />
-              <TextAreaField label="Description" rows={5} value={form.description} onChange={(e) => set("description", e.target.value)} error={errors.description} className="sm:col-span-2" maxLength={5000} />
-              <TextField label="Tag / ribbon" value={form.tag} onChange={(e) => set("tag", e.target.value)} error={errors.tag} placeholder="e.g. FORMAL ICON" maxLength={80} />
-              <NumberField label="Sort order" value={form.sortOrder} onValue={(v) => set("sortOrder", v)} error={errors.sortOrder} hint="Lower numbers show first." step={1} />
+              <TextField label="Product name" value={form.name} onChange={(e) => set("name", e.target.value)} error={errors.name} required />
+              <TextField label="URL slug" value={form.slug} onChange={(e) => set("slug", e.target.value)} error={errors.slug} hint="Leave empty to generate from name." />
+              <SelectField label="Category" value={form.category} onChange={(e) => set("category", e.target.value)} options={categoryOptions} error={errors.category} required />
+              <TextField label="Badge / Tag" value={form.tag} onChange={(e) => set("tag", e.target.value)} error={errors.tag} placeholder="e.g. LUXURY TWILL, BESTSELLER" />
+              <div className="sm:col-span-2">
+                <TextField label="Subtitle" value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} error={errors.subtitle} placeholder="Short highlight shown under the title" />
+              </div>
+              <div className="sm:col-span-2">
+                <TextAreaField label="Description" value={form.description} onChange={(e) => set("description", e.target.value)} error={errors.description} rows={4} placeholder="Full fabric notes, weave details and styling advice." />
+              </div>
             </div>
           </Card>
 
           <Card>
             <CardHeader title="Pricing & inventory" />
             <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-              <NumberField label="Price" value={form.price} onValue={(v) => set("price", v)} error={errors.price} min={0} step="any" required />
-              <NumberField
-                label="Compare-at price"
-                value={form.compareAtPrice}
-                onValue={(v) => set("compareAtPrice", v)}
-                error={errors.compareAtPrice}
-                min={0}
-                step="any"
-                hint="Shown struck-through. Leave empty for no sale price."
-              />
-              <div className="space-y-3 sm:col-span-2">
-                <Toggle
-                  checked={form.madeToOrder}
-                  onChange={(v) => set("madeToOrder", v)}
-                  label="Made to order"
-                  description="No stock tracking — every piece is cut on demand."
-                />
+              <NumberField label="Price (₹)" value={form.price} onValue={(v) => set("price", v)} error={errors.price} min={0} step={1} required />
+              <NumberField label="Compare-at price (₹)" value={form.compareAtPrice} onValue={(v) => set("compareAtPrice", v)} error={errors.compareAtPrice} min={0} step={1} hint="Shows struck-through price." />
+              <div className="sm:col-span-2 space-y-3">
+                <Toggle checked={form.madeToOrder} onChange={(v) => set("madeToOrder", v)} label="Made to order" description="Shirt is tailored on demand; no fixed stock limit is tracked." />
                 {!form.madeToOrder && (
-                  <NumberField label="Units in stock" value={form.stock} onValue={(v) => set("stock", v)} error={errors.stock} min={0} step={1} className="sm:max-w-xs" />
+                  <NumberField label="Stock count" value={form.stock} onValue={(v) => set("stock", v)} error={errors.stock} min={0} step={1} hint="Units available to purchase." />
                 )}
               </div>
             </div>
@@ -273,50 +384,161 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
             </div>
           </Card>
 
+          {/* 6-Step Image Upload Section */}
           <Card>
-            <CardHeader title="Images" description="Main image is used on cards; the gallery appears on the product page." />
+            <CardHeader
+              title="6-Step Customization Images (All 6 Required)"
+              description="Upload an image for each of the 6 bespoke stages below. Just like the 6-step bespoke customizer, all 6 steps must be uploaded before adding this product."
+              actions={
+                <Badge tone={completedStepsCount === 6 ? "green" : "amber"}>
+                  {completedStepsCount === 6 ? "✓ All 6 Steps Complete" : `${completedStepsCount} of 6 Uploaded`}
+                </Badge>
+              }
+            />
             <div className="space-y-5 p-4 sm:p-5">
-              <ImageField label="Main image" value={form.image} onChange={(v) => set("image", v)} error={errors.image} previewClassName="h-28 w-24" />
-              <div>
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <p className="text-xs font-semibold text-[#374151]">Gallery ({form.gallery.length}/20)</p>
-                  <div className="flex gap-2">
-                    {form.image && !form.gallery.includes(form.image) && (
-                      <Button size="sm" variant="ghost" onClick={() => set("gallery", [form.image, ...form.gallery])}>
-                        Add main image
-                      </Button>
-                    )}
-                    <Button size="sm" onClick={() => setPickerOpen(true)} disabled={form.gallery.length >= 20} icon={<ImagePlus className="h-3.5 w-3.5" />}>
-                      Add image
-                    </Button>
-                  </div>
+              {/* Progress Bar & Status */}
+              <div className="rounded-xl border border-[#EEF0F3] bg-[#F9FAFB] p-4">
+                <div className="mb-2 flex items-center justify-between text-xs">
+                  <span className="font-semibold text-[#374151]">
+                    Required Images Progress:{" "}
+                    <strong className={completedStepsCount === 6 ? "text-[#2F6B3B]" : "text-[#9E774C]"}>
+                      {completedStepsCount} of 6 Completed
+                    </strong>
+                  </span>
+                  <span className="font-semibold text-[#8B93A1]">
+                    {Math.round((completedStepsCount / 6) * 100)}%
+                  </span>
                 </div>
-                {errors.gallery && <p className="mb-2 text-xs text-[#B4402F]">{errors.gallery}</p>}
-                {form.gallery.length === 0 ? (
-                  <p className="rounded-lg border border-dashed border-[#E5E7EB] px-3 py-6 text-center text-xs text-[#8B93A1]">No gallery images yet.</p>
-                ) : (
-                  <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                    {form.gallery.map((src, i) => (
-                      <li key={`${src}-${i}`} className="overflow-hidden rounded-lg border border-[#E5E7EB] bg-white">
-                        <MediaPreview src={src} className="aspect-[4/5] rounded-none border-0" />
-                        <div className="flex items-center justify-between border-t border-[#EEF0F3] px-1 py-1">
-                          <span className="px-1 text-[11px] text-[#8B93A1]">#{i + 1}</span>
-                          <div className="flex">
-                            <IconButton label="Move left" disabled={i === 0} onClick={() => moveGallery(i, -1)} className="h-7 w-7">
-                              <ArrowUp className="h-3.5 w-3.5 -rotate-90" />
-                            </IconButton>
-                            <IconButton label="Move right" disabled={i === form.gallery.length - 1} onClick={() => moveGallery(i, 1)} className="h-7 w-7">
-                              <ArrowDown className="h-3.5 w-3.5 -rotate-90" />
-                            </IconButton>
-                            <IconButton label="Remove" onClick={() => set("gallery", form.gallery.filter((_, idx) => idx !== i))} className="h-7 w-7 hover:text-[#B4402F]">
-                              <X className="h-3.5 w-3.5" />
-                            </IconButton>
+                <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
+                  <div
+                    className={cn(
+                      "h-full rounded-full transition-all duration-300",
+                      completedStepsCount === 6 ? "bg-[#2F6B3B]" : "bg-[#9E774C]"
+                    )}
+                    style={{ width: `${(completedStepsCount / 6) * 100}%` }}
+                  />
+                </div>
+                {errors.stepImages && (
+                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-[#FBE9E6] p-2.5 text-xs font-medium text-[#A3352A]">
+                    <AlertCircle className="h-4 w-4 shrink-0 text-[#A3352A] mt-0.5" />
+                    <span>{errors.stepImages}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* 6 Step Upload Grid */}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {PRODUCT_IMAGE_STEPS.map((stepDef, idx) => {
+                  const val = form.stepImages[idx] || "";
+                  const isFilled = !!val.trim();
+                  const stepError = errors[`stepImage_${idx}`];
+
+                  return (
+                    <div
+                      key={stepDef.step}
+                      className={cn(
+                        "flex flex-col justify-between rounded-xl border p-4 transition-all bg-white shadow-xs",
+                        stepError
+                          ? "border-[#B4402F] ring-1 ring-[#B4402F] bg-[#FFFBFB]"
+                          : isFilled
+                          ? "border-[#C6E0CB] hover:border-[#2F6B3B]"
+                          : "border-[#E5E7EB] hover:border-[#9E774C]"
+                      )}
+                    >
+                      <div>
+                        {/* Step Header Badge */}
+                        <div className="mb-2 flex items-center justify-between gap-2">
+                          <span
+                            className={cn(
+                              "rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase",
+                              isFilled
+                                ? "bg-[#E8F3EA] text-[#2F6B3B] border-[#C6E0CB]"
+                                : "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]"
+                            )}
+                          >
+                            Step {stepDef.step} of 6
+                          </span>
+                          {isFilled ? (
+                            <span className="flex items-center gap-1 text-[11px] font-semibold text-[#2F6B3B]">
+                              <CheckCircle2 className="h-3.5 w-3.5" /> Ready
+                            </span>
+                          ) : (
+                            <span className="text-[11px] font-semibold text-[#B4402F]">
+                              Required *
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Step Title & Hint */}
+                        <h4 className="text-xs font-bold text-[#14110E] leading-snug">
+                          {stepDef.easyName}
+                        </h4>
+                        <p className="mt-1 text-[11px] text-[#6B7280] leading-snug">
+                          {stepDef.hint}
+                        </p>
+                      </div>
+
+                      {/* Image Preview & Controls */}
+                      <div className="mt-4 flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setActiveStepIndex(idx)}
+                          className="group relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-[#E5E7EB] hover:border-[#9E774C] transition"
+                          title="Click to choose or upload"
+                        >
+                          <MediaPreview src={val} className="h-full w-full aspect-square rounded-none border-0" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/45 text-[10px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
+                            {isFilled ? "Change" : "Upload"}
+                          </div>
+                        </button>
+
+                        <div className="min-w-0 flex-1 space-y-1.5">
+                          <input
+                            type="text"
+                            className={cn(
+                              inputClass,
+                              "text-xs py-1.5 px-2.5",
+                              stepError && "border-[#B4402F]"
+                            )}
+                            placeholder="Storefront path or /api/media/..."
+                            value={val}
+                            onChange={(e) => setStepImage(idx, e.target.value)}
+                          />
+
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <Button
+                              type="button"
+                              size="sm"
+                              className="h-7 text-xs px-2.5"
+                              onClick={() => setActiveStepIndex(idx)}
+                              icon={<ImagePlus className="h-3 w-3" />}
+                            >
+                              {isFilled ? "Replace" : "Upload / Choose"}
+                            </Button>
+                            {isFilled && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 text-xs px-2 text-[#6B7280] hover:text-[#B4402F]"
+                                onClick={() => setStepImage(idx, "")}
+                                icon={<X className="h-3 w-3" />}
+                              >
+                                Clear
+                              </Button>
+                            )}
                           </div>
                         </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                      </div>
+
+                      {stepError && (
+                        <p className="mt-2 text-[11px] font-semibold text-[#B4402F]">
+                          {stepError}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </Card>
@@ -366,7 +588,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
           </Card>
 
           <Card>
-            <CardHeader title="Reviews" description="Displayed rating and review count." />
+            <CardHeader title="Ratings & reviews" description="Social proof displayed on the product page and cards." />
             <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
               <NumberField label="Rating (0–5)" value={form.rating} onValue={(v) => set("rating", v)} error={errors.rating} min={0} max={5} step={0.1} />
               <NumberField label="Reviews count" value={form.reviewsCount} onValue={(v) => set("reviewsCount", v)} error={errors.reviewsCount} min={0} step={1} />
@@ -392,11 +614,34 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
         </div>
       </div>
 
-      <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => set("gallery", [...form.gallery, url])} />
+      {/* Media Picker Modal for Step Image Selection */}
+      <MediaPickerModal
+        open={activeStepIndex !== null}
+        onClose={() => setActiveStepIndex(null)}
+        title={
+          activeStepIndex !== null
+            ? `Choose Image for Step ${activeStepIndex + 1}: ${PRODUCT_IMAGE_STEPS[activeStepIndex].easyName}`
+            : "Choose an image"
+        }
+        onSelect={(url) => {
+          if (activeStepIndex !== null) {
+            setStepImage(activeStepIndex, url);
+          }
+        }}
+      />
 
+      {/* Floating Bottom Bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64 print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
-          <p className="text-xs text-[#6B7280]">{dirty ? <span className="font-medium text-[#8A5A00]">Unsaved changes</span> : isNew ? "New product" : "All changes saved"}</p>
+          <p className="text-xs text-[#6B7280]">
+            {dirty ? (
+              <span className="font-medium text-[#8A5A00]">Unsaved changes</span>
+            ) : isNew ? (
+              "New product"
+            ) : (
+              "All changes saved"
+            )}
+          </p>
           <div className="flex gap-2">
             {!isNew && (
               <Button variant="ghost" onClick={() => void remove()} icon={<Trash2 className="h-4 w-4" />} className="text-[#B4402F] hover:text-[#B4402F]">
@@ -422,10 +667,12 @@ function PreviewCard({ form, categoryLabel }: { form: FormState; categoryLabel?:
   const price = form.price === "" ? 0 : Number(form.price);
   const compare = form.compareAtPrice === "" ? 0 : Number(form.compareAtPrice);
   const rating = form.rating === "" ? 0 : Number(form.rating);
+  const mainImage = form.stepImages[0] || form.image;
+
   return (
     <div className={cn("overflow-hidden rounded-xl border border-[#E5E7EB] bg-white", !form.active && "opacity-60")}>
       <div className="relative">
-        <MediaPreview src={form.image} className="aspect-[4/5] rounded-none border-0" />
+        <MediaPreview src={mainImage} className="aspect-[4/5] rounded-none border-0" />
         {form.tag && <span className="absolute left-2 top-2 bg-[#14110E] px-2 py-1 text-[9px] font-semibold tracking-[0.15em] text-white">{form.tag}</span>}
         {form.featured && (
           <span className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#9E774C]">
