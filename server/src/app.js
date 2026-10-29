@@ -21,7 +21,7 @@ export function createApp() {
   app.set("trust proxy", 1);
   app.disable("x-powered-by");
 
-  app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+  app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" }, contentSecurityPolicy: false }));
   app.use(
     cors({
       origin(origin, cb) {

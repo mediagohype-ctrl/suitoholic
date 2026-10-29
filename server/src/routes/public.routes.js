@@ -47,7 +47,7 @@ router.post("/newsletter", writeLimiter, validate(s.subscribeInput), subscribe);
 // Swatch requests / contact messages
 router.post("/inquiries", checkoutLimiter, validate(s.inquiryInput), inquiries.create);
 
-// Uploaded media (stored in Postgres)
-router.get("/media/:id{/:filename}", media.serveFile);
+// Uploaded media (stored in Postgres & disk cache)
+router.get(["/media/:id", "/media/:id/:filename"], media.serveFile);
 
 export default router;

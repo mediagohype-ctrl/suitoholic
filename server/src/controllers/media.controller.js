@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import * as media from "../services/media.service.js";
 import { ApiError } from "../utils/ApiError.js";
 import { paginate } from "../utils/format.js";
@@ -11,10 +12,16 @@ export async function serveFile(req, res) {
     "Content-Length": file.size,
     // Uploads are immutable (a new upload gets a new id), so cache aggressively.
     "Cache-Control": "public, max-age=31536000, immutable",
-    "Last-Modified": new Date(file.created_at).toUTCString(),
+    "Last-Modified": new Date(file.created_at || Date.now()).toUTCString(),
     "Cross-Origin-Resource-Policy": "cross-origin",
   });
   if (file.mime_type === "image/svg+xml") res.set("Content-Security-Policy", "script-src 'none'; sandbox");
+
+  if (file.filePath && fs.existsSync(file.filePath)) {
+    const stream = fs.createReadStream(file.filePath);
+    return stream.pipe(res);
+  }
+
   res.send(file.data);
 }
 

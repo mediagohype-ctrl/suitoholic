@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:all": "node scripts/dev-all.mjs",
+    "clean": "node -e \"try{fs.rmSync('.next',{recursive:true,force:true})}catch{}\"",
     "build": "next build",
+    "build:clean": "npm run clean && next build",
     "start": "next start",
     "lint": "eslint",
     "dev:api": "npm --prefix server run dev",

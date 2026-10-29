@@ -216,7 +216,7 @@ export default function ModernCollectionSection({
         /* ======================================================== */
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
-            {uniqueProducts.slice(0, 4).map((product, idx) => (
+            {uniqueProducts.map((product, idx) => (
               <div key={`${product.id}-${product.slug || idx}`} className="w-full">
                 <ModernProductCard product={product} />
               </div>

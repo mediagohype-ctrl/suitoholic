@@ -18,18 +18,45 @@ export const isVideoMedia = (m: MediaItem) => m.mimeType.startsWith("video/");
 /** Preview of an image or video URL (storefront-relative paths render as-is). */
 export function MediaPreview({ src, kind = "image", className }: { src?: string; kind?: MediaKind; className?: string }) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
   const failed = !!src && failedSrc === src;
   const base = cn("flex items-center justify-center overflow-hidden rounded-lg border border-[#E5E7EB] bg-[#F3F4F6]", className);
-  if (!src || failed) {
+
+  useEffect(() => {
+    setFailedSrc(null);
+    setLoaded(false);
+  }, [src]);
+
+  if (!src) {
     return (
       <div className={base}>
         <div className="flex flex-col items-center gap-1 text-[#9CA3AF]">
           {kind === "video" ? <Film className="h-5 w-5" /> : <ImageIcon className="h-5 w-5" />}
-          {failed && <span className="px-1 text-center text-[10px]">Preview unavailable</span>}
         </div>
       </div>
     );
   }
+
+  if (failed) {
+    return (
+      <div
+        className={cn(base, "cursor-pointer hover:bg-[#E5E7EB] transition-colors")}
+        title="Click to retry loading preview"
+        onClick={(e) => {
+          e.stopPropagation();
+          setFailedSrc(null);
+          setLoaded(false);
+        }}
+      >
+        <div className="flex flex-col items-center gap-1 text-[#9CA3AF]">
+          {kind === "video" ? <Film className="h-5 w-5" /> : <ImageIcon className="h-5 w-5" />}
+          <span className="px-1 text-center text-[10px]">Preview unavailable</span>
+          <span className="text-[9px] text-[#9E774C] underline">Click to retry</span>
+        </div>
+      </div>
+    );
+  }
+
   if (kind === "video" || isVideoUrl(src)) {
     return (
       <div className={base}>
@@ -37,10 +64,28 @@ export function MediaPreview({ src, kind = "image", className }: { src?: string;
       </div>
     );
   }
+
   return (
-    <div className={base}>
+    <div className={cn(base, "relative")}>
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#F3F4F6] animate-pulse">
+          <ImageIcon className="h-5 w-5 text-[#9CA3AF]" />
+        </div>
+      )}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt="" className="h-full w-full object-cover" onError={() => setFailedSrc(src)} />
+      <img
+        src={src}
+        alt=""
+        className={cn("h-full w-full object-cover transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
+        onLoad={() => {
+          setLoaded(true);
+          setFailedSrc(null);
+        }}
+        onError={() => {
+          setFailedSrc(src);
+          setLoaded(false);
+        }}
+      />
     </div>
   );
 }
