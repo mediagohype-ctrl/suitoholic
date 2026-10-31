@@ -118,7 +118,7 @@ async function loadFromDb(): Promise<SiteBundle | null> {
   try {
     const [catRes, prodRes, contentRes, settingsRes] = await Promise.all([
       db.query("SELECT * FROM categories WHERE active = TRUE ORDER BY sort_order ASC, id ASC"),
-      db.query("SELECT * FROM products WHERE active = TRUE ORDER BY sort_order ASC, id DESC"),
+      db.query("SELECT * FROM products WHERE active = TRUE ORDER BY sort_order ASC, id ASC"),
       db.query("SELECT key, data FROM site_content").catch(() => ({ rows: [] })),
       db.query("SELECT key, value FROM settings").catch(() => ({ rows: [] })),
     ]);
