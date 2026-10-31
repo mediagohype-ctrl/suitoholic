@@ -58,15 +58,15 @@ export function getShirtColorFamily(
 
   // 2. Specific Product Slugs
   if (slug.includes("espresso") || slug.includes("chocolate")) return "espresso";
-  if (slug.includes("navy") || slug.includes("bengal") || slug.includes("azure")) return "bengal_blue";
-  if (slug.includes("sandstone") || slug.includes("oatmeal") || slug.includes("linen")) return "sandstone_linen";
+  if (slug.includes("navy") || slug.includes("bengal") || slug.includes("azure") || slug.includes("royal")) return "bengal_blue";
+  if (slug.includes("sandstone") || slug.includes("oatmeal") || slug.includes("linen") || slug.includes("beige")) return "sandstone_linen";
   if (slug.includes("terracotta") || slug.includes("coral") || slug.includes("rose") || slug.includes("magenta")) return "coral_stripe";
   if (slug.includes("charcoal") || slug.includes("shadow") || slug.includes("steel")) return "charcoal";
 
   // 3. Product Names
   if (name.includes("espresso") || name.includes("chocolate")) return "espresso";
-  if (name.includes("bengal") || name.includes("azure") || name.includes("navy")) return "bengal_blue";
-  if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen")) return "sandstone_linen";
+  if (name.includes("bengal") || name.includes("azure") || name.includes("navy") || name.includes("royal")) return "bengal_blue";
+  if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen") || name.includes("beige")) return "sandstone_linen";
   if (name.includes("coral") || name.includes("terracotta") || name.includes("rose") || name.includes("wine")) return "coral_stripe";
   if (name.includes("charcoal") || name.includes("shadow") || name.includes("grey")) return "charcoal";
 
