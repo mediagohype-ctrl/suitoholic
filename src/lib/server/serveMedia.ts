@@ -100,7 +100,7 @@ export async function handleMediaRequest(id: number, filename?: string) {
           fs.writeFileSync(path.join(publicDir, row.filename), row.data);
         } catch {}
 
-        return new NextResponse(row.data, {
+        return new NextResponse(new Uint8Array(row.data), {
           status: 200,
           headers: {
             "Content-Type": row.mime_type || "image/jpeg",

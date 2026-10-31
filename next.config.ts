@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
     if (!apiUrl) return [];
     return [
       {
-        source: "/api/:path*",
+        // Keep /api/media handled directly by Next.js App Router
+        source: "/api/:path((?!media).*)",
         destination: `${apiUrl.replace(/\/$/, "")}/api/:path*`,
       },
     ];

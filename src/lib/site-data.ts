@@ -1,8 +1,9 @@
 import "server-only";
+import { Pool } from "pg";
 import { fallbackCategories } from "@/data/categories";
-import { allProducts } from "@/data/products";
+import { allProducts, type ProductItem } from "@/data/products";
 import { API_URL } from "@/lib/api";
-import type { SiteBundle, StoreSettings } from "@/lib/types";
+import type { Category, SiteBundle, StoreSettings } from "@/lib/types";
 
 export const DEFAULT_SETTINGS: StoreSettings = {
   storeName: "Suitoholic",
@@ -37,6 +38,119 @@ const FORMAL_COLORWAYS = [
   { name: "Steel Grey Royal Stripe", hex: "#7D8187", productSlug: "steel-grey-royal-stripe-formal" },
 ];
 
+let pool: Pool | null = null;
+const NEON_FALLBACK_URL =
+  "postgresql://neondb_owner:npg_4xZcCH8IVzqm@ep-square-dream-b4ujdefr-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=verify-full&channel_binding=require";
+
+function getPool(): Pool | null {
+  const dbUrl = process.env.DATABASE_URL || NEON_FALLBACK_URL;
+  if (!dbUrl) return null;
+  if (!pool) {
+    pool = new Pool({
+      connectionString: dbUrl,
+      ssl: { rejectUnauthorized: false },
+      max: 5,
+    });
+  }
+  return pool;
+}
+
+function formatPrice(val: unknown, symbol = "₹"): string {
+  const n = Number(val);
+  if (isNaN(n)) return `${symbol} 0`;
+  return `${symbol} ${n.toLocaleString("en-IN")}`;
+}
+
+function toCategory(row: Record<string, unknown>): Category {
+  return {
+    id: String(row.key || row.id),
+    title: String(row.title || ""),
+    shortTitle: String(row.short_title || row.title || ""),
+    mobileTitle: Array.isArray(row.mobile_title) ? (row.mobile_title as string[]) : [String(row.title || "")],
+    subtitle: String(row.subtitle || ""),
+    homeTitle: String(row.home_title || row.title || ""),
+    description: String(row.description || ""),
+    tag: String(row.tag || ""),
+    image: String(row.image || ""),
+    bgImage: String(row.bg_image || row.image || ""),
+    showOnHome: Boolean(row.show_on_home),
+    sortOrder: typeof row.sort_order === "number" ? row.sort_order : 0,
+    active: Boolean(row.active),
+    productCount: typeof row.product_count === "number" ? row.product_count : undefined,
+  };
+}
+
+function toProduct(row: Record<string, unknown>): ProductItem {
+  return {
+    id: typeof row.id === "number" ? row.id : Number(row.id),
+    slug: String(row.slug || ""),
+    name: String(row.name || ""),
+    category: String(row.category_key || ""),
+    price: formatPrice(row.price),
+    rawPrice: Number(row.price) || 0,
+    compareAtPrice: row.compare_at_price ? Number(row.compare_at_price) : undefined,
+    subtitle: String(row.subtitle || ""),
+    description: String(row.description || ""),
+    fabric: String(row.fabric || ""),
+    threadCount: String(row.thread_count || ""),
+    collar: row.collar ? String(row.collar) : undefined,
+    cuff: row.cuff ? String(row.cuff) : undefined,
+    fit: row.fit ? String(row.fit) : undefined,
+    image: String(row.image || ""),
+    gallery: Array.isArray(row.gallery) && row.gallery.length > 0 ? (row.gallery as string[]) : [String(row.image || "")],
+    colorways: Array.isArray(row.colorways) ? row.colorways : [],
+    rating: row.rating ? Number(row.rating) : 5,
+    reviewsCount: row.reviews_count ? Number(row.reviews_count) : 0,
+    tag: row.tag ? String(row.tag) : undefined,
+    stock: typeof row.stock === "number" ? row.stock : undefined,
+    customizable: row.customizable !== undefined ? Boolean(row.customizable) : true,
+    featured: Boolean(row.featured),
+    active: Boolean(row.active),
+    sortOrder: typeof row.sort_order === "number" ? row.sort_order : 0,
+    createdAt: row.created_at ? String(row.created_at) : undefined,
+    updatedAt: row.updated_at ? String(row.updated_at) : undefined,
+  } as ProductItem;
+}
+
+async function loadFromDb(): Promise<SiteBundle | null> {
+  const db = getPool();
+  if (!db) return null;
+  try {
+    const [catRes, prodRes, contentRes, settingsRes] = await Promise.all([
+      db.query("SELECT * FROM categories WHERE active = TRUE ORDER BY sort_order ASC, id ASC"),
+      db.query("SELECT * FROM products WHERE active = TRUE ORDER BY sort_order ASC, id DESC"),
+      db.query("SELECT key, data FROM site_content").catch(() => ({ rows: [] })),
+      db.query("SELECT key, value FROM settings").catch(() => ({ rows: [] })),
+    ]);
+
+    const categories = catRes.rows.map(toCategory);
+    const products = prodRes.rows.map(toProduct);
+
+    const content: Record<string, unknown> = {};
+    for (const r of contentRes.rows) {
+      content[r.key] = r.data;
+    }
+
+    const settings = { ...DEFAULT_SETTINGS };
+    for (const r of settingsRes.rows) {
+      if (r.key in settings) {
+        (settings as Record<string, unknown>)[r.key] = r.value;
+      }
+    }
+
+    return {
+      content,
+      categories,
+      products,
+      settings,
+      apiAvailable: true,
+    };
+  } catch (e) {
+    console.warn("[site] DB query failed:", (e as Error).message);
+    return null;
+  }
+}
+
 function fallbackBundle(): SiteBundle {
   return {
     content: {},
@@ -53,24 +167,31 @@ function fallbackBundle(): SiteBundle {
 
 /**
  * Loads CMS content, catalog and store settings for the storefront in a single request.
- * Always fresh (admin edits show up on the next page load). If the API is down the
- * site still renders using the built-in catalog and copy.
+ * Always fresh (admin edits show up on the next page load). First tries the API if configured,
+ * then queries the database directly, and finally falls back to built-in data.
  */
 export async function getSiteBundle(): Promise<SiteBundle> {
-  if (!API_URL) return fallbackBundle();
-  try {
-    const res = await fetch(`${API_URL}/api/site`, { cache: "no-store", signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error(`API responded ${res.status}`);
-    const data = await res.json();
-    return {
-      content: data.content ?? {},
-      categories: data.categories ?? [],
-      products: data.products ?? [],
-      settings: { ...DEFAULT_SETTINGS, ...data.settings },
-      apiAvailable: true,
-    };
-  } catch (err) {
-    console.warn(`[site] API unavailable at ${API_URL}, using built-in data:`, (err as Error).message);
-    return fallbackBundle();
+  if (API_URL) {
+    try {
+      const res = await fetch(`${API_URL}/api/site`, { cache: "no-store", signal: AbortSignal.timeout(4000) });
+      if (res.ok) {
+        const data = await res.json();
+        return {
+          content: data.content ?? {},
+          categories: data.categories ?? [],
+          products: data.products ?? [],
+          settings: { ...DEFAULT_SETTINGS, ...data.settings },
+          apiAvailable: true,
+        };
+      }
+    } catch {}
   }
+
+  // Direct database query (ensures live products work reliably on Vercel and local dev)
+  const fromDb = await loadFromDb();
+  if (fromDb && fromDb.products.length > 0) {
+    return fromDb;
+  }
+
+  return fallbackBundle();
 }
