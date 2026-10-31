@@ -47,3 +47,5 @@ next-env.d.ts
 
 # browser test output
 /scripts/e2e-shots/
+
+server/.media-cache/
