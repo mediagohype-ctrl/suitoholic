@@ -105,6 +105,13 @@ export default function ModernCollectionSection({
 
   const displayProducts = uniqueProducts.length > 0 ? uniqueProducts : FALLBACK_FABRIC_ITEMS;
 
+  // Ensure 4-column grids never render an awkward incomplete trailing row with 1-3 empty spaces
+  const gridProducts = useMemo(() => {
+    if (uniqueProducts.length === 0) return [];
+    const remainder = uniqueProducts.length % 4;
+    return remainder === 0 ? uniqueProducts : uniqueProducts.slice(0, uniqueProducts.length - remainder);
+  }, [uniqueProducts]);
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handlePrev = () => {
@@ -215,7 +222,7 @@ export default function ModernCollectionSection({
         /* ======================================================== */
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
-            {uniqueProducts.map((product, idx) => (
+            {gridProducts.map((product, idx) => (
               <div key={`${product.id}-${product.slug || idx}`} className="w-full">
                 <ModernProductCard product={product} />
               </div>
