@@ -10,20 +10,20 @@ export const categoriesShowcase = {
   items: [
     {
       title: "FORMAL SHIRTS",
-      subtitle: "Egyptian Giza Twill & Sea Island Poplins",
-      image: "/shop_bespoke_shirt.jpg",
+      subtitle: "Egyptian Giza Twill & Royal Blue Bengal Stripe",
+      image: "/new_shirts/shirt_21.jpg",
       href: "/shop?category=formal_shirts",
     },
     {
       title: "LUXURY SHIRTS",
-      subtitle: "Italian Super 130s Worsted Wool & Double-Breasted",
-      image: "/fabric_cat_coord_sets.jpg",
-      href: "/shop?category=co_ord_sets",
+      subtitle: "Dark Chocolate Brown Satin Twill & Evening Suiting",
+      image: "/new_shirts/shirt_19.jpg",
+      href: "/shop?category=formal_bespoke",
     },
     {
       title: "LINEN COLLECTION",
-      subtitle: "Pure French Flax & Breathable Summer Weaves",
-      image: "/shirt_linen_french.jpg",
+      subtitle: "Pure French Flax & Breathable Sand Beige Linen",
+      image: "/new_shirts/shirt_13.jpg",
       href: "/shop?category=linen_collection",
     },
     {

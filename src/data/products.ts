@@ -56,14 +56,14 @@ export const collectionCategories: CollectionCategory[] = [
     title: "Best Sellers",
     subtitle: "",
     tag: "COLLECTION 02 • BEST SELLERS",
-    bgImage: "/new_shirts/shirt_20.jpg",
+    bgImage: "/new_shirts/shirt_14.jpg",
   },
   {
     id: "formal_bespoke",
     title: "SHOP BY FABRICS",
     subtitle: "",
     tag: "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
-    bgImage: "/new_shirts/shirt_18.jpg",
+    bgImage: "/new_shirts/shirt_19.jpg",
   },
   {
     id: "trousers",

@@ -61,7 +61,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       id: "formal_stripes",
       title: "Bengal Stripe Collection",
       href: "/shop?category=formal_stripes",
-      image: "/new_shirts/shirt_20.jpg",
+      image: "/new_shirts/shirt_19.jpg",
     },
     {
       id: "formal_bespoke",

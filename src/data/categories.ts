@@ -29,11 +29,11 @@ export const fallbackCategories: Category[] = [
       "SELLERS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_20.jpg",
+    "image": "/new_shirts/shirt_14.jpg",
     "homeTitle": "Best Sellers",
     "description": "",
     "tag": "COLLECTION 02 • BEST SELLERS",
-    "bgImage": "/new_shirts/shirt_20.jpg",
+    "bgImage": "/new_shirts/shirt_14.jpg",
     "showOnHome": true,
     "sortOrder": 2,
     "active": true
@@ -47,11 +47,11 @@ export const fallbackCategories: Category[] = [
       "TWILL SHIRTS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_18.jpg",
+    "image": "/new_shirts/shirt_19.jpg",
     "homeTitle": "SHOP BY FABRICS",
     "description": "",
     "tag": "COLLECTION 03 • SARTORIAL FORMAL SHIRTS",
-    "bgImage": "/new_shirts/shirt_18.jpg",
+    "bgImage": "/new_shirts/shirt_19.jpg",
     "showOnHome": true,
     "sortOrder": 3,
     "active": true

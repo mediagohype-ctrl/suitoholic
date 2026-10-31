@@ -2,9 +2,9 @@
 export const shopByCategory = {
   heading: "SHOP BY CATEGORY",
   items: [
-    { title: "AZURE BENGAL STRIPES", image: "/new_shirts/shirt_21.jpg", href: "/shop?category=formal_shirts" },
-    { title: "STEEL GREY ROYAL STRIPE", image: "/new_shirts/shirt_25.jpg", href: "/shop?category=formal_shirts" },
-    { title: "SAGE MINT SARTORIAL", image: "/new_shirts/shirt_18.jpg", href: "/shop?category=formal_shirts" },
-    { title: "TERRACOTTA BRICK STRIPE", image: "/new_shirts/shirt_14.jpg", href: "/shop?category=formal_shirts" },
+    { title: "DARK ESPRESSO BROWN", image: "/new_shirts/shirt_19.jpg", href: "/shop?category=formal_shirts" },
+    { title: "SAND BEIGE LINEN", image: "/new_shirts/shirt_13.jpg", href: "/shop?category=formal_shirts" },
+    { title: "ROYAL STEEL BLUE STRIPE", image: "/new_shirts/shirt_21.jpg", href: "/shop?category=formal_stripes" },
+    { title: "TERRACOTTA RUST STRIPE", image: "/new_shirts/shirt_14.jpg", href: "/shop?category=formal_stripes" },
   ],
 };
