@@ -192,247 +192,265 @@ export default function AccountPage() {
 
   // --------------------------------------------------------------------------
   // STATE 1: NOT LOGGED IN -> Modern Login Card Matching User Image 2
+  // (No Navbar, Spacious & Centered Down with Breathing Room)
   // --------------------------------------------------------------------------
   if (!user || !user.isLoggedIn) {
     return (
-      <div className="min-h-screen flex flex-col justify-between bg-[#FAF7F2] text-black antialiased selection:bg-black selection:text-white">
-        <Header forceSolid />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF7F2] text-black antialiased selection:bg-black selection:text-white py-14 sm:py-20 px-4 sm:px-6">
+        <div className="w-full max-w-[500px]">
+          {/* Subtle Atelier Brand Header */}
+          <div className="mb-7 text-center">
+            <Link
+              href="/"
+              className="inline-block font-serif text-2xl sm:text-3xl font-bold uppercase tracking-[0.22em] text-[#14110E] hover:opacity-80 transition"
+            >
+              SUITOHOLIC
+            </Link>
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[#8C7355] mt-1 font-semibold">
+              Bespoke Client Atelier
+            </p>
+          </div>
 
-        <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 pt-32 sm:pt-36 pb-16 w-full">
-          <div className="w-full max-w-[440px]">
-            {/* White Floating Card Matching Reference Image 2 */}
-            <div className="bg-white border border-[#EDE8E1] rounded-2xl p-6 sm:p-8 shadow-sm transition-all">
-              {step === "input" ? (
-                authMethod === "phone" ? (
-                  /* Phone Number / WhatsApp Flow */
-                  <form onSubmit={handlePhoneSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2">
-                        Phone Number
-                      </label>
-                      <div className="flex items-center gap-2">
-                        {/* Country code selector */}
-                        <div className="flex items-center gap-1.5 border border-[#E5E7EB] rounded-xl px-3 py-3 bg-white shrink-0">
-                          <span className="text-base leading-none">🇮🇳</span>
-                          <span className="text-sm font-semibold text-[#14110E]">+91</span>
-                          <ChevronDown size={14} className="text-[#9CA3AF] ml-0.5" />
-                        </div>
-                        {/* Phone input */}
-                        <input
-                          type="tel"
-                          inputMode="numeric"
-                          value={phoneInput}
-                          onChange={(e) => setPhoneInput(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                          placeholder="1234567890"
-                          required
-                          className="flex-1 min-w-0 border border-[#E5E7EB] rounded-xl px-4 py-3 text-sm font-medium text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
-                        />
+          {/* White Floating Card Matching Reference Image 2 (Larger & More Spacious) */}
+          <div className="bg-white border border-[#EDE8E1] rounded-2xl sm:rounded-3xl p-7 sm:p-10 shadow-sm transition-all">
+            {step === "input" ? (
+              authMethod === "phone" ? (
+                /* Phone Number / WhatsApp Flow */
+                <form onSubmit={handlePhoneSubmit} className="space-y-4 sm:space-y-5">
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2.5">
+                      Phone Number
+                    </label>
+                    <div className="flex items-center gap-2.5">
+                      {/* Country code selector */}
+                      <div className="flex items-center gap-2 border border-[#E5E7EB] rounded-xl px-3.5 py-3.5 bg-white shrink-0">
+                        <span className="text-lg leading-none">🇮🇳</span>
+                        <span className="text-sm font-semibold text-[#14110E]">+91</span>
+                        <ChevronDown size={14} className="text-[#9CA3AF] ml-0.5" />
                       </div>
-                    </div>
-
-                    {/* Terracotta Continue with WhatsApp button */}
-                    <button
-                      type="submit"
-                      disabled={submitting || phoneInput.length < 10}
-                      className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-sm py-3.5 px-4 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
-                    >
-                      {submitting ? "Connecting..." : "Continue with WhatsApp"}
-                    </button>
-
-                    {/* Divider: O R */}
-                    <div className="relative my-5">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-[#E5E7EB]" />
-                      </div>
-                      <div className="relative flex justify-center text-[11px]">
-                        <span className="bg-white px-3 font-medium tracking-[0.2em] text-[#9CA3AF] uppercase">
-                          O R
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Social Login Buttons */}
-                    <div className="space-y-3">
-                      <button
-                        type="button"
-                        onClick={handleGoogleSignIn}
-                        disabled={submitting}
-                        className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition-all cursor-pointer active:scale-98"
-                      >
-                        <GoogleIcon className="w-4 h-4 shrink-0" />
-                        <span>Continue with Google</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={handleAppleSignIn}
-                        disabled={submitting}
-                        className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition-all cursor-pointer active:scale-98"
-                      >
-                        <AppleIcon className="w-4 h-4 shrink-0" />
-                        <span>Continue with Apple</span>
-                      </button>
-                    </div>
-
-                    {/* Switch to Email link */}
-                    <div className="text-center pt-2">
-                      <button
-                        type="button"
-                        onClick={() => setAuthMethod("email")}
-                        className="text-sm font-medium text-[#D25A24] hover:underline cursor-pointer"
-                      >
-                        Sign in with email
-                      </button>
-                    </div>
-                  </form>
-                ) : (
-                  /* Email Flow */
-                  <form onSubmit={handleEmailSubmit} className="space-y-4 animate-in fade-in duration-200">
-                    <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2">
-                        Email Address
-                      </label>
+                      {/* Phone input */}
                       <input
-                        type="email"
-                        value={emailInput}
-                        onChange={(e) => setEmailInput(e.target.value)}
-                        placeholder="patron@example.com"
+                        type="tel"
+                        inputMode="numeric"
+                        value={phoneInput}
+                        onChange={(e) => setPhoneInput(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                        placeholder="1234567890"
                         required
-                        className="w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-sm font-medium text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
+                        className="flex-1 min-w-0 border border-[#E5E7EB] rounded-xl px-4 py-3.5 text-base font-medium text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
                       />
                     </div>
-
-                    <button
-                      type="submit"
-                      disabled={submitting || !emailInput.trim()}
-                      className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-sm py-3.5 px-4 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
-                    >
-                      {submitting ? "Sending Code..." : "Continue with Email"}
-                    </button>
-
-                    {/* Divider: O R */}
-                    <div className="relative my-5">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-[#E5E7EB]" />
-                      </div>
-                      <div className="relative flex justify-center text-[11px]">
-                        <span className="bg-white px-3 font-medium tracking-[0.2em] text-[#9CA3AF] uppercase">
-                          O R
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Social Login Buttons */}
-                    <div className="space-y-3">
-                      <button
-                        type="button"
-                        onClick={handleGoogleSignIn}
-                        disabled={submitting}
-                        className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition-all cursor-pointer active:scale-98"
-                      >
-                        <GoogleIcon className="w-4 h-4 shrink-0" />
-                        <span>Continue with Google</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={handleAppleSignIn}
-                        disabled={submitting}
-                        className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition-all cursor-pointer active:scale-98"
-                      >
-                        <AppleIcon className="w-4 h-4 shrink-0" />
-                        <span>Continue with Apple</span>
-                      </button>
-                    </div>
-
-                    {/* Switch to Phone link */}
-                    <div className="text-center pt-2">
-                      <button
-                        type="button"
-                        onClick={() => setAuthMethod("phone")}
-                        className="text-sm font-medium text-[#D25A24] hover:underline cursor-pointer"
-                      >
-                        Sign in with phone number
-                      </button>
-                    </div>
-                  </form>
-                )
-              ) : (
-                /* OTP Verification Step */
-                <form onSubmit={handleVerifyOtp} className="space-y-4 animate-in fade-in duration-200">
-                  <div className="bg-[#FAF7F2] border border-[#EDE8E1] rounded-xl p-3.5 text-xs text-[#6B7280]">
-                    Verification code sent to{" "}
-                    <strong className="text-[#14110E]">
-                      {authMethod === "phone" ? `+91 ${phoneInput}` : emailInput}
-                    </strong>
                   </div>
 
+                  {/* Terracotta Continue with WhatsApp button */}
+                  <button
+                    type="submit"
+                    disabled={submitting || phoneInput.length < 10}
+                    className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-base py-3.5 sm:py-4 px-5 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
+                  >
+                    {submitting ? "Connecting..." : "Continue with WhatsApp"}
+                  </button>
+
+                  {/* Divider: O R */}
+                  <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-[#E5E7EB]" />
+                    </div>
+                    <div className="relative flex justify-center text-[11px]">
+                      <span className="bg-white px-4 font-medium tracking-[0.25em] text-[#9CA3AF] uppercase">
+                        O R
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Social Login Buttons */}
+                  <div className="space-y-3">
+                    <button
+                      type="button"
+                      onClick={handleGoogleSignIn}
+                      disabled={submitting}
+                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
+                    >
+                      <GoogleIcon className="w-4 h-4 shrink-0" />
+                      <span>Continue with Google</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleAppleSignIn}
+                      disabled={submitting}
+                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
+                    >
+                      <AppleIcon className="w-4 h-4 shrink-0" />
+                      <span>Continue with Apple</span>
+                    </button>
+                  </div>
+
+                  {/* Switch to Email link */}
+                  <div className="text-center pt-3">
+                    <button
+                      type="button"
+                      onClick={() => setAuthMethod("email")}
+                      className="text-sm font-medium text-[#D25A24] hover:underline cursor-pointer"
+                    >
+                      Sign in with email
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                /* Email Flow */
+                <form onSubmit={handleEmailSubmit} className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
                   <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2">
-                      Enter 6-Digit Code
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2.5">
+                      Email Address
                     </label>
                     <input
-                      type="text"
-                      inputMode="numeric"
-                      value={otpCode}
-                      onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                      placeholder="123456"
+                      type="email"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      placeholder="patron@example.com"
                       required
-                      maxLength={6}
-                      autoFocus
-                      className="w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-center text-lg font-mono tracking-widest text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
+                      className="w-full border border-[#E5E7EB] rounded-xl px-4 py-3.5 text-base font-medium text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    disabled={submitting || otpCode.length < 6}
-                    className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-sm py-3.5 px-4 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
+                    disabled={submitting || !emailInput.trim()}
+                    className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-base py-3.5 sm:py-4 px-5 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
                   >
-                    {submitting ? "Verifying..." : "Verify & Continue"}
+                    {submitting ? "Sending Code..." : "Continue with Email"}
                   </button>
 
-                  <div className="flex items-center justify-between text-xs pt-1">
+                  {/* Divider: O R */}
+                  <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-[#E5E7EB]" />
+                    </div>
+                    <div className="relative flex justify-center text-[11px]">
+                      <span className="bg-white px-4 font-medium tracking-[0.25em] text-[#9CA3AF] uppercase">
+                        O R
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Social Login Buttons */}
+                  <div className="space-y-3">
                     <button
                       type="button"
-                      onClick={() => {
-                        setStep("input");
-                        setOtpCode("");
-                      }}
-                      className="text-[#6B7280] hover:text-[#14110E] underline cursor-pointer"
+                      onClick={handleGoogleSignIn}
+                      disabled={submitting}
+                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
                     >
-                      {authMethod === "phone" ? "Change phone number" : "Change email"}
+                      <GoogleIcon className="w-4 h-4 shrink-0" />
+                      <span>Continue with Google</span>
                     </button>
+
                     <button
                       type="button"
-                      onClick={() => {
-                        setOtpCode("123456");
-                      }}
-                      className="text-[#D25A24] font-semibold hover:underline cursor-pointer"
+                      onClick={handleAppleSignIn}
+                      disabled={submitting}
+                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
                     >
-                      Resend code
+                      <AppleIcon className="w-4 h-4 shrink-0" />
+                      <span>Continue with Apple</span>
+                    </button>
+                  </div>
+
+                  {/* Switch to Phone link */}
+                  <div className="text-center pt-3">
+                    <button
+                      type="button"
+                      onClick={() => setAuthMethod("phone")}
+                      className="text-sm font-medium text-[#D25A24] hover:underline cursor-pointer"
+                    >
+                      Sign in with phone number
                     </button>
                   </div>
                 </form>
-              )}
-            </div>
+              )
+            ) : (
+              /* OTP Verification Step */
+              <form onSubmit={handleVerifyOtp} className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
+                <div className="bg-[#FAF7F2] border border-[#EDE8E1] rounded-xl p-4 text-xs text-[#6B7280]">
+                  Verification code sent to{" "}
+                  <strong className="text-[#14110E]">
+                    {authMethod === "phone" ? `+91 ${phoneInput}` : emailInput}
+                  </strong>
+                </div>
 
-            {/* Terms and Privacy Footer matching Reference Image 2 */}
-            <p className="text-center text-xs text-[#718096] mt-6 leading-relaxed">
-              By continuing you agree to Suitoholic&apos;s{" "}
-              <Link href="/terms" className="text-[#D25A24] hover:underline">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="text-[#D25A24] hover:underline">
-                Privacy Policy
-              </Link>
-              .
-            </p>
+                <div>
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2.5">
+                    Enter 6-Digit Code
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    placeholder="123456"
+                    required
+                    maxLength={6}
+                    autoFocus
+                    className="w-full border border-[#E5E7EB] rounded-xl px-4 py-3.5 text-center text-xl font-mono tracking-widest text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting || otpCode.length < 6}
+                  className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-base py-3.5 sm:py-4 px-5 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
+                >
+                  {submitting ? "Verifying..." : "Verify & Continue"}
+                </button>
+
+                <div className="flex items-center justify-between text-xs pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStep("input");
+                      setOtpCode("");
+                    }}
+                    className="text-[#6B7280] hover:text-[#14110E] underline cursor-pointer"
+                  >
+                    {authMethod === "phone" ? "Change phone number" : "Change email"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOtpCode("123456");
+                    }}
+                    className="text-[#D25A24] font-semibold hover:underline cursor-pointer"
+                  >
+                    Resend code
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
-        </main>
 
-        <Footer />
+          {/* Terms and Privacy Footer matching Reference Image 2 */}
+          <p className="text-center text-xs text-[#718096] mt-6 leading-relaxed">
+            By continuing you agree to Suitoholic&apos;s{" "}
+            <Link href="/terms" className="text-[#D25A24] hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="text-[#D25A24] hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+
+          {/* Return to store link */}
+          <div className="text-center mt-5">
+            <Link
+              href="/"
+              className="text-xs text-[#6B7280] hover:text-[#14110E] transition inline-flex items-center gap-1 font-medium"
+            >
+              ← Return to Boutique
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
