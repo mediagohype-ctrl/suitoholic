@@ -478,60 +478,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
             </div>
           </Card>
 
-          {/* Section 4: Bespoke Fabric & Fit Details */}
-          <Card>
-            <CardHeader
-              title="Fabric & Bespoke Tailoring Details"
-              description="Body silhouette, collar styles, cuffs, and material specifications."
-            />
-            <div className="space-y-5 p-4 sm:p-5">
-              <div>
-                <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
-                  Body Silhouette Fit
-                </label>
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                  {BODY_TYPE_OPTIONS.map((b) => (
-                    <button
-                      key={b.id}
-                      type="button"
-                      onClick={() => {
-                        set("selectedBodyType", b.id);
-                        set("fit", `${b.title} (Chest ${form.selectedChest}")`);
-                      }}
-                      className={cn(
-                        "rounded-lg border p-3 text-left transition cursor-pointer",
-                        form.selectedBodyType === b.id
-                          ? "border-[#14110E] bg-[#14110E] text-white"
-                          : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C]"
-                      )}
-                    >
-                      <p className="text-xs font-bold">{b.title}</p>
-                      <p className={cn("mt-0.5 text-[10px]", form.selectedBodyType === b.id ? "text-neutral-300" : "text-[#6B7280]")}>{b.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2 border-t border-[#F3F4F6]">
-                <SelectField
-                  label="Collar Style"
-                  value={form.collar}
-                  onChange={(e) => set("collar", e.target.value)}
-                  options={COLLAR_OPTIONS.map((c) => ({ value: c, label: c }))}
-                />
-                <SelectField
-                  label="Cuff Style"
-                  value={form.cuff}
-                  onChange={(e) => set("cuff", e.target.value)}
-                  options={CUFF_OPTIONS.map((c) => ({ value: c, label: c }))}
-                />
-                <TextField label="Fabric Composition" value={form.fabric} onChange={(e) => set("fabric", e.target.value)} error={errors.fabric} />
-                <TextField label="Thread Count / Ply" value={form.threadCount} onChange={(e) => set("threadCount", e.target.value)} error={errors.threadCount} />
-              </div>
-            </div>
-          </Card>
-
-          {/* Section 5: Colorways */}
+          {/* Section 4: Colorways */}
           <Card>
             <CardHeader
               title="Colorways"
