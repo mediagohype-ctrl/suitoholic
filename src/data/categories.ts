@@ -57,42 +57,6 @@ export const fallbackCategories: Category[] = [
     "active": true
   },
   {
-    "id": "trousers",
-    "title": "TAILORED TROUSERS & PANTS",
-    "shortTitle": "TAILORED TROUSERS & PANTS",
-    "mobileTitle": [
-      "TAILORED",
-      "TROUSERS"
-    ],
-    "subtitle": "Italian pleated wool dress pants & Gurkha trousers.",
-    "image": "/pant_pleated_beige.jpg",
-    "homeTitle": "Tailored Trousers & Pants",
-    "description": "Italian pleated wool dress pants, sartorial Gurkha trousers, and premium stretch chinos.",
-    "tag": "COLLECTION 04 • TAILORED PANTS",
-    "bgImage": "/pant_pleated_beige.jpg",
-    "showOnHome": false,
-    "sortOrder": 4,
-    "active": true
-  },
-  {
-    "id": "tshirts",
-    "title": "PREMIUM POLOS & T-SHIRTS",
-    "shortTitle": "POLOS & T-SHIRTS",
-    "mobileTitle": [
-      "POLOS &",
-      "T-SHIRTS"
-    ],
-    "subtitle": "Heavyweight Supima tees & silk-blend knit polos.",
-    "image": "/tshirt_knit_navy_polo.jpg",
-    "homeTitle": "Premium Polos & T-Shirts",
-    "description": "Heavyweight Supima cotton tees, silk-blend knit polos, and fine-gauge textured casuals.",
-    "tag": "COLLECTION 05 • LUXURY CASUALS",
-    "bgImage": "/tshirt_knit_navy_polo.jpg",
-    "showOnHome": false,
-    "sortOrder": 5,
-    "active": true
-  },
-  {
     "id": "blazers",
     "title": "BESPOKE SUITS & BLAZERS",
     "shortTitle": "SUITS & BLAZERS",
@@ -107,7 +71,7 @@ export const fallbackCategories: Category[] = [
     "tag": "",
     "bgImage": "/blazer_navy_wool.jpg",
     "showOnHome": false,
-    "sortOrder": 6,
+    "sortOrder": 4,
     "active": true
   },
   {
@@ -125,7 +89,7 @@ export const fallbackCategories: Category[] = [
     "tag": "",
     "bgImage": "/ceremonial_bandhgala.jpg",
     "showOnHome": false,
-    "sortOrder": 7,
+    "sortOrder": 5,
     "active": true
   }
 ];

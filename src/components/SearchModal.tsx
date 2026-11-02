@@ -75,12 +75,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       href: "/fabrics",
       image: "/fabric_cat_suits_sets.jpg",
     },
-    {
-      id: "trousers",
-      title: "Handcrafted Luxury Trousers",
-      href: "/shop?category=trousers",
-      image: "/pant_charcoal_dress.jpg",
-    },
   ];
 
   const trimmed = query.trim().toLowerCase();

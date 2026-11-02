@@ -33,16 +33,10 @@ export const categoriesShowcase = {
       href: "/shop?category=ceremonial",
     },
     {
-      title: "TROUSERS & PANTS",
-      subtitle: "Sartorial Pleated Gurkha & Wool Dress Pants",
-      image: "/pant_pleated_beige.jpg",
-      href: "/shop?category=trousers",
-    },
-    {
-      title: "KNIT POLOS & TEES",
-      subtitle: "Silk-Blend Knitwear & Pima Cotton Essentials",
-      image: "/tshirt_knit_navy_polo.jpg",
-      href: "/shop?category=tshirts",
+      title: "BENGAL STRIPES",
+      subtitle: "Savile Row Twill Stripes & Executive Tailoring",
+      image: "/new_shirts/shirt_14.jpg",
+      href: "/shop?category=formal_stripes",
     },
   ],
 };
