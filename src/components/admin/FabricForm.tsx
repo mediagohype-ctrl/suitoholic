@@ -66,6 +66,19 @@ export const HEIGHT_OPTIONS = [
   },
 ];
 
+export const SLEEVE_OPTIONS = [
+  {
+    id: "full" as const,
+    title: "Full Sleeves",
+    desc: "Classic tailored full-length sleeves with double-button barrel cuffs",
+  },
+  {
+    id: "half" as const,
+    title: "Half Sleeves",
+    desc: "Summer tailored short sleeves resting crisply mid-bicep",
+  },
+];
+
 export const CATEGORY_OPTIONS = [
   { value: "oxford_twill", label: "Oxford & Twill" },
   { value: "stripes", label: "Giza Stripes" },
@@ -100,9 +113,10 @@ interface FormState {
   accentColor: string;
   active: boolean;
   sortOrder: number | "";
-  selectedChest: number;
-  selectedBodyType: "lean" | "regular" | "tummy";
-  selectedHeight: "regular" | "tall" | "extra_tall";
+  selectedChest: number | null;
+  selectedBodyType: "lean" | "regular" | "tummy" | null;
+  selectedHeight: "regular" | "tall" | "extra_tall" | null;
+  selectedSleeves: "full" | "half" | null;
 }
 
 function toForm(f?: AdminFabric | null): FormState {
@@ -132,17 +146,20 @@ function toForm(f?: AdminFabric | null): FormState {
     accentColor: f?.accentColor ?? "#9E774C",
     active: f?.active ?? true,
     sortOrder: f?.sortOrder ?? 0,
-    selectedChest: 40,
-    selectedBodyType: "regular",
-    selectedHeight: "regular",
+    selectedChest: null,
+    selectedBodyType: null,
+    selectedHeight: null,
+    selectedSleeves: null,
   };
 }
 
 function toBody(f: FormState) {
   const int = (v: number | "") => (v === "" ? 0 : Math.round(Number(v)));
   const num = (v: number | "") => (v === "" ? 5.0 : Number(v));
-  const bodyName = f.selectedBodyType === "lean" ? "Lean Fit" : f.selectedBodyType === "tummy" ? "Tummy Fit" : "Regular Fit";
-  const heightName = f.selectedHeight === "tall" ? "Tall Height" : f.selectedHeight === "extra_tall" ? "Extra Tall Height" : "Regular Height";
+  const bodyName = f.selectedBodyType === "lean" ? "Lean Fit" : f.selectedBodyType === "tummy" ? "Tummy Fit" : f.selectedBodyType === "regular" ? "Regular Fit" : "";
+  const heightName = f.selectedHeight === "tall" ? "Tall Height" : f.selectedHeight === "extra_tall" ? "Extra Tall Height" : f.selectedHeight === "regular" ? "Regular Height" : "";
+  const sleeveName = f.selectedSleeves === "full" ? "Full Sleeves" : f.selectedSleeves === "half" ? "Half Sleeves" : "";
+  const bestForDetails = [f.selectedChest ? `Chest ${f.selectedChest}"` : "", bodyName, heightName, sleeveName].filter(Boolean).join(", ");
 
   return {
     code: f.code.trim().toUpperCase(),
@@ -165,7 +182,7 @@ function toBody(f: FormState) {
     compareAtPrice: f.compareAtPrice.trim(),
     rating: num(f.rating),
     reviewsCount: int(f.reviewsCount),
-    bestFor: f.bestFor.trim() || `Tailored Fit (Chest ${f.selectedChest}", ${bodyName}, ${heightName})`,
+    bestFor: f.bestFor.trim() || (bestForDetails ? `Tailored Fit (${bestForDetails})` : "Tailored Bespoke Fit"),
     care: f.care.trim(),
     accentColor: f.accentColor.trim(),
     active: f.active,
@@ -190,7 +207,7 @@ export default function FabricForm({
   const [form, setForm] = useState(baseline);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
-  const [wizardStep, setWizardStep] = useState<1 | 2 | 3 | 4>(1);
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3 | 4 | 5>(1);
 
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
   useUnsavedChanges(dirty && !saving);
@@ -216,7 +233,7 @@ export default function FabricForm({
 
     if (!form.image.trim()) {
       local.image = "Please upload fabric swatch image in the last step.";
-      setWizardStep(4);
+      setWizardStep(5);
     }
 
     if (Object.keys(local).length) {
@@ -270,8 +287,9 @@ export default function FabricForm({
     }
   };
 
-  const bodyName = form.selectedBodyType === "lean" ? "Lean Fit" : form.selectedBodyType === "tummy" ? "Tummy Fit" : "Regular Fit";
-  const heightName = form.selectedHeight === "tall" ? "Tall Height" : form.selectedHeight === "extra_tall" ? "Extra Tall Height" : "Regular Height";
+  const bodyName = form.selectedBodyType === "lean" ? "Lean Fit" : form.selectedBodyType === "tummy" ? "Tummy Fit" : form.selectedBodyType === "regular" ? "Regular Fit" : "";
+  const heightName = form.selectedHeight === "tall" ? "Tall Height" : form.selectedHeight === "extra_tall" ? "Extra Tall Height" : form.selectedHeight === "regular" ? "Regular Height" : "";
+  const sleeveName = form.selectedSleeves === "full" ? "Full Sleeves" : form.selectedSleeves === "half" ? "Half Sleeves" : "";
 
   return (
     <form onSubmit={submit} className="pb-28">
@@ -381,7 +399,8 @@ export default function FabricForm({
           {/* Step 1: Chest Size -> Continue                                            */}
           {/* Step 2: Choose Your Body Type (Lean, Regular, Tummy) -> Continue          */}
           {/* Step 3: Select Your Height (Regular, Tall, Extra Tall) -> Continue        */}
-          {/* Step 4: Upload Your Image (Last Step)                                     */}
+          {/* Step 4: Select Your Sleeves (Full Sleeves, Half Sleeves) -> Continue       */}
+          {/* Step 5: Upload Your Image (Last Step)                                     */}
           {/* ========================================================================= */}
           <Card>
             <CardHeader
@@ -392,6 +411,8 @@ export default function FabricForm({
                   ? "Choose Your Body Type"
                   : wizardStep === 3
                   ? "Select Your Height"
+                  : wizardStep === 4
+                  ? "Select Your Sleeves"
                   : "Upload Your Image"
               }
               description={
@@ -401,20 +422,23 @@ export default function FabricForm({
                   ? "Apna body type drape (Lean, Regular, ya Tummy) choose karke Continue karein."
                   : wizardStep === 3
                   ? "Apna height proportion choose karke Continue karein."
+                  : wizardStep === 4
+                  ? "Apna sleeve option (Full Sleeves ya Half Sleeves) choose karke Continue karein."
                   : "Aakhri step me fabric swatch image upload karein."
               }
               actions={
                 <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
                   {[
-                    { step: 1, label: `1. Chest (${form.selectedChest}")` },
-                    { step: 2, label: `2. Body (${bodyName.replace(" Fit", "")})` },
-                    { step: 3, label: `3. Height (${heightName.replace(" Height", "")})` },
-                    { step: 4, label: `4. Swatch` },
+                    { step: 1, label: form.selectedChest ? `1. Chest (${form.selectedChest}")` : `1. Chest` },
+                    { step: 2, label: bodyName ? `2. Body (${bodyName.replace(" Fit", "")})` : `2. Body` },
+                    { step: 3, label: heightName ? `3. Height (${heightName.replace(" Height", "")})` : `3. Height` },
+                    { step: 4, label: sleeveName ? `4. Sleeves (${sleeveName.replace(" Sleeves", "")})` : `4. Sleeves` },
+                    { step: 5, label: `5. Swatch` },
                   ].map((s) => (
                     <button
                       key={s.step}
                       type="button"
-                      onClick={() => setWizardStep(s.step as 1 | 2 | 3 | 4)}
+                      onClick={() => setWizardStep(s.step as 1 | 2 | 3 | 4 | 5)}
                       className={cn(
                         "rounded-lg px-2.5 py-1 text-xs font-semibold transition shrink-0 cursor-pointer",
                         wizardStep === s.step
@@ -438,7 +462,7 @@ export default function FabricForm({
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <div>
                       <span className="inline-block rounded-md bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                        Step 1 of 4
+                        Step 1 of 5
                       </span>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
                         Select Your Chest Size
@@ -448,7 +472,7 @@ export default function FabricForm({
                       </p>
                     </div>
                     <span className="rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-[#9E774C] border border-[#E5E7EB] shadow-2xs">
-                      Selected: {form.selectedChest}&quot; Chest
+                      {form.selectedChest ? `Selected: ${form.selectedChest}" Chest` : "None Selected"}
                     </span>
                   </div>
 
@@ -488,11 +512,17 @@ export default function FabricForm({
 
                   <div className="mt-5 flex items-center justify-between border-t border-[#EAE3D9] pt-4">
                     <p className="text-xs text-[#6B7280]">
-                      Selected Chest: <strong className="text-[#14110E]">{form.selectedChest}&quot; Sizing</strong>
+                      Selected Chest: <strong className="text-[#14110E]">{form.selectedChest ? `${form.selectedChest}" Sizing` : "None Selected"}</strong>
                     </p>
                     <Button
                       type="button"
-                      onClick={() => setWizardStep(2)}
+                      onClick={() => {
+                        if (!form.selectedChest) {
+                          toast.error("Please select a chest size to continue.");
+                          return;
+                        }
+                        setWizardStep(2);
+                      }}
                       className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
                       icon={<ChevronRight className="h-4 w-4" />}
                     >
@@ -511,10 +541,10 @@ export default function FabricForm({
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Step 2 of 4
+                          Step 2 of 5
                         </span>
                         <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
-                          Chest Size: {form.selectedChest}&quot;
+                          Chest Size: {form.selectedChest ? `${form.selectedChest}"` : "Not selected"}
                         </span>
                       </div>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
@@ -560,7 +590,7 @@ export default function FabricForm({
                               "rounded-md px-2 py-0.5 text-[10px] font-bold uppercase",
                               isSelected ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-[#8A5A00] border border-[#EAE3D9]"
                             )}>
-                              Chest {form.selectedChest}&quot;
+                              {form.selectedChest ? `Chest ${form.selectedChest}"` : "Fit Drape"}
                             </span>
                             {isSelected && (
                               <span className="flex items-center gap-1 text-[11px] font-bold text-[#9E774C]">
@@ -592,7 +622,13 @@ export default function FabricForm({
                     </Button>
                     <Button
                       type="button"
-                      onClick={() => setWizardStep(3)}
+                      onClick={() => {
+                        if (!form.selectedBodyType) {
+                          toast.error("Please choose a body type to continue.");
+                          return;
+                        }
+                        setWizardStep(3);
+                      }}
                       className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
                       icon={<ChevronRight className="h-4 w-4" />}
                     >
@@ -611,10 +647,10 @@ export default function FabricForm({
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Step 3 of 4
+                          Step 3 of 5
                         </span>
                         <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
-                          Chest: {form.selectedChest}&quot; · {bodyName}
+                          Chest: {form.selectedChest ? `${form.selectedChest}"` : "—"} · {bodyName || "—"}
                         </span>
                       </div>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
@@ -680,7 +716,7 @@ export default function FabricForm({
                     })}
                   </div>
 
-                  {/* Continue Button to Step 4 (Image Upload) */}
+                  {/* Continue Button to Step 4 (Sleeves) */}
                   <div className="mt-5 flex items-center justify-between border-t border-[#EAE3D9] pt-4">
                     <Button
                       type="button"
@@ -692,7 +728,119 @@ export default function FabricForm({
                     </Button>
                     <Button
                       type="button"
-                      onClick={() => setWizardStep(4)}
+                      onClick={() => {
+                        if (!form.selectedHeight) {
+                          toast.error("Please select height to continue.");
+                          return;
+                        }
+                        setWizardStep(4);
+                      }}
+                      className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
+                      icon={<ChevronRight className="h-4 w-4" />}
+                    >
+                      Continue to Select Sleeves
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* ========================================================= */}
+              {/* STEP 4: SELECT YOUR SLEEVES (FULL SLEEVES, HALF SLEEVES)   */}
+              {/* ========================================================= */}
+              {wizardStep === 4 && (
+                <div className="space-y-4 animate-in fade-in duration-200">
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                          Step 4 of 5
+                        </span>
+                        <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
+                          Chest: {form.selectedChest ? `${form.selectedChest}"` : "—"} · {bodyName || "—"} · {heightName || "—"}
+                        </span>
+                      </div>
+                      <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
+                        Select Your Sleeves
+                      </h4>
+                      <p className="text-xs text-[#6B7280]">
+                        Apna sleeve option choose karein (Full Sleeves ya Half Sleeves):
+                      </p>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setWizardStep(3)}
+                      icon={<ChevronLeft className="h-3.5 w-3.5" />}
+                    >
+                      Back to Height
+                    </Button>
+                  </div>
+
+                  {/* 2 Sleeve Options */}
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {SLEEVE_OPTIONS.map((s) => {
+                      const isSelected = form.selectedSleeves === s.id;
+
+                      return (
+                        <button
+                          key={s.id}
+                          type="button"
+                          onClick={() => {
+                            set("selectedSleeves", s.id);
+                          }}
+                          className={cn(
+                            "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
+                            isSelected
+                              ? "border-[#14110E] bg-[#14110E] text-white shadow-md scale-102"
+                              : "border-[#D6CEBF] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
+                          )}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className={cn(
+                              "rounded-md px-2 py-0.5 text-[10px] font-bold uppercase",
+                              isSelected ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-[#8A5A00] border border-[#EAE3D9]"
+                            )}>
+                              Sleeve Style
+                            </span>
+                            {isSelected && (
+                              <span className="flex items-center gap-1 text-[11px] font-bold text-[#9E774C]">
+                                <Check className="h-3.5 w-3.5" /> Selected
+                              </span>
+                            )}
+                          </div>
+
+                          <h4 className="font-serif text-lg font-bold">
+                            {s.title}
+                          </h4>
+                          <p className={cn("mt-1.5 text-xs leading-relaxed font-medium", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                            {s.desc}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Continue Button to Step 5 (Image Upload) */}
+                  <div className="mt-5 flex items-center justify-between border-t border-[#EAE3D9] pt-4">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => setWizardStep(3)}
+                      icon={<ChevronLeft className="h-4 w-4" />}
+                    >
+                      Back to Height
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        if (!form.selectedSleeves) {
+                          toast.error("Please select a sleeve option to continue.");
+                          return;
+                        }
+                        setWizardStep(5);
+                      }}
                       className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
                       icon={<ChevronRight className="h-4 w-4" />}
                     >
@@ -703,25 +851,36 @@ export default function FabricForm({
               )}
 
               {/* ========================================================= */}
-              {/* STEP 4: UPLOAD YOUR IMAGE (LAST STEP)                     */}
+              {/* STEP 5: UPLOAD YOUR IMAGE (LAST STEP)                     */}
               {/* ========================================================= */}
-              {wizardStep === 4 && (
+              {wizardStep === 5 && (
                 <div className="space-y-4 animate-in fade-in duration-200">
                   <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
                     <div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         <span className="inline-block rounded-md bg-[#2F6B3B] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Last Step • Step 4 of 4
+                          Last Step • Step 5 of 5
                         </span>
-                        <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
-                          Chest: {form.selectedChest}&quot;
-                        </span>
-                        <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
-                          {bodyName}
-                        </span>
-                        <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
-                          {heightName}
-                        </span>
+                        {form.selectedChest && (
+                          <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            Chest: {form.selectedChest}&quot;
+                          </span>
+                        )}
+                        {bodyName && (
+                          <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            {bodyName}
+                          </span>
+                        )}
+                        {heightName && (
+                          <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            {heightName}
+                          </span>
+                        )}
+                        {sleeveName && (
+                          <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            {sleeveName}
+                          </span>
+                        )}
                       </div>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
                         Upload Swatch Image
@@ -735,10 +894,10 @@ export default function FabricForm({
                       type="button"
                       variant="secondary"
                       size="sm"
-                      onClick={() => setWizardStep(3)}
+                      onClick={() => setWizardStep(4)}
                       icon={<ChevronLeft className="h-3.5 w-3.5" />}
                     >
-                      Back to Height
+                      Back to Sleeves
                     </Button>
                   </div>
 
