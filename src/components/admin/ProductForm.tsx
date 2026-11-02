@@ -126,14 +126,20 @@ export const CUFF_OPTIONS = [
   },
 ];
 
-export const THREAD_COLOR_OPTIONS = [
-  { value: "MATCHING THREAD", label: "MATCHING / TONAL THREAD" },
-  { value: "BLACK THREAD", label: "BLACK THREAD" },
-  { value: "WHITE THREAD", label: "WHITE THREAD" },
-  { value: "NAVY BLUE THREAD", label: "NAVY BLUE THREAD" },
-  { value: "GOLD THREAD", label: "GOLD THREAD" },
-  { value: "BURGUNDY THREAD", label: "BURGUNDY THREAD" },
-  { value: "SILVER GREY THREAD", label: "SILVER GREY THREAD" },
+export interface ThreadColorItem {
+  value: string;
+  label: string;
+  hex: string;
+}
+
+export const THREAD_COLOR_OPTIONS: ThreadColorItem[] = [
+  { value: "MATCHING THREAD", label: "MATCHING / TONAL THREAD", hex: "#9E774C" },
+  { value: "BLACK THREAD", label: "BLACK THREAD", hex: "#14110E" },
+  { value: "WHITE THREAD", label: "WHITE THREAD", hex: "#FFFFFF" },
+  { value: "NAVY BLUE THREAD", label: "NAVY BLUE THREAD", hex: "#1F3A5F" },
+  { value: "GOLD THREAD", label: "GOLD THREAD", hex: "#B8860B" },
+  { value: "BURGUNDY THREAD", label: "BURGUNDY THREAD", hex: "#6B1F2A" },
+  { value: "SILVER GREY THREAD", label: "SILVER GREY THREAD", hex: "#9CA3AF" },
 ];
 
 interface FormState {
@@ -156,6 +162,7 @@ interface FormState {
   selectedCollar: string | null;
   selectedCuff: string | null;
   monogram: string;
+  selectedThreadColors: string[];
   threadColor: string;
   image: string;
   gallery: string[];
@@ -195,6 +202,7 @@ function toForm(p?: AdminProduct | null): FormState {
     selectedCollar: null,
     selectedCuff: null,
     monogram: "",
+    selectedThreadColors: [],
     threadColor: "MATCHING THREAD",
     image: mainImg,
     gallery: gal,
@@ -234,6 +242,10 @@ function toBody(f: FormState) {
   const heightName = f.selectedHeight === "tall" ? "Tall Height" : f.selectedHeight === "extra_tall" ? "Extra Tall Height" : f.selectedHeight === "regular" ? "Regular Height" : "";
   const sleeveName = f.selectedSleeves === "full" ? "Full Sleeves" : f.selectedSleeves === "half" ? "Half Sleeves" : "";
 
+  const threadText = f.selectedThreadColors && f.selectedThreadColors.length > 0
+    ? `Threads: ${f.selectedThreadColors.join(", ")}`
+    : "";
+
   const fitDetails = [
     f.selectedChest ? `Chest ${f.selectedChest}"` : "",
     heightName,
@@ -241,6 +253,7 @@ function toBody(f: FormState) {
     collarValue ? `Collar: ${collarValue}` : "",
     f.selectedSleeves === "full" && cuffValue ? `Cuff: ${cuffValue}` : "",
     f.monogram.trim() ? `Monogram: ${f.monogram.trim()}` : "",
+    threadText,
   ].filter(Boolean).join(", ");
 
   const synthesizedFit = bodyName ? (fitDetails ? `${bodyName} (${fitDetails})` : bodyName) : "";
@@ -1149,43 +1162,163 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                         </div>
                       </div>
 
-                      {/* 3. MONOGRAM & THREAD COLOR */}
-                      <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-widest text-[#14110E] mb-1.5">
-                            Monogram Initials
-                          </label>
-                          <input
-                            type="text"
-                            maxLength={5}
-                            value={form.monogram}
-                            onChange={(e) => set("monogram", e.target.value.toUpperCase())}
-                            placeholder="e.g. A K"
-                            className="w-full rounded-xl border border-[#D6CEBF] bg-[#FAF8F5] px-3.5 py-2.5 font-serif text-base font-bold tracking-widest uppercase text-[#14110E] placeholder:text-[#9CA3AF] focus:border-[#14110E] focus:bg-white focus:outline-none"
-                          />
-                          <p className="mt-1 text-[10px] text-[#6B7280]">
-                            Optional custom embroidery initials (e.g. cuff or chest pocket).
-                          </p>
+                      {/* 3. MONOGRAM INITIALS */}
+                      <div className="pt-2">
+                        <label className="block text-[11px] font-bold uppercase tracking-widest text-[#14110E] mb-1.5">
+                          Monogram Initials
+                        </label>
+                        <input
+                          type="text"
+                          maxLength={5}
+                          value={form.monogram}
+                          onChange={(e) => set("monogram", e.target.value.toUpperCase())}
+                          placeholder="e.g. A K"
+                          className="w-full sm:max-w-xs rounded-xl border border-[#D6CEBF] bg-[#FAF8F5] px-3.5 py-2.5 font-serif text-base font-bold tracking-widest uppercase text-[#14110E] placeholder:text-[#9CA3AF] focus:border-[#14110E] focus:bg-white focus:outline-none"
+                        />
+                        <p className="mt-1 text-[10px] text-[#6B7280]">
+                          Optional custom embroidery initials (e.g. cuff or chest pocket).
+                        </p>
+                      </div>
+
+                      {/* 4. THREAD COLOR OPTIONS (MULTIPLE SELECTION + DISABLE BUTTON ON SIDE) */}
+                      <div className="space-y-3 pt-3 border-t border-[#EAE3D9]">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#14110E]">
+                                Thread Color
+                              </h4>
+                              <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
+                                {form.selectedThreadColors.length > 0
+                                  ? `${form.selectedThreadColors.length} Colors Selected`
+                                  : "None Selected"}
+                              </span>
+                            </div>
+                            <p className="text-xs text-[#6B7280] mt-0.5">
+                              Multiple colors select kar sakte hain. Kisi bhi color ko band karne ke liye side wala <strong>Disable</strong> button use karein:
+                            </p>
+                          </div>
+
+                          {/* Quick Actions Header Buttons */}
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                set(
+                                  "selectedThreadColors",
+                                  THREAD_COLOR_OPTIONS.map((c) => c.value)
+                                );
+                              }}
+                              className="rounded-lg border border-[#D6CEBF] bg-white px-3 py-1.5 text-xs font-semibold text-[#14110E] hover:bg-[#FAF8F5] transition cursor-pointer shadow-2xs"
+                            >
+                              ✓ Select All
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                set("selectedThreadColors", []);
+                              }}
+                              className="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-[#B91C1C] hover:bg-red-100 transition cursor-pointer"
+                            >
+                              ✕ Disable All
+                            </button>
+                          </div>
                         </div>
 
-                        <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-widest text-[#14110E] mb-1.5">
-                            Thread Color
-                          </label>
+                        {/* Quick Dropdown selector */}
+                        <div className="flex flex-wrap items-center gap-2">
                           <select
-                            value={form.threadColor}
-                            onChange={(e) => set("threadColor", e.target.value)}
-                            className="w-full rounded-xl border border-[#D6CEBF] bg-[#FAF8F5] px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#14110E] focus:border-[#14110E] focus:bg-white focus:outline-none cursor-pointer"
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              if (!val) return;
+                              if (!form.selectedThreadColors.includes(val)) {
+                                set("selectedThreadColors", [...form.selectedThreadColors, val]);
+                              }
+                              e.target.value = "";
+                            }}
+                            defaultValue=""
+                            className="w-full sm:w-auto min-w-[280px] rounded-xl border border-[#D6CEBF] bg-[#FAF8F5] px-3.5 py-2 text-xs font-semibold text-[#14110E] focus:border-[#14110E] focus:bg-white focus:outline-none cursor-pointer"
                           >
+                            <option value="" disabled>
+                              + Quick Select / Add Thread Color from list...
+                            </option>
                             {THREAD_COLOR_OPTIONS.map((opt) => (
-                              <option key={opt.value} value={opt.value}>
-                                {opt.label}
+                              <option key={opt.value} value={opt.value} disabled={form.selectedThreadColors.includes(opt.value)}>
+                                {opt.label} {form.selectedThreadColors.includes(opt.value) ? "(Already Selected)" : ""}
                               </option>
                             ))}
                           </select>
-                          <p className="mt-1 text-[10px] text-[#6B7280]">
-                            Contrast or matching thread for buttons & monogram.
-                          </p>
+                        </div>
+
+                        {/* Color Options Grid with Swatches and Side Disable/Enable Button */}
+                        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                          {THREAD_COLOR_OPTIONS.map((opt) => {
+                            const isEnabled = form.selectedThreadColors.includes(opt.value);
+
+                            return (
+                              <div
+                                key={opt.value}
+                                className={cn(
+                                  "flex items-center justify-between gap-3 rounded-xl border p-3 transition-all",
+                                  isEnabled
+                                    ? "border-[#14110E] bg-white shadow-2xs"
+                                    : "border-[#E5E7EB] bg-[#FAF8F5] opacity-55"
+                                )}
+                              >
+                                {/* Left side: Swatch + Title */}
+                                <div className="flex items-center gap-3 min-w-0">
+                                  <span
+                                    className="h-6 w-6 shrink-0 rounded-full border border-[#D1D5DB] shadow-2xs"
+                                    style={{
+                                      backgroundColor: opt.hex,
+                                      boxShadow: opt.hex === "#FFFFFF" ? "inset 0 0 0 1px #E5E7EB" : undefined,
+                                    }}
+                                  />
+                                  <div className="min-w-0">
+                                    <p className={cn("text-xs font-bold uppercase tracking-wider truncate", isEnabled ? "text-[#14110E]" : "text-[#6B7280]")}>
+                                      {opt.label}
+                                    </p>
+                                    <p className="text-[10px] text-[#9CA3AF]">
+                                      {isEnabled ? "Active • Available for Monogram" : "Disabled • Not shown to customer"}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                {/* Right side: Button to Disable / Enable */}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (isEnabled) {
+                                      // Disable this color
+                                      set(
+                                        "selectedThreadColors",
+                                        form.selectedThreadColors.filter((c) => c !== opt.value)
+                                      );
+                                    } else {
+                                      // Enable this color
+                                      set("selectedThreadColors", [...form.selectedThreadColors, opt.value]);
+                                    }
+                                  }}
+                                  className={cn(
+                                    "shrink-0 rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer flex items-center gap-1",
+                                    isEnabled
+                                      ? "border border-red-200 bg-red-50 text-[#B91C1C] hover:bg-red-100 hover:border-red-300"
+                                      : "border border-[#14110E] bg-[#14110E] text-white hover:bg-neutral-800"
+                                  )}
+                                >
+                                  {isEnabled ? (
+                                    <>
+                                      <span>✕</span> Disable
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span>+</span> Enable
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     </>
@@ -1267,6 +1400,11 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                         {form.monogram && (
                           <span className="rounded-full bg-[#9E774C] px-2.5 py-0.5 text-[10px] font-bold text-white">
                             Monogram: {form.monogram}
+                          </span>
+                        )}
+                        {form.selectedThreadColors && form.selectedThreadColors.length > 0 && (
+                          <span className="rounded-full bg-[#9E774C] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            Threads: {form.selectedThreadColors.length} colors
                           </span>
                         )}
                       </div>
