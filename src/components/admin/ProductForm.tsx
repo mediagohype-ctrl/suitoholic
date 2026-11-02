@@ -6,7 +6,7 @@ import {
   ArrowDown,
   ArrowUp,
   Check,
-  CheckCircle2,
+  ChevronDown,
   ExternalLink,
   ImagePlus,
   Plus,
@@ -22,61 +22,8 @@ import type { AdminCategory, AdminColorway, AdminProduct, Paginated } from "@/li
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
 import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle, inputClass } from "./fields";
-import { MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
-import { Badge, Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
-
-export interface ImageStepDef {
-  step: number;
-  breadcrumb: string;
-  title: string;
-  subtitle: string;
-  shortLabel: string;
-}
-
-export const PRODUCT_IMAGE_STEPS: ImageStepDef[] = [
-  {
-    step: 1,
-    breadcrumb: "CHEST SIZE",
-    title: "SELECT YOUR CHEST SIZE",
-    subtitle: "Choose your chest size for the perfect fit. Primary photo shown on catalog cards.",
-    shortLabel: "Chest Size",
-  },
-  {
-    step: 2,
-    breadcrumb: "BODY TYPE",
-    title: "CHOOSE YOUR BODY TYPE",
-    subtitle: "Find the fit that matches your body shape and comfort preference.",
-    shortLabel: "Body Type",
-  },
-  {
-    step: 3,
-    breadcrumb: "HEIGHT",
-    title: "SELECT YOUR HEIGHT",
-    subtitle: "Choose the height option that fits you.",
-    shortLabel: "Height",
-  },
-  {
-    step: 4,
-    breadcrumb: "SLEEVES",
-    title: "SELECT YOUR SLEEVES",
-    subtitle: "Choose the sleeve type that you prefer.",
-    shortLabel: "Sleeves",
-  },
-  {
-    step: 5,
-    breadcrumb: "COLLAR & DETAILS",
-    title: "COLLAR, CUFFS & DETAILS",
-    subtitle: "Customize collar style, wrist cuffs, and personalized monogram initials.",
-    shortLabel: "Collar & Details",
-  },
-  {
-    step: 6,
-    breadcrumb: "REVIEW & ADD TO BAG",
-    title: "REVIEW & CONFIRM BESPOKE FIT",
-    subtitle: "Verify your bespoke specifications before adding to bag.",
-    shortLabel: "Review & Confirm",
-  },
-];
+import { ImageField, MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
+import { Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
 
 export const CHEST_SIZE_OPTIONS = [
   { size: 38, collar: '15.0"', shoulder: '17.5"' },
@@ -139,7 +86,6 @@ interface FormState {
   selectedHeight: string;
   selectedSleeve: string;
   image: string;
-  stepImages: string[];
   gallery: string[];
   colorways: AdminColorway[];
   rating: number | "";
@@ -153,23 +99,7 @@ interface FormState {
   sortOrder: number | "";
 }
 
-function initStepImages(p?: AdminProduct | null): string[] {
-  const steps = ["", "", "", "", "", ""];
-  if (!p) return steps;
-
-  if (p.gallery && p.gallery.length >= 6) {
-    return p.gallery.slice(0, 6).map(cleanMediaUrl);
-  }
-
-  const pool = [cleanMediaUrl(p.image), ...(p.gallery ? p.gallery.map(cleanMediaUrl) : [])].filter(Boolean);
-  for (let i = 0; i < pool.length && i < 6; i++) {
-    steps[i] = pool[i];
-  }
-  return steps;
-}
-
 function toForm(p?: AdminProduct | null): FormState {
-  const stepImages = initStepImages(p);
   return {
     name: p?.name ?? "",
     slug: p?.slug ?? "",
@@ -182,14 +112,13 @@ function toForm(p?: AdminProduct | null): FormState {
     threadCount: p?.threadCount ?? "140/2 Ne Compact Spun",
     collar: p?.collar ?? "English Semi-Spread Collar",
     cuff: p?.cuff ?? "2-Button Rounded Barrel Cuff",
-    fit: p?.fit ?? "Regular Fit",
+    fit: p?.fit ?? "Regular Fit (Chest 40\")",
     selectedChest: 40,
     selectedBodyType: "regular",
     selectedHeight: "regular",
     selectedSleeve: "full",
-    stepImages,
-    image: stepImages[0] || cleanMediaUrl(p?.image ?? ""),
-    gallery: p?.gallery ? p.gallery.map(cleanMediaUrl) : stepImages.filter(Boolean),
+    image: cleanMediaUrl(p?.image ?? ""),
+    gallery: p?.gallery ? p.gallery.map(cleanMediaUrl) : [],
     colorways: p?.colorways ? p.colorways.map((c) => ({ ...c })) : [],
     rating: p?.rating ?? 5,
     reviewsCount: p?.reviewsCount ?? 0,
@@ -205,10 +134,8 @@ function toForm(p?: AdminProduct | null): FormState {
 
 function toBody(f: FormState) {
   const int = (v: number | "") => (v === "" ? 0 : Math.round(Number(v)));
-  const cleanedSteps = f.stepImages.map((s) => cleanMediaUrl(s.trim()));
-  const primaryImage = cleanedSteps[0] || cleanMediaUrl(f.image.trim());
-
-  const galleryItems = cleanedSteps.filter(Boolean);
+  const primaryImage = cleanMediaUrl(f.image.trim());
+  const galleryItems = f.gallery.map(cleanMediaUrl).filter(Boolean);
   if (primaryImage && !galleryItems.includes(primaryImage)) {
     galleryItems.unshift(primaryImage);
   }
@@ -251,7 +178,8 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
   const [baseline, setBaseline] = useState<FormState>(() => toForm(product));
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
+  const [showChestSizes, setShowChestSizes] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
   useUnsavedChanges(dirty);
@@ -274,25 +202,6 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       const next = { ...e };
       delete next[key];
       delete next._;
-      return next;
-    });
-  };
-
-  const setStepImage = (idx: number, url: string) => {
-    const cleaned = cleanMediaUrl(url);
-    setForm((f) => {
-      const updated = [...f.stepImages];
-      updated[idx] = cleaned;
-      return {
-        ...f,
-        stepImages: updated,
-        image: idx === 0 ? cleaned : f.image || cleaned,
-      };
-    });
-    setErrors((e) => {
-      const next = { ...e };
-      delete next[`stepImage_${idx}`];
-      delete next.image;
       return next;
     });
   };
@@ -325,19 +234,22 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       return { ...f, colorways: c };
     });
 
+  const moveGallery = (i: number, delta: number) =>
+    setForm((f) => {
+      const j = i + delta;
+      if (j < 0 || j >= f.gallery.length) return f;
+      const g = [...f.gallery];
+      [g[i], g[j]] = [g[j], g[i]];
+      return { ...f, gallery: g };
+    });
+
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     const local: Record<string, string> = {};
     if (!form.name.trim()) local.name = "Product name is required";
     if (!form.category) local.category = "Category is required";
     if (form.price === "" || Number(form.price) < 0) local.price = "Valid price is required";
-
-    // Only Step 1 image is required as the primary card image! Steps 2-6 are optional
-    const primaryImg = (form.stepImages[0] || form.image).trim();
-    if (!primaryImg) {
-      local.stepImage_0 = "Step 1 (Select Your Chest Size) primary image is required";
-      local.image = "Please upload at least Step 1 (Chest Size) image.";
-    }
+    if (!form.image.trim()) local.image = "Product image is required";
 
     form.colorways.forEach((c, i) => {
       if (!c.name.trim()) local[`colorways.${i}.name`] = "Name is required";
@@ -346,7 +258,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
 
     if (Object.keys(local).length) {
       setErrors(local);
-      toast.error(local.stepImage_0 ? "Please upload Step 1 (Chest Size) image!" : "Please fix the highlighted fields.");
+      toast.error("Please fix the highlighted fields.");
       return;
     }
 
@@ -395,8 +307,6 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
     }
   };
 
-  const completedStepsCount = form.stepImages.filter((s) => !!s.trim()).length;
-
   return (
     <form onSubmit={submit} className="pb-28">
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
@@ -439,45 +349,142 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
             </div>
           </Card>
 
-          {/* Section 3: Bespoke Customization Specs */}
+          {/* ========================================================================= */}
+          {/* SECTION 3: UPLOAD YOUR IMAGE (WITH SELECT YOUR CHEST SIZE BUTTON)         */}
+          {/* ========================================================================= */}
           <Card>
             <CardHeader
-              title="Bespoke Tailoring Specifications"
-              description="Configure collar, cuffs, body type, and chest sizing for bespoke customizer orders."
+              title="Upload Your Image"
+              description="Choose image from media library or paste link, and select chest sizing specifications."
             />
             <div className="space-y-5 p-4 sm:p-5">
-              {/* Chest Sizes */}
-              <div>
-                <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
-                  Primary Chest Fit (Inches)
-                </label>
-                <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
-                  {CHEST_SIZE_OPTIONS.map((c) => {
-                    const isSelected = form.selectedChest === c.size;
-                    return (
-                      <button
-                        key={c.size}
-                        type="button"
-                        onClick={() => {
-                          set("selectedChest", c.size);
-                          set("fit", `${form.fit.split(" (")[0] || "Regular Fit"} (Chest ${c.size}")`);
-                        }}
-                        className={cn(
-                          "flex flex-col items-center justify-center rounded-lg border py-2 text-center transition cursor-pointer",
-                          isSelected
-                            ? "border-[#14110E] bg-[#14110E] text-white shadow-xs"
-                            : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C]"
-                        )}
-                      >
-                        <span className="text-sm font-bold">{c.size}&quot;</span>
-                        <span className={cn("text-[9px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>{c.collar}</span>
-                      </button>
-                    );
-                  })}
+              {/* Select Your Chest Size Trigger & Expandable Options */}
+              <div className="rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#14110E]">
+                      Chest Sizing Fit
+                    </p>
+                    <p className="mt-0.5 text-xs text-[#6B7280]">
+                      Current Selection: <span className="font-bold text-[#9E774C]">{form.selectedChest}&quot; Chest</span>
+                      {form.fit ? ` · ${form.fit}` : ""}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowChestSizes((prev) => !prev)}
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#14110E] px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-neutral-800 transition cursor-pointer"
+                  >
+                    <span>Select Your Chest Size</span>
+                    <ChevronDown className={cn("h-4 w-4 transition-transform duration-200", showChestSizes && "rotate-180")} />
+                  </button>
                 </div>
+
+                {/* When Select Your Chest Size button is clicked -> chest size options open */}
+                {showChestSizes && (
+                  <div className="mt-4 border-t border-[#EAE3D9] pt-4 animate-in fade-in duration-200">
+                    <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-[#8A5A00]">
+                      Choose Chest Size (Inches)
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-8">
+                      {CHEST_SIZE_OPTIONS.map((c) => {
+                        const isSelected = form.selectedChest === c.size;
+                        return (
+                          <button
+                            key={c.size}
+                            type="button"
+                            onClick={() => {
+                              set("selectedChest", c.size);
+                              set("fit", `${form.fit.split(" (")[0] || "Regular Fit"} (Chest ${c.size}")`);
+                            }}
+                            className={cn(
+                              "flex flex-col items-center justify-center rounded-lg border py-2.5 px-2 text-center transition cursor-pointer",
+                              isSelected
+                                ? "border-[#14110E] bg-[#14110E] text-white shadow-xs scale-102"
+                                : "border-[#D6CEBF] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
+                            )}
+                          >
+                            <span className="text-base font-extrabold">{c.size}&quot;</span>
+                            <span className={cn("text-[10px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                              Collar {c.collar}
+                            </span>
+                            <span className={cn("text-[10px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                              Shld {c.shoulder}
+                            </span>
+                            {isSelected && (
+                              <span className="mt-1 flex items-center gap-0.5 text-[9px] font-bold text-[#9E774C]">
+                                <Check className="h-2.5 w-2.5" /> Selected
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Body Type */}
+              {/* Main Product Image Field */}
+              <ImageField
+                label="Product Image"
+                value={form.image}
+                onChange={(v) => set("image", v)}
+                error={errors.image}
+                previewClassName="h-32 w-28"
+                hint="Main image shown on catalog cards, bespoke customizer and product detail page."
+              />
+
+              {/* Optional Gallery Images */}
+              <div className="pt-2 border-t border-[#F3F4F6]">
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <p className="text-xs font-semibold text-[#374151]">Gallery ({form.gallery.length}/20)</p>
+                  <div className="flex gap-2">
+                    {form.image && !form.gallery.includes(form.image) && (
+                      <Button size="sm" variant="ghost" onClick={() => set("gallery", [form.image, ...form.gallery])}>
+                        Add main image
+                      </Button>
+                    )}
+                    <Button size="sm" onClick={() => setPickerOpen(true)} disabled={form.gallery.length >= 20} icon={<ImagePlus className="h-3.5 w-3.5" />}>
+                      Add image
+                    </Button>
+                  </div>
+                </div>
+                {form.gallery.length === 0 ? (
+                  <p className="rounded-lg border border-dashed border-[#E5E7EB] px-3 py-4 text-center text-xs text-[#8B93A1]">
+                    No extra gallery images added.
+                  </p>
+                ) : (
+                  <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+                    {form.gallery.map((src, i) => (
+                      <li key={`${src}-${i}`} className="overflow-hidden rounded-lg border border-[#E5E7EB] bg-white">
+                        <MediaPreview src={src} className="aspect-square rounded-none border-0" />
+                        <div className="flex items-center justify-between border-t border-[#EEF0F3] p-1">
+                          <IconButton label="Move left" onClick={() => moveGallery(i, -1)} disabled={i === 0}>
+                            <ArrowUp className="h-3 w-3 -rotate-90" />
+                          </IconButton>
+                          <IconButton label="Move right" onClick={() => moveGallery(i, 1)} disabled={i === form.gallery.length - 1}>
+                            <ArrowDown className="h-3 w-3 -rotate-90" />
+                          </IconButton>
+                          <IconButton label="Remove" onClick={() => set("gallery", form.gallery.filter((_, idx) => idx !== i))}>
+                            <Trash2 className="h-3 w-3 text-[#B4402F]" />
+                          </IconButton>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </Card>
+
+          {/* Section 4: Bespoke Fabric & Fit Details */}
+          <Card>
+            <CardHeader
+              title="Fabric & Bespoke Tailoring Details"
+              description="Body silhouette, collar styles, cuffs, and material specifications."
+            />
+            <div className="space-y-5 p-4 sm:p-5">
               <div>
                 <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
                   Body Silhouette Fit
@@ -505,7 +512,6 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                 </div>
               </div>
 
-              {/* Collar & Cuff Specs */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2 border-t border-[#F3F4F6]">
                 <SelectField
                   label="Collar Style"
@@ -521,162 +527,6 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                 />
                 <TextField label="Fabric Composition" value={form.fabric} onChange={(e) => set("fabric", e.target.value)} error={errors.fabric} />
                 <TextField label="Thread Count / Ply" value={form.threadCount} onChange={(e) => set("threadCount", e.target.value)} error={errors.threadCount} />
-              </div>
-            </div>
-          </Card>
-
-          {/* ========================================================================= */}
-          {/* SECTION 4: 6-STEP IMAGE UPLOAD (STARTING WITH SELECT YOUR CHEST SIZE)     */}
-          {/* ========================================================================= */}
-          <Card>
-            <CardHeader
-              title="Product Images & Customizer Visuals (6-Step Match)"
-              description="Upload images corresponding to each customer bespoke fit step. Step 1 (Chest Size) is the primary image shown on catalog cards."
-              actions={
-                <div className="flex items-center gap-2">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      const first = form.stepImages.find((s) => !!s.trim()) || form.image.trim();
-                      if (first) {
-                        setForm((f) => ({
-                          ...f,
-                          stepImages: [first, first, first, first, first, first],
-                          image: first,
-                          gallery: [first],
-                        }));
-                        toast.success("Applied Step 1 photo across all 6 steps");
-                      } else {
-                        toast.error("Please upload at least Step 1 (Chest Size) photo first.");
-                      }
-                    }}
-                  >
-                    Use Step 1 for all steps
-                  </Button>
-                  <Badge tone={completedStepsCount > 0 ? "green" : "amber"}>
-                    {completedStepsCount === 6 ? "✓ All 6 Steps Complete" : `${completedStepsCount} of 6 Uploaded`}
-                  </Badge>
-                </div>
-              }
-            />
-            <div className="p-4 sm:p-5">
-              {errors.stepImages && <Notice tone="red" className="mb-4">{errors.stepImages}</Notice>}
-
-              {/* 6 Step Upload Grid */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {PRODUCT_IMAGE_STEPS.map((stepDef, idx) => {
-                  const val = form.stepImages[idx] || "";
-                  const isFilled = !!val.trim();
-                  const isPrimary = idx === 0;
-                  const stepError = errors[`stepImage_${idx}`];
-
-                  return (
-                    <div
-                      key={stepDef.step}
-                      className={cn(
-                        "flex flex-col justify-between rounded-xl border p-4 transition-all bg-white shadow-xs",
-                        stepError
-                          ? "border-[#B4402F] ring-1 ring-[#B4402F] bg-[#FFFBFB]"
-                          : isFilled
-                          ? "border-[#C6E0CB] hover:border-[#2F6B3B]"
-                          : "border-[#E5E7EB] hover:border-[#9E774C]"
-                      )}
-                    >
-                      <div>
-                        {/* Step Header Badge */}
-                        <div className="mb-2 flex items-center justify-between gap-2">
-                          <span
-                            className={cn(
-                              "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border",
-                              isFilled
-                                ? "bg-[#EAF5EC] text-[#2F6B3B] border-[#C6E0CB]"
-                                : "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]"
-                            )}
-                          >
-                            Step {stepDef.step} of 6 • {stepDef.breadcrumb}
-                          </span>
-                          {isPrimary ? (
-                            <span className="text-[10px] font-bold text-[#B4402F]">
-                              Required *
-                            </span>
-                          ) : isFilled ? (
-                            <span className="flex items-center gap-1 text-[11px] font-semibold text-[#2F6B3B]">
-                              <CheckCircle2 className="h-3.5 w-3.5" /> Ready
-                            </span>
-                          ) : (
-                            <span className="text-[10px] text-[#8B93A1]">
-                              Optional
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Step Title & Subtitle */}
-                        <h4 className="text-xs font-bold text-[#14110E] uppercase tracking-wide leading-snug">
-                          {stepDef.title}
-                        </h4>
-                        <p className="mt-1 text-[11px] text-[#6B7280] leading-snug">
-                          {stepDef.subtitle}
-                        </p>
-                      </div>
-
-                      {/* Image Preview & Picker */}
-                      <div className="mt-4 flex items-center gap-3 border-t border-[#F3F4F6] pt-3">
-                        <button
-                          type="button"
-                          onClick={() => setActiveStepIndex(idx)}
-                          className="group relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] hover:border-[#9E774C] transition"
-                          title="Click to choose or upload"
-                        >
-                          <MediaPreview src={val} className="h-full w-full aspect-square rounded-none border-0" />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/45 text-[10px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
-                            {isFilled ? "Change" : "Upload"}
-                          </div>
-                        </button>
-
-                        <div className="min-w-0 flex-1 space-y-1.5">
-                          <input
-                            className={cn(inputClass, "h-8 text-xs")}
-                            value={val}
-                            placeholder="Storefront path or /api/r/…"
-                            onChange={(e) => setStepImage(idx, e.target.value)}
-                          />
-                          <div className="flex items-center gap-2">
-                            <Button
-                              type="button"
-                              size="sm"
-                              variant={isFilled ? "secondary" : "primary"}
-                              className="h-7 text-xs px-2.5"
-                              onClick={() => setActiveStepIndex(idx)}
-                              icon={<ImagePlus className="h-3 w-3" />}
-                            >
-                              {isFilled ? "Replace" : "Upload / Choose"}
-                            </Button>
-                            {isFilled && (
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="ghost"
-                                className="h-7 text-xs px-2 text-[#6B7280] hover:text-[#B4402F]"
-                                onClick={() => setStepImage(idx, "")}
-                                icon={<X className="h-3 w-3" />}
-                              >
-                                Clear
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {stepError && (
-                        <p className="mt-2 text-[11px] font-semibold text-[#B4402F]">
-                          {stepError}
-                        </p>
-                      )}
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </Card>
@@ -782,21 +632,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
         </div>
       </div>
 
-      {/* Media Picker Modal for Step Image Selection */}
-      <MediaPickerModal
-        open={activeStepIndex !== null}
-        onClose={() => setActiveStepIndex(null)}
-        title={
-          activeStepIndex !== null
-            ? `Choose Image for Step ${activeStepIndex + 1} (${PRODUCT_IMAGE_STEPS[activeStepIndex].breadcrumb}): ${PRODUCT_IMAGE_STEPS[activeStepIndex].title}`
-            : "Choose an image"
-        }
-        onSelect={(url) => {
-          if (activeStepIndex !== null) {
-            setStepImage(activeStepIndex, url);
-          }
-        }}
-      />
+      <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => set("gallery", [...form.gallery, url])} />
 
       {/* Floating Bottom Bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64 print:hidden">
@@ -835,12 +671,11 @@ function PreviewCard({ form, categoryLabel }: { form: FormState; categoryLabel?:
   const price = form.price === "" ? 0 : Number(form.price);
   const compare = form.compareAtPrice === "" ? 0 : Number(form.compareAtPrice);
   const rating = form.rating === "" ? 0 : Number(form.rating);
-  const mainImage = form.stepImages[0] || form.image;
 
   return (
     <div className={cn("overflow-hidden rounded-xl border border-[#E5E7EB] bg-white", !form.active && "opacity-60")}>
       <div className="relative">
-        <MediaPreview src={mainImage} className="aspect-[4/5] rounded-none border-0" />
+        <MediaPreview src={form.image} className="aspect-[4/5] rounded-none border-0" />
         {form.tag && <span className="absolute left-2 top-2 bg-[#14110E] px-2 py-1 text-[9px] font-semibold tracking-[0.15em] text-white">{form.tag}</span>}
         {form.featured && (
           <span className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#9E774C]">

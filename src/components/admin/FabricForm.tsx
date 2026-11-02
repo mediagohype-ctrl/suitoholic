@@ -4,74 +4,19 @@ import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   Check,
-  CheckCircle2,
+  ChevronDown,
   ExternalLink,
-  ImagePlus,
   Save,
   Trash2,
-  X,
 } from "lucide-react";
 import { useAdminApi } from "@/lib/admin/api";
 import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminFabric } from "@/lib/admin/types";
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
-import { ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle, inputClass } from "./fields";
-import { MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
-import { Badge, Button, Card, CardHeader, Notice, cn } from "./ui";
-
-export interface FabricImageStepDef {
-  step: number;
-  breadcrumb: string;
-  title: string;
-  subtitle: string;
-  shortLabel: string;
-}
-
-export const FABRIC_IMAGE_STEPS: FabricImageStepDef[] = [
-  {
-    step: 1,
-    breadcrumb: "CHEST SIZE",
-    title: "SELECT YOUR CHEST SIZE",
-    subtitle: "Choose chest sizing compatibility. Primary fabric swatch photo shown on catalog cards.",
-    shortLabel: "Chest Size",
-  },
-  {
-    step: 2,
-    breadcrumb: "BODY TYPE",
-    title: "CHOOSE YOUR BODY TYPE",
-    subtitle: "Find the fit that matches your body shape and comfort preference.",
-    shortLabel: "Body Type",
-  },
-  {
-    step: 3,
-    breadcrumb: "HEIGHT",
-    title: "SELECT YOUR HEIGHT",
-    subtitle: "Choose the height option that fits you.",
-    shortLabel: "Height",
-  },
-  {
-    step: 4,
-    breadcrumb: "SLEEVES",
-    title: "SELECT YOUR SLEEVES",
-    subtitle: "Choose the sleeve type that you prefer.",
-    shortLabel: "Sleeves",
-  },
-  {
-    step: 5,
-    breadcrumb: "COLLAR & DETAILS",
-    title: "COLLAR, CUFFS & DETAILS",
-    subtitle: "Customize collar style, wrist cuffs, and personalized monogram initials.",
-    shortLabel: "Collar & Details",
-  },
-  {
-    step: 6,
-    breadcrumb: "REVIEW & ADD TO BAG",
-    title: "REVIEW & CONFIRM BESPOKE FIT",
-    subtitle: "Verify your bespoke specifications before adding to bag.",
-    shortLabel: "Review & Confirm",
-  },
-];
+import { ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
+import { ImageField, MediaPreview, cleanMediaUrl } from "./media";
+import { Button, Card, CardHeader, Notice, cn } from "./ui";
 
 export const CHEST_SIZE_OPTIONS = [
   { size: 38, collar: '15.0"', shoulder: '17.5"' },
@@ -82,18 +27,6 @@ export const CHEST_SIZE_OPTIONS = [
   { size: 44, collar: '16.5"', shoulder: '19.0"' },
   { size: 46, collar: '17.0"', shoulder: '19.5"' },
   { size: 48, collar: '17.5"', shoulder: '20.0"' },
-];
-
-export const BODY_TYPE_OPTIONS = [
-  { id: "lean", title: "LEAN FIT", desc: "Tapered waist, form-fitting chest & slim silhouette drape" },
-  { id: "regular", title: "REGULAR FIT", desc: "Classic British tailoring with comfortable ease & natural drape" },
-  { id: "tummy", title: "TUMMY COMFORT FIT", desc: "Relaxed midsection with clean shoulder drape" },
-];
-
-export const HEIGHT_OPTIONS = [
-  { id: "regular", title: "REGULAR HEIGHT (5.5 – 5.7\")", desc: 'Shirt Length: 27.5" · Sleeve: 23.75"' },
-  { id: "tall", title: "TALL HEIGHT (5.8 – 5.10\")", desc: 'Shirt Length: 29.0" · Sleeve: 24.5"' },
-  { id: "extra_tall", title: "EXTRA TALL (5.11 – 6.2\")", desc: 'Shirt Length: 30.5" · Sleeve: 25.25"' },
 ];
 
 export const CATEGORY_OPTIONS = [
@@ -119,7 +52,6 @@ interface FormState {
   breathability: string;
   wrinkleResistance: string;
   image: string;
-  stepImages: string[];
   description: string;
   shortInfo: string;
   price: string;
@@ -132,27 +64,9 @@ interface FormState {
   active: boolean;
   sortOrder: number | "";
   selectedChest: number;
-  selectedBodyType: string;
-  selectedHeight: string;
-}
-
-function initFabricStepImages(f?: AdminFabric | null): string[] {
-  const steps = ["", "", "", "", "", ""];
-  if (!f) return steps;
-
-  if (f.gallery && f.gallery.length >= 6) {
-    return f.gallery.slice(0, 6).map(cleanMediaUrl);
-  }
-
-  const pool = [cleanMediaUrl(f.image), ...(f.gallery ? f.gallery.map(cleanMediaUrl) : [])].filter(Boolean);
-  for (let i = 0; i < pool.length && i < 6; i++) {
-    steps[i] = pool[i];
-  }
-  return steps;
 }
 
 function toForm(f?: AdminFabric | null): FormState {
-  const stepImages = initFabricStepImages(f);
   return {
     code: f?.code ?? "",
     name: f?.name ?? "",
@@ -167,8 +81,7 @@ function toForm(f?: AdminFabric | null): FormState {
     opacity: f?.opacity ?? "100% Opaque",
     breathability: f?.breathability ?? "High (4.8 / 5.0)",
     wrinkleResistance: f?.wrinkleResistance ?? "Natural Resilient Drape",
-    stepImages,
-    image: stepImages[0] || cleanMediaUrl(f?.image ?? ""),
+    image: cleanMediaUrl(f?.image ?? ""),
     description: f?.description ?? "",
     shortInfo: f?.shortInfo ?? "",
     price: f?.price ?? "Rs. 3,290 • BESPOKE FIT",
@@ -181,17 +94,12 @@ function toForm(f?: AdminFabric | null): FormState {
     active: f?.active ?? true,
     sortOrder: f?.sortOrder ?? 0,
     selectedChest: 40,
-    selectedBodyType: "regular",
-    selectedHeight: "regular",
   };
 }
 
 function toBody(f: FormState) {
   const int = (v: number | "") => (v === "" ? 0 : Math.round(Number(v)));
   const num = (v: number | "") => (v === "" ? 5.0 : Number(v));
-  const cleanedSteps = f.stepImages.map((s) => cleanMediaUrl(s.trim()));
-  const primaryImage = cleanedSteps[0] || cleanMediaUrl(f.image.trim());
-  const galleryItems = cleanedSteps.filter(Boolean);
 
   return {
     code: f.code.trim().toUpperCase(),
@@ -207,8 +115,7 @@ function toBody(f: FormState) {
     opacity: f.opacity.trim(),
     breathability: f.breathability.trim(),
     wrinkleResistance: f.wrinkleResistance.trim(),
-    image: primaryImage,
-    gallery: galleryItems,
+    image: cleanMediaUrl(f.image.trim()),
     description: f.description.trim(),
     shortInfo: f.shortInfo.trim(),
     price: f.price.trim(),
@@ -240,32 +147,13 @@ export default function FabricForm({
   const [form, setForm] = useState(baseline);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
-  const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
+  const [showChestSizes, setShowChestSizes] = useState(false);
 
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
   useUnsavedChanges(dirty && !saving);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
-
-  const setStepImage = (idx: number, url: string) => {
-    const cleaned = cleanMediaUrl(url);
-    setForm((f) => {
-      const updated = [...f.stepImages];
-      updated[idx] = cleaned;
-      return {
-        ...f,
-        stepImages: updated,
-        image: idx === 0 ? cleaned : f.image || cleaned,
-      };
-    });
-    setErrors((e) => {
-      const next = { ...e };
-      delete next[`stepImage_${idx}`];
-      delete next.image;
-      return next;
-    });
-  };
 
   const categoryOptions = useMemo(() => {
     const list = [...CATEGORY_OPTIONS];
@@ -283,16 +171,9 @@ export default function FabricForm({
     if (!form.category) local.category = "Category is required";
     if (!form.price.trim()) local.price = "Price / Label is required";
 
-    // Only Step 1 image is required
-    const primaryImg = (form.stepImages[0] || form.image).trim();
-    if (!primaryImg) {
-      local.stepImage_0 = "Step 1 (Select Your Chest Size) swatch image is required";
-      local.image = "Please upload at least Step 1 (Chest Size) image.";
-    }
-
     if (Object.keys(local).length) {
       setErrors(local);
-      toast.error(local.stepImage_0 ? "Please upload Step 1 (Chest Size) image!" : "Please fill in the required fields highlighted below.");
+      toast.error("Please fill in the required fields highlighted below.");
       return;
     }
 
@@ -340,8 +221,6 @@ export default function FabricForm({
       toast.error(err);
     }
   };
-
-  const completedStepsCount = form.stepImages.filter((s) => !!s.trim()).length;
 
   return (
     <form onSubmit={submit} className="pb-28">
@@ -446,7 +325,91 @@ export default function FabricForm({
             </div>
           </Card>
 
-          {/* Section 2: Material & Specifications */}
+          {/* ========================================================================= */}
+          {/* SECTION 2: UPLOAD YOUR IMAGE (WITH SELECT YOUR CHEST SIZE BUTTON)         */}
+          {/* ========================================================================= */}
+          <Card>
+            <CardHeader
+              title="Upload Your Image"
+              description="Upload the fabric swatch photo and select chest sizing compatibility."
+            />
+            <div className="space-y-4 p-4 sm:p-5">
+              {/* Select Your Chest Size Trigger & Expandable Options */}
+              <div className="rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#14110E]">
+                      Chest Sizing Compatibility
+                    </p>
+                    <p className="mt-0.5 text-xs text-[#6B7280]">
+                      Current Selection: <span className="font-bold text-[#9E774C]">{form.selectedChest}&quot; Chest</span>
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowChestSizes((prev) => !prev)}
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#14110E] px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-neutral-800 transition cursor-pointer"
+                  >
+                    <span>Select Your Chest Size</span>
+                    <ChevronDown className={cn("h-4 w-4 transition-transform duration-200", showChestSizes && "rotate-180")} />
+                  </button>
+                </div>
+
+                {/* When Select Your Chest Size button is clicked -> chest size options open */}
+                {showChestSizes && (
+                  <div className="mt-4 border-t border-[#EAE3D9] pt-4 animate-in fade-in duration-200">
+                    <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-[#8A5A00]">
+                      Available Chest Sizes (Inches)
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-8">
+                      {CHEST_SIZE_OPTIONS.map((c) => {
+                        const isSelected = form.selectedChest === c.size;
+                        return (
+                          <button
+                            key={c.size}
+                            type="button"
+                            onClick={() => set("selectedChest", c.size)}
+                            className={cn(
+                              "flex flex-col items-center justify-center rounded-lg border py-2.5 px-2 text-center transition cursor-pointer",
+                              isSelected
+                                ? "border-[#14110E] bg-[#14110E] text-white shadow-xs scale-102"
+                                : "border-[#D6CEBF] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
+                            )}
+                          >
+                            <span className="text-base font-extrabold">{c.size}&quot;</span>
+                            <span className={cn("text-[10px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                              Collar {c.collar}
+                            </span>
+                            <span className={cn("text-[10px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                              Shld {c.shoulder}
+                            </span>
+                            {isSelected && (
+                              <span className="mt-1 flex items-center gap-0.5 text-[9px] font-bold text-[#9E774C]">
+                                <Check className="h-2.5 w-2.5" /> Selected
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Swatch Image Field */}
+              <ImageField
+                label="Swatch image URL"
+                value={form.image}
+                onChange={(v) => set("image", v)}
+                error={errors.image}
+                previewClassName="h-32 w-32 rounded-lg"
+                hint="Relative path (e.g. /fabric_roll_oxford_white.jpg) or full uploaded image link."
+              />
+            </div>
+          </Card>
+
+          {/* Section 3: Material & Specifications */}
           <Card>
             <CardHeader
               title="Material & Specifications"
@@ -533,70 +496,7 @@ export default function FabricForm({
                 placeholder="#9E774C"
                 maxLength={30}
               />
-            </div>
-          </Card>
-
-          {/* Section 3: Tailoring Compatibility & Drape */}
-          <Card>
-            <CardHeader
-              title="Tailoring Sizing & Drape Compatibility"
-              description="Fit sizing specifications and garment tailoring recommendations."
-            />
-            <div className="space-y-5 p-4 sm:p-5">
-              {/* Chest Sizes */}
-              <div>
-                <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
-                  Compatible Chest Sizes
-                </label>
-                <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
-                  {CHEST_SIZE_OPTIONS.map((c) => {
-                    const isSelected = form.selectedChest === c.size;
-                    return (
-                      <button
-                        key={c.size}
-                        type="button"
-                        onClick={() => set("selectedChest", c.size)}
-                        className={cn(
-                          "flex flex-col items-center justify-center rounded-lg border py-2 text-center transition cursor-pointer",
-                          isSelected
-                            ? "border-[#14110E] bg-[#14110E] text-white shadow-xs"
-                            : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C]"
-                        )}
-                      >
-                        <span className="text-sm font-bold">{c.size}&quot;</span>
-                        <span className={cn("text-[9px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>{c.collar}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Body Drape */}
-              <div>
-                <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
-                  Drape Silhouette Profile
-                </label>
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                  {BODY_TYPE_OPTIONS.map((b) => (
-                    <button
-                      key={b.id}
-                      type="button"
-                      onClick={() => set("selectedBodyType", b.id)}
-                      className={cn(
-                        "rounded-lg border p-3 text-left transition cursor-pointer",
-                        form.selectedBodyType === b.id
-                          ? "border-[#14110E] bg-[#14110E] text-white"
-                          : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C]"
-                      )}
-                    >
-                      <p className="text-xs font-bold">{b.title}</p>
-                      <p className={cn("mt-0.5 text-[10px]", form.selectedBodyType === b.id ? "text-neutral-300" : "text-[#6B7280]")}>{b.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2 border-t border-[#F3F4F6]">
+              <div className="sm:col-span-2">
                 <TextField
                   label="Best For (Garments & Occasions)"
                   value={form.bestFor}
@@ -605,6 +505,8 @@ export default function FabricForm({
                   placeholder="e.g. Executive Boardroom Shirts, French Cuff Formals"
                   maxLength={400}
                 />
+              </div>
+              <div className="sm:col-span-2">
                 <TextField
                   label="Care Instructions"
                   value={form.care}
@@ -617,160 +519,7 @@ export default function FabricForm({
             </div>
           </Card>
 
-          {/* ========================================================================= */}
-          {/* SECTION 4: 6-STEP IMAGE UPLOAD (STARTING WITH SELECT YOUR CHEST SIZE)     */}
-          {/* ========================================================================= */}
-          <Card>
-            <CardHeader
-              title="Fabric Swatch Images (6-Step Match)"
-              description="Upload images corresponding to each customer bespoke fit step. Step 1 (Chest Size) is the primary swatch photo shown on catalog cards."
-              actions={
-                <div className="flex items-center gap-2">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      const first = form.stepImages.find((s) => !!s.trim()) || form.image.trim();
-                      if (first) {
-                        setForm((f) => ({
-                          ...f,
-                          stepImages: [first, first, first, first, first, first],
-                          image: first,
-                        }));
-                        toast.success("Applied Step 1 swatch across all 6 steps");
-                      } else {
-                        toast.error("Please upload at least Step 1 (Chest Size) swatch first.");
-                      }
-                    }}
-                  >
-                    Use Step 1 for all steps
-                  </Button>
-                  <Badge tone={completedStepsCount > 0 ? "green" : "amber"}>
-                    {completedStepsCount === 6 ? "✓ All 6 Steps Complete" : `${completedStepsCount} of 6 Uploaded`}
-                  </Badge>
-                </div>
-              }
-            />
-            <div className="p-4 sm:p-5">
-              {/* 6 Step Upload Grid */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {FABRIC_IMAGE_STEPS.map((stepDef, idx) => {
-                  const val = form.stepImages[idx] || "";
-                  const isFilled = !!val.trim();
-                  const isPrimary = idx === 0;
-                  const stepError = errors[`stepImage_${idx}`];
-
-                  return (
-                    <div
-                      key={stepDef.step}
-                      className={cn(
-                        "flex flex-col justify-between rounded-xl border p-4 transition-all bg-white shadow-xs",
-                        stepError
-                          ? "border-[#B4402F] ring-1 ring-[#B4402F] bg-[#FFFBFB]"
-                          : isFilled
-                          ? "border-[#C6E0CB] hover:border-[#2F6B3B]"
-                          : "border-[#E5E7EB] hover:border-[#9E774C]"
-                      )}
-                    >
-                      <div>
-                        {/* Step Header Badge */}
-                        <div className="mb-2 flex items-center justify-between gap-2">
-                          <span
-                            className={cn(
-                              "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border",
-                              isFilled
-                                ? "bg-[#EAF5EC] text-[#2F6B3B] border-[#C6E0CB]"
-                                : "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]"
-                            )}
-                          >
-                            Step {stepDef.step} of 6 • {stepDef.breadcrumb}
-                          </span>
-                          {isPrimary ? (
-                            <span className="text-[10px] font-bold text-[#B4402F]">
-                              Required *
-                            </span>
-                          ) : isFilled ? (
-                            <span className="flex items-center gap-1 text-[11px] font-semibold text-[#2F6B3B]">
-                              <CheckCircle2 className="h-3.5 w-3.5" /> Ready
-                            </span>
-                          ) : (
-                            <span className="text-[10px] text-[#8B93A1]">
-                              Optional
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Step Title & Subtitle */}
-                        <h4 className="text-xs font-bold text-[#14110E] uppercase tracking-wide leading-snug">
-                          {stepDef.title}
-                        </h4>
-                        <p className="mt-1 text-[11px] text-[#6B7280] leading-snug">
-                          {stepDef.subtitle}
-                        </p>
-                      </div>
-
-                      {/* Image Preview & Picker */}
-                      <div className="mt-4 flex items-center gap-3 border-t border-[#F3F4F6] pt-3">
-                        <button
-                          type="button"
-                          onClick={() => setActiveStepIndex(idx)}
-                          className="group relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] hover:border-[#9E774C] transition"
-                          title="Click to choose or upload"
-                        >
-                          <MediaPreview src={val} className="h-full w-full aspect-square rounded-none border-0" />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/45 text-[10px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
-                            {isFilled ? "Change" : "Upload"}
-                          </div>
-                        </button>
-
-                        <div className="min-w-0 flex-1 space-y-1.5">
-                          <input
-                            className={cn(inputClass, "h-8 text-xs")}
-                            value={val}
-                            placeholder="Storefront path or /api/r/…"
-                            onChange={(e) => setStepImage(idx, e.target.value)}
-                          />
-                          <div className="flex items-center gap-2">
-                            <Button
-                              type="button"
-                              size="sm"
-                              variant={isFilled ? "secondary" : "primary"}
-                              className="h-7 text-xs px-2.5"
-                              onClick={() => setActiveStepIndex(idx)}
-                              icon={<ImagePlus className="h-3 w-3" />}
-                            >
-                              {isFilled ? "Replace" : "Upload / Choose"}
-                            </Button>
-                            {isFilled && (
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="ghost"
-                                className="h-7 text-xs px-2 text-[#6B7280] hover:text-[#B4402F]"
-                                onClick={() => setStepImage(idx, "")}
-                                icon={<X className="h-3 w-3" />}
-                              >
-                                Clear
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {stepError && (
-                        <p className="mt-2 text-[11px] font-semibold text-[#B4402F]">
-                          {stepError}
-                        </p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </Card>
-
-          {/* Section 5: Ratings & Reviews */}
+          {/* Section 4: Ratings & Reviews */}
           <Card>
             <CardHeader
               title="Ratings & Reviews"
@@ -838,22 +587,6 @@ export default function FabricForm({
         </div>
       </div>
 
-      {/* Media Picker Modal for Step Image Selection */}
-      <MediaPickerModal
-        open={activeStepIndex !== null}
-        onClose={() => setActiveStepIndex(null)}
-        title={
-          activeStepIndex !== null
-            ? `Choose Image for Step ${activeStepIndex + 1} (${FABRIC_IMAGE_STEPS[activeStepIndex].breadcrumb}): ${FABRIC_IMAGE_STEPS[activeStepIndex].title}`
-            : "Choose an image"
-        }
-        onSelect={(url) => {
-          if (activeStepIndex !== null) {
-            setStepImage(activeStepIndex, url);
-          }
-        }}
-      />
-
       {/* Sticky Bottom Action Bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64 print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
@@ -900,8 +633,6 @@ export default function FabricForm({
 }
 
 function FabricPreviewCard({ form }: { form: FormState }) {
-  const mainImage = form.stepImages[0] || form.image;
-
   return (
     <div
       className={cn(
@@ -912,7 +643,7 @@ function FabricPreviewCard({ form }: { form: FormState }) {
     >
       {/* Top Swatch Image */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F3F4F6]">
-        <MediaPreview src={mainImage} className="h-full w-full rounded-none border-0" />
+        <MediaPreview src={form.image} className="h-full w-full rounded-none border-0" />
         <span className="absolute left-2.5 top-2.5 rounded bg-[#14110E]/90 px-2 py-0.5 font-mono text-[10px] font-semibold tracking-wider text-white backdrop-blur">
           {form.code || "FABRIC-CODE"}
         </span>
