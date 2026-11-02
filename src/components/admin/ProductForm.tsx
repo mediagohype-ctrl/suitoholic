@@ -6,7 +6,6 @@ import {
   ArrowDown,
   ArrowUp,
   Check,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   ExternalLink,
@@ -15,7 +14,6 @@ import {
   Save,
   Star,
   Trash2,
-  X,
 } from "lucide-react";
 import { formatMoney } from "@/lib/api";
 import { useAdminApi, useAdminQuery } from "@/lib/admin/api";
@@ -23,7 +21,7 @@ import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminCategory, AdminColorway, AdminProduct, Paginated } from "@/lib/admin/types";
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
-import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle, inputClass } from "./fields";
+import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
 import { ImageField, MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
 import { Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
 
@@ -43,19 +41,34 @@ export const BODY_TYPE_DEFS = [
     id: "lean" as const,
     name: "Lean Fit",
     desc: "Tapered waist, form-fitting chest & slim sleeves",
-    badge: "Slim Drape",
   },
   {
     id: "regular" as const,
     name: "Regular Fit",
     desc: "Classic British tailoring with comfortable ease",
-    badge: "Primary Card Photo",
   },
   {
     id: "tummy" as const,
     name: "Tummy Fit",
     desc: "Relaxed midsection with clean shoulder drape",
-    badge: "Comfort Fit",
+  },
+];
+
+export const HEIGHT_OPTIONS = [
+  {
+    id: "regular" as const,
+    title: "Regular Height",
+    desc: "5.5 – 5.7\" (Shirt Length: 27.5\" · Sleeve: 23.75\")",
+  },
+  {
+    id: "tall" as const,
+    title: "Tall Height",
+    desc: "5.8 – 5.10\" (Shirt Length: 29.0\" · Sleeve: 24.5\")",
+  },
+  {
+    id: "extra_tall" as const,
+    title: "Extra Tall Height",
+    desc: "5.11 – 6.2\" (Shirt Length: 30.5\" · Sleeve: 25.25\")",
   },
 ];
 
@@ -74,12 +87,8 @@ interface FormState {
   fit: string;
   selectedChest: number;
   selectedBodyType: "lean" | "regular" | "tummy";
+  selectedHeight: "regular" | "tall" | "extra_tall";
   image: string;
-  bodyImages: {
-    lean: string;
-    regular: string;
-    tummy: string;
-  };
   gallery: string[];
   colorways: AdminColorway[];
   rating: number | "";
@@ -109,15 +118,11 @@ function toForm(p?: AdminProduct | null): FormState {
     threadCount: p?.threadCount ?? "140/2 Ne Compact Spun",
     collar: p?.collar ?? "English Semi-Spread Collar",
     cuff: p?.cuff ?? "2-Button Rounded Barrel Cuff",
-    fit: p?.fit ?? "Regular Fit (Chest 40\")",
+    fit: p?.fit ?? "Regular Fit (Chest 40\", Regular Height)",
     selectedChest: 40,
     selectedBodyType: "regular",
+    selectedHeight: "regular",
     image: mainImg,
-    bodyImages: {
-      regular: mainImg || gal[0] || "",
-      lean: gal[1] || "",
-      tummy: gal[2] || "",
-    },
     gallery: gal,
     colorways: p?.colorways ? p.colorways.map((c) => ({ ...c })) : [],
     rating: p?.rating ?? 5,
@@ -134,21 +139,14 @@ function toForm(p?: AdminProduct | null): FormState {
 
 function toBody(f: FormState) {
   const int = (v: number | "") => (v === "" ? 0 : Math.round(Number(v)));
-  const regImg = cleanMediaUrl(f.bodyImages.regular.trim());
-  const leanImg = cleanMediaUrl(f.bodyImages.lean.trim());
-  const tumImg = cleanMediaUrl(f.bodyImages.tummy.trim());
-  const primaryImage = regImg || leanImg || tumImg || cleanMediaUrl(f.image.trim());
+  const primaryImage = cleanMediaUrl(f.image.trim());
+  const galleryItems = f.gallery.map(cleanMediaUrl).filter(Boolean);
+  if (primaryImage && !galleryItems.includes(primaryImage)) {
+    galleryItems.unshift(primaryImage);
+  }
 
-  const gallerySet = new Set<string>();
-  if (primaryImage) gallerySet.add(primaryImage);
-  if (leanImg) gallerySet.add(leanImg);
-  if (regImg) gallerySet.add(regImg);
-  if (tumImg) gallerySet.add(tumImg);
-  f.gallery.forEach((g) => {
-    const c = cleanMediaUrl(g.trim());
-    if (c) gallerySet.add(c);
-  });
-  const galleryItems = Array.from(gallerySet);
+  const bodyName = f.selectedBodyType === "lean" ? "Lean Fit" : f.selectedBodyType === "tummy" ? "Tummy Fit" : "Regular Fit";
+  const heightName = f.selectedHeight === "tall" ? "Tall Height" : f.selectedHeight === "extra_tall" ? "Extra Tall Height" : "Regular Height";
 
   return {
     ...(f.slug.trim() ? { slug: f.slug.trim() } : {}),
@@ -162,7 +160,7 @@ function toBody(f: FormState) {
     threadCount: f.threadCount,
     collar: f.collar,
     cuff: f.cuff,
-    fit: f.fit || `${f.selectedBodyType === "lean" ? "Lean Fit" : f.selectedBodyType === "tummy" ? "Tummy Fit" : "Regular Fit"} (Chest ${f.selectedChest}")`,
+    fit: f.fit || `${bodyName} (Chest ${f.selectedChest}", ${heightName})`,
     image: primaryImage,
     gallery: galleryItems,
     colorways: f.colorways.map((c) => ({ name: c.name.trim(), hex: c.hex.trim(), productSlug: c.productSlug })),
@@ -188,8 +186,8 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
   const [baseline, setBaseline] = useState<FormState>(() => toForm(product));
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [imageStep, setImageStep] = useState<1 | 2>(1);
-  const [activePickerKey, setActivePickerKey] = useState<"lean" | "regular" | "tummy" | "gallery" | null>(null);
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3 | 4>(1);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
   useUnsavedChanges(dirty);
@@ -212,24 +210,6 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       const next = { ...e };
       delete next[key];
       delete next._;
-      return next;
-    });
-  };
-
-  const setBodyImage = (type: "lean" | "regular" | "tummy", url: string) => {
-    const cleaned = cleanMediaUrl(url);
-    setForm((f) => {
-      const nextBodyImages = { ...f.bodyImages, [type]: cleaned };
-      const primary = nextBodyImages.regular || nextBodyImages.lean || nextBodyImages.tummy || cleaned;
-      return {
-        ...f,
-        bodyImages: nextBodyImages,
-        image: primary,
-      };
-    });
-    setErrors((e) => {
-      const next = { ...e };
-      delete next.image;
       return next;
     });
   };
@@ -278,10 +258,9 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
     if (!form.category) local.category = "Category is required";
     if (form.price === "" || Number(form.price) < 0) local.price = "Valid price is required";
 
-    const primaryImg = (form.bodyImages.regular || form.bodyImages.lean || form.bodyImages.tummy || form.image).trim();
-    if (!primaryImg) {
-      local.image = "Please upload at least one image (Regular Fit, Lean Fit or Tummy Fit).";
-      setImageStep(2);
+    if (!form.image.trim()) {
+      local.image = "Please upload product image in the last step.";
+      setWizardStep(4);
     }
 
     form.colorways.forEach((c, i) => {
@@ -340,6 +319,9 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
     }
   };
 
+  const bodyName = form.selectedBodyType === "lean" ? "Lean Fit" : form.selectedBodyType === "tummy" ? "Tummy Fit" : "Regular Fit";
+  const heightName = form.selectedHeight === "tall" ? "Tall Height" : form.selectedHeight === "extra_tall" ? "Extra Tall Height" : "Regular Height";
+
   return (
     <form onSubmit={submit} className="pb-28">
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
@@ -383,53 +365,74 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
           </Card>
 
           {/* ========================================================================= */}
-          {/* SECTION 3: UPLOAD YOUR IMAGE (CHEST SIZE -> CONTINUE -> 3 BODY TYPES)     */}
+          {/* SECTION 3: STEP-BY-STEP CUSTOMIZATION & IMAGE UPLOAD (LAST STEP)          */}
+          {/* Step 1: Chest Size -> Continue                                            */}
+          {/* Step 2: Choose Your Body Type (Lean, Regular, Tummy) -> Continue          */}
+          {/* Step 3: Select Your Height (Regular, Tall, Extra Tall) -> Continue        */}
+          {/* Step 4: Upload Your Image (Last Step)                                     */}
           {/* ========================================================================= */}
           <Card>
             <CardHeader
-              title="Upload Your Image"
-              description="Pehle Chest Size select karke Continue karein, fir Lean Fit, Regular Fit, aur Tummy Fit me images upload karein."
+              title={
+                wizardStep === 1
+                  ? "Select Your Chest Size"
+                  : wizardStep === 2
+                  ? "Choose Your Body Type"
+                  : wizardStep === 3
+                  ? "Select Your Height"
+                  : "Upload Your Image"
+              }
+              description={
+                wizardStep === 1
+                  ? "Pehle apna chest size select karke Continue karein."
+                  : wizardStep === 2
+                  ? "Apna body type (Lean, Regular, ya Tummy) choose karke Continue karein."
+                  : wizardStep === 3
+                  ? "Apna height proportion choose karke Continue karein."
+                  : "Aakhri step me product ki main photo upload karein."
+              }
               actions={
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setImageStep(1)}
-                    className={cn(
-                      "rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer",
-                      imageStep === 1 ? "bg-[#14110E] text-white" : "bg-[#F3F4F6] text-[#4B5563] hover:bg-[#E5E7EB]"
-                    )}
-                  >
-                    1. Chest ({form.selectedChest}&quot;)
-                  </button>
-                  <span className="text-xs text-[#9CA3AF]">→</span>
-                  <button
-                    type="button"
-                    onClick={() => setImageStep(2)}
-                    className={cn(
-                      "rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer",
-                      imageStep === 2 ? "bg-[#14110E] text-white" : "bg-[#F3F4F6] text-[#4B5563] hover:bg-[#E5E7EB]"
-                    )}
-                  >
-                    2. Choose Body Type
-                  </button>
+                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+                  {[
+                    { step: 1, label: `1. Chest (${form.selectedChest}")` },
+                    { step: 2, label: `2. Body (${bodyName.replace(" Fit", "")})` },
+                    { step: 3, label: `3. Height (${heightName.replace(" Height", "")})` },
+                    { step: 4, label: `4. Image` },
+                  ].map((s) => (
+                    <button
+                      key={s.step}
+                      type="button"
+                      onClick={() => setWizardStep(s.step as 1 | 2 | 3 | 4)}
+                      className={cn(
+                        "rounded-lg px-2.5 py-1 text-xs font-semibold transition shrink-0 cursor-pointer",
+                        wizardStep === s.step
+                          ? "bg-[#14110E] text-white shadow-xs"
+                          : "bg-[#F3F4F6] text-[#4B5563] hover:bg-[#E5E7EB]"
+                      )}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
                 </div>
               }
             />
 
             <div className="space-y-5 p-4 sm:p-5">
-              {/* STEP 1: SELECT YOUR CHEST SIZE */}
-              {imageStep === 1 && (
+              {/* ========================================================= */}
+              {/* STEP 1: SELECT YOUR CHEST SIZE                            */}
+              {/* ========================================================= */}
+              {wizardStep === 1 && (
                 <div className="rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-5 animate-in fade-in duration-200">
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <div>
                       <span className="inline-block rounded-md bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                        Step 1 of 2
+                        Step 1 of 4
                       </span>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
                         Select Your Chest Size
                       </h4>
                       <p className="text-xs text-[#6B7280]">
-                        Chest size select karne ke baad niche Continue button dabayein:
+                        Chest size select karne ke baad Continue button dabayein:
                       </p>
                     </div>
                     <span className="rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-[#9E774C] border border-[#E5E7EB] shadow-2xs">
@@ -447,7 +450,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                           type="button"
                           onClick={() => {
                             set("selectedChest", c.size);
-                            set("fit", `${form.selectedBodyType === "lean" ? "Lean Fit" : form.selectedBodyType === "tummy" ? "Tummy Fit" : "Regular Fit"} (Chest ${c.size}")`);
+                            set("fit", `${bodyName} (Chest ${c.size}", ${heightName})`);
                           }}
                           className={cn(
                             "flex flex-col items-center justify-center rounded-xl border p-3 text-center transition-all cursor-pointer",
@@ -480,7 +483,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                     </p>
                     <Button
                       type="button"
-                      onClick={() => setImageStep(2)}
+                      onClick={() => setWizardStep(2)}
                       className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
                       icon={<ChevronRight className="h-4 w-4" />}
                     >
@@ -490,216 +493,302 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                 </div>
               )}
 
-              {/* STEP 2: CHOOSE YOUR BODY TYPE & UPLOAD IMAGES */}
-              {imageStep === 2 && (
+              {/* ========================================================= */}
+              {/* STEP 2: CHOOSE YOUR BODY TYPE (NO IMAGES HERE!)           */}
+              {/* ========================================================= */}
+              {wizardStep === 2 && (
                 <div className="space-y-4 animate-in fade-in duration-200">
                   <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="inline-block rounded-md bg-[#2F6B3B] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Step 2 of 2
+                        <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                          Step 2 of 4
                         </span>
-                        <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                        <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
                           Chest Size: {form.selectedChest}&quot;
                         </span>
                       </div>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
-                        Choose Your Body Type & Upload Images
+                        Choose Your Body Type
                       </h4>
                       <p className="text-xs text-[#6B7280]">
-                        Ye teeno option (Lean Fit, Regular Fit, Tummy Fit) me <strong>Chest {form.selectedChest}&quot;</strong> ke mutabiq photos upload karein:
+                        Koi sa bhi ek body type select karein, fir Continue button dabayein:
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => setImageStep(1)}
-                        icon={<ChevronLeft className="h-3.5 w-3.5" />}
-                      >
-                        Change Chest Size ({form.selectedChest}&quot;)
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          const reg = form.bodyImages.regular.trim() || form.image.trim();
-                          if (reg) {
-                            setForm((f) => ({
-                              ...f,
-                              bodyImages: { lean: reg, regular: reg, tummy: reg },
-                              image: reg,
-                            }));
-                            toast.success("Regular Fit photo applied across Lean, Regular & Tummy Fit");
-                          } else {
-                            toast.error("Please upload Regular Fit photo first");
-                          }
-                        }}
-                      >
-                        Use Regular photo for all 3
-                      </Button>
-                    </div>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setWizardStep(1)}
+                      icon={<ChevronLeft className="h-3.5 w-3.5" />}
+                    >
+                      Back to Chest Size
+                    </Button>
                   </div>
 
-                  {errors.image && <Notice tone="red">{errors.image}</Notice>}
-
-                  {/* 3 Body Type Upload Cards */}
-                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                  {/* 3 Body Type Cards */}
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     {BODY_TYPE_DEFS.map((b) => {
-                      const imgVal = form.bodyImages[b.id] || "";
-                      const isFilled = !!imgVal.trim();
-                      const isDefault = form.selectedBodyType === b.id;
+                      const isSelected = form.selectedBodyType === b.id;
 
                       return (
-                        <div
+                        <button
                           key={b.id}
+                          type="button"
+                          onClick={() => {
+                            set("selectedBodyType", b.id);
+                            set("fit", `${b.name} (Chest ${form.selectedChest}", ${heightName})`);
+                          }}
                           className={cn(
-                            "flex flex-col justify-between rounded-xl border p-4 bg-white transition-all shadow-xs",
-                            isDefault
-                              ? "border-[#14110E] ring-1 ring-[#14110E]"
-                              : isFilled
-                              ? "border-[#C6E0CB]"
-                              : "border-[#E5E7EB] hover:border-[#9E774C]"
+                            "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
+                            isSelected
+                              ? "border-[#14110E] bg-[#14110E] text-white shadow-md scale-102"
+                              : "border-[#D6CEBF] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
                           )}
                         >
-                          <div>
-                            <div className="flex items-center justify-between gap-2 mb-2">
-                              <span className="rounded-md bg-[#FAF8F5] border border-[#EAE3D9] px-2 py-0.5 text-[10px] font-bold text-[#8A5A00] uppercase">
-                                Chest {form.selectedChest}&quot;
+                          <div className="flex items-center justify-between mb-2">
+                            <span className={cn(
+                              "rounded-md px-2 py-0.5 text-[10px] font-bold uppercase",
+                              isSelected ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-[#8A5A00] border border-[#EAE3D9]"
+                            )}>
+                              Chest {form.selectedChest}&quot;
+                            </span>
+                            {isSelected && (
+                              <span className="flex items-center gap-1 text-[11px] font-bold text-[#9E774C]">
+                                <Check className="h-3.5 w-3.5" /> Selected
                               </span>
-                              <span
-                                className={cn(
-                                  "rounded-full px-2 py-0.5 text-[10px] font-semibold",
-                                  b.id === "regular"
-                                    ? "bg-[#14110E] text-white"
-                                    : "bg-[#F3F4F6] text-[#4B5563]"
-                                )}
-                              >
-                                {b.badge}
-                              </span>
-                            </div>
-
-                            <div className="flex items-baseline justify-between">
-                              <h4 className="font-serif text-base font-bold text-[#14110E]">
-                                {b.name}
-                              </h4>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  set("selectedBodyType", b.id);
-                                  set("fit", `${b.name} (Chest ${form.selectedChest}")`);
-                                }}
-                                className={cn(
-                                  "text-[10px] font-semibold underline cursor-pointer",
-                                  isDefault ? "text-[#14110E] font-bold" : "text-[#9E774C]"
-                                )}
-                              >
-                                {isDefault ? "Active Fit ✓" : "Set Default"}
-                              </button>
-                            </div>
-
-                            <p className="mt-1 text-xs text-[#6B7280]">
-                              {b.desc}
-                            </p>
+                            )}
                           </div>
 
-                          {/* Image Upload Box */}
-                          <div className="mt-4 pt-3 border-t border-[#F3F4F6] flex items-center gap-3">
-                            <button
-                              type="button"
-                              onClick={() => setActivePickerKey(b.id)}
-                              className="group relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] hover:border-[#9E774C] transition"
-                              title={`Click to choose image for ${b.name}`}
-                            >
-                              <MediaPreview src={imgVal} className="h-full w-full aspect-square rounded-none border-0" />
-                              <div className="absolute inset-0 flex items-center justify-center bg-black/45 text-[10px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
-                                {isFilled ? "Change" : "Upload"}
-                              </div>
-                            </button>
-
-                            <div className="min-w-0 flex-1 space-y-1.5">
-                              <input
-                                className={cn(inputClass, "h-8 text-xs")}
-                                value={imgVal}
-                                placeholder={`Image for ${b.name} (Chest ${form.selectedChest}")…`}
-                                onChange={(e) => setBodyImage(b.id, e.target.value)}
-                              />
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  type="button"
-                                  size="sm"
-                                  variant={isFilled ? "secondary" : "primary"}
-                                  className="h-7 text-xs px-2.5"
-                                  onClick={() => setActivePickerKey(b.id)}
-                                  icon={<ImagePlus className="h-3 w-3" />}
-                                >
-                                  {isFilled ? "Replace" : "Upload / Choose"}
-                                </Button>
-                                {isFilled && (
-                                  <Button
-                                    type="button"
-                                    size="sm"
-                                    variant="ghost"
-                                    className="h-7 text-xs px-2 text-[#6B7280] hover:text-[#B4402F]"
-                                    onClick={() => setBodyImage(b.id, "")}
-                                    icon={<X className="h-3 w-3" />}
-                                  >
-                                    Clear
-                                  </Button>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                          <h4 className="font-serif text-lg font-bold">
+                            {b.name}
+                          </h4>
+                          <p className={cn("mt-1.5 text-xs leading-relaxed", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                            {b.desc}
+                          </p>
+                        </button>
                       );
                     })}
+                  </div>
+
+                  {/* Continue Button to Step 3 */}
+                  <div className="mt-5 flex items-center justify-between border-t border-[#EAE3D9] pt-4">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => setWizardStep(1)}
+                      icon={<ChevronLeft className="h-4 w-4" />}
+                    >
+                      Back to Chest Size
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => setWizardStep(3)}
+                      className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
+                      icon={<ChevronRight className="h-4 w-4" />}
+                    >
+                      Continue
+                    </Button>
                   </div>
                 </div>
               )}
 
-              {/* Optional Gallery Images */}
-              <div className="pt-2 border-t border-[#F3F4F6]">
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <p className="text-xs font-semibold text-[#374151]">Gallery ({form.gallery.length}/20)</p>
-                  <div className="flex gap-2">
-                    {form.image && !form.gallery.includes(form.image) && (
-                      <Button size="sm" variant="ghost" onClick={() => set("gallery", [form.image, ...form.gallery])}>
-                        Add main image
-                      </Button>
-                    )}
-                    <Button size="sm" onClick={() => setActivePickerKey("gallery")} disabled={form.gallery.length >= 20} icon={<ImagePlus className="h-3.5 w-3.5" />}>
-                      Add image
+              {/* ========================================================= */}
+              {/* STEP 3: SELECT YOUR HEIGHT (REGULAR, TALL, EXTRA TALL)    */}
+              {/* ========================================================= */}
+              {wizardStep === 3 && (
+                <div className="space-y-4 animate-in fade-in duration-200">
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                          Step 3 of 4
+                        </span>
+                        <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
+                          Chest: {form.selectedChest}&quot; · {bodyName}
+                        </span>
+                      </div>
+                      <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
+                        Select Your Height
+                      </h4>
+                      <p className="text-xs text-[#6B7280]">
+                        Apna height option choose karein (Regular, Tall, ya Extra Tall):
+                      </p>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setWizardStep(2)}
+                      icon={<ChevronLeft className="h-3.5 w-3.5" />}
+                    >
+                      Back to Body Type
+                    </Button>
+                  </div>
+
+                  {/* 3 Height Options */}
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    {HEIGHT_OPTIONS.map((h) => {
+                      const isSelected = form.selectedHeight === h.id;
+
+                      return (
+                        <button
+                          key={h.id}
+                          type="button"
+                          onClick={() => {
+                            set("selectedHeight", h.id);
+                            set("fit", `${bodyName} (Chest ${form.selectedChest}", ${h.title})`);
+                          }}
+                          className={cn(
+                            "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
+                            isSelected
+                              ? "border-[#14110E] bg-[#14110E] text-white shadow-md scale-102"
+                              : "border-[#D6CEBF] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
+                          )}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className={cn(
+                              "rounded-md px-2 py-0.5 text-[10px] font-bold uppercase",
+                              isSelected ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-[#8A5A00] border border-[#EAE3D9]"
+                            )}>
+                              Height
+                            </span>
+                            {isSelected && (
+                              <span className="flex items-center gap-1 text-[11px] font-bold text-[#9E774C]">
+                                <Check className="h-3.5 w-3.5" /> Selected
+                              </span>
+                            )}
+                          </div>
+
+                          <h4 className="font-serif text-lg font-bold">
+                            {h.title}
+                          </h4>
+                          <p className={cn("mt-1.5 text-xs leading-relaxed font-medium", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                            {h.desc}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Continue Button to Step 4 (Image Upload) */}
+                  <div className="mt-5 flex items-center justify-between border-t border-[#EAE3D9] pt-4">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => setWizardStep(2)}
+                      icon={<ChevronLeft className="h-4 w-4" />}
+                    >
+                      Back to Body Type
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => setWizardStep(4)}
+                      className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
+                      icon={<ChevronRight className="h-4 w-4" />}
+                    >
+                      Continue to Upload Image
                     </Button>
                   </div>
                 </div>
-                {form.gallery.length === 0 ? (
-                  <p className="rounded-lg border border-dashed border-[#E5E7EB] px-3 py-4 text-center text-xs text-[#8B93A1]">
-                    No extra gallery images added.
-                  </p>
-                ) : (
-                  <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-                    {form.gallery.map((src, i) => (
-                      <li key={`${src}-${i}`} className="overflow-hidden rounded-lg border border-[#E5E7EB] bg-white">
-                        <MediaPreview src={src} className="aspect-square rounded-none border-0" />
-                        <div className="flex items-center justify-between border-t border-[#EEF0F3] p-1">
-                          <IconButton label="Move left" onClick={() => moveGallery(i, -1)} disabled={i === 0}>
-                            <ArrowUp className="h-3 w-3 -rotate-90" />
-                          </IconButton>
-                          <IconButton label="Move right" onClick={() => moveGallery(i, 1)} disabled={i === form.gallery.length - 1}>
-                            <ArrowDown className="h-3 w-3 -rotate-90" />
-                          </IconButton>
-                          <IconButton label="Remove" onClick={() => set("gallery", form.gallery.filter((_, idx) => idx !== i))}>
-                            <Trash2 className="h-3 w-3 text-[#B4402F]" />
-                          </IconButton>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              )}
+
+              {/* ========================================================= */}
+              {/* STEP 4: UPLOAD YOUR IMAGE (LAST STEP)                     */}
+              {/* ========================================================= */}
+              {wizardStep === 4 && (
+                <div className="space-y-5 animate-in fade-in duration-200">
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-block rounded-md bg-[#2F6B3B] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                          Last Step • Step 4 of 4
+                        </span>
+                        <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                          Chest: {form.selectedChest}&quot;
+                        </span>
+                        <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                          {bodyName}
+                        </span>
+                        <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                          {heightName}
+                        </span>
+                      </div>
+                      <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
+                        Upload Product Image
+                      </h4>
+                      <p className="text-xs text-[#6B7280]">
+                        Main product image upload karein jo catalog cards aur customizer par display hogi:
+                      </p>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setWizardStep(3)}
+                      icon={<ChevronLeft className="h-3.5 w-3.5" />}
+                    >
+                      Back to Height
+                    </Button>
+                  </div>
+
+                  {errors.image && <Notice tone="red">{errors.image}</Notice>}
+
+                  {/* Main Product Image Field */}
+                  <ImageField
+                    label="Product Image (Main Front View)"
+                    value={form.image}
+                    onChange={(v) => set("image", v)}
+                    error={errors.image}
+                    previewClassName="h-32 w-28"
+                    hint="Main photo shown on catalog cards, bespoke customizer and product detail page."
+                  />
+
+                  {/* Optional Gallery Images */}
+                  <div className="pt-2 border-t border-[#F3F4F6]">
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <p className="text-xs font-semibold text-[#374151]">Gallery ({form.gallery.length}/20)</p>
+                      <div className="flex gap-2">
+                        {form.image && !form.gallery.includes(form.image) && (
+                          <Button size="sm" variant="ghost" onClick={() => set("gallery", [form.image, ...form.gallery])}>
+                            Add main image
+                          </Button>
+                        )}
+                        <Button size="sm" onClick={() => setPickerOpen(true)} disabled={form.gallery.length >= 20} icon={<ImagePlus className="h-3.5 w-3.5" />}>
+                          Add image
+                        </Button>
+                      </div>
+                    </div>
+                    {form.gallery.length === 0 ? (
+                      <p className="rounded-lg border border-dashed border-[#E5E7EB] px-3 py-4 text-center text-xs text-[#8B93A1]">
+                        No extra gallery images added.
+                      </p>
+                    ) : (
+                      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+                        {form.gallery.map((src, i) => (
+                          <li key={`${src}-${i}`} className="overflow-hidden rounded-lg border border-[#E5E7EB] bg-white">
+                            <MediaPreview src={src} className="aspect-square rounded-none border-0" />
+                            <div className="flex items-center justify-between border-t border-[#EEF0F3] p-1">
+                              <IconButton label="Move left" onClick={() => moveGallery(i, -1)} disabled={i === 0}>
+                                <ArrowUp className="h-3 w-3 -rotate-90" />
+                              </IconButton>
+                              <IconButton label="Move right" onClick={() => moveGallery(i, 1)} disabled={i === form.gallery.length - 1}>
+                                <ArrowDown className="h-3 w-3 -rotate-90" />
+                              </IconButton>
+                              <IconButton label="Remove" onClick={() => set("gallery", form.gallery.filter((_, idx) => idx !== i))}>
+                                <Trash2 className="h-3 w-3 text-[#B4402F]" />
+                              </IconButton>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </Card>
 
@@ -804,26 +893,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
         </div>
       </div>
 
-      <MediaPickerModal
-        open={activePickerKey !== null}
-        onClose={() => setActivePickerKey(null)}
-        title={
-          activePickerKey === "lean"
-            ? `Choose Image for Lean Fit (Chest ${form.selectedChest}")`
-            : activePickerKey === "regular"
-            ? `Choose Image for Regular Fit (Chest ${form.selectedChest}")`
-            : activePickerKey === "tummy"
-            ? `Choose Image for Tummy Fit (Chest ${form.selectedChest}")`
-            : "Choose an image"
-        }
-        onSelect={(url) => {
-          if (activePickerKey === "lean" || activePickerKey === "regular" || activePickerKey === "tummy") {
-            setBodyImage(activePickerKey, url);
-          } else if (activePickerKey === "gallery") {
-            set("gallery", [...form.gallery, url]);
-          }
-        }}
-      />
+      <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => set("gallery", [...form.gallery, url])} />
 
       {/* Floating Bottom Bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64 print:hidden">
@@ -862,12 +932,11 @@ function PreviewCard({ form, categoryLabel }: { form: FormState; categoryLabel?:
   const price = form.price === "" ? 0 : Number(form.price);
   const compare = form.compareAtPrice === "" ? 0 : Number(form.compareAtPrice);
   const rating = form.rating === "" ? 0 : Number(form.rating);
-  const mainImage = form.bodyImages.regular || form.bodyImages.lean || form.bodyImages.tummy || form.image;
 
   return (
     <div className={cn("overflow-hidden rounded-xl border border-[#E5E7EB] bg-white", !form.active && "opacity-60")}>
       <div className="relative">
-        <MediaPreview src={mainImage} className="aspect-[4/5] rounded-none border-0" />
+        <MediaPreview src={form.image} className="aspect-[4/5] rounded-none border-0" />
         {form.tag && <span className="absolute left-2 top-2 bg-[#14110E] px-2 py-1 text-[9px] font-semibold tracking-[0.15em] text-white">{form.tag}</span>}
         {form.featured && (
           <span className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#9E774C]">
