@@ -6,12 +6,12 @@ import {
   ArrowDown,
   ArrowUp,
   Check,
-  ChevronLeft,
-  ChevronRight,
+  CheckCircle2,
   ExternalLink,
   ImagePlus,
   Plus,
   Save,
+  Star,
   Trash2,
   X,
 } from "lucide-react";
@@ -21,9 +21,62 @@ import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminCategory, AdminColorway, AdminProduct, Paginated } from "@/lib/admin/types";
 import { useUnsavedChanges } from "@/lib/admin/useUnsavedChanges";
 import { useConfirm, useToast } from "./feedback";
-import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
-import { ImageField, MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
-import { Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
+import { ColorField, ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle, inputClass } from "./fields";
+import { MediaPickerModal, MediaPreview, cleanMediaUrl } from "./media";
+import { Badge, Button, Card, CardHeader, IconButton, Notice, cn } from "./ui";
+
+export interface ImageStepDef {
+  step: number;
+  breadcrumb: string;
+  title: string;
+  subtitle: string;
+  shortLabel: string;
+}
+
+export const PRODUCT_IMAGE_STEPS: ImageStepDef[] = [
+  {
+    step: 1,
+    breadcrumb: "CHEST SIZE",
+    title: "SELECT YOUR CHEST SIZE",
+    subtitle: "Choose your chest size for the perfect fit. Primary photo shown on catalog cards.",
+    shortLabel: "Chest Size",
+  },
+  {
+    step: 2,
+    breadcrumb: "BODY TYPE",
+    title: "CHOOSE YOUR BODY TYPE",
+    subtitle: "Find the fit that matches your body shape and comfort preference.",
+    shortLabel: "Body Type",
+  },
+  {
+    step: 3,
+    breadcrumb: "HEIGHT",
+    title: "SELECT YOUR HEIGHT",
+    subtitle: "Choose the height option that fits you.",
+    shortLabel: "Height",
+  },
+  {
+    step: 4,
+    breadcrumb: "SLEEVES",
+    title: "SELECT YOUR SLEEVES",
+    subtitle: "Choose the sleeve type that you prefer.",
+    shortLabel: "Sleeves",
+  },
+  {
+    step: 5,
+    breadcrumb: "COLLAR & DETAILS",
+    title: "COLLAR, CUFFS & DETAILS",
+    subtitle: "Customize collar style, wrist cuffs, and personalized monogram initials.",
+    shortLabel: "Collar & Details",
+  },
+  {
+    step: 6,
+    breadcrumb: "REVIEW & ADD TO BAG",
+    title: "REVIEW & CONFIRM BESPOKE FIT",
+    subtitle: "Verify your bespoke specifications before adding to bag.",
+    shortLabel: "Review & Confirm",
+  },
+];
 
 export const CHEST_SIZE_OPTIONS = [
   { size: 38, collar: '15.0"', shoulder: '17.5"' },
@@ -68,15 +121,6 @@ export const CUFF_OPTIONS = [
   "Single-Button Classic Cuff",
 ];
 
-export const FORM_STEPS = [
-  { step: 1, label: "Chest Size", title: "SELECT YOUR CHEST SIZE" },
-  { step: 2, label: "Body Type", title: "CHOOSE YOUR BODY TYPE" },
-  { step: 3, label: "Height", title: "SELECT YOUR HEIGHT" },
-  { step: 4, label: "Sleeves", title: "SELECT YOUR SLEEVES" },
-  { step: 5, label: "Collar & Details", title: "COLLAR, CUFFS & DETAILS" },
-  { step: 6, label: "Product & Image", title: "REVIEW & CONFIRM" },
-];
-
 interface FormState {
   name: string;
   slug: string;
@@ -95,6 +139,7 @@ interface FormState {
   selectedHeight: string;
   selectedSleeve: string;
   image: string;
+  stepImages: string[];
   gallery: string[];
   colorways: AdminColorway[];
   rating: number | "";
@@ -108,7 +153,23 @@ interface FormState {
   sortOrder: number | "";
 }
 
+function initStepImages(p?: AdminProduct | null): string[] {
+  const steps = ["", "", "", "", "", ""];
+  if (!p) return steps;
+
+  if (p.gallery && p.gallery.length >= 6) {
+    return p.gallery.slice(0, 6).map(cleanMediaUrl);
+  }
+
+  const pool = [cleanMediaUrl(p.image), ...(p.gallery ? p.gallery.map(cleanMediaUrl) : [])].filter(Boolean);
+  for (let i = 0; i < pool.length && i < 6; i++) {
+    steps[i] = pool[i];
+  }
+  return steps;
+}
+
 function toForm(p?: AdminProduct | null): FormState {
+  const stepImages = initStepImages(p);
   return {
     name: p?.name ?? "",
     slug: p?.slug ?? "",
@@ -126,8 +187,9 @@ function toForm(p?: AdminProduct | null): FormState {
     selectedBodyType: "regular",
     selectedHeight: "regular",
     selectedSleeve: "full",
-    image: cleanMediaUrl(p?.image ?? ""),
-    gallery: p?.gallery ? p.gallery.map(cleanMediaUrl) : [],
+    stepImages,
+    image: stepImages[0] || cleanMediaUrl(p?.image ?? ""),
+    gallery: p?.gallery ? p.gallery.map(cleanMediaUrl) : stepImages.filter(Boolean),
     colorways: p?.colorways ? p.colorways.map((c) => ({ ...c })) : [],
     rating: p?.rating ?? 5,
     reviewsCount: p?.reviewsCount ?? 0,
@@ -143,6 +205,14 @@ function toForm(p?: AdminProduct | null): FormState {
 
 function toBody(f: FormState) {
   const int = (v: number | "") => (v === "" ? 0 : Math.round(Number(v)));
+  const cleanedSteps = f.stepImages.map((s) => cleanMediaUrl(s.trim()));
+  const primaryImage = cleanedSteps[0] || cleanMediaUrl(f.image.trim());
+
+  const galleryItems = cleanedSteps.filter(Boolean);
+  if (primaryImage && !galleryItems.includes(primaryImage)) {
+    galleryItems.unshift(primaryImage);
+  }
+
   return {
     ...(f.slug.trim() ? { slug: f.slug.trim() } : {}),
     name: f.name.trim(),
@@ -156,8 +226,8 @@ function toBody(f: FormState) {
     collar: f.collar,
     cuff: f.cuff,
     fit: f.fit,
-    image: cleanMediaUrl(f.image.trim()),
-    gallery: f.gallery.map((g) => cleanMediaUrl(g.trim())).filter(Boolean),
+    image: primaryImage,
+    gallery: galleryItems,
     colorways: f.colorways.map((c) => ({ name: c.name.trim(), hex: c.hex.trim(), productSlug: c.productSlug })),
     rating: f.rating === "" ? 0 : Number(f.rating),
     reviewsCount: int(f.reviewsCount),
@@ -177,12 +247,11 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
   const confirm = useConfirm();
   const isNew = !product;
 
-  const [activeStep, setActiveStep] = useState<number>(1);
   const [form, setForm] = useState<FormState>(() => toForm(product));
   const [baseline, setBaseline] = useState<FormState>(() => toForm(product));
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [pickerOpen, setPickerOpen] = useState(false);
+  const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
 
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
   useUnsavedChanges(dirty);
@@ -209,12 +278,43 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
     });
   };
 
+  const setStepImage = (idx: number, url: string) => {
+    const cleaned = cleanMediaUrl(url);
+    setForm((f) => {
+      const updated = [...f.stepImages];
+      updated[idx] = cleaned;
+      return {
+        ...f,
+        stepImages: updated,
+        image: idx === 0 ? cleaned : f.image || cleaned,
+      };
+    });
+    setErrors((e) => {
+      const next = { ...e };
+      delete next[`stepImage_${idx}`];
+      delete next.image;
+      return next;
+    });
+  };
+
   const setColorway = (i: number, patch: Partial<AdminColorway>) =>
     setForm((f) => {
       const c = [...f.colorways];
       c[i] = { ...c[i], ...patch };
       return { ...f, colorways: c };
     });
+
+  const addColorway = () =>
+    setForm((f) => ({
+      ...f,
+      colorways: [...f.colorways, { name: "", hex: "#14110E", productSlug: "" }],
+    }));
+
+  const removeColorway = (i: number) =>
+    setForm((f) => ({
+      ...f,
+      colorways: f.colorways.filter((_, idx) => idx !== i),
+    }));
 
   const moveColorway = (i: number, delta: number) =>
     setForm((f) => {
@@ -225,17 +325,31 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       return { ...f, colorways: c };
     });
 
-  const moveGallery = (i: number, delta: number) =>
-    setForm((f) => {
-      const j = i + delta;
-      if (j < 0 || j >= f.gallery.length) return f;
-      const g = [...f.gallery];
-      [g[i], g[j]] = [g[j], g[i]];
-      return { ...f, gallery: g };
-    });
-
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    const local: Record<string, string> = {};
+    if (!form.name.trim()) local.name = "Product name is required";
+    if (!form.category) local.category = "Category is required";
+    if (form.price === "" || Number(form.price) < 0) local.price = "Valid price is required";
+
+    // Only Step 1 image is required as the primary card image! Steps 2-6 are optional
+    const primaryImg = (form.stepImages[0] || form.image).trim();
+    if (!primaryImg) {
+      local.stepImage_0 = "Step 1 (Select Your Chest Size) primary image is required";
+      local.image = "Please upload at least Step 1 (Chest Size) image.";
+    }
+
+    form.colorways.forEach((c, i) => {
+      if (!c.name.trim()) local[`colorways.${i}.name`] = "Name is required";
+      if (!/^#[0-9a-fA-F]{3,8}$/.test(c.hex.trim())) local[`colorways.${i}.hex`] = "Use a hex colour like #FFFFFF";
+    });
+
+    if (Object.keys(local).length) {
+      setErrors(local);
+      toast.error(local.stepImage_0 ? "Please upload Step 1 (Chest Size) image!" : "Please fix the highlighted fields.");
+      return;
+    }
+
     setSaving(true);
     setErrors({});
     try {
@@ -252,10 +366,6 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
       if (fe) {
         setErrors(fe);
         toast.error("Please fix the highlighted fields");
-        // Jump to Step 6 if error is on basic fields, or step 1
-        if (fe.name || fe.category || fe.price || fe.image) {
-          setActiveStep(6);
-        }
       } else {
         const msg = errorMessage(err);
         setErrors({ _: msg });
@@ -285,603 +395,435 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
     }
   };
 
+  const completedStepsCount = form.stepImages.filter((s) => !!s.trim()).length;
+
   return (
     <form onSubmit={submit} className="pb-28">
-      {/* 6-Step Stepper Header */}
-      <div className="mb-6 rounded-xl border border-[#E5E7EB] bg-white p-3 shadow-xs">
-        <div className="flex items-center justify-between overflow-x-auto scrollbar-none gap-2">
-          {FORM_STEPS.map((s) => {
-            const isCurrent = activeStep === s.step;
-            const isDone = activeStep > s.step;
-            return (
-              <button
-                key={s.step}
-                type="button"
-                onClick={() => setActiveStep(s.step)}
-                className={cn(
-                  "flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-all shrink-0 cursor-pointer",
-                  isCurrent
-                    ? "bg-[#14110E] text-white shadow-xs"
-                    : isDone
-                    ? "bg-[#F3F4F6] text-[#14110E] hover:bg-[#E5E7EB]"
-                    : "text-[#6B7280] hover:bg-[#F9FAFB]"
-                )}
-              >
-                <span
-                  className={cn(
-                    "flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold",
-                    isCurrent ? "bg-[#9E774C] text-white" : isDone ? "bg-[#14110E] text-white" : "bg-[#E5E7EB] text-[#6B7280]"
-                  )}
-                >
-                  {isDone ? "✓" : s.step}
-                </span>
-                <span>{s.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+        {/* Left Column: Form Sections */}
         <div className="min-w-0 space-y-6">
           {errors._ && <Notice tone="red">{errors._}</Notice>}
-          {Object.keys(errors).filter((k) => k !== "_").length > 0 && <ErrorList errors={Object.fromEntries(Object.entries(errors).filter(([k]) => k !== "_"))} />}
-
-          {/* ========================================================= */}
-          {/* STEP 1: SELECT YOUR CHEST SIZE                            */}
-          {/* ========================================================= */}
-          {activeStep === 1 && (
-            <Card>
-              <CardHeader
-                title="STEP 1 OF 6 • CHEST SIZE: SELECT YOUR CHEST SIZE"
-                description="Select the chest size for this bespoke tailoring specification (38&quot; to 48&quot;)."
-              />
-              <div className="space-y-6 p-4 sm:p-6">
-                <div>
-                  <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
-                    Available Chest Sizes (Inches)
-                  </label>
-                  <p className="mb-4 text-xs text-[#6B7280]">
-                    Click to select the primary fit sizing:
-                  </p>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                    {CHEST_SIZE_OPTIONS.map((c) => {
-                      const isSelected = form.selectedChest === c.size;
-                      return (
-                        <button
-                          key={c.size}
-                          type="button"
-                          onClick={() => {
-                            set("selectedChest", c.size);
-                            set("fit", `${form.fit.split(" (")[0] || "Regular Fit"} (Chest ${c.size}")`);
-                          }}
-                          className={cn(
-                            "flex flex-col items-center justify-center rounded-xl border p-4 text-center transition-all cursor-pointer",
-                            isSelected
-                              ? "border-[#14110E] bg-[#14110E] text-white shadow-md scale-102"
-                              : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
-                          )}
-                        >
-                          <span className="text-xl font-extrabold tracking-tight">
-                            {c.size}&quot;
-                          </span>
-                          <span className={cn("mt-1 text-[11px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
-                            Collar: {c.collar}
-                          </span>
-                          <span className={cn("text-[11px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
-                            Shoulder: {c.shoulder}
-                          </span>
-                          {isSelected && (
-                            <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#9E774C] px-2 py-0.5 text-[9px] font-bold text-white uppercase">
-                              <Check className="h-2.5 w-2.5" /> Selected
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] p-4 text-xs text-[#374151]">
-                  <p className="font-semibold text-[#14110E]">Current Selection: Chest {form.selectedChest}&quot;</p>
-                  <p className="mt-0.5 text-[#6B7280]">
-                    This sets the standard proportion ratio for the bespoke shirt silhouette.
-                  </p>
-                </div>
-
-                <div className="flex justify-end pt-2">
-                  <Button
-                    type="button"
-                    onClick={() => setActiveStep(2)}
-                    className="bg-[#14110E] text-white hover:bg-neutral-800"
-                    icon={<ChevronRight className="h-4 w-4" />}
-                  >
-                    Continue to Step 2: Body Type
-                  </Button>
-                </div>
-              </div>
-            </Card>
+          {Object.keys(errors).filter((k) => k !== "_").length > 0 && (
+            <ErrorList errors={Object.fromEntries(Object.entries(errors).filter(([k]) => k !== "_"))} />
           )}
 
-          {/* ========================================================= */}
-          {/* STEP 2: CHOOSE YOUR BODY TYPE                             */}
-          {/* ========================================================= */}
-          {activeStep === 2 && (
-            <Card>
-              <CardHeader
-                title="STEP 2 OF 6 • BODY TYPE: CHOOSE YOUR BODY TYPE"
-                description="Select the tailored drape and body cut profile."
-              />
-              <div className="space-y-6 p-4 sm:p-6">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  {BODY_TYPE_OPTIONS.map((b) => {
-                    const isSelected = form.selectedBodyType === b.id;
-                    return (
-                      <button
-                        key={b.id}
-                        type="button"
-                        onClick={() => {
-                          set("selectedBodyType", b.id);
-                          set("fit", `${b.title} (Chest ${form.selectedChest}")`);
-                        }}
-                        className={cn(
-                          "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
-                          isSelected
-                            ? "border-[#14110E] bg-[#14110E] text-white shadow-md"
-                            : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
-                        )}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-bold tracking-wider">{b.title}</span>
-                          {isSelected && <Check className="h-4 w-4 text-[#9E774C]" />}
-                        </div>
-                        <p className={cn("mt-2 text-xs leading-relaxed", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
-                          {b.desc}
-                        </p>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="flex items-center justify-between pt-2">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setActiveStep(1)}
-                    icon={<ChevronLeft className="h-4 w-4" />}
-                  >
-                    Back to Chest Size
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => setActiveStep(3)}
-                    className="bg-[#14110E] text-white hover:bg-neutral-800"
-                    icon={<ChevronRight className="h-4 w-4" />}
-                  >
-                    Continue to Step 3: Height
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-
-          {/* ========================================================= */}
-          {/* STEP 3: SELECT YOUR HEIGHT                                */}
-          {/* ========================================================= */}
-          {activeStep === 3 && (
-            <Card>
-              <CardHeader
-                title="STEP 3 OF 6 • HEIGHT: SELECT YOUR HEIGHT"
-                description="Select torso height and garment length proportion."
-              />
-              <div className="space-y-6 p-4 sm:p-6">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  {HEIGHT_OPTIONS.map((h) => {
-                    const isSelected = form.selectedHeight === h.id;
-                    return (
-                      <button
-                        key={h.id}
-                        type="button"
-                        onClick={() => set("selectedHeight", h.id)}
-                        className={cn(
-                          "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
-                          isSelected
-                            ? "border-[#14110E] bg-[#14110E] text-white shadow-md"
-                            : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
-                        )}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-bold tracking-wider">{h.title}</span>
-                          {isSelected && <Check className="h-4 w-4 text-[#9E774C]" />}
-                        </div>
-                        <p className={cn("mt-2 text-xs font-medium", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
-                          {h.desc}
-                        </p>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="flex items-center justify-between pt-2">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setActiveStep(2)}
-                    icon={<ChevronLeft className="h-4 w-4" />}
-                  >
-                    Back to Body Type
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => setActiveStep(4)}
-                    className="bg-[#14110E] text-white hover:bg-neutral-800"
-                    icon={<ChevronRight className="h-4 w-4" />}
-                  >
-                    Continue to Step 4: Sleeves
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-
-          {/* ========================================================= */}
-          {/* STEP 4: SELECT YOUR SLEEVES                               */}
-          {/* ========================================================= */}
-          {activeStep === 4 && (
-            <Card>
-              <CardHeader
-                title="STEP 4 OF 6 • SLEEVES: SELECT YOUR SLEEVES"
-                description="Choose full-length or short-sleeve tailoring style."
-              />
-              <div className="space-y-6 p-4 sm:p-6">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {SLEEVE_OPTIONS.map((s) => {
-                    const isSelected = form.selectedSleeve === s.id;
-                    return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => set("selectedSleeve", s.id)}
-                        className={cn(
-                          "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
-                          isSelected
-                            ? "border-[#14110E] bg-[#14110E] text-white shadow-md"
-                            : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
-                        )}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-bold tracking-wider">{s.title}</span>
-                          {isSelected && <Check className="h-4 w-4 text-[#9E774C]" />}
-                        </div>
-                        <p className={cn("mt-2 text-xs leading-relaxed", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
-                          {s.desc}
-                        </p>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="flex items-center justify-between pt-2">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setActiveStep(3)}
-                    icon={<ChevronLeft className="h-4 w-4" />}
-                  >
-                    Back to Height
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => setActiveStep(5)}
-                    className="bg-[#14110E] text-white hover:bg-neutral-800"
-                    icon={<ChevronRight className="h-4 w-4" />}
-                  >
-                    Continue to Step 5: Collar & Details
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-
-          {/* ========================================================= */}
-          {/* STEP 5: COLLAR, CUFFS & DETAILS                           */}
-          {/* ========================================================= */}
-          {activeStep === 5 && (
-            <Card>
-              <CardHeader
-                title="STEP 5 OF 6 • COLLAR & DETAILS: COLLAR, CUFFS & MONOGRAM"
-                description="Configure neckband collar spread, wrist cuffs, and tailoring construction."
-              />
-              <div className="space-y-6 p-4 sm:p-6">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
-                      Collar Style
-                    </label>
-                    <div className="space-y-2">
-                      {COLLAR_OPTIONS.map((col) => (
-                        <button
-                          key={col}
-                          type="button"
-                          onClick={() => set("collar", col)}
-                          className={cn(
-                            "w-full rounded-lg border px-3 py-2 text-left text-xs font-medium transition-all cursor-pointer",
-                            form.collar === col
-                              ? "border-[#14110E] bg-[#14110E] text-white font-semibold"
-                              : "border-[#E5E7EB] bg-white text-[#374151] hover:bg-[#F9FAFB]"
-                          )}
-                        >
-                          {col}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
-                      Wrist Cuff Style
-                    </label>
-                    <div className="space-y-2">
-                      {CUFF_OPTIONS.map((cuf) => (
-                        <button
-                          key={cuf}
-                          type="button"
-                          onClick={() => set("cuff", cuf)}
-                          className={cn(
-                            "w-full rounded-lg border px-3 py-2 text-left text-xs font-medium transition-all cursor-pointer",
-                            form.cuff === cuf
-                              ? "border-[#14110E] bg-[#14110E] text-white font-semibold"
-                              : "border-[#E5E7EB] bg-white text-[#374151] hover:bg-[#F9FAFB]"
-                          )}
-                        >
-                          {cuf}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-t border-[#E5E7EB] pt-4">
-                  <p className="mb-3 text-xs font-bold tracking-wider text-[#14110E] uppercase">Fabric & Weave Info</p>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <TextField label="Fabric Composition" value={form.fabric} onChange={(e) => set("fabric", e.target.value)} error={errors.fabric} />
-                    <TextField label="Thread Count / Ply" value={form.threadCount} onChange={(e) => set("threadCount", e.target.value)} error={errors.threadCount} />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-2">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setActiveStep(4)}
-                    icon={<ChevronLeft className="h-4 w-4" />}
-                  >
-                    Back to Sleeves
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => setActiveStep(6)}
-                    className="bg-[#14110E] text-white hover:bg-neutral-800"
-                    icon={<ChevronRight className="h-4 w-4" />}
-                  >
-                    Continue to Step 6: Product & Image
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-
-          {/* ========================================================= */}
-          {/* STEP 6: PRODUCT BASICS, PRICING & IMAGE                   */}
-          {/* ========================================================= */}
-          {activeStep === 6 && (
-            <div className="space-y-6">
-              <Card>
-                <CardHeader
-                  title="STEP 6 OF 6 • PRODUCT DETAILS & CONFIRMATION"
-                  description="Review customized bespoke fit, enter product title, pricing, and upload product image."
-                />
-                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-                  <TextField label="Name" required value={form.name} onChange={(e) => set("name", e.target.value)} error={errors.name} className="sm:col-span-2" maxLength={200} placeholder="e.g. Royal Blue Classic Bengal Stripe Twill Shirt" />
-                  <TextField
-                    label="URL slug"
-                    value={form.slug}
-                    onChange={(e) => set("slug", e.target.value.toLowerCase())}
-                    error={errors.slug}
-                    hint={isNew ? "Leave empty to generate from name automatically." : "Product URL identifier."}
-                    placeholder="royal-blue-classic-bengal-stripe"
-                    aside={
-                      !isNew && form.slug ? (
-                        <a href={`/product/${form.slug}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[11px] text-[#9E774C] hover:underline">
-                          View <ExternalLink className="h-3 w-3" />
-                        </a>
-                      ) : undefined
-                    }
-                  />
-                  <SelectField label="Category" value={form.category} onChange={(e) => set("category", e.target.value)} options={categoryOptions} error={errors.category} />
-                  <TextField label="Subtitle" value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} error={errors.subtitle} className="sm:col-span-2" maxLength={300} placeholder="e.g. Classic Tailored Fit Bengal Stripe Twill Formal Shirt" />
-                  <TextAreaField label="Description" rows={4} value={form.description} onChange={(e) => set("description", e.target.value)} error={errors.description} className="sm:col-span-2" maxLength={5000} />
-                  <TextField label="Tag / Ribbon" value={form.tag} onChange={(e) => set("tag", e.target.value)} error={errors.tag} placeholder="e.g. BEST SELLER or BESPOKE" maxLength={80} />
-                  <NumberField label="Sort order" value={form.sortOrder} onValue={(v) => set("sortOrder", v)} error={errors.sortOrder} hint="Lower numbers show first." step={1} />
-                </div>
-              </Card>
-
-              <Card>
-                <CardHeader title="Pricing & inventory" />
-                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-                  <NumberField label="Price (₹)" value={form.price} onValue={(v) => set("price", v)} error={errors.price} min={0} step="any" required />
-                  <NumberField
-                    label="Compare-at price (₹)"
-                    value={form.compareAtPrice}
-                    onValue={(v) => set("compareAtPrice", v)}
-                    error={errors.compareAtPrice}
-                    min={0}
-                    step="any"
-                    hint="Shown struck-through. Leave empty for no discount."
-                  />
-                  <div className="space-y-3 sm:col-span-2">
-                    <Toggle
-                      checked={form.madeToOrder}
-                      onChange={(v) => set("madeToOrder", v)}
-                      label="Made to order"
-                      description="No stock tracking — every piece is bespoke cut on demand."
-                    />
-                    {!form.madeToOrder && (
-                      <NumberField label="Units in stock" value={form.stock} onValue={(v) => set("stock", v)} error={errors.stock} min={0} step={1} className="sm:max-w-xs" />
-                    )}
-                  </div>
-                </div>
-              </Card>
-
-              <Card>
-                <CardHeader title="Product Image" description="Main image shown on catalog cards and product detail page." />
-                <div className="space-y-5 p-4 sm:p-5">
-                  <ImageField label="Main image" value={form.image} onChange={(v) => set("image", v)} error={errors.image} previewClassName="h-32 w-28" />
-                  <div>
-                    <div className="mb-2 flex items-center justify-between gap-2">
-                      <p className="text-xs font-semibold text-[#374151]">Gallery ({form.gallery.length}/20)</p>
-                      <div className="flex gap-2">
-                        {form.image && !form.gallery.includes(form.image) && (
-                          <Button size="sm" variant="ghost" onClick={() => set("gallery", [form.image, ...form.gallery])}>
-                            Add main image
-                          </Button>
-                        )}
-                        <Button size="sm" onClick={() => setPickerOpen(true)} disabled={form.gallery.length >= 20} icon={<ImagePlus className="h-3.5 w-3.5" />}>
-                          Add image
-                        </Button>
-                      </div>
-                    </div>
-                    {errors.gallery && <p className="mb-2 text-xs text-[#B4402F]">{errors.gallery}</p>}
-                    {form.gallery.length === 0 ? (
-                      <p className="rounded-lg border border-dashed border-[#E5E7EB] px-3 py-6 text-center text-xs text-[#8B93A1]">No gallery images yet.</p>
-                    ) : (
-                      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                        {form.gallery.map((src, i) => (
-                          <li key={`${src}-${i}`} className="overflow-hidden rounded-lg border border-[#E5E7EB] bg-white">
-                            <MediaPreview src={src} className="aspect-[4/5] rounded-none border-0" />
-                            <div className="flex items-center justify-between border-t border-[#EEF0F3] px-1 py-1">
-                              <span className="px-1 text-[11px] text-[#8B93A1]">#{i + 1}</span>
-                              <div className="flex">
-                                <IconButton label="Move left" disabled={i === 0} onClick={() => moveGallery(i, -1)} className="h-7 w-7">
-                                  <ArrowUp className="h-3.5 w-3.5 -rotate-90" />
-                                </IconButton>
-                                <IconButton label="Move right" disabled={i === form.gallery.length - 1} onClick={() => moveGallery(i, 1)} className="h-7 w-7">
-                                  <ArrowDown className="h-3.5 w-3.5 -rotate-90" />
-                                </IconButton>
-                                <IconButton label="Remove" onClick={() => set("gallery", form.gallery.filter((_, idx) => idx !== i))} className="h-7 w-7 hover:text-[#B4402F]">
-                                  <X className="h-3.5 w-3.5" />
-                                </IconButton>
-                              </div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </Card>
-
-              <div className="flex items-center justify-between pt-2">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => setActiveStep(5)}
-                  icon={<ChevronLeft className="h-4 w-4" />}
-                >
-                  Back to Collar & Details
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={saving}
-                  className="bg-[#14110E] px-6 text-white hover:bg-neutral-800"
-                  icon={<Save className="h-4 w-4" />}
-                >
-                  {saving ? "Saving..." : isNew ? "Create Product" : "Save Changes"}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Right Sticky Sidebar: Bespoke Summary & Live Preview */}
-        <div className="space-y-6 xl:sticky xl:top-6 xl:self-start">
+          {/* Section 1: Basics */}
           <Card>
-            <CardHeader title="Bespoke Fit Selection" description="Configured through 6 steps." />
-            <div className="space-y-2 p-4 text-xs">
-              <div className="flex justify-between border-b border-[#F3F4F6] pb-1.5">
-                <span className="text-[#6B7280]">Chest Size:</span>
-                <span className="font-bold text-[#14110E]">{form.selectedChest}&quot;</span>
+            <CardHeader title="Basics" description="Product title, URL and categorisation." />
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
+              <TextField label="Product name" value={form.name} onChange={(e) => set("name", e.target.value)} error={errors.name} required />
+              <TextField label="URL slug" value={form.slug} onChange={(e) => set("slug", e.target.value.toLowerCase())} error={errors.slug} hint="Leave empty to generate from name." />
+              <SelectField label="Category" value={form.category} onChange={(e) => set("category", e.target.value)} options={categoryOptions} error={errors.category} required />
+              <TextField label="Badge / Tag" value={form.tag} onChange={(e) => set("tag", e.target.value)} error={errors.tag} placeholder="e.g. LUXURY TWILL, BESTSELLER" />
+              <div className="sm:col-span-2">
+                <TextField label="Subtitle" value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} error={errors.subtitle} placeholder="Short highlight shown under the title" />
               </div>
-              <div className="flex justify-between border-b border-[#F3F4F6] pb-1.5">
-                <span className="text-[#6B7280]">Body Type:</span>
-                <span className="font-semibold text-[#14110E] capitalize">{form.selectedBodyType} Fit</span>
-              </div>
-              <div className="flex justify-between border-b border-[#F3F4F6] pb-1.5">
-                <span className="text-[#6B7280]">Height:</span>
-                <span className="font-semibold text-[#14110E] capitalize">{form.selectedHeight}</span>
-              </div>
-              <div className="flex justify-between border-b border-[#F3F4F6] pb-1.5">
-                <span className="text-[#6B7280]">Sleeves:</span>
-                <span className="font-semibold text-[#14110E] capitalize">{form.selectedSleeve} Sleeve</span>
-              </div>
-              <div className="flex justify-between border-b border-[#F3F4F6] pb-1.5">
-                <span className="text-[#6B7280]">Collar:</span>
-                <span className="font-semibold text-[#14110E] truncate max-w-[140px]">{form.collar}</span>
-              </div>
-              <div className="flex justify-between pt-0.5">
-                <span className="text-[#6B7280]">Cuff:</span>
-                <span className="font-semibold text-[#14110E] truncate max-w-[140px]">{form.cuff}</span>
+              <div className="sm:col-span-2">
+                <TextAreaField label="Description" value={form.description} onChange={(e) => set("description", e.target.value)} error={errors.description} rows={4} placeholder="Full fabric notes, weave details and styling advice." />
               </div>
             </div>
           </Card>
 
+          {/* Section 2: Pricing & Inventory */}
           <Card>
-            <CardHeader title="Live Preview" description="Card display preview." />
-            <div className="p-4">
+            <CardHeader title="Pricing & inventory" />
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
+              <NumberField label="Price (₹)" value={form.price} onValue={(v) => set("price", v)} error={errors.price} min={0} step={1} required />
+              <NumberField label="Compare-at price (₹)" value={form.compareAtPrice} onValue={(v) => set("compareAtPrice", v)} error={errors.compareAtPrice} min={0} step={1} hint="Shows struck-through price." />
+              <div className="sm:col-span-2 space-y-3">
+                <Toggle checked={form.madeToOrder} onChange={(v) => set("madeToOrder", v)} label="Made to order" description="Shirt is tailored on demand; no fixed stock limit is tracked." />
+                {!form.madeToOrder && (
+                  <NumberField label="Stock count" value={form.stock} onValue={(v) => set("stock", v)} error={errors.stock} min={0} step={1} hint="Units available to purchase." />
+                )}
+              </div>
+            </div>
+          </Card>
+
+          {/* Section 3: Bespoke Customization Specs */}
+          <Card>
+            <CardHeader
+              title="Bespoke Tailoring Specifications"
+              description="Configure collar, cuffs, body type, and chest sizing for bespoke customizer orders."
+            />
+            <div className="space-y-5 p-4 sm:p-5">
+              {/* Chest Sizes */}
+              <div>
+                <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
+                  Primary Chest Fit (Inches)
+                </label>
+                <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
+                  {CHEST_SIZE_OPTIONS.map((c) => {
+                    const isSelected = form.selectedChest === c.size;
+                    return (
+                      <button
+                        key={c.size}
+                        type="button"
+                        onClick={() => {
+                          set("selectedChest", c.size);
+                          set("fit", `${form.fit.split(" (")[0] || "Regular Fit"} (Chest ${c.size}")`);
+                        }}
+                        className={cn(
+                          "flex flex-col items-center justify-center rounded-lg border py-2 text-center transition cursor-pointer",
+                          isSelected
+                            ? "border-[#14110E] bg-[#14110E] text-white shadow-xs"
+                            : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C]"
+                        )}
+                      >
+                        <span className="text-sm font-bold">{c.size}&quot;</span>
+                        <span className={cn("text-[9px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>{c.collar}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Body Type */}
+              <div>
+                <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
+                  Body Silhouette Fit
+                </label>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                  {BODY_TYPE_OPTIONS.map((b) => (
+                    <button
+                      key={b.id}
+                      type="button"
+                      onClick={() => {
+                        set("selectedBodyType", b.id);
+                        set("fit", `${b.title} (Chest ${form.selectedChest}")`);
+                      }}
+                      className={cn(
+                        "rounded-lg border p-3 text-left transition cursor-pointer",
+                        form.selectedBodyType === b.id
+                          ? "border-[#14110E] bg-[#14110E] text-white"
+                          : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C]"
+                      )}
+                    >
+                      <p className="text-xs font-bold">{b.title}</p>
+                      <p className={cn("mt-0.5 text-[10px]", form.selectedBodyType === b.id ? "text-neutral-300" : "text-[#6B7280]")}>{b.desc}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Collar & Cuff Specs */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2 border-t border-[#F3F4F6]">
+                <SelectField
+                  label="Collar Style"
+                  value={form.collar}
+                  onChange={(e) => set("collar", e.target.value)}
+                  options={COLLAR_OPTIONS.map((c) => ({ value: c, label: c }))}
+                />
+                <SelectField
+                  label="Cuff Style"
+                  value={form.cuff}
+                  onChange={(e) => set("cuff", e.target.value)}
+                  options={CUFF_OPTIONS.map((c) => ({ value: c, label: c }))}
+                />
+                <TextField label="Fabric Composition" value={form.fabric} onChange={(e) => set("fabric", e.target.value)} error={errors.fabric} />
+                <TextField label="Thread Count / Ply" value={form.threadCount} onChange={(e) => set("threadCount", e.target.value)} error={errors.threadCount} />
+              </div>
+            </div>
+          </Card>
+
+          {/* ========================================================================= */}
+          {/* SECTION 4: 6-STEP IMAGE UPLOAD (STARTING WITH SELECT YOUR CHEST SIZE)     */}
+          {/* ========================================================================= */}
+          <Card>
+            <CardHeader
+              title="Product Images & Customizer Visuals (6-Step Match)"
+              description="Upload images corresponding to each customer bespoke fit step. Step 1 (Chest Size) is the primary image shown on catalog cards."
+              actions={
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      const first = form.stepImages.find((s) => !!s.trim()) || form.image.trim();
+                      if (first) {
+                        setForm((f) => ({
+                          ...f,
+                          stepImages: [first, first, first, first, first, first],
+                          image: first,
+                          gallery: [first],
+                        }));
+                        toast.success("Applied Step 1 photo across all 6 steps");
+                      } else {
+                        toast.error("Please upload at least Step 1 (Chest Size) photo first.");
+                      }
+                    }}
+                  >
+                    Use Step 1 for all steps
+                  </Button>
+                  <Badge tone={completedStepsCount > 0 ? "green" : "amber"}>
+                    {completedStepsCount === 6 ? "✓ All 6 Steps Complete" : `${completedStepsCount} of 6 Uploaded`}
+                  </Badge>
+                </div>
+              }
+            />
+            <div className="p-4 sm:p-5">
+              {errors.stepImages && <Notice tone="red" className="mb-4">{errors.stepImages}</Notice>}
+
+              {/* 6 Step Upload Grid */}
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {PRODUCT_IMAGE_STEPS.map((stepDef, idx) => {
+                  const val = form.stepImages[idx] || "";
+                  const isFilled = !!val.trim();
+                  const isPrimary = idx === 0;
+                  const stepError = errors[`stepImage_${idx}`];
+
+                  return (
+                    <div
+                      key={stepDef.step}
+                      className={cn(
+                        "flex flex-col justify-between rounded-xl border p-4 transition-all bg-white shadow-xs",
+                        stepError
+                          ? "border-[#B4402F] ring-1 ring-[#B4402F] bg-[#FFFBFB]"
+                          : isFilled
+                          ? "border-[#C6E0CB] hover:border-[#2F6B3B]"
+                          : "border-[#E5E7EB] hover:border-[#9E774C]"
+                      )}
+                    >
+                      <div>
+                        {/* Step Header Badge */}
+                        <div className="mb-2 flex items-center justify-between gap-2">
+                          <span
+                            className={cn(
+                              "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border",
+                              isFilled
+                                ? "bg-[#EAF5EC] text-[#2F6B3B] border-[#C6E0CB]"
+                                : "bg-[#FDF3DC] text-[#8A5A00] border-[#F1DBA6]"
+                            )}
+                          >
+                            Step {stepDef.step} of 6 • {stepDef.breadcrumb}
+                          </span>
+                          {isPrimary ? (
+                            <span className="text-[10px] font-bold text-[#B4402F]">
+                              Required *
+                            </span>
+                          ) : isFilled ? (
+                            <span className="flex items-center gap-1 text-[11px] font-semibold text-[#2F6B3B]">
+                              <CheckCircle2 className="h-3.5 w-3.5" /> Ready
+                            </span>
+                          ) : (
+                            <span className="text-[10px] text-[#8B93A1]">
+                              Optional
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Step Title & Subtitle */}
+                        <h4 className="text-xs font-bold text-[#14110E] uppercase tracking-wide leading-snug">
+                          {stepDef.title}
+                        </h4>
+                        <p className="mt-1 text-[11px] text-[#6B7280] leading-snug">
+                          {stepDef.subtitle}
+                        </p>
+                      </div>
+
+                      {/* Image Preview & Picker */}
+                      <div className="mt-4 flex items-center gap-3 border-t border-[#F3F4F6] pt-3">
+                        <button
+                          type="button"
+                          onClick={() => setActiveStepIndex(idx)}
+                          className="group relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] hover:border-[#9E774C] transition"
+                          title="Click to choose or upload"
+                        >
+                          <MediaPreview src={val} className="h-full w-full aspect-square rounded-none border-0" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/45 text-[10px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
+                            {isFilled ? "Change" : "Upload"}
+                          </div>
+                        </button>
+
+                        <div className="min-w-0 flex-1 space-y-1.5">
+                          <input
+                            className={cn(inputClass, "h-8 text-xs")}
+                            value={val}
+                            placeholder="Storefront path or /api/r/…"
+                            onChange={(e) => setStepImage(idx, e.target.value)}
+                          />
+                          <div className="flex items-center gap-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant={isFilled ? "secondary" : "primary"}
+                              className="h-7 text-xs px-2.5"
+                              onClick={() => setActiveStepIndex(idx)}
+                              icon={<ImagePlus className="h-3 w-3" />}
+                            >
+                              {isFilled ? "Replace" : "Upload / Choose"}
+                            </Button>
+                            {isFilled && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 text-xs px-2 text-[#6B7280] hover:text-[#B4402F]"
+                                onClick={() => setStepImage(idx, "")}
+                                icon={<X className="h-3 w-3" />}
+                              >
+                                Clear
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {stepError && (
+                        <p className="mt-2 text-[11px] font-semibold text-[#B4402F]">
+                          {stepError}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </Card>
+
+          {/* Section 5: Colorways */}
+          <Card>
+            <CardHeader
+              title="Colorways"
+              description="Alternative colour swatches shown on the product card."
+              actions={
+                <Button size="sm" variant="ghost" onClick={addColorway} icon={<Plus className="h-3.5 w-3.5" />}>
+                  Add colorway
+                </Button>
+              }
+            />
+            <div className="p-4 sm:p-5">
+              {form.colorways.length === 0 ? (
+                <p className="text-xs text-[#8B93A1]">No colourways added.</p>
+              ) : (
+                <div className="space-y-3">
+                  {form.colorways.map((c, i) => (
+                    <div key={i} className="flex flex-wrap items-center gap-3 rounded-lg border border-[#E5E7EB] p-3">
+                      <div className="flex-1 min-w-[140px]">
+                        <TextField
+                          label="Color Name"
+                          value={c.name}
+                          onChange={(e) => setColorway(i, { name: e.target.value })}
+                          error={errors[`colorways.${i}.name`]}
+                          placeholder="e.g. Navy Blue"
+                        />
+                      </div>
+                      <div className="w-36">
+                        <ColorField
+                          label="Hex code"
+                          value={c.hex}
+                          onChange={(hex) => setColorway(i, { hex })}
+                          error={errors[`colorways.${i}.hex`]}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-[160px]">
+                        <SelectField
+                          label="Link to Product"
+                          value={c.productSlug || ""}
+                          onChange={(e) => setColorway(i, { productSlug: e.target.value })}
+                          options={[{ value: "", label: "(This product)" }, ...slugOptions]}
+                        />
+                      </div>
+                      <div className="flex items-center gap-1 pt-6">
+                        <IconButton
+                          label="Move up"
+                          onClick={() => moveColorway(i, -1)}
+                          disabled={i === 0}
+                        >
+                          <ArrowUp className="h-3.5 w-3.5" />
+                        </IconButton>
+                        <IconButton
+                          label="Move down"
+                          onClick={() => moveColorway(i, 1)}
+                          disabled={i === form.colorways.length - 1}
+                        >
+                          <ArrowDown className="h-3.5 w-3.5" />
+                        </IconButton>
+                        <IconButton
+                          label="Delete"
+                          onClick={() => removeColorway(i)}
+                        >
+                          <Trash2 className="h-3.5 w-3.5 text-[#B4402F]" />
+                        </IconButton>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Section 6: Ratings & Reviews */}
+          <Card>
+            <CardHeader title="Ratings & reviews" description="Social proof displayed on the product page and cards." />
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
+              <NumberField label="Rating (0–5)" value={form.rating} onValue={(v) => set("rating", v)} error={errors.rating} min={0} max={5} step={0.1} />
+              <NumberField label="Reviews count" value={form.reviewsCount} onValue={(v) => set("reviewsCount", v)} error={errors.reviewsCount} min={0} step={1} />
+            </div>
+          </Card>
+        </div>
+
+        {/* Right Column: Sticky Sidebar with Visibility & Live Preview */}
+        <div className="space-y-6 xl:sticky xl:top-6 xl:self-start">
+          <Card>
+            <CardHeader title="Visibility" />
+            <div className="space-y-4 p-4 sm:p-5">
+              <Toggle checked={form.active} onChange={(v) => set("active", v)} label="Visible in store" description="Hidden products can't be bought." />
+              <Toggle checked={form.featured} onChange={(v) => set("featured", v)} label="Featured" description="Highlighted in collections." />
+              <Toggle checked={form.customizable} onChange={(v) => set("customizable", v)} label="Bespoke customizable" description="Shows the 6-step fit customizer." />
+            </div>
+          </Card>
+          <Card>
+            <CardHeader title="Live preview" />
+            <div className="p-4 sm:p-5">
               <PreviewCard form={form} categoryLabel={categoryOptions.find((o) => o.value === form.category)?.label} />
             </div>
           </Card>
-
-          <Card>
-            <CardHeader title="Visibility" />
-            <div className="space-y-4 p-4">
-              <Toggle checked={form.active} onChange={(v) => set("active", v)} label="Visible on storefront" description="Hidden products cannot be viewed or purchased." />
-              <Toggle checked={form.featured} onChange={(v) => set("featured", v)} label="Featured" description="Highlighted in curated storefront collections." />
-              <Toggle checked={form.customizable} onChange={(v) => set("customizable", v)} label="Bespoke customizable" description="Allows customers to configure custom fit." />
-            </div>
-          </Card>
         </div>
       </div>
 
-      <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => set("gallery", [...form.gallery, url])} />
+      {/* Media Picker Modal for Step Image Selection */}
+      <MediaPickerModal
+        open={activeStepIndex !== null}
+        onClose={() => setActiveStepIndex(null)}
+        title={
+          activeStepIndex !== null
+            ? `Choose Image for Step ${activeStepIndex + 1} (${PRODUCT_IMAGE_STEPS[activeStepIndex].breadcrumb}): ${PRODUCT_IMAGE_STEPS[activeStepIndex].title}`
+            : "Choose an image"
+        }
+        onSelect={(url) => {
+          if (activeStepIndex !== null) {
+            setStepImage(activeStepIndex, url);
+          }
+        }}
+      />
 
-      {/* Floating Bottom Action Bar */}
+      {/* Floating Bottom Bar */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E7EB] bg-white/95 backdrop-blur lg:left-64 print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
           <p className="text-xs text-[#6B7280]">
-            <span className="font-semibold text-[#14110E]">Step {activeStep} of 6</span>: {FORM_STEPS[activeStep - 1].label}
-            {dirty && <span className="ml-2 font-medium text-[#8A5A00]">• Unsaved changes</span>}
+            {dirty ? (
+              <span className="font-medium text-[#8A5A00]">Unsaved changes</span>
+            ) : isNew ? (
+              "New product"
+            ) : (
+              "All changes saved"
+            )}
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             {!isNew && (
-              <Button variant="ghost" onClick={() => void remove()} icon={<Trash2 className="h-4 w-4" />} className="text-[#B4402F] hover:text-[#B4402F]">
+              <Button type="button" variant="ghost" onClick={() => void remove()} icon={<Trash2 className="h-4 w-4" />} className="text-[#B4402F] hover:text-[#B4402F]">
                 Delete
               </Button>
             )}
-            {activeStep > 1 && (
-              <Button type="button" variant="secondary" onClick={() => setActiveStep((s) => s - 1)}>
-                Previous Step
+            {dirty && (
+              <Button type="button" onClick={() => setForm(baseline)} disabled={saving}>
+                Discard
               </Button>
             )}
-            {activeStep < 6 ? (
-              <Button type="button" onClick={() => setActiveStep((s) => s + 1)} className="bg-[#14110E] text-white hover:bg-neutral-800">
-                Next Step
-              </Button>
-            ) : (
-              <Button type="submit" disabled={saving} icon={<Save className="h-4 w-4" />} className="bg-[#14110E] text-white hover:bg-neutral-800">
-                {saving ? "Saving..." : isNew ? "Create product" : "Save changes"}
-              </Button>
-            )}
+            <Button type="submit" variant="primary" loading={saving} disabled={!dirty && !isNew} icon={<Save className="h-4 w-4" />}>
+              {isNew ? "Create product" : "Save changes"}
+            </Button>
           </div>
         </div>
       </div>
@@ -892,21 +834,39 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
 function PreviewCard({ form, categoryLabel }: { form: FormState; categoryLabel?: string }) {
   const price = form.price === "" ? 0 : Number(form.price);
   const compare = form.compareAtPrice === "" ? 0 : Number(form.compareAtPrice);
+  const rating = form.rating === "" ? 0 : Number(form.rating);
+  const mainImage = form.stepImages[0] || form.image;
 
   return (
     <div className={cn("overflow-hidden rounded-xl border border-[#E5E7EB] bg-white", !form.active && "opacity-60")}>
       <div className="relative">
-        <MediaPreview src={form.image} className="aspect-[4/5] rounded-none border-0" />
+        <MediaPreview src={mainImage} className="aspect-[4/5] rounded-none border-0" />
         {form.tag && <span className="absolute left-2 top-2 bg-[#14110E] px-2 py-1 text-[9px] font-semibold tracking-[0.15em] text-white">{form.tag}</span>}
+        {form.featured && (
+          <span className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#9E774C]">
+            <Star className="h-3.5 w-3.5 fill-current" />
+          </span>
+        )}
       </div>
-      <div className="space-y-1 p-3">
-        {categoryLabel && <p className="text-[10px] font-bold tracking-[0.15em] text-[#9E774C] uppercase">{categoryLabel}</p>}
-        <p className="line-clamp-2 text-xs font-bold text-[#14110E]">{form.name || "Product name"}</p>
-        {form.subtitle && <p className="line-clamp-1 text-[11px] text-[#6B7280]">{form.subtitle}</p>}
-        <div className="flex items-baseline gap-2 pt-1">
-          <span className="text-xs font-extrabold text-[#14110E]">{formatMoney(price)}</span>
-          {compare > price && <span className="text-[11px] text-[#8B93A1] line-through">{formatMoney(compare)}</span>}
+      <div className="space-y-1.5 p-3">
+        {categoryLabel && form.category && <p className="text-[10px] uppercase tracking-[0.2em] text-[#9E774C]">{categoryLabel}</p>}
+        <p className="text-base font-semibold leading-tight">{form.name || "Product name"}</p>
+        {form.subtitle && <p className="line-clamp-2 text-xs text-[#6B7280]">{form.subtitle}</p>}
+        <div className="flex items-baseline gap-2">
+          <span className="text-sm font-semibold">{formatMoney(price)}</span>
+          {compare > price && <span className="text-xs text-[#9CA3AF] line-through">{formatMoney(compare)}</span>}
         </div>
+        <p className="text-[11px] text-[#6B7280]">
+          ★ {rating.toFixed(1)} · {form.reviewsCount || 0} reviews
+        </p>
+        {form.colorways.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {form.colorways.map((c, i) => (
+              <span key={i} title={c.name} className="h-4 w-4 rounded-full border border-[#D1D5DB]" style={{ background: /^#[0-9a-fA-F]{3,8}$/.test(c.hex) ? c.hex : "#fff" }} />
+            ))}
+          </div>
+        )}
+        <p className="pt-1 text-[11px] text-[#8B93A1]">{form.madeToOrder ? "Made to order" : `${form.stock || 0} in stock`}</p>
       </div>
     </div>
   );
