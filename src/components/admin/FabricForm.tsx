@@ -2,7 +2,7 @@
 
 import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { ExternalLink, Eye, Save, Trash2 } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, ExternalLink, Save, Trash2 } from "lucide-react";
 import { useAdminApi } from "@/lib/admin/api";
 import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminFabric } from "@/lib/admin/types";
@@ -11,6 +11,38 @@ import { useConfirm, useToast } from "./feedback";
 import { ErrorList, NumberField, SelectField, TextAreaField, TextField, Toggle } from "./fields";
 import { ImageField, MediaPreview } from "./media";
 import { Button, Card, CardHeader, Notice, cn } from "./ui";
+
+export const CHEST_SIZE_OPTIONS = [
+  { size: 38, collar: '15.0"', shoulder: '17.5"' },
+  { size: 39, collar: '15.25"', shoulder: '17.75"' },
+  { size: 40, collar: '15.5"', shoulder: '18.0"' },
+  { size: 41, collar: '15.75"', shoulder: '18.25"' },
+  { size: 42, collar: '16.0"', shoulder: '18.5"' },
+  { size: 44, collar: '16.5"', shoulder: '19.0"' },
+  { size: 46, collar: '17.0"', shoulder: '19.5"' },
+  { size: 48, collar: '17.5"', shoulder: '20.0"' },
+];
+
+export const BODY_TYPE_OPTIONS = [
+  { id: "lean", title: "LEAN FIT", desc: "Tapered waist, form-fitting chest & slim silhouette drape" },
+  { id: "regular", title: "REGULAR FIT", desc: "Classic British tailoring with comfortable ease & natural drape" },
+  { id: "tummy", title: "TUMMY COMFORT FIT", desc: "Relaxed midsection with clean shoulder drape" },
+];
+
+export const HEIGHT_OPTIONS = [
+  { id: "regular", title: "REGULAR HEIGHT (5.5 – 5.7\")", desc: 'Shirt Length: 27.5" · Sleeve: 23.75"' },
+  { id: "tall", title: "TALL HEIGHT (5.8 – 5.10\")", desc: 'Shirt Length: 29.0" · Sleeve: 24.5"' },
+  { id: "extra_tall", title: "EXTRA TALL (5.11 – 6.2\")", desc: 'Shirt Length: 30.5" · Sleeve: 25.25"' },
+];
+
+export const FORM_STEPS = [
+  { step: 1, label: "Chest Size", title: "SELECT YOUR CHEST SIZE" },
+  { step: 2, label: "Body Type", title: "CHOOSE BODY DRAPE" },
+  { step: 3, label: "Height & Garment", title: "HEIGHT & GARMENT FIT" },
+  { step: 4, label: "Weave & Specs", title: "WEAVE & COMPOSITION" },
+  { step: 5, label: "Mill & Care", title: "MILL ORIGIN & CARE" },
+  { step: 6, label: "Details & Image", title: "FABRIC DETAILS & IMAGE" },
+];
 
 export const CATEGORY_OPTIONS = [
   { value: "oxford_twill", label: "Oxford & Twill" },
@@ -46,6 +78,9 @@ interface FormState {
   accentColor: string;
   active: boolean;
   sortOrder: number | "";
+  selectedChest: number;
+  selectedBodyType: string;
+  selectedHeight: string;
 }
 
 function toForm(f?: AdminFabric | null): FormState {
@@ -75,6 +110,9 @@ function toForm(f?: AdminFabric | null): FormState {
     accentColor: f?.accentColor ?? "#9E774C",
     active: f?.active ?? true,
     sortOrder: f?.sortOrder ?? 0,
+    selectedChest: 40,
+    selectedBodyType: "regular",
+    selectedHeight: "regular",
   };
 }
 
@@ -123,6 +161,7 @@ export default function FabricForm({
   const toast = useToast();
   const confirm = useConfirm();
 
+  const [activeStep, setActiveStep] = useState<number>(1);
   const [baseline, setBaseline] = useState(() => toForm(fabric));
   const [form, setForm] = useState(baseline);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -152,7 +191,8 @@ export default function FabricForm({
 
     if (Object.keys(local).length) {
       setErrors(local);
-      toast.error("Please fill in the required fields highlighted below.");
+      setActiveStep(6);
+      toast.error("Please fill in the required fields highlighted in Step 6.");
       return;
     }
 
@@ -202,7 +242,42 @@ export default function FabricForm({
   };
 
   return (
-    <form onSubmit={submit} className="pb-24">
+    <form onSubmit={submit} className="pb-28">
+      {/* 6-Step Stepper Header */}
+      <div className="mb-6 rounded-xl border border-[#E5E7EB] bg-white p-3 shadow-xs">
+        <div className="flex items-center justify-between overflow-x-auto scrollbar-none gap-2">
+          {FORM_STEPS.map((s) => {
+            const isCurrent = activeStep === s.step;
+            const isDone = activeStep > s.step;
+            return (
+              <button
+                key={s.step}
+                type="button"
+                onClick={() => setActiveStep(s.step)}
+                className={cn(
+                  "flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-all shrink-0 cursor-pointer",
+                  isCurrent
+                    ? "bg-[#14110E] text-white shadow-xs"
+                    : isDone
+                    ? "bg-[#F3F4F6] text-[#14110E] hover:bg-[#E5E7EB]"
+                    : "text-[#6B7280] hover:bg-[#F9FAFB]"
+                )}
+              >
+                <span
+                  className={cn(
+                    "flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold",
+                    isCurrent ? "bg-[#9E774C] text-white" : isDone ? "bg-[#14110E] text-white" : "bg-[#E5E7EB] text-[#6B7280]"
+                  )}
+                >
+                  {isDone ? "✓" : s.step}
+                </span>
+                <span>{s.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         {/* Left Column: Form Fields */}
         <div className="min-w-0 space-y-6">
@@ -211,260 +286,541 @@ export default function FabricForm({
             <ErrorList errors={Object.fromEntries(Object.entries(errors).filter(([k]) => k !== "_"))} />
           )}
 
-          {/* Section 1: Basics */}
-          <Card>
-            <CardHeader
-              title="Basics"
-              description="Basic information about the fabric shown on the website."
-            />
-            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-              <TextField
-                label="Fabric Name"
-                required
-                value={form.name}
-                onChange={(e) => set("name", e.target.value)}
-                error={errors.name}
-                placeholder="e.g. Optic White Royal Oxford"
-                maxLength={200}
+          {/* ========================================================= */}
+          {/* STEP 1: SELECT YOUR CHEST SIZE                            */}
+          {/* ========================================================= */}
+          {activeStep === 1 && (
+            <Card>
+              <CardHeader
+                title="STEP 1 OF 6 • CHEST SIZE: SELECT YOUR CHEST SIZE"
+                description="Choose the primary chest sizing compatibility for this bespoke fabric tailoring (38&quot; to 48&quot;)."
               />
-              <TextField
-                label="Fabric Code / SKU"
-                required
-                value={form.code}
-                onChange={(e) => set("code", e.target.value.toUpperCase())}
-                error={errors.code}
-                placeholder="e.g. OX-140-WH"
-                hint="Unique code shown on swatch cards and search."
-                maxLength={60}
+              <div className="space-y-6 p-4 sm:p-6">
+                <div>
+                  <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
+                    Available Chest Sizes (Inches)
+                  </label>
+                  <p className="mb-4 text-xs text-[#6B7280]">
+                    Click to select the primary fit sizing:
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    {CHEST_SIZE_OPTIONS.map((c) => {
+                      const isSelected = form.selectedChest === c.size;
+                      return (
+                        <button
+                          key={c.size}
+                          type="button"
+                          onClick={() => set("selectedChest", c.size)}
+                          className={cn(
+                            "flex flex-col items-center justify-center rounded-xl border p-4 text-center transition-all cursor-pointer",
+                            isSelected
+                              ? "border-[#14110E] bg-[#14110E] text-white shadow-md scale-102"
+                              : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
+                          )}
+                        >
+                          <span className="text-xl font-extrabold tracking-tight">
+                            {c.size}&quot;
+                          </span>
+                          <span className={cn("mt-1 text-[11px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                            Collar: {c.collar}
+                          </span>
+                          <span className={cn("text-[11px]", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                            Shoulder: {c.shoulder}
+                          </span>
+                          {isSelected && (
+                            <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#9E774C] px-2 py-0.5 text-[9px] font-bold text-white uppercase">
+                              <Check className="h-2.5 w-2.5" /> Selected
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] p-4 text-xs text-[#374151]">
+                  <p className="font-semibold text-[#14110E]">Selected Chest Compatibility: {form.selectedChest}&quot;</p>
+                  <p className="mt-0.5 text-[#6B7280]">
+                    Bespoke ratio suited for chest size {form.selectedChest}&quot; with collar ratio {CHEST_SIZE_OPTIONS.find((c) => c.size === form.selectedChest)?.collar} and shoulder ratio {CHEST_SIZE_OPTIONS.find((c) => c.size === form.selectedChest)?.shoulder}.
+                  </p>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <Button
+                    type="button"
+                    onClick={() => setActiveStep(2)}
+                    className="bg-[#14110E] text-white hover:bg-neutral-800"
+                    icon={<ChevronRight className="h-4 w-4" />}
+                  >
+                    Continue to Step 2: Body Drape
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 2: BODY TYPE & DRAPE PROFILE                         */}
+          {/* ========================================================= */}
+          {activeStep === 2 && (
+            <Card>
+              <CardHeader
+                title="STEP 2 OF 6 • BODY TYPE: CHOOSE BODY DRAPE & PROFILE"
+                description="Select how the fabric drapes across various bespoke body silhouettes."
               />
-              <SelectField
-                label="Category"
-                required
-                value={form.category}
-                onChange={(e) => set("category", e.target.value)}
-                options={categoryOptions}
-                error={errors.category}
+              <div className="space-y-6 p-4 sm:p-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  {BODY_TYPE_OPTIONS.map((b) => {
+                    const isSelected = form.selectedBodyType === b.id;
+                    return (
+                      <button
+                        key={b.id}
+                        type="button"
+                        onClick={() => set("selectedBodyType", b.id)}
+                        className={cn(
+                          "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
+                          isSelected
+                            ? "border-[#14110E] bg-[#14110E] text-white shadow-md"
+                            : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
+                        )}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-bold tracking-wider">{b.title}</span>
+                          {isSelected && <Check className="h-4 w-4 text-[#9E774C]" />}
+                        </div>
+                        <p className={cn("mt-2 text-xs leading-relaxed", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                          {b.desc}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setActiveStep(1)}
+                    icon={<ChevronLeft className="h-4 w-4" />}
+                  >
+                    Back to Chest Size
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setActiveStep(3)}
+                    className="bg-[#14110E] text-white hover:bg-neutral-800"
+                    icon={<ChevronRight className="h-4 w-4" />}
+                  >
+                    Continue to Step 3: Height & Garments
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 3: HEIGHT & GARMENT TYPES                            */}
+          {/* ========================================================= */}
+          {activeStep === 3 && (
+            <Card>
+              <CardHeader
+                title="STEP 3 OF 6 • HEIGHT & GARMENT: SELECT HEIGHT & GARMENTS"
+                description="Proportion guidelines and recommended garment tailoring styles for this cloth."
               />
-              <TextField
-                label="Category Sub-Title (Badge)"
-                value={form.categoryLabel}
-                onChange={(e) => set("categoryLabel", e.target.value)}
-                error={errors.categoryLabel}
-                placeholder="e.g. 2-PLY ROYAL OXFORD"
-                hint="Upper badge shown above the fabric name."
-                maxLength={120}
+              <div className="space-y-6 p-4 sm:p-6">
+                <div>
+                  <label className="mb-2 block text-xs font-bold tracking-wider text-[#14110E] uppercase">
+                    Torso Height Compatibility
+                  </label>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    {HEIGHT_OPTIONS.map((h) => {
+                      const isSelected = form.selectedHeight === h.id;
+                      return (
+                        <button
+                          key={h.id}
+                          type="button"
+                          onClick={() => set("selectedHeight", h.id)}
+                          className={cn(
+                            "flex flex-col rounded-xl border p-5 text-left transition-all cursor-pointer",
+                            isSelected
+                              ? "border-[#14110E] bg-[#14110E] text-white shadow-md"
+                              : "border-[#E5E7EB] bg-white text-[#14110E] hover:border-[#9E774C] hover:bg-[#FDFBF7]"
+                          )}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-bold tracking-wider">{h.title}</span>
+                            {isSelected && <Check className="h-4 w-4 text-[#9E774C]" />}
+                          </div>
+                          <p className={cn("mt-2 text-xs font-medium", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                            {h.desc}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="border-t border-[#E5E7EB] pt-4">
+                  <TextField
+                    label="Best For (Garments & Occasions)"
+                    value={form.bestFor}
+                    onChange={(e) => set("bestFor", e.target.value)}
+                    error={errors.bestFor}
+                    placeholder="e.g. Executive Boardroom Shirts, French Cuff Formals, Cutaway Collars"
+                    maxLength={400}
+                    hint="Garment styles and occasions suited for this cloth."
+                  />
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setActiveStep(2)}
+                    icon={<ChevronLeft className="h-4 w-4" />}
+                  >
+                    Back to Body Drape
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setActiveStep(4)}
+                    className="bg-[#14110E] text-white hover:bg-neutral-800"
+                    icon={<ChevronRight className="h-4 w-4" />}
+                  >
+                    Continue to Step 4: Weave & Specs
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 4: WEAVE & COMPOSITION                               */}
+          {/* ========================================================= */}
+          {activeStep === 4 && (
+            <Card>
+              <CardHeader
+                title="STEP 4 OF 6 • WEAVE & COMPOSITION"
+                description="Material composition, weaving technique, opacity and hand-feel specifications."
               />
-              <TextField
-                label="Price / Display Label"
-                required
-                value={form.price}
-                onChange={(e) => set("price", e.target.value)}
-                error={errors.price}
-                placeholder="e.g. Rs. 3,290 • BESPOKE FIT"
-                maxLength={120}
-                hint="Selling price shown to customers."
+              <div className="space-y-6 p-4 sm:p-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <TextField
+                    label="Material / Composition"
+                    value={form.composition}
+                    onChange={(e) => set("composition", e.target.value)}
+                    error={errors.composition}
+                    placeholder="e.g. 100% Egyptian Giza 140s Cotton (2-Ply)"
+                    maxLength={250}
+                  />
+                  <TextField
+                    label="Yarn Count & Ply"
+                    value={form.yarnCount}
+                    onChange={(e) => set("yarnCount", e.target.value)}
+                    error={errors.yarnCount}
+                    placeholder="e.g. 140/2 Ne Compact Spun"
+                    maxLength={160}
+                  />
+                  <TextField
+                    label="Weave Type"
+                    value={form.weave}
+                    onChange={(e) => set("weave", e.target.value)}
+                    error={errors.weave}
+                    placeholder="e.g. High-Density Fine Twill Weave"
+                    maxLength={160}
+                  />
+                  <TextField
+                    label="Breathability"
+                    value={form.breathability}
+                    onChange={(e) => set("breathability", e.target.value)}
+                    error={errors.breathability}
+                    placeholder="e.g. High (4.8 / 5.0)"
+                    maxLength={120}
+                  />
+                  <TextField
+                    label="Wrinkle Resistance"
+                    value={form.wrinkleResistance}
+                    onChange={(e) => set("wrinkleResistance", e.target.value)}
+                    error={errors.wrinkleResistance}
+                    placeholder="e.g. Natural Resilient Twill Drape"
+                    maxLength={160}
+                  />
+                  <TextField
+                    label="Opacity"
+                    value={form.opacity}
+                    onChange={(e) => set("opacity", e.target.value)}
+                    error={errors.opacity}
+                    placeholder="e.g. 100% Opaque"
+                    maxLength={120}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setActiveStep(3)}
+                    icon={<ChevronLeft className="h-4 w-4" />}
+                  >
+                    Back to Height & Garments
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setActiveStep(5)}
+                    className="bg-[#14110E] text-white hover:bg-neutral-800"
+                    icon={<ChevronRight className="h-4 w-4" />}
+                  >
+                    Continue to Step 5: Mill & Care
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 5: MILL ORIGIN, WEIGHT & CARE                        */}
+          {/* ========================================================= */}
+          {activeStep === 5 && (
+            <Card>
+              <CardHeader
+                title="STEP 5 OF 6 • MILL ORIGIN, WEIGHT & CARE"
+                description="Mill heritage, fabric GSM weight, and washing/care instructions."
               />
-              <TextField
-                label="Compare-at Price (Discount MRP)"
-                value={form.compareAtPrice}
-                onChange={(e) => set("compareAtPrice", e.target.value)}
-                error={errors.compareAtPrice}
-                placeholder="e.g. Rs. 4,190"
-                maxLength={120}
-                hint="Shown struck-through next to price to show a discount."
-              />
-              <TextField
-                label="Tag / Short Info"
-                value={form.shortInfo}
-                onChange={(e) => set("shortInfo", e.target.value)}
-                error={errors.shortInfo}
-                placeholder="e.g. 140/2 Ne Egyptian Giza · 135 GSM"
-                hint="Small subtitle shown directly under the name."
-                maxLength={300}
-              />
-              <NumberField
-                label="Sort Order"
-                value={form.sortOrder}
-                onValue={(v) => set("sortOrder", v)}
-                error={errors.sortOrder}
-                hint="Lower numbers appear first on the page."
-                step={1}
-              />
-              <div className="sm:col-span-2">
-                <TextAreaField
-                  label="Description"
-                  rows={4}
-                  value={form.description}
-                  onChange={(e) => set("description", e.target.value)}
-                  error={errors.description}
-                  placeholder="Describe the fabric texture, hand-feel, finish, and sartorial heritage..."
-                  maxLength={5000}
+              <div className="space-y-6 p-4 sm:p-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <TextField
+                    label="Weight (GSM)"
+                    value={form.gsm}
+                    onChange={(e) => set("gsm", e.target.value)}
+                    error={errors.gsm}
+                    placeholder="e.g. 135 GSM"
+                    maxLength={80}
+                  />
+                  <TextField
+                    label="Fabric Weight Classification"
+                    value={form.weight}
+                    onChange={(e) => set("weight", e.target.value)}
+                    error={errors.weight}
+                    placeholder="e.g. All-Season Sartorial"
+                    maxLength={160}
+                  />
+                  <TextField
+                    label="Origin / Mill"
+                    value={form.origin}
+                    onChange={(e) => set("origin", e.target.value)}
+                    error={errors.origin}
+                    placeholder="e.g. Nile Delta Harvest · Spun in Italy"
+                    maxLength={200}
+                  />
+                  <TextField
+                    label="Accent Color (Hex)"
+                    value={form.accentColor}
+                    onChange={(e) => set("accentColor", e.target.value)}
+                    error={errors.accentColor}
+                    placeholder="#9E774C"
+                    maxLength={30}
+                  />
+                  <div className="sm:col-span-2">
+                    <TextField
+                      label="Care Instructions"
+                      value={form.care}
+                      onChange={(e) => set("care", e.target.value)}
+                      error={errors.care}
+                      placeholder="e.g. Dry Clean or Gentle Machine Wash at 30°C · Warm Steam Iron"
+                      maxLength={400}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setActiveStep(4)}
+                    icon={<ChevronLeft className="h-4 w-4" />}
+                  >
+                    Back to Weave & Specs
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setActiveStep(6)}
+                    className="bg-[#14110E] text-white hover:bg-neutral-800"
+                    icon={<ChevronRight className="h-4 w-4" />}
+                  >
+                    Continue to Step 6: Fabric Details & Image
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 6: FABRIC DETAILS, PRICING & SWATCH IMAGE            */}
+          {/* ========================================================= */}
+          {activeStep === 6 && (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader
+                  title="STEP 6 OF 6 • FABRIC DETAILS & PRICING"
+                  description="Basic information about the fabric shown on the website."
                 />
+                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
+                  <TextField
+                    label="Fabric Name"
+                    required
+                    value={form.name}
+                    onChange={(e) => set("name", e.target.value)}
+                    error={errors.name}
+                    placeholder="e.g. Optic White Royal Oxford"
+                    maxLength={200}
+                  />
+                  <TextField
+                    label="Fabric Code / SKU"
+                    required
+                    value={form.code}
+                    onChange={(e) => set("code", e.target.value.toUpperCase())}
+                    error={errors.code}
+                    placeholder="e.g. OX-140-WH"
+                    hint="Unique code shown on swatch cards and search."
+                    maxLength={60}
+                  />
+                  <SelectField
+                    label="Category"
+                    required
+                    value={form.category}
+                    onChange={(e) => set("category", e.target.value)}
+                    options={categoryOptions}
+                    error={errors.category}
+                  />
+                  <TextField
+                    label="Category Sub-Title (Badge)"
+                    value={form.categoryLabel}
+                    onChange={(e) => set("categoryLabel", e.target.value)}
+                    error={errors.categoryLabel}
+                    placeholder="e.g. 2-PLY ROYAL OXFORD"
+                    hint="Upper badge shown above the fabric name."
+                    maxLength={120}
+                  />
+                  <TextField
+                    label="Price / Display Label"
+                    required
+                    value={form.price}
+                    onChange={(e) => set("price", e.target.value)}
+                    error={errors.price}
+                    placeholder="e.g. Rs. 3,290 • BESPOKE FIT"
+                    maxLength={120}
+                    hint="Selling price shown to customers."
+                  />
+                  <TextField
+                    label="Compare-at Price (Discount MRP)"
+                    value={form.compareAtPrice}
+                    onChange={(e) => set("compareAtPrice", e.target.value)}
+                    error={errors.compareAtPrice}
+                    placeholder="e.g. Rs. 4,190"
+                    maxLength={120}
+                    hint="Shown struck-through next to price to show a discount."
+                  />
+                  <TextField
+                    label="Tag / Short Info"
+                    value={form.shortInfo}
+                    onChange={(e) => set("shortInfo", e.target.value)}
+                    error={errors.shortInfo}
+                    placeholder="e.g. 140/2 Ne Egyptian Giza · 135 GSM"
+                    hint="Small subtitle shown directly under the name."
+                    maxLength={300}
+                  />
+                  <NumberField
+                    label="Sort Order"
+                    value={form.sortOrder}
+                    onValue={(v) => set("sortOrder", v)}
+                    error={errors.sortOrder}
+                    hint="Lower numbers appear first on the page."
+                    step={1}
+                  />
+                  <div className="sm:col-span-2">
+                    <TextAreaField
+                      label="Description"
+                      rows={4}
+                      value={form.description}
+                      onChange={(e) => set("description", e.target.value)}
+                      error={errors.description}
+                      placeholder="Describe the fabric texture, hand-feel, finish, and sartorial heritage..."
+                      maxLength={5000}
+                    />
+                  </div>
+                </div>
+              </Card>
+
+              {/* Ratings & Reviews */}
+              <Card>
+                <CardHeader
+                  title="Ratings & Reviews"
+                  description="Customer rating out of 5 and client review count displayed on the fabric card."
+                />
+                <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
+                  <NumberField
+                    label="Rating (out of 5)"
+                    value={form.rating}
+                    onValue={(v) => set("rating", v)}
+                    error={errors.rating}
+                    min={0}
+                    max={5}
+                    step={0.1}
+                    placeholder="5.0"
+                    hint="Rating score from 0.0 to 5.0 (e.g. 4.9)."
+                  />
+                  <NumberField
+                    label="Client Reviews Count"
+                    value={form.reviewsCount}
+                    onValue={(v) => set("reviewsCount", v)}
+                    error={errors.reviewsCount}
+                    min={0}
+                    step={1}
+                    placeholder="0"
+                    hint="Total verified customer reviews (e.g. 24)."
+                  />
+                </div>
+              </Card>
+
+              {/* Fabric Swatch Image */}
+              <Card>
+                <CardHeader
+                  title="Fabric Swatch Image"
+                  description="Choose an image from your media library or enter an image link."
+                />
+                <div className="p-4 sm:p-5">
+                  <ImageField
+                    label="Swatch image URL"
+                    value={form.image}
+                    onChange={(v) => set("image", v)}
+                    error={errors.image}
+                    previewClassName="h-32 w-32 rounded-lg"
+                    hint="Relative path (e.g. /fabric_roll_oxford_white.jpg) or full uploaded image link."
+                  />
+                </div>
+              </Card>
+
+              <div className="flex items-center justify-between pt-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setActiveStep(5)}
+                  icon={<ChevronLeft className="h-4 w-4" />}
+                >
+                  Back to Mill & Care
+                </Button>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  loading={saving}
+                  disabled={!dirty && !isNew}
+                  icon={<Save className="h-4 w-4" />}
+                >
+                  {isNew ? "Create fabric" : "Save changes"}
+                </Button>
               </div>
             </div>
-          </Card>
-
-          {/* Section: Ratings & Reviews */}
-          <Card>
-            <CardHeader
-              title="Ratings & Reviews"
-              description="Customer rating out of 5 and client review count displayed on the fabric card."
-            />
-            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-              <NumberField
-                label="Rating (out of 5)"
-                value={form.rating}
-                onValue={(v) => set("rating", v)}
-                error={errors.rating}
-                min={0}
-                max={5}
-                step={0.1}
-                placeholder="5.0"
-                hint="Rating score from 0.0 to 5.0 (e.g. 4.9)."
-              />
-              <NumberField
-                label="Client Reviews Count"
-                value={form.reviewsCount}
-                onValue={(v) => set("reviewsCount", v)}
-                error={errors.reviewsCount}
-                min={0}
-                step={1}
-                placeholder="0"
-                hint="Total verified customer reviews (e.g. 24)."
-              />
-            </div>
-          </Card>
-
-          {/* Section 2: Material & Specifications */}
-          <Card>
-            <CardHeader
-              title="Material & Specifications"
-              description="Technical fabric qualities that sartorial clients look for."
-            />
-            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-              <TextField
-                label="Material / Composition"
-                value={form.composition}
-                onChange={(e) => set("composition", e.target.value)}
-                error={errors.composition}
-                placeholder="e.g. 100% Egyptian Giza 140s Cotton (2-Ply)"
-                maxLength={250}
-              />
-              <TextField
-                label="Yarn Count & Ply"
-                value={form.yarnCount}
-                onChange={(e) => set("yarnCount", e.target.value)}
-                error={errors.yarnCount}
-                placeholder="e.g. 140/2 Ne Compact Spun"
-                maxLength={160}
-              />
-              <TextField
-                label="Weave Type"
-                value={form.weave}
-                onChange={(e) => set("weave", e.target.value)}
-                error={errors.weave}
-                placeholder="e.g. High-Density Fine Twill Weave"
-                maxLength={160}
-              />
-              <TextField
-                label="Weight (GSM)"
-                value={form.gsm}
-                onChange={(e) => set("gsm", e.target.value)}
-                error={errors.gsm}
-                placeholder="e.g. 135 GSM"
-                maxLength={80}
-              />
-              <TextField
-                label="Fabric Weight Classification"
-                value={form.weight}
-                onChange={(e) => set("weight", e.target.value)}
-                error={errors.weight}
-                placeholder="e.g. All-Season Sartorial"
-                maxLength={160}
-              />
-              <TextField
-                label="Origin / Mill"
-                value={form.origin}
-                onChange={(e) => set("origin", e.target.value)}
-                error={errors.origin}
-                placeholder="e.g. Nile Delta Harvest · Spun in Italy"
-                maxLength={200}
-              />
-              <TextField
-                label="Breathability"
-                value={form.breathability}
-                onChange={(e) => set("breathability", e.target.value)}
-                error={errors.breathability}
-                placeholder="e.g. High (4.8 / 5.0)"
-                maxLength={120}
-              />
-              <TextField
-                label="Wrinkle Resistance"
-                value={form.wrinkleResistance}
-                onChange={(e) => set("wrinkleResistance", e.target.value)}
-                error={errors.wrinkleResistance}
-                placeholder="e.g. Natural Resilient Twill Drape"
-                maxLength={160}
-              />
-              <TextField
-                label="Opacity"
-                value={form.opacity}
-                onChange={(e) => set("opacity", e.target.value)}
-                error={errors.opacity}
-                placeholder="e.g. 100% Opaque"
-                maxLength={120}
-                className="sm:col-span-2"
-              />
-            </div>
-          </Card>
-
-          {/* Section 3: Tailoring & Care */}
-          <Card>
-            <CardHeader
-              title="Tailoring Advice & Care"
-              description="Garment recommendations and washing instructions."
-            />
-            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-              <div className="sm:col-span-2">
-                <TextField
-                  label="Best For (Garments)"
-                  value={form.bestFor}
-                  onChange={(e) => set("bestFor", e.target.value)}
-                  error={errors.bestFor}
-                  placeholder="e.g. Executive Boardroom Shirts, French Cuff Formals, Spread Collars"
-                  maxLength={400}
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <TextField
-                  label="Care Instructions"
-                  value={form.care}
-                  onChange={(e) => set("care", e.target.value)}
-                  error={errors.care}
-                  placeholder="e.g. Dry Clean or Gentle Machine Wash at 30°C · Warm Steam Iron"
-                  maxLength={400}
-                />
-              </div>
-            </div>
-          </Card>
-
-          {/* Section 4: Image */}
-          <Card>
-            <CardHeader
-              title="Fabric Swatch Image"
-              description="Choose an image from your media library or enter an image link."
-            />
-            <div className="p-4 sm:p-5">
-              <ImageField
-                label="Swatch image URL"
-                value={form.image}
-                onChange={(v) => set("image", v)}
-                error={errors.image}
-                previewClassName="h-32 w-32 rounded-lg"
-                hint="Relative path (e.g. /fabric_roll_oxford_white.jpg) or full uploaded image link."
-              />
-            </div>
-          </Card>
+          )}
         </div>
 
         {/* Right Column: Sticky Sidebar with Visibility & Live Preview */}
@@ -518,6 +874,7 @@ export default function FabricForm({
           <div className="flex gap-2">
             {!isNew && (
               <Button
+                type="button"
                 variant="ghost"
                 onClick={() => void remove()}
                 icon={<Trash2 className="h-4 w-4" />}
@@ -527,7 +884,7 @@ export default function FabricForm({
               </Button>
             )}
             {dirty && (
-              <Button onClick={() => setForm(baseline)} disabled={saving}>
+              <Button type="button" onClick={() => setForm(baseline)} disabled={saving}>
                 Discard
               </Button>
             )}
@@ -552,7 +909,7 @@ function FabricPreviewCard({ form }: { form: FormState }) {
     <div
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-all duration-300",
-        !form.active && "opacity-60",
+        !form.active && "opacity-60"
       )}
       style={{ borderColor: form.accentColor ? `${form.accentColor}55` : "#E5E7EB" }}
     >
