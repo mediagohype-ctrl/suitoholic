@@ -85,6 +85,57 @@ export const SLEEVE_OPTIONS = [
   },
 ];
 
+export const COLLAR_OPTIONS = [
+  {
+    id: "cutaway",
+    title: "CUTAWAY COLLAR",
+    desc: "Wide, modern points for larger tie knots",
+  },
+  {
+    id: "classic_spread",
+    title: "CLASSIC SPREAD",
+    desc: "The versatile boardroom standard",
+  },
+  {
+    id: "mandarin",
+    title: "MANDARIN / BAND",
+    desc: "Minimal stand collar, no points",
+  },
+  {
+    id: "button_down",
+    title: "BUTTON DOWN",
+    desc: "Points fastened with buttons, smart-casual",
+  },
+];
+
+export const CUFF_OPTIONS = [
+  {
+    id: "classic_cuff",
+    title: "CLASSIC CUFF",
+    desc: "Single-button standard barrel cuff",
+  },
+  {
+    id: "french_double",
+    title: "FRENCH DOUBLE",
+    desc: "Formal folded French cuff for cufflinks",
+  },
+  {
+    id: "rounded_cuff",
+    title: "ROUNDED CUFF",
+    desc: "Curved 2-button elegant corner cuff",
+  },
+];
+
+export const THREAD_COLOR_OPTIONS = [
+  { value: "MATCHING THREAD", label: "MATCHING / TONAL THREAD" },
+  { value: "BLACK THREAD", label: "BLACK THREAD" },
+  { value: "WHITE THREAD", label: "WHITE THREAD" },
+  { value: "NAVY BLUE THREAD", label: "NAVY BLUE THREAD" },
+  { value: "GOLD THREAD", label: "GOLD THREAD" },
+  { value: "BURGUNDY THREAD", label: "BURGUNDY THREAD" },
+  { value: "SILVER GREY THREAD", label: "SILVER GREY THREAD" },
+];
+
 interface FormState {
   name: string;
   slug: string;
@@ -102,6 +153,10 @@ interface FormState {
   selectedBodyType: "lean" | "regular" | "tummy" | null;
   selectedHeight: "regular" | "tall" | "extra_tall" | null;
   selectedSleeves: "full" | "half" | null;
+  selectedCollar: string | null;
+  selectedCuff: string | null;
+  monogram: string;
+  threadColor: string;
   image: string;
   gallery: string[];
   colorways: AdminColorway[];
@@ -137,6 +192,10 @@ function toForm(p?: AdminProduct | null): FormState {
     selectedBodyType: null,
     selectedHeight: null,
     selectedSleeves: null,
+    selectedCollar: null,
+    selectedCuff: null,
+    monogram: "",
+    threadColor: "MATCHING THREAD",
     image: mainImg,
     gallery: gal,
     colorways: p?.colorways ? p.colorways.map((c) => ({ ...c })) : [],
@@ -160,11 +219,30 @@ function toBody(f: FormState) {
     galleryItems.unshift(primaryImage);
   }
 
+  const collarValue = f.selectedCollar
+    ? COLLAR_OPTIONS.find((c) => c.id === f.selectedCollar)?.title || f.selectedCollar
+    : f.collar || "English Semi-Spread Collar";
+
+  const cuffValue =
+    f.selectedSleeves === "half"
+      ? "Half Sleeves (No Cuff)"
+      : f.selectedCuff
+      ? CUFF_OPTIONS.find((c) => c.id === f.selectedCuff)?.title || f.selectedCuff
+      : f.cuff || "2-Button Rounded Barrel Cuff";
+
   const bodyName = f.selectedBodyType === "lean" ? "Lean Fit" : f.selectedBodyType === "tummy" ? "Tummy Fit" : f.selectedBodyType === "regular" ? "Regular Fit" : "";
   const heightName = f.selectedHeight === "tall" ? "Tall Height" : f.selectedHeight === "extra_tall" ? "Extra Tall Height" : f.selectedHeight === "regular" ? "Regular Height" : "";
   const sleeveName = f.selectedSleeves === "full" ? "Full Sleeves" : f.selectedSleeves === "half" ? "Half Sleeves" : "";
 
-  const fitDetails = [f.selectedChest ? `Chest ${f.selectedChest}"` : "", heightName, sleeveName].filter(Boolean).join(", ");
+  const fitDetails = [
+    f.selectedChest ? `Chest ${f.selectedChest}"` : "",
+    heightName,
+    sleeveName,
+    collarValue ? `Collar: ${collarValue}` : "",
+    f.selectedSleeves === "full" && cuffValue ? `Cuff: ${cuffValue}` : "",
+    f.monogram.trim() ? `Monogram: ${f.monogram.trim()}` : "",
+  ].filter(Boolean).join(", ");
+
   const synthesizedFit = bodyName ? (fitDetails ? `${bodyName} (${fitDetails})` : bodyName) : "";
 
   return {
@@ -177,8 +255,8 @@ function toBody(f: FormState) {
     description: f.description,
     fabric: f.fabric,
     threadCount: f.threadCount,
-    collar: f.collar,
-    cuff: f.cuff,
+    collar: collarValue,
+    cuff: cuffValue,
     fit: f.fit.trim() || synthesizedFit || "Bespoke Tailored Fit",
     image: primaryImage,
     gallery: galleryItems,
@@ -194,6 +272,87 @@ function toBody(f: FormState) {
   };
 }
 
+
+function CollarIcon({ type, className }: { type: string; className?: string }) {
+  if (type === "cutaway") {
+    return (
+      <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M14 6 C 20 14, 28 14, 34 6" />
+        <path d="M14 6 L 6 18 L 18 16 L 24 10" />
+        <path d="M34 6 L 42 18 L 30 16 L 24 10" />
+        <path d="M24 10 L 24 26" strokeDasharray="2 2" opacity="0.6" />
+      </svg>
+    );
+  }
+  if (type === "classic_spread") {
+    return (
+      <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M16 6 C 21 12, 27 12, 32 6" />
+        <path d="M16 6 L 10 20 L 20 15 L 24 10" />
+        <path d="M32 6 L 38 20 L 28 15 L 24 10" />
+        <path d="M24 10 L 24 26" strokeDasharray="2 2" opacity="0.6" />
+      </svg>
+    );
+  }
+  if (type === "mandarin") {
+    return (
+      <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M15 14 C 20 9, 28 9, 33 14" />
+        <path d="M15 14 L 14 20 C 20 16, 28 16, 34 20 L 33 14" />
+        <path d="M24 18 L 24 28" strokeDasharray="2 2" opacity="0.6" />
+      </svg>
+    );
+  }
+  if (type === "button_down") {
+    return (
+      <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M16 6 C 21 12, 27 12, 32 6" />
+        <path d="M16 6 L 12 21 L 21 16 L 24 10" />
+        <path d="M32 6 L 36 21 L 27 16 L 24 10" />
+        <circle cx="14" cy="18" r="1" fill="currentColor" />
+        <circle cx="34" cy="18" r="1" fill="currentColor" />
+        <path d="M24 10 L 24 26" strokeDasharray="2 2" opacity="0.6" />
+      </svg>
+    );
+  }
+  return null;
+}
+
+function CuffIcon({ type, className }: { type: string; className?: string }) {
+  if (type === "classic_cuff") {
+    return (
+      <svg viewBox="0 0 60 36" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M18 6 L 16 16 L 44 16 L 42 6" opacity="0.5" />
+        <rect x="14" y="16" width="32" height="15" rx="1" />
+        <line x1="14" y1="20" x2="46" y2="20" strokeDasharray="1.5 1.5" opacity="0.7" />
+        <circle cx="30" cy="25" r="1.5" fill="currentColor" />
+      </svg>
+    );
+  }
+  if (type === "french_double") {
+    return (
+      <svg viewBox="0 0 60 36" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M18 6 L 16 14 L 44 14 L 42 6" opacity="0.5" />
+        <rect x="13" y="14" width="34" height="17" rx="1.5" />
+        <line x1="13" y1="22" x2="47" y2="22" />
+        <circle cx="25" cy="26" r="1.2" fill="currentColor" />
+        <circle cx="35" cy="26" r="1.2" fill="currentColor" />
+      </svg>
+    );
+  }
+  if (type === "rounded_cuff") {
+    return (
+      <svg viewBox="0 0 60 36" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M18 6 L 16 16 L 44 16 L 42 6" opacity="0.5" />
+        <path d="M14 16 H 46 V 25 C 46 28.5, 43 31, 39.5 31 H 20.5 C 17 31, 14 28.5, 14 25 Z" />
+        <line x1="16" y1="20" x2="44" y2="20" strokeDasharray="1.5 1.5" opacity="0.7" />
+        <circle cx="30" cy="25" r="1.5" fill="currentColor" />
+      </svg>
+    );
+  }
+  return null;
+}
+
 export default function ProductForm({ product, onSaved }: { product?: AdminProduct | null; onSaved?: (p: AdminProduct) => void }) {
   const router = useRouter();
   const request = useAdminApi();
@@ -205,7 +364,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
   const [baseline, setBaseline] = useState<FormState>(() => toForm(product));
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [wizardStep, setWizardStep] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
@@ -279,7 +438,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
 
     if (!form.image.trim()) {
       local.image = "Please upload product image in the last step.";
-      setWizardStep(4);
+      setWizardStep(6);
     }
 
     form.colorways.forEach((c, i) => {
@@ -341,6 +500,8 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
   const bodyName = form.selectedBodyType === "lean" ? "Lean Fit" : form.selectedBodyType === "tummy" ? "Tummy Fit" : form.selectedBodyType === "regular" ? "Regular Fit" : "";
   const heightName = form.selectedHeight === "tall" ? "Tall Height" : form.selectedHeight === "extra_tall" ? "Extra Tall Height" : form.selectedHeight === "regular" ? "Regular Height" : "";
   const sleeveName = form.selectedSleeves === "full" ? "Full Sleeves" : form.selectedSleeves === "half" ? "Half Sleeves" : "";
+  const collarTitle = form.selectedCollar ? COLLAR_OPTIONS.find((c) => c.id === form.selectedCollar)?.title || form.selectedCollar : "";
+  const cuffTitle = form.selectedCuff ? CUFF_OPTIONS.find((c) => c.id === form.selectedCuff)?.title || form.selectedCuff : "";
 
   return (
     <form onSubmit={submit} className="pb-28">
@@ -385,12 +546,13 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
           </Card>
 
           {/* ========================================================================= */}
-          {/* SECTION 3: STEP-BY-STEP CUSTOMIZATION & IMAGE UPLOAD (LAST STEP)          */}
+          {/* SECTION 3: 6-STEP BESPOKE CUSTOMIZATION & IMAGE UPLOAD                     */}
           {/* Step 1: Chest Size -> Continue                                            */}
           {/* Step 2: Choose Your Body Type (Lean, Regular, Tummy) -> Continue          */}
           {/* Step 3: Select Your Height (Regular, Tall, Extra Tall) -> Continue        */}
           {/* Step 4: Select Your Sleeves (Full Sleeves, Half Sleeves) -> Continue       */}
-          {/* Step 5: Upload Your Image (Last Step)                                     */}
+          {/* Step 5: Collar, Cuffs & Details (Full = Collar/Cuff/Monogram; Half = Collar)*/}
+          {/* Step 6: Upload Your Image (Last Step)                                     */}
           {/* ========================================================================= */}
           <Card>
             <CardHeader
@@ -403,6 +565,8 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                   ? "Select Your Height"
                   : wizardStep === 4
                   ? "Select Your Sleeves"
+                  : wizardStep === 5
+                  ? (form.selectedSleeves === "half" ? "Collar Style & Details" : "Collar, Cuffs & Details")
                   : "Upload Your Image"
               }
               description={
@@ -414,6 +578,8 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                   ? "Apna height proportion choose karke Continue karein."
                   : wizardStep === 4
                   ? "Apna sleeve option (Full Sleeves ya Half Sleeves) choose karke Continue karein."
+                  : wizardStep === 5
+                  ? (form.selectedSleeves === "half" ? "Collar style select karein." : "Collar style, cuff design aur monogram details customize karein.")
                   : "Aakhri step me product ki main photo upload karein."
               }
               actions={
@@ -423,12 +589,13 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                     { step: 2, label: bodyName ? `2. Body (${bodyName.replace(" Fit", "")})` : `2. Body` },
                     { step: 3, label: heightName ? `3. Height (${heightName.replace(" Height", "")})` : `3. Height` },
                     { step: 4, label: sleeveName ? `4. Sleeves (${sleeveName.replace(" Sleeves", "")})` : `4. Sleeves` },
-                    { step: 5, label: `5. Image` },
+                    { step: 5, label: collarTitle ? `5. Details (${collarTitle.split(" ")[0]})` : `5. Details` },
+                    { step: 6, label: `6. Image` },
                   ].map((s) => (
                     <button
                       key={s.step}
                       type="button"
-                      onClick={() => setWizardStep(s.step as 1 | 2 | 3 | 4 | 5)}
+                      onClick={() => setWizardStep(s.step as 1 | 2 | 3 | 4 | 5 | 6)}
                       className={cn(
                         "rounded-lg px-2.5 py-1 text-xs font-semibold transition shrink-0 cursor-pointer",
                         wizardStep === s.step
@@ -452,7 +619,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <div>
                       <span className="inline-block rounded-md bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                        Step 1 of 5
+                        Step 1 of 6
                       </span>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
                         Select Your Chest Size
@@ -533,7 +700,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Step 2 of 5
+                          Step 2 of 6
                         </span>
                         <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
                           Chest Size: {form.selectedChest ? `${form.selectedChest}"` : "Not selected"}
@@ -639,7 +806,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Step 3 of 5
+                          Step 3 of 6
                         </span>
                         <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
                           Chest: {form.selectedChest ? `${form.selectedChest}"` : "—"} · {bodyName || "—"}
@@ -745,7 +912,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="inline-block rounded-md bg-[#14110E] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Step 4 of 5
+                          Step 4 of 6
                         </span>
                         <span className="rounded-full bg-white border border-[#E5E7EB] px-2.5 py-0.5 text-[10px] font-bold text-[#9E774C]">
                           Chest: {form.selectedChest ? `${form.selectedChest}"` : "—"} · {bodyName || "—"} · {heightName || "—"}
@@ -814,7 +981,7 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                     })}
                   </div>
 
-                  {/* Continue Button to Step 5 (Image Upload) */}
+                  {/* Continue Button to Step 5 (Collar, Cuffs & Details) */}
                   <div className="mt-5 flex items-center justify-between border-t border-[#EAE3D9] pt-4">
                     <Button
                       type="button"
@@ -836,6 +1003,220 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                       className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
                       icon={<ChevronRight className="h-4 w-4" />}
                     >
+                      {form.selectedSleeves === "half" ? "Continue to Collar Style" : "Continue to Collar, Cuffs & Details"}
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+                            {/* ========================================================= */}
+              {/* STEP 5: COLLAR, CUFFS & DETAILS (HALF = COLLAR ONLY)      */}
+              {/* ========================================================= */}
+              {wizardStep === 5 && (
+                <div className="space-y-6 animate-in fade-in duration-200">
+                  {/* Top info header matching screenshot */}
+                  <div className="text-center py-2">
+                    <div className="flex items-center justify-center gap-3 mb-2">
+                      <div className="h-px w-16 bg-[#D6CEBF]" />
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-[#6B7280]">
+                        Step 5 of 6
+                      </span>
+                      <div className="h-px w-16 bg-[#D6CEBF]" />
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold uppercase tracking-wider text-[#14110E]">
+                      {form.selectedSleeves === "half" ? "Collar Style & Details" : "Collar, Cuffs & Details"}
+                    </h3>
+                    <p className="mt-1 text-xs text-[#6B7280]">
+                      {form.selectedSleeves === "half"
+                        ? "Customize collar style for your tailored half-sleeve shirt."
+                        : "Customize collar style, wrist cuffs, and personalized monogram initials."}
+                    </p>
+                  </div>
+
+                  {/* Summary Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-3 text-xs">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                        Chest: {form.selectedChest ? `${form.selectedChest}"` : "—"}
+                      </span>
+                      <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                        {bodyName || "—"}
+                      </span>
+                      <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                        {heightName || "—"}
+                      </span>
+                      <span className="rounded-full bg-[#9E774C] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                        {sleeveName || "—"}
+                      </span>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setWizardStep(4)}
+                      icon={<ChevronLeft className="h-3.5 w-3.5" />}
+                    >
+                      Back to Sleeves
+                    </Button>
+                  </div>
+
+                  {/* 1. COLLAR STYLE */}
+                  <div className="space-y-3">
+                    <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#14110E]">
+                      Collar Style
+                    </h4>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {COLLAR_OPTIONS.map((c) => {
+                        const isSelected = form.selectedCollar === c.id;
+                        return (
+                          <button
+                            key={c.id}
+                            type="button"
+                            onClick={() => set("selectedCollar", c.id)}
+                            className={cn(
+                              "flex items-center gap-3.5 rounded-xl border p-4 text-left transition-all cursor-pointer relative",
+                              isSelected
+                                ? "border-[#14110E] bg-[#14110E] text-white shadow-md"
+                                : "border-[#E5E7EB] bg-[#FAF8F5] text-[#14110E] hover:border-[#9E774C] hover:bg-white"
+                            )}
+                          >
+                            <div className={cn(
+                              "flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border",
+                              isSelected ? "border-white/20 bg-white/10 text-white" : "border-[#EAE3D9] bg-white text-[#14110E]"
+                            )}>
+                              <CollarIcon type={c.id} className="h-8 w-8" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <h5 className="font-serif text-sm font-bold uppercase tracking-wider">
+                                {c.title}
+                              </h5>
+                              <p className={cn("text-xs leading-snug mt-0.5", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                                {c.desc}
+                              </p>
+                            </div>
+                            {isSelected && (
+                              <Check className="h-4 w-4 shrink-0 text-white" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* If Full Sleeves: Show Cuff Design + Monogram + Thread Color */}
+                  {form.selectedSleeves === "full" && (
+                    <>
+                      {/* 2. CUFF DESIGN */}
+                      <div className="space-y-3 pt-2">
+                        <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#14110E]">
+                          Cuff Design
+                        </h4>
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                          {CUFF_OPTIONS.map((c) => {
+                            const isSelected = form.selectedCuff === c.id;
+                            return (
+                              <button
+                                key={c.id}
+                                type="button"
+                                onClick={() => set("selectedCuff", c.id)}
+                                className={cn(
+                                  "flex flex-col items-center justify-center rounded-xl border p-4 text-center transition-all cursor-pointer relative",
+                                  isSelected
+                                    ? "border-[#14110E] bg-[#14110E] text-white shadow-md"
+                                    : "border-[#E5E7EB] bg-[#FAF8F5] text-[#14110E] hover:border-[#9E774C] hover:bg-white"
+                                )}
+                              >
+                                {isSelected && (
+                                  <span className="absolute top-2 right-2 flex items-center justify-center h-4 w-4 rounded-full bg-[#9E774C] text-white">
+                                    <Check className="h-2.5 w-2.5" />
+                                  </span>
+                                )}
+                                <div className={cn(
+                                  "flex h-12 w-16 items-center justify-center mb-2",
+                                  isSelected ? "text-white" : "text-[#14110E]"
+                                )}>
+                                  <CuffIcon type={c.id} className="h-9 w-14" />
+                                </div>
+                                <h5 className="font-serif text-xs font-bold uppercase tracking-wider">
+                                  {c.title}
+                                </h5>
+                                <p className={cn("text-[10px] mt-0.5", isSelected ? "text-neutral-300" : "text-[#6B7280]")}>
+                                  {c.desc}
+                                </p>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* 3. MONOGRAM & THREAD COLOR */}
+                      <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-widest text-[#14110E] mb-1.5">
+                            Monogram Initials
+                          </label>
+                          <input
+                            type="text"
+                            maxLength={5}
+                            value={form.monogram}
+                            onChange={(e) => set("monogram", e.target.value.toUpperCase())}
+                            placeholder="e.g. A K"
+                            className="w-full rounded-xl border border-[#D6CEBF] bg-[#FAF8F5] px-3.5 py-2.5 font-serif text-base font-bold tracking-widest uppercase text-[#14110E] placeholder:text-[#9CA3AF] focus:border-[#14110E] focus:bg-white focus:outline-none"
+                          />
+                          <p className="mt-1 text-[10px] text-[#6B7280]">
+                            Optional custom embroidery initials (e.g. cuff or chest pocket).
+                          </p>
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-widest text-[#14110E] mb-1.5">
+                            Thread Color
+                          </label>
+                          <select
+                            value={form.threadColor}
+                            onChange={(e) => set("threadColor", e.target.value)}
+                            className="w-full rounded-xl border border-[#D6CEBF] bg-[#FAF8F5] px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#14110E] focus:border-[#14110E] focus:bg-white focus:outline-none cursor-pointer"
+                          >
+                            {THREAD_COLOR_OPTIONS.map((opt) => (
+                              <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </option>
+                            ))}
+                          </select>
+                          <p className="mt-1 text-[10px] text-[#6B7280]">
+                            Contrast or matching thread for buttons & monogram.
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Navigation footer */}
+                  <div className="mt-6 flex items-center justify-between border-t border-[#EAE3D9] pt-4">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => setWizardStep(4)}
+                      icon={<ChevronLeft className="h-4 w-4" />}
+                    >
+                      Back to Sleeves
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        if (!form.selectedCollar) {
+                          toast.error("Please select a collar style first.");
+                          return;
+                        }
+                        if (form.selectedSleeves === "full" && !form.selectedCuff) {
+                          toast.error("Please select a cuff design first.");
+                          return;
+                        }
+                        setWizardStep(6);
+                      }}
+                      className="bg-[#14110E] text-white hover:bg-neutral-800 px-6 font-semibold"
+                      icon={<ChevronRight className="h-4 w-4" />}
+                    >
                       Continue to Upload Image
                     </Button>
                   </div>
@@ -843,15 +1224,15 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
               )}
 
               {/* ========================================================= */}
-              {/* STEP 5: UPLOAD YOUR IMAGE (LAST STEP)                     */}
+              {/* STEP 6: UPLOAD YOUR IMAGE (LAST STEP)                     */}
               {/* ========================================================= */}
-              {wizardStep === 5 && (
+              {wizardStep === 6 && (
                 <div className="space-y-5 animate-in fade-in duration-200">
                   <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E5E7EB] bg-[#FAF8F5] p-4">
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="inline-block rounded-md bg-[#2F6B3B] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Last Step • Step 5 of 5
+                          Last Step • Step 6 of 6
                         </span>
                         {form.selectedChest && (
                           <span className="rounded-full bg-[#14110E] px-2.5 py-0.5 text-[10px] font-bold text-white">
@@ -873,6 +1254,21 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                             {sleeveName}
                           </span>
                         )}
+                        {collarTitle && (
+                          <span className="rounded-full bg-[#9E774C] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            Collar: {collarTitle}
+                          </span>
+                        )}
+                        {form.selectedSleeves === "full" && cuffTitle && (
+                          <span className="rounded-full bg-[#9E774C] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            Cuff: {cuffTitle}
+                          </span>
+                        )}
+                        {form.monogram && (
+                          <span className="rounded-full bg-[#9E774C] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            Monogram: {form.monogram}
+                          </span>
+                        )}
                       </div>
                       <h4 className="mt-1 font-serif text-base font-bold text-[#14110E]">
                         Upload Product Image
@@ -886,10 +1282,10 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                       type="button"
                       variant="secondary"
                       size="sm"
-                      onClick={() => setWizardStep(4)}
+                      onClick={() => setWizardStep(5)}
                       icon={<ChevronLeft className="h-3.5 w-3.5" />}
                     >
-                      Back to Sleeves
+                      Back to Details
                     </Button>
                   </div>
 
