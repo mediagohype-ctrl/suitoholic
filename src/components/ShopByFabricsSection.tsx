@@ -21,9 +21,18 @@ export default function ShopByFabricsSection() {
       bgImage: "/new_shirts/shirt_19.jpg",
     };
 
-  const fabricProducts = products.filter(
-    (p) => p.category === "formal_bespoke" || p.category === "fabrics"
+  // Curate all bespoke fabric shirts across the atelier catalog
+  let fabricProducts = products.filter(
+    (p) =>
+      p.category === "formal_bespoke" ||
+      p.category === "fabrics" ||
+      p.category === "formal_stripes" ||
+      p.category === "formal_shirts"
   );
+
+  if (fabricProducts.length === 0) {
+    fabricProducts = products;
+  }
 
   return (
     <ModernCollectionSection

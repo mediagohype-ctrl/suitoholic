@@ -108,7 +108,13 @@ export default function Home() {
               (collection.title && collection.title.toLowerCase().includes("fabric"));
 
             const collectionProducts = products.filter(
-              (p) => p.category === colId || (isShopByFabrics && (p.category === "formal_bespoke" || p.category === "fabrics"))
+              (p) =>
+                p.category === colId ||
+                (isShopByFabrics &&
+                  (p.category === "formal_bespoke" ||
+                    p.category === "fabrics" ||
+                    p.category === "formal_stripes" ||
+                    p.category === "formal_shirts"))
             );
 
             return (

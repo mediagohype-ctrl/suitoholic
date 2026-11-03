@@ -103,7 +103,19 @@ export default function ModernCollectionSection({
     });
   }, [products]);
 
-  const displayProducts = uniqueProducts.length > 0 ? uniqueProducts : FALLBACK_FABRIC_ITEMS;
+  const displayProducts = useMemo(() => {
+    let list = uniqueProducts;
+    if (isThreeCardMode && list.length < 4) {
+      const seen = new Set<string | number>();
+      list.forEach((p) => {
+        if (p.id) seen.add(p.id);
+        if (p.slug) seen.add(p.slug);
+      });
+      const needed = FALLBACK_FABRIC_ITEMS.filter((p) => !seen.has(p.id) && !seen.has(p.slug));
+      list = [...list, ...needed];
+    }
+    return list.length > 0 ? list : FALLBACK_FABRIC_ITEMS;
+  }, [uniqueProducts, isThreeCardMode]);
 
   // Ensure 4-column grids never render an awkward incomplete trailing row with 1-3 empty spaces
   const gridProducts = useMemo(() => {
@@ -190,13 +202,15 @@ export default function ModernCollectionSection({
             className="flex items-start gap-3 sm:gap-4 lg:gap-5 overflow-x-auto scrollbar-none scroll-smooth pb-3 pt-1 px-0.5"
           >
             {displayProducts.map((product, idx) => (
-              <Link
+              <div
                 key={`${product.id}-${product.slug || idx}`}
-                href={`/product/${product.slug}`}
-                className="group flex flex-col items-center cursor-pointer w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)] shrink-0"
+                className="group flex flex-col items-center w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)] shrink-0"
               >
                 {/* Square Rounded Card Image Container with 9px border radius */}
-                <div className="relative w-full aspect-square rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-xs group-hover:shadow-md transition-all duration-500">
+                <Link
+                  href={`/custom-shirt?product=${product.slug}`}
+                  className="relative w-full aspect-square rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-xs group-hover:shadow-md transition-all duration-500 block cursor-pointer"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={product.image}
@@ -206,13 +220,34 @@ export default function ModernCollectionSection({
                   />
                   {/* Subtle hover overlay */}
                   <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
-                </div>
 
-                {/* Sub-label placed directly UNDER card */}
-                <span className="text-center font-bold text-[11px] sm:text-xs lg:text-[13px] tracking-[0.2em] text-black group-hover:opacity-75 uppercase transition-opacity pt-3.5 sm:pt-4 px-1 block leading-snug">
-                  {product.name}
-                </span>
-              </Link>
+                  {/* Floating Customise Pill on hover */}
+                  <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 px-3">
+                    <span className="bg-white/95 backdrop-blur-xs text-[#14110E] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] px-4 py-1.5 rounded-full shadow-md border border-[#E5E3DD]">
+                      Customise Fit
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Sub-label & Customise Button placed directly UNDER card */}
+                <div className="w-full flex flex-col items-center text-center pt-3.5 sm:pt-4 px-1">
+                  <Link
+                    href={`/product/${product.slug}`}
+                    className="font-bold text-[11px] sm:text-xs lg:text-[13px] tracking-[0.18em] text-black hover:opacity-75 uppercase transition-opacity block leading-snug line-clamp-2"
+                  >
+                    {product.name}
+                  </Link>
+
+                  {/* Prominent Customise Button */}
+                  <Link
+                    href={`/custom-shirt?product=${product.slug}`}
+                    className="mt-3 inline-flex items-center justify-center gap-1.5 bg-[#14110E] hover:bg-neutral-800 text-white text-[10px] sm:text-[11px] font-bold tracking-[0.2em] px-6 py-2.5 rounded-full transition-all duration-300 uppercase shadow-xs hover:shadow-md hover:scale-102 active:scale-98 cursor-pointer"
+                  >
+                    <span>CUSTOMISE</span>
+                    <span className="text-[11px] font-normal tracking-normal opacity-80">→</span>
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
         </div>
