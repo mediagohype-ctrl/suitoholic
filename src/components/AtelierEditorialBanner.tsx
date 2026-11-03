@@ -27,15 +27,6 @@ export default function AtelierEditorialBanner() {
     <section className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-8 sm:my-12 lg:my-16 select-none">
       {/* Luxury Editorial Heading */}
       <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8 lg:mb-10 flex flex-col items-center">
-        {/* Eyebrow with hairline rules */}
-        <div className="inline-flex items-center gap-2.5 mb-2.5 sm:mb-3">
-          <span className="w-8 sm:w-12 h-[1px] bg-black/40" />
-          <span className="text-[11px] sm:text-xs font-semibold tracking-[0.26em] text-black uppercase font-sans">
-            {c.videoBadge || "THE ATELIER ARCHIVE"}
-          </span>
-          <span className="w-8 sm:w-12 h-[1px] bg-black/40" />
-        </div>
-
         {/* Main Heading */}
         <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           {c.videoTitle || "TAILORING IN MOTION"}
