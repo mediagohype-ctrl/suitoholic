@@ -2,7 +2,7 @@
 
 import React, { useRef, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { CollectionCategory, ProductItem } from "@/data/products";
 import ModernProductCard from "./ModernProductCard";
 
@@ -222,29 +222,50 @@ export default function ModernCollectionSection({
                   <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
 
                   {/* Floating Customise Pill on hover */}
-                  <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 px-3">
-                    <span className="bg-white/95 backdrop-blur-xs text-[#14110E] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] px-4 py-1.5 rounded-full shadow-md border border-[#E5E3DD]">
+                  <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 px-3 pointer-events-none">
+                    <span className="bg-white/95 backdrop-blur-xs text-[#14110E] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] px-4 py-1.5 rounded-full shadow-md border border-[#E5E3DD] flex items-center gap-1.5">
+                      <Plus size={12} strokeWidth={2.5} />
                       Customise Fit
                     </span>
                   </div>
                 </Link>
 
                 {/* Sub-label & Customise Button placed directly UNDER card */}
-                <div className="w-full flex flex-col items-center text-center pt-3.5 sm:pt-4 px-1">
-                  <Link
-                    href={`/product/${product.slug}`}
-                    className="font-bold text-[11px] sm:text-xs lg:text-[13px] tracking-[0.18em] text-black hover:opacity-75 uppercase transition-opacity block leading-snug line-clamp-2"
-                  >
-                    {product.name}
-                  </Link>
+                <div className="w-full pt-3 sm:pt-3.5 px-0.5 space-y-2.5">
+                  {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1 space-y-0.5 text-left">
+                      <Link href={`/product/${product.slug}`} className="block">
+                        <h3
+                          title={product.name}
+                          className="text-[11.5px] sm:text-[12.5px] font-bold text-black hover:opacity-75 transition-opacity truncate tracking-wide uppercase leading-snug"
+                        >
+                          {product.name}
+                        </h3>
+                      </Link>
+                      <div className="text-[10px] sm:text-[11px] font-normal text-[#666666] tracking-normal uppercase">
+                        RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : (product.price || "").replace("₹", "").trim()}
+                      </div>
+                    </div>
 
-                  {/* Prominent Customise Button */}
+                    {/* Right: Prominent Customise Plus Button */}
+                    <Link
+                      href={`/custom-shirt?product=${product.slug}`}
+                      aria-label={`Customise ${product.name}`}
+                      title="Customise Shirt"
+                      className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
+                    >
+                      <Plus size={15} strokeWidth={2.5} />
+                    </Link>
+                  </div>
+
+                  {/* Prominent Customise Pill Button with Plus */}
                   <Link
                     href={`/custom-shirt?product=${product.slug}`}
-                    className="mt-3 inline-flex items-center justify-center gap-1.5 bg-[#14110E] hover:bg-neutral-800 text-white text-[10px] sm:text-[11px] font-bold tracking-[0.2em] px-6 py-2.5 rounded-full transition-all duration-300 uppercase shadow-xs hover:shadow-md hover:scale-102 active:scale-98 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 bg-[#14110E] hover:bg-neutral-800 text-white text-[10px] sm:text-[11px] font-bold tracking-[0.2em] py-2 sm:py-2.5 rounded-full transition-all duration-300 uppercase shadow-xs hover:shadow-md hover:scale-101 active:scale-98 cursor-pointer"
                   >
+                    <Plus size={13} strokeWidth={2.5} />
                     <span>CUSTOMISE</span>
-                    <span className="text-[11px] font-normal tracking-normal opacity-80">→</span>
                   </Link>
                 </div>
               </div>

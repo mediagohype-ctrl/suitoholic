@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Search, ChevronDown, X, ZoomIn, Scissors, ArrowRight, Check } from "lucide-react";
+import { Search, ChevronDown, X, ZoomIn, Plus, Scissors, ArrowRight, Check } from "lucide-react";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 export interface LuxuryClothItem {
@@ -1002,6 +1002,12 @@ export default function LuxuryClothArchiveSection({
                     <div className="text-xs sm:text-[13px] font-bold text-black transition-colors">
                       {cloth.formattedPrice}
                     </div>
+                    <span
+                      title="Customise in this fabric"
+                      className="mt-1 w-6 h-6 rounded-full border border-black/20 group-hover:border-black bg-white group-hover:bg-black text-black group-hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs group-hover:scale-110"
+                    >
+                      <Plus size={13} strokeWidth={2.5} />
+                    </span>
                   </div>
 
                 </div>

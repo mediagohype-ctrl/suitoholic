@@ -143,6 +143,14 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           })}
         </div>
 
+        {/* Floating Customise Pill on hover */}
+        <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 px-3 pointer-events-none">
+          <span className="bg-white/95 backdrop-blur-xs text-[#14110E] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] px-3.5 py-1.5 rounded-full shadow-md border border-[#E5E3DD] flex items-center gap-1.5">
+            <Plus size={12} strokeWidth={2.5} />
+            Customise
+          </span>
+        </div>
+
         {/* Subtle Gradient Overlay at bottom for contrast */}
         <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
       </div>
@@ -167,12 +175,12 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
 
         {/* Right: Plus Button -> Redirects to Product Details Page */}
         <Link
-          href={`/product/${product.slug}`}
-          aria-label={`View details and customize ${product.name}`}
-          title="Customize Fit & Product Details"
-          className="shrink-0 p-0.5 text-black hover:opacity-75 transition-all hover:scale-125 active:scale-95 cursor-pointer mt-0.5"
+          href={`/custom-shirt?product=${product.slug}`}
+          aria-label={`Customise ${product.name}`}
+          title="Customise Shirt"
+          className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
         >
-          <Plus size={16} className="stroke-[2]" />
+          <Plus size={15} strokeWidth={2.5} />
         </Link>
 
       </div>

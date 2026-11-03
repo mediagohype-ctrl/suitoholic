@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ChevronRight, Check } from "lucide-react";
+import { ChevronRight, Check, Plus } from "lucide-react";
 import { ProductItem } from "@/data/products";
 
 export interface CuratedLookItem {
@@ -185,7 +185,12 @@ export default function CuratedStartingPoints({
                     <h3 className="font-bold text-[11px] sm:text-[12.5px] text-black uppercase tracking-wide truncate group-hover:text-neutral-700 transition-colors leading-snug">
                       {item.title}
                     </h3>
-                    <span className="font-bold text-xs text-black shrink-0">{item.price}</span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-bold text-xs text-black">{item.price}</span>
+                      <span className="w-6 h-6 rounded-full border border-black/20 group-hover:border-black bg-white group-hover:bg-black text-black group-hover:text-white flex items-center justify-center transition-all shadow-2xs">
+                        <Plus size={13} strokeWidth={2.5} />
+                      </span>
+                    </div>
                   </div>
 
                   {/* Full-width Divider Line */}
@@ -200,7 +205,7 @@ export default function CuratedStartingPoints({
                     }}
                     className="w-full bg-black hover:bg-neutral-800 text-white text-[10px] sm:text-[10.5px] font-bold uppercase tracking-[0.14em] py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-full flex items-center justify-between transition-all duration-300 shadow-xs hover:shadow cursor-pointer group"
                   >
-                    <span>CUSTOMIZE THIS LOOK</span>
+                    <span className="flex items-center gap-1.5"><Plus size={13} strokeWidth={2.5} /><span>CUSTOMIZE THIS LOOK</span></span>
                     <ChevronRight size={13} className="text-white group-hover:translate-x-0.5 transition-transform stroke-[2.5]" />
                   </button>
                 </div>

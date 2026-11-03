@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import { useContent } from "@/context/SiteDataProvider";
 
 export default function ShopByCategoryGrid() {
@@ -39,9 +40,14 @@ export default function ShopByCategoryGrid() {
             </div>
 
             {/* Sub-label under card */}
-            <span className="text-center font-bold text-[10.5px] sm:text-xs tracking-[0.2em] text-black group-hover:opacity-75 uppercase transition-opacity pt-3.5 px-1">
-              {item.title}
-            </span>
+            <div className="w-full flex items-center justify-between pt-3.5 px-1">
+              <span className="font-bold text-[10.5px] sm:text-xs tracking-[0.2em] text-black group-hover:opacity-75 uppercase transition-opacity truncate">
+                {item.title}
+              </span>
+              <span className="shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-black/20 group-hover:border-black bg-white group-hover:bg-black text-black group-hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs group-hover:scale-110">
+                <Plus size={13} strokeWidth={2.5} />
+              </span>
+            </div>
           </Link>
         ))}
       </div>
