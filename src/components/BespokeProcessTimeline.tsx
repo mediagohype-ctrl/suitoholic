@@ -126,21 +126,11 @@ export default function BespokeProcessTimeline() {
               alignSelf: "flex-start",
             }}
           >
-            {/* Eyebrow Label */}
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E3DD] text-black text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] rounded-full shadow-xs mb-4"
-            >
-              <span>OUR PROVEN METHODOLOGY</span>
-            </div>
-
             {/* Headline */}
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold uppercase tracking-[0.025em] text-black leading-[1.08] mb-6 sm:mb-8">
-              HOW WE
-              <br />
-              TAILOR
-              <br />
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-bold uppercase tracking-[0.025em] text-black leading-tight mb-6 sm:mb-8">
+              HOW WE TAILOR{" "}
               <span className="italic font-normal text-neutral-700">
-                PERFECTION.
+                PERFECTION
               </span>
             </h2>
 

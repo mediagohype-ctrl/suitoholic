@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Heart, ChevronLeft, ChevronRight, Plus, Check } from "lucide-react";
 import { ProductItem } from "@/data/products";
 import { useWishlist } from "@/context/WishlistProvider";
+import { useCustomizer } from "@/context/CustomizerModalProvider";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 interface ModernProductCardProps {
@@ -13,6 +14,7 @@ interface ModernProductCardProps {
 
 export default function ModernProductCard({ product }: ModernProductCardProps) {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const { openCustomizer } = useCustomizer();
   const [isAdded, setIsAdded] = useState(false);
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSaved = isInWishlist(product.id);
@@ -89,16 +91,14 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           onClick={handleToggleSave}
           type="button"
           aria-label={isSaved ? "Remove from wishlist" : "Save to wishlist"}
-          className={`absolute top-3 right-3 sm:top-4 sm:right-4 z-10 p-2 rounded-full bg-black/30 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md ${
-            isSaved ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-          }`}
+          className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md cursor-pointer flex items-center justify-center opacity-100"
         >
           <Heart
-            size={17}
+            size={16}
             className={
               isSaved
-                ? "text-black fill-black bg-white rounded-full p-0.5"
-                : "text-white fill-white/20 stroke-white stroke-[2]"
+                ? "text-red-500 fill-red-500"
+                : "text-white fill-white/10 stroke-white stroke-[2]"
             }
           />
         </button>
@@ -143,14 +143,6 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           })}
         </div>
 
-        {/* Floating Customise Pill on hover */}
-        <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 px-3 pointer-events-none">
-          <span className="bg-white/95 backdrop-blur-xs text-[#14110E] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] px-3.5 py-1.5 rounded-full shadow-md border border-[#E5E3DD] flex items-center gap-1.5">
-            <Plus size={12} strokeWidth={2.5} />
-            Customise
-          </span>
-        </div>
-
         {/* Subtle Gradient Overlay at bottom for contrast */}
         <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
       </div>
@@ -174,14 +166,19 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
         </div>
 
         {/* Right: Plus Button -> Redirects to Product Details Page */}
-        <Link
-          href={`/custom-shirt?product=${product.slug}`}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openCustomizer(product);
+          }}
           aria-label={`Customise ${product.name}`}
-          title="Customise Shirt"
+          title="Customise Shirt (6 Steps)"
           className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
         >
           <Plus size={15} strokeWidth={2.5} />
-        </Link>
+        </button>
 
       </div>
     </div>

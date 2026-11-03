@@ -442,14 +442,12 @@ export default function ProductDetailPage() {
           <div className="w-full space-y-6 pt-6 sm:pt-8 select-none">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <div className="inline-flex items-center justify-center space-x-2 text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-[#666666] uppercase">
-                <span className="h-[1px] w-8 sm:w-14 bg-black/30" />
                 <span>EXECUTIVE ATELIER</span>
                 <span>•</span>
                 <span>SIGNATURE EDIT</span>
-                <span className="h-[1px] w-8 sm:w-14 bg-black/30" />
               </div>
 
-              <h2 className="text-lg sm:text-xl lg:text-[22px] font-semibold tracking-[0.2em] text-black uppercase leading-tight">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
                 {c.macroTitle || "BEST SELLERS"}
               </h2>
 

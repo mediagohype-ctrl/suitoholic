@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
 import { apiFetch, ApiError } from "@/lib/api";
 import {
   Phone,
@@ -108,62 +107,74 @@ export default function ContactPage() {
       <main className="flex-1 pb-16 sm:pb-24">
         
         {/* ========================================================================= */}
-        {/* 2. HERO HEADER BANNER: Sunlit Bespoke Atelier (Signature Light Palette)   */}
+        {/* 2. HERO SECTION: Light Luxury Editorial Split Layout                      */}
         {/* ========================================================================= */}
-        <section className="relative w-full h-[100dvh] min-h-[640px] flex items-center justify-center text-center overflow-hidden border-b border-[#E5E3DD] select-none bg-[#ECEAE5]">
-          {/* Background Tailoring Atelier Photo (Clearly visible, vibrant, sunlit salon) */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/contact_hero_light.jpg"
-            alt="Suitoholic Bespoke Sartorial Salon"
-            className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
-            loading="eager"
-          />
-
-          {/* Gentle Top Navbar Scrim for pristine header readability */}
-          <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-white/70 via-white/20 to-transparent pointer-events-none" />
-
-          {/* Soft Center Radial Glow to give text effortless readability without washing out the photo */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0.1)_35%,transparent_58%)] pointer-events-none" />
-
-          {/* Centered Content Container */}
-          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 flex flex-col items-center">
+        <section className="w-full bg-[#ECEAE5] border-b border-[#E5E3DD] text-black pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 lg:pb-20">
+          <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-12">
             
-            {/* Eyebrow: GET IN TOUCH */}
-            <div className="inline-flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-              <span className="w-8 sm:w-12 h-[1px] bg-black/70" />
-              <span className="text-[11px] sm:text-xs font-bold tracking-[0.28em] text-black uppercase font-sans">
-                GET IN TOUCH
-              </span>
-              <span className="w-8 sm:w-12 h-[1px] bg-black/70" />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+              
+              {/* Left Column: Typography & Heading (lg:col-span-7) */}
+              <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+                
+                {/* Eyebrow Pill */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#E5E3DD] shadow-2xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-black" />
+                  <span className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.24em] text-black uppercase font-bold">
+                    GET IN TOUCH
+                  </span>
+                </div>
+
+                {/* Main Luxury Heading */}
+                <h1 className="font-serif-luxury text-4xl sm:text-5xl lg:text-[56px] xl:text-[62px] font-normal leading-[1.08] tracking-tight text-black">
+                  Let&apos;s Create Your <br className="hidden sm:inline" />
+                  <span className="italic font-serif">Perfect Fit</span>
+                </h1>
+
+                {/* Narrative Subtitle */}
+                <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-sans leading-relaxed max-w-xl font-normal">
+                  Book a consultation, ask a question, or start your tailoring journey with our team today. We craft custom garments that reflect your personal style, with attention to every detail from start to finish.
+                </p>
+
+                {/* Atelier Feature Bullets / Micro-highlights */}
+                <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs text-black font-sans max-w-xl">
+                  <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E5E3DD] shadow-2xs">
+                    <Scissors size={15} className="text-black shrink-0" />
+                    <span className="font-medium">Master Cutter Appointments</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E5E3DD] shadow-2xs">
+                    <Clock size={15} className="text-black shrink-0" />
+                    <span className="font-medium">Replies Within 1 Business Day</span>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column: High-End Framed Bespoke Fitting Image (lg:col-span-5) */}
+              <div className="lg:col-span-5">
+                <div className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] w-full rounded-[24px] sm:rounded-[32px] overflow-hidden border border-[#E5E3DD] shadow-sm bg-white group">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/contact_hero_fitting.jpg"
+                    alt="Master Tailor Bespoke Fitting and Craftsmanship"
+                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="eager"
+                  />
+                  {/* Subtle ambient lighting vignette */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-80" />
+                  
+                  {/* Floating Caption Badge */}
+                  <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 z-10 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-full border border-[#E5E3DD] shadow-xs">
+                    <span className="text-[10px] sm:text-[10.5px] font-mono tracking-widest uppercase text-black font-semibold flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                      BESPOKE ATELIER · PERSONAL CONSULTATION
+                    </span>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
-            {/* Main Headline: Let's Create Your Perfect Fit */}
-            <h1 className="font-serif-luxury text-4xl sm:text-5xl md:text-6xl lg:text-[70px] xl:text-[76px] font-normal leading-[1.08] tracking-tight text-black mb-3 sm:mb-4 drop-shadow-[0_2px_14px_rgba(255,255,255,0.85)]">
-              Let&apos;s Create Your <span className="text-black italic font-serif">Perfect Fit</span>
-            </h1>
-
-            {/* Sub-badge: WE'RE HERE TO HELP */}
-            <div className="text-[11px] sm:text-xs font-mono tracking-[0.24em] text-[#666666] uppercase font-bold mb-3 sm:mb-4">
-              WE&apos;RE HERE TO HELP
-            </div>
-
-            {/* Subtle Vertical Divider Line */}
-            <div className="w-[1.5px] h-8 sm:h-10 bg-black/50 mb-5 sm:mb-6" />
-
-            {/* Paragraph Description */}
-            <p className="max-w-xl mx-auto text-sm sm:text-base md:text-[17px] text-[#222222] font-sans leading-relaxed font-medium drop-shadow-[0_1px_8px_rgba(255,255,255,0.9)]">
-              Book a consultation, ask a question, or start your tailoring journey with our team today.
-            </p>
-
-          </div>
-
-          {/* Subtle Scroll Down Prompt Indicator (Light Theme) */}
-          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity pointer-events-none">
-            <span className="text-[9px] font-mono tracking-[0.24em] text-black uppercase font-bold">SCROLL</span>
-            <div className="w-4 h-7 rounded-full border border-black/50 flex items-start justify-center p-1 bg-white/90 shadow-sm">
-              <div className="w-1 h-1.5 rounded-full bg-black animate-bounce" />
-            </div>
           </div>
         </section>
 
@@ -422,11 +433,6 @@ export default function ContactPage() {
 
           </div>
         </section>
-
-        {/* 5. Feature Highlights Bar */}
-        <div className="mt-16 sm:mt-24">
-          <FeatureHighlightsBar />
-        </div>
 
       </main>
 

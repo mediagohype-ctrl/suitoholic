@@ -2,8 +2,9 @@
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Search, ChevronDown, X, ZoomIn, Plus, Scissors, ArrowRight, Check } from "lucide-react";
-import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
+import { Search, ChevronDown, X, ZoomIn, Plus, Scissors, ArrowRight, Check, Heart } from "lucide-react";
+import { useWishlist } from "@/context/WishlistProvider";
+import { useCatalog } from "@/context/SiteDataProvider";
 
 export interface LuxuryClothItem {
   id: string;
@@ -27,277 +28,201 @@ export interface LuxuryClothItem {
 
 export const LUXURY_CLOTH_ITEMS: LuxuryClothItem[] = [
   {
-    id: "cloth-gz-140",
-    code: "GZ-140-WH",
+    id: "cloth-prod-49",
+    code: "SH-49",
     mill: "GIZA 140s",
-    weightGsm: 130,
-    weightLabel: "130 GSM",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Long-Staple Egyptian Giza 140s Cotton",
-    pattern: "Royal Oxford & Twill",
-    colour: "Classic White & Ivory",
+    composition: "100% Fine Twill Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Bordeaux & Rose",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Imperial Shirty Archive",
-    pricePerMetre: 3290,
-    formattedPrice: "₹3,290",
-    image: "/fabric_roll_oxford_white.jpg",
-    description: "Immaculate optic white 2-ply royal oxford with distinctive 2x2 micro-basketweave texture. Delivers exceptional drape, breathability, and timeless bespoke elegance.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2633,
+    formattedPrice: "₹ 2,633",
+    image: "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg",
+    description: "Coral Red Bold Bengal Stripe Twill Shirt - Premium twill weave striped shirt for a sharp, confident look.",
   },
   {
-    id: "cloth-bs-140",
-    code: "BS-140-NV",
+    id: "cloth-prod-50",
+    code: "SH-50",
+    mill: "NORMANDY FLAX",
+    weightGsm: 155,
+    weightLabel: "155 GSM",
+    fibre: "Normandy Flax Linen",
+    composition: "Premium Linen-Cotton Blend",
+    pattern: "Artisanal Slub Linen",
+    colour: "Classic White & Ivory",
+    season: "Spring / Summer Breathable",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Artisanal Linen Archive",
+    pricePerMetre: 2600,
+    formattedPrice: "₹ 2,600",
+    image: "/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg",
+    description: "Beige Textured Linen Cotton Shirt - Lightweight breathable textured shirt for effortless smart styling.",
+  },
+  {
+    id: "cloth-prod-51",
+    code: "SH-51",
+    mill: "GIZA 160s",
+    weightGsm: 140,
+    weightLabel: "140 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "Ultra-Fine Cotton Satin Twill Blend",
+    pattern: "Royal Oxford & Twill",
+    colour: "Camel & Tan",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Soft & Fluid",
+    series: "Imperial Sateen Archive",
+    pricePerMetre: 2600,
+    formattedPrice: "₹ 2,600",
+    image: "/api/media/7/whatsapp-image-2026-10-27-at-2-47-01-pm-1.jpeg",
+    description: "Dark Chocolate Brown Satin Twill Shirt - Luxurious silk-touch satin twill shirt with a rich lustrous finish.",
+  },
+  {
+    id: "cloth-prod-52",
+    code: "SH-52",
     mill: "ALBINI 1876",
     weightGsm: 135,
     weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Compact Double-Twist Egyptian Giza Cotton",
+    composition: "100% High-Grade Cotton",
     pattern: "Banker & Bengal Stripe",
     colour: "Aegean & Sky Blue",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Sartorial Executive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/fabric_roll_aegean_stripe.jpg",
-    description: "Iconic Mediterranean Aegean blue bengal stripe shirting woven from long-staple Giza cotton. Crisp collar hold and smooth silken touch for boardroom dress shirts.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2600,
+    formattedPrice: "₹ 2,600",
+    image: "/api/media/8/whatsapp-image-2026-10-27-at-2-47-02-pm-2.jpeg",
+    description: "Royal Blue Classic Bengal Stripe Twill Shirt - Sharp and timeless royal blue striped shirt in premium twill weave.",
   },
   {
-    id: "cloth-ln-55-hb",
-    code: "LN-55-HB",
-    mill: "NORMANDY FLAX",
-    weightGsm: 165,
-    weightLabel: "165 GSM",
-    fibre: "Normandy Flax Linen",
-    composition: "100% Pure Normandy Flax Linen",
-    pattern: "Herringbone & Chevron",
-    colour: "Classic White & Ivory",
-    season: "Spring / Summer Breathable",
-    use: "Custom Shirts",
-    drape: "Crisp & Breathable",
-    series: "Artisanal Linen Archive",
-    pricePerMetre: 3890,
-    formattedPrice: "₹3,890",
-    image: "/fabric_roll_herringbone.jpg",
-    description: "Artisanal natural oatmeal linen woven in a subtle micro-chevron herringbone. Extremely airy, moisture-wicking, and softens luxuriously with every wash.",
-  },
-  {
-    id: "cloth-tw-120-ib",
-    code: "TW-120-IB",
-    mill: "THOMAS MASON",
-    weightGsm: 125,
-    weightLabel: "125 GSM",
-    fibre: "Egyptian Giza Cotton",
-    composition: "100% Extra-Long Staple Combed Giza Cotton",
-    pattern: "Royal Oxford & Twill",
-    colour: "Aegean & Sky Blue",
-    season: "All-Season Bespoke",
-    use: "Custom Shirts",
-    drape: "Soft & Fluid",
-    series: "Imperial Shirty Archive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/fabric_roll_iceblue_twill.jpg",
-    description: "Serene glacier ice blue shade with smooth micro-diagonal French twill ribbing. Pairs flawlessly with dark navy, charcoal, and beige tailoring.",
-  },
-  {
-    id: "cloth-ln-55-tc",
-    code: "LN-55-TC",
-    mill: "NORMANDY FLAX",
-    weightGsm: 165,
-    weightLabel: "165 GSM",
-    fibre: "Normandy Flax Linen",
-    composition: "100% Pure Normandy Flax Linen",
-    pattern: "Artisanal Slub Linen",
-    colour: "Tuscan Terracotta",
-    season: "Spring / Summer Breathable",
-    use: "Custom Shirts",
-    drape: "Crisp & Breathable",
-    series: "Artisanal Linen Archive",
-    pricePerMetre: 3890,
-    formattedPrice: "₹3,890",
-    image: "/fabric_roll_terracotta_linen.jpg",
-    description: "Warm Tuscan terracotta clay tone with pronounced artisanal slub textures. Superior airflow and rustic elegance for resort tailoring and casual bespoke shirting.",
-  },
-  {
-    id: "cloth-cf-280-cm",
-    code: "CF-280-CM",
-    mill: "BIELLA ATELIER",
-    weightGsm: 280,
-    weightLabel: "280 GSM",
-    fibre: "Cashmere & Flannel Blend",
-    composition: "90% Virgin Merino Wool, 10% Cashmere",
-    pattern: "Worsted Suiting Twill",
-    colour: "Camel & Tan",
-    season: "Autumn / Winter Warmth",
-    use: "Bespoke Suits & Tuxedos",
-    drape: "Structured Crease-Resistant",
-    series: "Master Bespoke Suiting",
-    pricePerMetre: 5290,
-    formattedPrice: "₹5,290",
-    image: "/fabric_roll_camel_flannel.jpg",
-    description: "Warm sartorial camel tan with a velvety brushed cashmere-wool surface. Exquisite warmth and featherlight luxury tailored for autumn blazers and 2-piece suiting.",
-  },
-  {
-    id: "cloth-pq-120-sg",
-    code: "PQ-120-SG",
+    id: "cloth-prod-57",
+    code: "SH-57",
     mill: "SUITOHOLIC",
-    weightGsm: 160,
-    weightLabel: "160 GSM",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Double-Mercerized Egyptian Piqué Cotton",
-    pattern: "3D Honeycomb Piqué",
+    composition: "100% Superfine Egyptian Giza Cotton",
+    pattern: "Banker & Bengal Stripe",
     colour: "Sage & Olive Green",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Sartorial Leisure",
-    pricePerMetre: 3390,
-    formattedPrice: "₹3,390",
-    image: "/fabric_roll_waffle_sage.jpg",
-    description: "Earthy botanical sage green with a tactile 3D honeycomb waffle knit structure. Superior air circulation, subtle texture contrast, and refined smart-casual luxury.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2699,
+    formattedPrice: "₹ 2,699",
+    image: "/api/media/23/whatsapp-image-2026-10-31-at-8-50-12-pm.jpeg",
+    description: "Suitoholic Sage Green Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-sj-200-bx",
-    code: "SJ-200-BX",
+    id: "cloth-prod-58",
+    code: "SH-58",
     mill: "COMO SILK",
     weightGsm: 145,
     weightLabel: "145 GSM",
     fibre: "Mulberry Silk Jacquard",
-    composition: "100% Pure Mulberry Silk & Long-Staple Cotton",
+    composition: "100% Jacquard Spun Cotton Blend",
     pattern: "Plush Velvet & Jacquard",
     colour: "Bordeaux & Rose",
-    season: "All-Season Bespoke",
-    use: "Ceremonial & Evening Wear",
+    season: "Spring / Summer Breathable",
+    use: "Custom Shirts",
     drape: "Soft & Fluid",
     series: "Ceremonial Heritage",
-    pricePerMetre: 4290,
-    formattedPrice: "₹4,290",
-    image: "/fabric_roll_bordeaux_silk.jpg",
-    description: "Deep bordeaux ruby jewel tone with luminous silk-touch luster. Woven on precision jacquard looms for black-tie dinner jackets, festive bandhgalas, and luxury bespoke vests.",
+    pricePerMetre: 2799,
+    formattedPrice: "₹ 2,799",
+    image: "/api/media/24/whatsapp-image-2026-10-31-at-10-22-18-pm.jpeg",
+    description: "Pastel Pink Striped Jacquard Shirt - Tailored Jacquard Striped Formal Shirt.",
   },
   {
-    id: "cloth-vl-300-em",
-    code: "VL-300-EM",
-    mill: "COMO SILK",
-    weightGsm: 300,
-    weightLabel: "300 GSM",
-    fibre: "Royal Plush Velvet",
-    composition: "100% Spun Micro-Velvet Silk Blend",
-    pattern: "Plush Velvet & Jacquard",
-    colour: "Sage & Olive Green",
-    season: "Autumn / Winter Warmth",
-    use: "Ceremonial & Evening Wear",
-    drape: "Plush & Luminous Fall",
-    series: "Ceremonial Heritage",
-    pricePerMetre: 4490,
-    formattedPrice: "₹4,490",
-    image: "/fabric_roll_emerald_velvet.jpg",
-    description: "Opulent royal emerald green velvet with deep multidimensional sheen and feather-soft hand feel. Engineered for evening statements, smoking jackets, and red-carpet bandhgalas.",
-  },
-  {
-    id: "cloth-wl-140-ch",
-    code: "WL-140-CH",
-    mill: "BIELLA ATELIER",
-    weightGsm: 260,
-    weightLabel: "260 GSM",
-    fibre: "Super 140s Merino Wool",
-    composition: "100% Australian Super 140s Worsted Merino Wool",
-    pattern: "Worsted Suiting Twill",
-    colour: "Charcoal & Slate",
-    season: "All-Season Bespoke",
-    use: "Bespoke Suits & Tuxedos",
-    drape: "Structured Crease-Resistant",
-    series: "Master Bespoke Suiting",
-    pricePerMetre: 4990,
-    formattedPrice: "₹4,990",
-    image: "/fabric_roll_charcoal_wool.jpg",
-    description: "Sleek charcoal slate melange with superfine Australian merino wool fibers. Naturally fluid drape with impeccable crease recovery engineered for bespoke 2-piece and 3-piece suiting.",
-  },
-  {
-    id: "cloth-tw-904-bk",
-    code: "TW-904-BK",
-    mill: "GIZA 160s",
+    id: "cloth-prod-59",
+    code: "SH-59",
+    mill: "ALBINI 1876",
     weightGsm: 135,
     weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Egyptian Giza 160s Combed Cotton",
-    pattern: "Royal Oxford & Twill",
+    composition: "100% Extra-Long Staple Combed Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Bordeaux & Rose",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2799,
+    formattedPrice: "₹ 2,799",
+    image: "/api/media/25/whatsapp-image-2026-10-31-at-10-25-46-pm.jpeg",
+    description: "Suitoholic Berry Pink Bengal Striped Twill Shirt - Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-60",
+    code: "SH-60",
+    mill: "GIZA 140s",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Compact Double-Twist Egyptian Cotton",
+    pattern: "Banker & Bengal Stripe",
     colour: "Obsidian Black",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Imperial Shirty Archive",
-    pricePerMetre: 3690,
-    formattedPrice: "₹3,690",
-    image: "/fabric_roll_diamond_twill.jpg",
-    description: "Intense midnight obsidian black with subtle diagonal micro-diamond luster. Soft yet structured, crafted for dramatic black formal dress shirts and tuxedo accents.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2899,
+    formattedPrice: "₹ 2,899",
+    image: "/api/media/26/whatsapp-image-2026-10-31-at-10-25-47-pm.jpeg",
+    description: "Suitoholic Classic Black & White Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-cd-280-ol",
-    code: "CD-280-OL",
-    mill: "SUITOHOLIC",
-    weightGsm: 270,
-    weightLabel: "270 GSM",
+    id: "cloth-prod-65",
+    code: "SH-65",
+    mill: "THOMAS MASON",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Heavy Structured Compact Drill Cotton",
-    pattern: "Royal Oxford & Twill",
-    colour: "Sage & Olive Green",
-    season: "All-Season Bespoke",
-    use: "Sartorial Trousers & Gurkhas",
-    drape: "Structured Crease-Resistant",
-    series: "Sartorial Leisure",
-    pricePerMetre: 3590,
-    formattedPrice: "₹3,590",
-    image: "/fabric_roll_cavalry_drill.jpg",
-    description: "Heavyweight olive cavalry drill with prominent diagonal double-rib ridges. Robust, structured, and ideal for durable bespoke Gurkha trousers and safari overshirts.",
-  },
-  {
-    id: "cloth-sh-403-ry",
-    code: "SH-403-RY",
-    mill: "GIZA 140s",
-    weightGsm: 130,
-    weightLabel: "130 GSM",
-    fibre: "Egyptian Giza Cotton",
-    composition: "100% Long-Staple Egyptian Giza 140s Cotton (2-Ply)",
+    composition: "100% Long-Staple Egyptian Giza Cotton",
     pattern: "Banker & Bengal Stripe",
-    colour: "Aegean & Sky Blue",
+    colour: "Midnight Navy",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Sartorial Executive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/fabric_sh403_royal_stripe.jpg",
-    description: "High-density fine royal blue banker stripe. Elegant micro-rib twill texture engineered for executive business shirts with cutaway or classic spread collars.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2999,
+    formattedPrice: "₹ 2,999",
+    image: "/api/media/31/whatsapp-image-2026-10-31-at-10-40-00-pm-1.jpeg",
+    description: "Navy Blue Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-sh-403-rs",
-    code: "SH-403-RS",
-    mill: "GIZA 140s",
-    weightGsm: 130,
-    weightLabel: "130 GSM",
+    id: "cloth-prod-66",
+    code: "SH-66",
+    mill: "BIELLA ATELIER",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Egyptian Giza 140s Cotton (2-Ply)",
+    composition: "100% High-Grade Double-Twist Cotton",
     pattern: "Banker & Bengal Stripe",
-    colour: "Bordeaux & Rose",
+    colour: "Charcoal & Slate",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Sartorial Executive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/fabric_sh403_rose_stripe.jpg",
-    description: "Blossom rose executive banker stripe woven in double-twisted 140/2 Ne Egyptian yarn. Subtle pastel warmth with crisp boardroom presence.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2999,
+    formattedPrice: "₹ 2,999",
+    image: "/api/media/32/whatsapp-image-2026-10-31-at-10-40-00-pm-2.jpeg",
+    description: "Charcoal Grey Bengal Striped Twill Shirt - Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-lv-140-st",
-    code: "LV-140-ST",
+    id: "cloth-prod-67",
+    code: "SH-67",
     mill: "ALBINI 1876",
-    weightGsm: 130,
-    weightLabel: "130 GSM",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
     composition: "100% 2-Ply Long-Staple Egyptian Cotton",
     pattern: "Banker & Bengal Stripe",
@@ -305,182 +230,296 @@ export const LUXURY_CLOTH_ITEMS: LuxuryClothItem[] = [
     season: "Spring / Summer Breathable",
     use: "Custom Shirts",
     drape: "Soft & Fluid",
-    series: "Sartorial Executive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/fabric_roll_lavender_stripe.jpg",
-    description: "Pastel lavender hairline pinstripe on pure white base. Feather-light hand feel with silken luster, perfect for formal summer shirting.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2899,
+    formattedPrice: "₹ 2,899",
+    image: "/api/media/33/whatsapp-image-2026-10-31-at-10-40-01-pm.jpeg",
+    description: "Lavender Purple Bengal Striped Twill Shirt - Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-md-140-st",
-    code: "MD-140-ST",
-    mill: "THOMAS MASON",
+    id: "cloth-prod-68",
+    code: "SH-68",
+    mill: "GIZA 140s",
     weightGsm: 135,
     weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Giza 140s Double-Twist Cotton",
+    composition: "100% Combed Double-Twist Giza Cotton",
     pattern: "Banker & Bengal Stripe",
-    colour: "Midnight Navy",
+    colour: "Charcoal & Slate",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Imperial Shirty Archive",
-    pricePerMetre: 3590,
-    formattedPrice: "₹3,590",
-    image: "/fabric_roll_midnight_stripe.jpg",
-    description: "Bold midnight navy awning stripe with sharp contrast definition. Striking statement piece tailored for spread collar dress shirts.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2799,
+    formattedPrice: "₹ 2,799",
+    image: "/api/media/34/whatsapp-image-2026-10-31-at-10-40-01-pm-1.jpeg",
+    description: "Light Grey Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-sg-140-st",
-    code: "SG-140-ST",
-    mill: "GIZA 140s",
-    weightGsm: 130,
-    weightLabel: "130 GSM",
-    fibre: "Egyptian Giza Cotton",
-    composition: "100% Egyptian Giza 140s Combed Cotton",
-    pattern: "Banker & Bengal Stripe",
-    colour: "Sage & Olive Green",
-    season: "All-Season Bespoke",
-    use: "Custom Shirts",
-    drape: "Crisp & Breathable",
-    series: "Sartorial Executive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/fabric_roll_sage_stripe.jpg",
-    description: "Sartorial sage green track stripe on an ivory background. Sophisticated contemporary palette for business-casual bespoke shirts.",
-  },
-  {
-    id: "cloth-em-140-tw",
-    code: "EM-140-TW",
-    mill: "GIZA 140s",
+    id: "cloth-prod-69",
+    code: "SH-69",
+    mill: "COMO SILK",
     weightGsm: 140,
     weightLabel: "140 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Extra-Long Staple Double-Twist Cotton",
-    pattern: "Royal Oxford & Twill",
-    colour: "Sage & Olive Green",
-    season: "All-Season Bespoke",
+    composition: "100% Long-Staple Egyptian Cotton (2-Ply)",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Bordeaux & Rose",
+    season: "Autumn / Winter Warmth",
     use: "Custom Shirts",
-    drape: "Soft & Fluid",
-    series: "Imperial Shirty Archive",
-    pricePerMetre: 3690,
-    formattedPrice: "₹3,690",
-    image: "/fabric_roll_emerald_twill.jpg",
-    description: "Rich forest emerald twill with soft luster and diagonal weave clarity. Designed for elevated dress shirts and Mandarin collar evening styles.",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3199,
+    formattedPrice: "₹ 3,199",
+    image: "/api/media/35/whatsapp-image-2026-10-31-at-10-40-01-pm-2.jpeg",
+    description: "Deep Burgundy Bengal Striped Twill Shirt - Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-sp-160-tw",
-    code: "SP-160-TW",
+    id: "cloth-prod-70",
+    code: "SH-70",
     mill: "GIZA 160s",
     weightGsm: 135,
     weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
-    composition: "100% Superfine Egyptian Giza 160s Cotton",
-    pattern: "Royal Oxford & Twill",
-    colour: "Midnight Navy",
+    composition: "100% Egyptian Giza 160s Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Bordeaux & Rose",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Imperial Shirty Archive",
-    pricePerMetre: 3890,
-    formattedPrice: "₹3,890",
-    image: "/fabric_roll_sapphire_twill.jpg",
-    description: "Imperial sapphire blue 160s fine diagonal twill. Unsurpassed weave tightness with natural silk-like sheen and wrinkle recovery.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3200,
+    formattedPrice: "₹ 3,200",
+    image: "/api/media/36/whatsapp-image-2026-11-01-at-12-49-05-am.jpeg",
+    description: "Wine Purple Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-es-140-pq",
-    code: "ES-140-PQ",
-    mill: "SUITOHOLIC",
-    weightGsm: 160,
-    weightLabel: "160 GSM",
-    fibre: "Egyptian Giza Cotton",
-    composition: "100% Mercerized Egyptian Piqué Cotton",
-    pattern: "3D Honeycomb Piqué",
-    colour: "Camel & Tan",
-    season: "All-Season Bespoke",
-    use: "Custom Shirts",
-    drape: "Soft & Fluid",
-    series: "Sartorial Leisure",
-    pricePerMetre: 3390,
-    formattedPrice: "₹3,390",
-    image: "/fabric_roll_espresso_pique.jpg",
-    description: "Deep espresso brown 3D micro-piqué with subtle natural stretch. Breathable, tactile, and engineered for tailored resort shirts and polo collars.",
-  },
-  {
-    id: "cloth-flx-dg",
-    code: "FLX-1069-DG",
-    mill: "NORMANDY FLAX",
-    weightGsm: 160,
-    weightLabel: "160 GSM",
-    fibre: "Normandy Flax Linen",
-    composition: "100% Pre-Washed Artisanal Normandy Linen",
-    pattern: "Artisanal Slub Linen",
-    colour: "Charcoal & Slate",
-    season: "Spring / Summer Breathable",
-    use: "Custom Shirts",
-    drape: "Soft & Fluid",
-    series: "Artisanal Linen Archive",
-    pricePerMetre: 3890,
-    formattedPrice: "₹3,890",
-    image: "/fabric_flx01069_dove_grey_linen.jpg",
-    description: "Dove grey washed artisanal flax linen. Luxuriously soft against bare skin with organic slub texture that keeps you cool in summer humidity.",
-  },
-  {
-    id: "cloth-st-169-tc",
-    code: "ST-16974-TC",
+    id: "cloth-prod-71",
+    code: "SH-71",
     mill: "SUITOHOLIC",
     weightGsm: 135,
     weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
     composition: "100% Fine Combed Giza Cotton",
     pattern: "Banker & Bengal Stripe",
-    colour: "Tuscan Terracotta",
-    season: "Spring / Summer Breathable",
+    colour: "Camel & Tan",
+    season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Sartorial Executive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/fabric_st16974_terracotta_stripe.jpg",
-    description: "Warm terracotta multi-stripe shirting with subtle sand contrast. Distinctive artisanal character tailored for weekend bespoke shirts.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3400,
+    formattedPrice: "₹ 3,400",
+    image: "/api/media/37/whatsapp-image-2026-11-01-at-12-49-05-am-1.jpeg",
+    description: "Khaki Brown Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
   },
   {
-    id: "cloth-sv-sand-ln",
-    code: "SV-01-SD",
-    mill: "NORMANDY FLAX",
-    weightGsm: 190,
-    weightLabel: "190 GSM",
-    fibre: "Normandy Flax Linen",
-    composition: "100% Heavy Pure Flax Linen",
-    pattern: "Artisanal Slub Linen",
-    colour: "Camel & Tan",
-    season: "Spring / Summer Breathable",
-    use: "Sartorial Trousers & Gurkhas",
-    drape: "Crisp & Breathable",
-    series: "Artisanal Linen Archive",
-    pricePerMetre: 3990,
-    formattedPrice: "₹3,990",
-    image: "/fabric_superviola_sand_linen.jpg",
-    description: "Natural sand heavy flax linen with substantial body. Perfectly suited for relaxed Gurkha trousers, pleated chinos, and summer safari overshirts.",
-  },
-  {
-    id: "cloth-fb-navy-st",
-    code: "FB-200-NV",
+    id: "cloth-prod-72",
+    code: "SH-72",
     mill: "THOMAS MASON",
     weightGsm: 135,
     weightLabel: "135 GSM",
     fibre: "Egyptian Giza Cotton",
     composition: "100% Egyptian Giza 140s Cotton (2-Ply)",
     pattern: "Banker & Bengal Stripe",
-    colour: "Midnight Navy",
+    colour: "Sage & Olive Green",
     season: "All-Season Bespoke",
     use: "Custom Shirts",
     drape: "Crisp & Breathable",
-    series: "Sartorial Executive",
-    pricePerMetre: 3490,
-    formattedPrice: "₹3,490",
-    image: "/formal_banker_stripe.jpg",
-    description: "Classic deep navy formal banker stripe on optic white ground. Razor-sharp definition, exceptional colorfastness, and timeless business elegance.",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3400,
+    formattedPrice: "₹ 3,400",
+    image: "/api/media/38/whatsapp-image-2026-11-01-at-12-49-06-am.jpeg",
+    description: "Bottle Green Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-73",
+    code: "SH-73",
+    mill: "GIZA 140s",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Long-Staple Egyptian Giza Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Aegean & Sky Blue",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3500,
+    formattedPrice: "₹ 3,500",
+    image: "/api/media/39/whatsapp-image-2026-11-01-at-12-49-06-am-1.jpeg",
+    description: "Cornflower Blue Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-74",
+    code: "SH-74",
+    mill: "ALBINI 1876",
+    weightGsm: 130,
+    weightLabel: "130 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Extra-Long Staple Double-Twist Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Aegean & Sky Blue",
+    season: "Spring / Summer Breathable",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2900,
+    formattedPrice: "₹ 2,900",
+    image: "/api/media/40/whatsapp-image-2026-11-01-at-12-49-06-am-2.jpeg",
+    description: "Sky Blue Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-75",
+    code: "SH-75",
+    mill: "BIELLA ATELIER",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% High-Grade Combed Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Sage & Olive Green",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2800,
+    formattedPrice: "₹ 2,800",
+    image: "/api/media/41/whatsapp-image-2026-11-01-at-12-49-06-am-3.jpeg",
+    description: "Forest Green Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-76",
+    code: "SH-76",
+    mill: "GIZA 140s",
+    weightGsm: 130,
+    weightLabel: "130 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Egyptian Giza 140s Cotton (2-Ply)",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Bordeaux & Rose",
+    season: "Spring / Summer Breathable",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2950,
+    formattedPrice: "₹ 2,950",
+    image: "/api/media/42/suitoholic-27-done-jpg.jpeg",
+    description: "Baby Pink Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-77",
+    code: "SH-77",
+    mill: "ALBINI 1876",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Compact Double-Twist Egyptian Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Aegean & Sky Blue",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3000,
+    formattedPrice: "₹ 3,000",
+    image: "/api/media/43/suitoholic-26-done-jpg.jpeg",
+    description: "French Blue Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-78",
+    code: "SH-78",
+    mill: "SUITOHOLIC",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Fine Combed Giza Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Camel & Tan",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3100,
+    formattedPrice: "₹ 3,100",
+    image: "/api/media/44/suitoholic-25done-jpg.jpeg",
+    description: "Caramel Brown Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-79",
+    code: "SH-79",
+    mill: "THOMAS MASON",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Superfine Egyptian Giza Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Sage & Olive Green",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3300,
+    formattedPrice: "₹ 3,300",
+    image: "/api/media/45/suitoholic-24-done-jpg.jpeg",
+    description: "Olive Green Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-80",
+    code: "SH-80",
+    mill: "GIZA 160s",
+    weightGsm: 130,
+    weightLabel: "130 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Combed Giza 160s Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Aegean & Sky Blue",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3300,
+    formattedPrice: "₹ 3,300",
+    image: "/api/media/46/suitoholic-23-done-jpg.jpeg",
+    description: "Ice Blue Bengal Striped Twill Shirt - Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-81",
+    code: "SH-81",
+    mill: "NORMANDY FLAX",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Extra-Long Staple Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Classic White & Ivory",
+    season: "Spring / Summer Breathable",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 2500,
+    formattedPrice: "₹ 2,500",
+    image: "/api/media/47/suitoholic-22-done-jpg.jpeg",
+    description: "Beige Cream Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
+  },
+  {
+    id: "cloth-prod-82",
+    code: "SH-82",
+    mill: "SUITOHOLIC",
+    weightGsm: 135,
+    weightLabel: "135 GSM",
+    fibre: "Egyptian Giza Cotton",
+    composition: "100% Fine Combed Giza Cotton",
+    pattern: "Banker & Bengal Stripe",
+    colour: "Camel & Tan",
+    season: "All-Season Bespoke",
+    use: "Custom Shirts",
+    drape: "Crisp & Breathable",
+    series: "Executive Bengal Stripe Archive",
+    pricePerMetre: 3100,
+    formattedPrice: "₹ 3,100",
+    image: "/api/media/48/suitoholic-21-done-jpg.jpeg",
+    description: "Coffee Brown Bengal Striped Twill Shirt - Classic Tailored Fit Striped Twill Formal Shirt.",
   },
 ];
 
@@ -493,7 +532,6 @@ interface FilterState {
   season: string;
   mill: string;
   weight: string;
-  drape: string;
   sort: string;
 }
 
@@ -506,7 +544,6 @@ const INITIAL_FILTERS: FilterState = {
   season: "ALL SEASONS",
   mill: "ALL MILLS",
   weight: "ALL WEIGHTS",
-  drape: "ALL DRAPE",
   sort: "NAME A-Z",
 };
 
@@ -519,12 +556,114 @@ export default function LuxuryClothArchiveSection({
   onSelectFabricForCustomizer,
   onRequestSwatchModal,
 }: LuxuryClothArchiveSectionProps) {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { products } = useCatalog();
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [selectedCloth, setSelectedCloth] = useState<LuxuryClothItem | null>(null);
   const [zoomScale, setZoomScale] = useState(1);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Dynamic cloth items from the backend admin dashboard
+  const activeClothList = useMemo(() => {
+    if (products && products.length > 0) {
+      const adminProducts = products.filter((p) => {
+        const cat = (p.category || "").toLowerCase();
+        if (["blazers", "trousers", "tshirts", "ceremonial"].includes(cat)) {
+          return false;
+        }
+        const nameLower = (p.name || "").toLowerCase();
+        if (/\b(blazer|blazers|jacket|jackets|trouser|trousers|pant|pants|chino|chinos|kurta|t-shirt|polo)\b/i.test(nameLower)) {
+          return false;
+        }
+        const img = (p.image || "").toLowerCase();
+        if (/\bshirt_([1-9]|1[0-1])\.jpg\b/i.test(img)) {
+          return false;
+        }
+        return Boolean(p.image);
+      });
+
+      if (adminProducts.length > 0) {
+        return adminProducts.map((p, index) => {
+          const name = p.name || `Fabric ${index + 1}`;
+          const nameLower = name.toLowerCase();
+
+          let colour = "Classic White & Ivory";
+          if (nameLower.includes("navy")) {
+            colour = "Midnight Navy";
+          } else if (nameLower.includes("blue") || nameLower.includes("azure") || nameLower.includes("sky") || nameLower.includes("french") || nameLower.includes("ice") || nameLower.includes("cornflower")) {
+            colour = "Aegean & Sky Blue";
+          } else if (nameLower.includes("green") || nameLower.includes("sage") || nameLower.includes("olive") || nameLower.includes("bottle") || nameLower.includes("forest")) {
+            colour = "Sage & Olive Green";
+          } else if (nameLower.includes("pink") || nameLower.includes("rose") || nameLower.includes("berry") || nameLower.includes("red") || nameLower.includes("burgundy") || nameLower.includes("wine") || nameLower.includes("purple") || nameLower.includes("lavender") || nameLower.includes("coral")) {
+            colour = "Bordeaux & Rose";
+          } else if (nameLower.includes("brown") || nameLower.includes("tan") || nameLower.includes("camel") || nameLower.includes("chocolate") || nameLower.includes("caramel") || nameLower.includes("khaki") || nameLower.includes("coffee")) {
+            colour = "Camel & Tan";
+          } else if (nameLower.includes("black")) {
+            colour = "Obsidian Black";
+          } else if (nameLower.includes("grey") || nameLower.includes("gray") || nameLower.includes("charcoal")) {
+            colour = "Charcoal & Slate";
+          } else if (nameLower.includes("terracotta")) {
+            colour = "Tuscan Terracotta";
+          }
+
+          let pattern = "Banker & Bengal Stripe";
+          if (nameLower.includes("linen") || nameLower.includes("slub")) {
+            pattern = "Artisanal Slub Linen";
+          } else if (nameLower.includes("jacquard") || nameLower.includes("velvet")) {
+            pattern = "Plush Velvet & Jacquard";
+          } else if (nameLower.includes("oxford")) {
+            pattern = "Royal Oxford & Twill";
+          } else if (nameLower.includes("twill") || nameLower.includes("satin")) {
+            pattern = "Royal Oxford & Twill";
+          }
+
+          let fibre = "Egyptian Giza Cotton";
+          if (nameLower.includes("linen")) {
+            fibre = "Normandy Flax Linen";
+          } else if (nameLower.includes("silk") || nameLower.includes("jacquard")) {
+            fibre = "Mulberry Silk Jacquard";
+          }
+
+          let mill = "SUITOHOLIC";
+          if (nameLower.includes("giza 160") || nameLower.includes("satin")) {
+            mill = "GIZA 160s";
+          } else if (nameLower.includes("albini") || index % 4 === 1) {
+            mill = "ALBINI 1876";
+          } else if (nameLower.includes("thomas") || index % 4 === 2) {
+            mill = "THOMAS MASON";
+          } else if (nameLower.includes("giza") || index % 4 === 3) {
+            mill = "GIZA 140s";
+          }
+
+          const cleanImage = p.image.replace(/^https?:\/\/[^/]+(?=\/api\/media)/, "");
+          const rawPrice = p.rawPrice || 2600;
+
+          return {
+            id: `cloth-prod-${p.id}`,
+            code: p.tag && !p.tag.includes(" ") ? p.tag : `SH-${p.id}`,
+            mill,
+            weightGsm: 135,
+            weightLabel: "135 GSM",
+            fibre,
+            composition: p.fabric || "100% Superfine Egyptian Giza Cotton",
+            pattern,
+            colour,
+            season: "All-Season Bespoke",
+            use: "Custom Shirts",
+            drape: "Crisp & Breathable",
+            series: "Executive Bengal Stripe Archive",
+            pricePerMetre: rawPrice,
+            formattedPrice: p.price || `₹ ${rawPrice.toLocaleString("en-IN")}`,
+            image: cleanImage,
+            description: p.description || p.subtitle || `${name} - Tailored from luxury Egyptian cotton twill.`,
+          } as LuxuryClothItem;
+        });
+      }
+    }
+    return LUXURY_CLOTH_ITEMS;
+  }, [products]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -637,17 +776,6 @@ export default function LuxuryClothArchiveSection({
     []
   );
 
-  const drapeOptions = useMemo(
-    () => [
-      "ALL DRAPE",
-      "Crisp & Breathable",
-      "Soft & Fluid",
-      "Structured Crease-Resistant",
-      "Plush & Luminous Fall",
-    ],
-    []
-  );
-
   const sortOptions = useMemo(
     () => [
       "NAME A-Z",
@@ -669,14 +797,13 @@ export default function LuxuryClothArchiveSection({
       { key: "season", label: "SEASON", allLabel: "ALL SEASONS", options: seasonOptions },
       { key: "mill", label: "MILL", allLabel: "ALL MILLS", options: millOptions },
       { key: "weight", label: "WEIGHT", allLabel: "ALL WEIGHTS", options: weightOptions },
-      { key: "drape", label: "DRAPE", allLabel: "ALL DRAPE", options: drapeOptions },
     ],
-    [useOptions, fibreOptions, patternOptions, colourOptions, seasonOptions, millOptions, weightOptions, drapeOptions]
+    [useOptions, fibreOptions, patternOptions, colourOptions, seasonOptions, millOptions, weightOptions]
   );
 
   // Filtered and Sorted Cloths
   const filteredCloths = useMemo(() => {
-    return LUXURY_CLOTH_ITEMS.filter((item) => {
+    return activeClothList.filter((item) => {
       // Search filter
       if (filters.search) {
         const q = filters.search.toLowerCase();
@@ -721,11 +848,6 @@ export default function LuxuryClothArchiveSection({
         return false;
       }
 
-      // Drape
-      if (filters.drape !== "ALL DRAPE" && item.drape !== filters.drape) {
-        return false;
-      }
-
       // Weight
       if (filters.weight !== "ALL WEIGHTS") {
         if (filters.weight === "Lightweight Shirtings (<150 GSM)" && item.weightGsm >= 150) return false;
@@ -752,7 +874,7 @@ export default function LuxuryClothArchiveSection({
           return 0;
       }
     });
-  }, [filters]);
+  }, [filters, activeClothList]);
 
   const hasActiveFilters =
     filters.search !== "" ||
@@ -762,8 +884,7 @@ export default function LuxuryClothArchiveSection({
     filters.colour !== "ALL COLOURS" ||
     filters.season !== "ALL SEASONS" ||
     filters.mill !== "ALL MILLS" ||
-    filters.weight !== "ALL WEIGHTS" ||
-    filters.drape !== "ALL DRAPE";
+    filters.weight !== "ALL WEIGHTS";
 
   return (
     <section 
@@ -802,53 +923,9 @@ export default function LuxuryClothArchiveSection({
             )}
           </div>
 
-          {/* Right Controls: Sort, Cloth Count & Reset */}
-          <div className="flex items-center justify-between md:justify-end gap-5 sm:gap-7 text-xs">
-            
-            {/* Sort Dropdown */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveDropdown(activeDropdown === "sort" ? null : "sort");
-                }}
-                className="flex items-center gap-1.5 text-black hover:text-[#666666] font-mono text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer"
-              >
-                <span className="text-[#666666]">SORT</span>
-                <span className="text-black font-bold">{filters.sort}</span>
-                <ChevronDown size={13} className={`text-black transition-transform duration-200 ${activeDropdown === "sort" ? "rotate-180" : ""}`} />
-              </button>
-
-              {activeDropdown === "sort" && (
-                <div 
-                  onClick={(e) => e.stopPropagation()}
-                  className="absolute right-0 top-full mt-2 w-52 bg-white border border-[#E5E3DD] rounded-2xl shadow-xl py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150"
-                >
-                  {sortOptions.map((opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => handleFilterChange("sort", opt)}
-                      className={`w-full text-left px-4 py-2 text-[11px] font-mono tracking-wider flex items-center justify-between hover:bg-[#F5F4F0] transition-colors cursor-pointer ${
-                        filters.sort === opt ? "text-black font-bold bg-[#F5F4F0]" : "text-[#666666]"
-                      }`}
-                    >
-                      <span>{opt}</span>
-                      {filters.sort === opt && <Check size={12} className="text-black" />}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Total Cloths Counter */}
-            <div className="text-[#666666] font-mono text-[11px] sm:text-xs font-semibold tracking-widest uppercase">
-              <span className="text-black font-bold">{filteredCloths.length}</span> CLOTHS
-            </div>
-
-            {/* Reset Filter Button */}
-            {hasActiveFilters && (
+          {/* Right Controls: Reset when filters active */}
+          {hasActiveFilters && (
+            <div className="flex items-center justify-end text-xs">
               <button
                 type="button"
                 onClick={handleReset}
@@ -857,8 +934,8 @@ export default function LuxuryClothArchiveSection({
                 <X size={12} />
                 <span>RESET</span>
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* =================================================================== */}
@@ -944,21 +1021,33 @@ export default function LuxuryClothArchiveSection({
               >
                 {/* Rectangular Vertical Swatch Image (3:4 ratio) */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden bg-white border border-[#E5E3DD] group-hover:border-black group-hover:shadow-md transition-all duration-300 rounded-[16px]">
-                  {/* Default Swatch Roll */}
+                  {/* Top-Right Heart Wishlist Button - Always Visible */}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(cloth.id);
+                    }}
+                    type="button"
+                    aria-label={isInWishlist(cloth.id) ? "Remove from wishlist" : "Save to wishlist"}
+                    className="absolute top-2.5 right-2.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md cursor-pointer flex items-center justify-center opacity-100"
+                  >
+                    <Heart
+                      size={15}
+                      className={
+                        isInWishlist(cloth.id)
+                          ? "text-red-500 fill-red-500"
+                          : "text-white fill-white/10 stroke-white stroke-[2]"
+                      }
+                    />
+                  </button>
+
+                  {/* Default Product Image */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={cloth.image}
                     alt={`${cloth.mill} ${cloth.code} Swatch`}
-                    className="w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105 group-hover:opacity-0"
-                    loading="lazy"
-                  />
-
-                  {/* Matching Tailored Full Shirt Revealed on Hover */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={getMatchingFullShirtImage(cloth)}
-                    alt={`${cloth.mill} Full Tailored Shirt`}
-                    className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
+                    className="w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105"
                     loading="lazy"
                   />
                   
@@ -969,20 +1058,12 @@ export default function LuxuryClothArchiveSection({
                   <div className="absolute bottom-2 right-2 z-10 px-2 py-0.5 bg-white/95 backdrop-blur-xs text-black text-[8.5px] sm:text-[9px] font-mono font-bold tracking-wider border border-[#E5E3DD] shadow-xs rounded-full group-hover:opacity-0 transition-opacity">
                     {cloth.weightLabel}
                   </div>
-
-                  {/* Bottom-Left Full Shirt Preview Pill */}
-                  <div className="absolute bottom-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <div className="px-2.5 py-1 bg-black/90 text-white backdrop-blur-md rounded-full text-[8.5px] font-mono tracking-wider uppercase flex items-center gap-1 shadow-md">
-                      <ZoomIn size={10} className="text-white" />
-                      <span>FULL SHIRT</span>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Information Block Below Swatch */}
                 <div className="pt-2 sm:pt-2.5 pb-1 flex justify-between items-start gap-1.5">
                   
-                  {/* Left Column: Fibre, Price/Metre sublabel, Garment Service Use */}
+                  {/* Left Column: Fibre & Price/Metre sublabel */}
                   <div className="space-y-0.5 min-w-0 flex-1">
                     <div className="text-[11px] sm:text-xs font-semibold text-black uppercase tracking-wider truncate">
                       {cloth.fibre}
@@ -990,10 +1071,6 @@ export default function LuxuryClothArchiveSection({
 
                     <div className="text-[8px] sm:text-[8.5px] text-[#666666] font-mono uppercase tracking-[0.18em]">
                       PRICE / METRE
-                    </div>
-
-                    <div className="text-[10px] sm:text-[10.5px] text-[#666666] italic font-serif-luxury truncate">
-                      {cloth.use}
                     </div>
                   </div>
 

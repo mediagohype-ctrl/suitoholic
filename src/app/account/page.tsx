@@ -16,7 +16,6 @@ import {
   Heart,
   Ruler,
   ShoppingBag,
-  ChevronDown,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -45,14 +44,6 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-function AppleIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 170 170" fill="currentColor">
-      <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.05-7.69-7.85-11.96-14.41-6.1-9.35-10.8-19.78-14.1-31.29-3.3-11.51-4.95-22.37-4.95-32.58 0-14.14 3.58-26.04 10.74-35.69 7.16-9.65 16.48-14.61 27.95-14.88 4.79 0 10.21 1.25 16.27 3.75 6.06 2.5 10.15 3.86 12.28 4.09 2.72-.44 6.97-1.85 12.74-4.22 5.77-2.38 10.98-3.46 15.64-3.25 11.96.65 21.7 5.06 29.21 13.22-10.45 6.31-15.57 15.12-15.35 26.43.22 8.71 3.53 16.05 9.92 22.03 6.39 5.98 13.98 9.53 22.78 10.63-2.61 7.84-5.93 15.8-9.97 23.88zM119.22 31.84c0-7.18 2.66-14.03 7.99-20.55 5.33-6.52 11.91-10.65 19.75-12.39.44 1.74.65 3.37.65 4.9 0 7.4-2.83 14.42-8.49 21.06-5.66 6.64-12.51 10.67-20.55 12.09-.22-1.74-.44-3.44-.44-5.11z" />
-    </svg>
-  );
-}
-
 interface UserProfile {
   email: string;
   name: string;
@@ -66,12 +57,11 @@ const STORAGE_USER_KEY = "suitoholic_client_user";
 export default function AccountPage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [phoneInput, setPhoneInput] = useState("");
-  const [emailInput, setEmailInput] = useState("");
-  const [authMethod, setAuthMethod] = useState<"phone" | "email">("phone");
-  const [step, setStep] = useState<"input" | "otp">("input");
-  const [otpCode, setOtpCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
   const { wishlistCount } = useWishlist();
 
   // Load existing session from storage
@@ -91,49 +81,24 @@ export default function AccountPage() {
     }
   }, []);
 
-  const handlePhoneSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!phoneInput || phoneInput.length < 10) return;
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setStep("otp");
-    }, 400);
-  };
-
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailInput.trim()) return;
     setSubmitting(true);
     setTimeout(() => {
-      setSubmitting(false);
-      setStep("otp");
-    }, 400);
-  };
-
-  const handleVerifyOtp = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setTimeout(() => {
-      const isPhone = authMethod === "phone";
-      const cleanName = isPhone
-        ? `Patron (+91 ${phoneInput.slice(-4)})`
-        : (emailInput.split("@")[0].charAt(0).toUpperCase() + emailInput.split("@")[0].slice(1));
-      
+      const rawName = emailInput.split("@")[0] || "Patron";
+      const cleanName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
       const profile: UserProfile = {
-        email: isPhone ? `${phoneInput}@suitoholic-patron.com` : emailInput,
-        phone: isPhone ? `+91 ${phoneInput}` : undefined,
+        email: emailInput,
         name: cleanName,
         isLoggedIn: true,
       };
       setUser(profile);
       try {
         localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(profile));
-      } catch {
-        // ignore
-      }
+      } catch {}
       setSubmitting(false);
-    }, 500);
+    }, 400);
   };
 
   const handleGoogleSignIn = () => {
@@ -152,22 +117,6 @@ export default function AccountPage() {
     }, 400);
   };
 
-  const handleAppleSignIn = () => {
-    setSubmitting(true);
-    setTimeout(() => {
-      const profile: UserProfile = {
-        email: "patron.atelier@icloud.com",
-        name: "Apple Patron",
-        isLoggedIn: true,
-      };
-      setUser(profile);
-      try {
-        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(profile));
-      } catch {}
-      setSubmitting(false);
-    }, 400);
-  };
-
   const handleSignOut = () => {
     try {
       localStorage.removeItem(STORAGE_USER_KEY);
@@ -175,11 +124,10 @@ export default function AccountPage() {
       // ignore
     }
     setUser(null);
-    setPhoneInput("");
     setEmailInput("");
-    setOtpCode("");
-    setAuthMethod("phone");
-    setStep("input");
+    setPasswordInput("");
+    setForgotSent(false);
+    setIsSignUp(false);
   };
 
   if (loading) {
@@ -191,266 +139,183 @@ export default function AccountPage() {
   }
 
   // --------------------------------------------------------------------------
-  // STATE 1: NOT LOGGED IN -> Modern Login Card Matching User Image 2
-  // (No Navbar, Spacious & Centered Down with Breathing Room)
+  // STATE 1: NOT LOGGED IN -> Split Editorial Login with Navbar
+  // (Left: Bespoke Atelier Imagery | Right: Client Sign In)
   // --------------------------------------------------------------------------
   if (!user || !user.isLoggedIn) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF7F2] text-black antialiased selection:bg-black selection:text-white py-14 sm:py-20 px-4 sm:px-6">
-        <div className="w-full max-w-[500px]">
-          {/* Subtle Atelier Brand Header */}
-          <div className="mb-7 text-center">
-            <Link
-              href="/"
-              className="inline-block font-serif text-2xl sm:text-3xl font-bold uppercase tracking-[0.22em] text-[#14110E] hover:opacity-80 transition"
-            >
-              SUITOHOLIC
-            </Link>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-[#8C7355] mt-1 font-semibold">
-              Bespoke Client Atelier
-            </p>
+      <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-black antialiased selection:bg-black selection:text-white">
+        {/* Navigation Bar */}
+        <Header forceSolid />
+
+        {/* Split Editorial Screen: Left side full-bleed from navbar to bottom, Right side centered form */}
+        <main className="flex-1 w-full pt-[76px] sm:pt-[84px] lg:pt-[88px] flex flex-col md:flex-row items-stretch min-h-[calc(100vh-88px)]">
+          
+          {/* Left Column: Full-Bleed Bespoke Atelier Image (Touches Left Screen Edge & Touches Navbar at Top) */}
+          <div className="relative hidden md:block w-full md:w-1/2 min-h-[640px] lg:min-h-[720px] self-stretch overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/banners/outfit_hero_suit_light.jpg"
+              alt="Suitoholic Bespoke Atelier Tailoring"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
           </div>
 
-          {/* White Floating Card Matching Reference Image 2 (Larger & More Spacious) */}
-          <div className="bg-white border border-[#EDE8E1] rounded-2xl sm:rounded-3xl p-7 sm:p-10 shadow-sm transition-all">
-            {step === "input" ? (
-              authMethod === "phone" ? (
-                /* Phone Number / WhatsApp Flow */
-                <form onSubmit={handlePhoneSubmit} className="space-y-4 sm:space-y-5">
+          {/* Right Column: Centered Login Card & Options */}
+          <div className="w-full md:w-1/2 flex items-center justify-center px-4 sm:px-8 lg:px-14 py-12 sm:py-16">
+            <div className="w-full max-w-[440px] flex flex-col justify-center">
+              {/* Subtle Atelier Brand Header */}
+              <div className="mb-6 text-center">
+                <Link
+                  href="/"
+                  className="inline-block font-serif text-2xl sm:text-3xl font-bold uppercase tracking-[0.22em] text-[#14110E] hover:opacity-80 transition"
+                >
+                  SUITOHOLIC
+                </Link>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-[#8C7355] mt-1 font-semibold">
+                  Bespoke Client Atelier
+                </p>
+              </div>
+
+              {/* White Floating Card Matching Reference Image */}
+              <div className="bg-white border border-[#EDE8E1] rounded-2xl sm:rounded-3xl p-7 sm:p-10 shadow-sm transition-all">
+                {/* Form Title & Subtitle Matching Reference Image */}
+                <div className="text-center mb-7">
+                  <h2 className="text-xl sm:text-2xl font-sans tracking-[0.22em] text-[#14110E] uppercase font-normal">
+                    {isSignUp ? "SIGN UP" : "LOGIN"}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-[#4A4A4A] mt-2 font-normal">
+                    {isSignUp
+                      ? "Enter your details to create an atelier account:"
+                      : "Enter your email and password to login:"}
+                  </p>
+                </div>
+
+                {forgotSent && (
+                  <div className="mb-5 p-3 rounded-md bg-[#FAF7F2] border border-[#E5E7EB] text-xs text-[#222222] text-center">
+                    A password reset link has been sent to your email.
+                  </div>
+                )}
+
+                {/* Main Email & Password Form */}
+                <form onSubmit={handleEmailPasswordSubmit} className="space-y-4">
+                  {/* Email Input */}
                   <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2.5">
-                      Phone Number
-                    </label>
-                    <div className="flex items-center gap-2.5">
-                      {/* Country code selector */}
-                      <div className="flex items-center gap-2 border border-[#E5E7EB] rounded-xl px-3.5 py-3.5 bg-white shrink-0">
-                        <span className="text-lg leading-none">🇮🇳</span>
-                        <span className="text-sm font-semibold text-[#14110E]">+91</span>
-                        <ChevronDown size={14} className="text-[#9CA3AF] ml-0.5" />
-                      </div>
-                      {/* Phone input */}
-                      <input
-                        type="tel"
-                        inputMode="numeric"
-                        value={phoneInput}
-                        onChange={(e) => setPhoneInput(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                        placeholder="1234567890"
-                        required
-                        className="flex-1 min-w-0 border border-[#E5E7EB] rounded-xl px-4 py-3.5 text-base font-medium text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Terracotta Continue with WhatsApp button */}
-                  <button
-                    type="submit"
-                    disabled={submitting || phoneInput.length < 10}
-                    className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-base py-3.5 sm:py-4 px-5 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
-                  >
-                    {submitting ? "Connecting..." : "Continue with WhatsApp"}
-                  </button>
-
-                  {/* Divider: O R */}
-                  <div className="relative my-6">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-[#E5E7EB]" />
-                    </div>
-                    <div className="relative flex justify-center text-[11px]">
-                      <span className="bg-white px-4 font-medium tracking-[0.25em] text-[#9CA3AF] uppercase">
-                        O R
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Social Login Buttons */}
-                  <div className="space-y-3">
-                    <button
-                      type="button"
-                      onClick={handleGoogleSignIn}
-                      disabled={submitting}
-                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
-                    >
-                      <GoogleIcon className="w-4 h-4 shrink-0" />
-                      <span>Continue with Google</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleAppleSignIn}
-                      disabled={submitting}
-                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
-                    >
-                      <AppleIcon className="w-4 h-4 shrink-0" />
-                      <span>Continue with Apple</span>
-                    </button>
-                  </div>
-
-                  {/* Switch to Email link */}
-                  <div className="text-center pt-3">
-                    <button
-                      type="button"
-                      onClick={() => setAuthMethod("email")}
-                      className="text-sm font-medium text-[#D25A24] hover:underline cursor-pointer"
-                    >
-                      Sign in with email
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                /* Email Flow */
-                <form onSubmit={handleEmailSubmit} className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2.5">
-                      Email Address
-                    </label>
                     <input
                       type="email"
                       value={emailInput}
                       onChange={(e) => setEmailInput(e.target.value)}
-                      placeholder="patron@example.com"
+                      placeholder="E-mail"
                       required
-                      className="w-full border border-[#E5E7EB] rounded-xl px-4 py-3.5 text-base font-medium text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
+                      className="w-full border border-[#D5D5D5] px-4 py-3 sm:py-3.5 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={submitting || !emailInput.trim()}
-                    className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-base py-3.5 sm:py-4 px-5 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
-                  >
-                    {submitting ? "Sending Code..." : "Continue with Email"}
-                  </button>
-
-                  {/* Divider: O R */}
-                  <div className="relative my-6">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-[#E5E7EB]" />
-                    </div>
-                    <div className="relative flex justify-center text-[11px]">
-                      <span className="bg-white px-4 font-medium tracking-[0.25em] text-[#9CA3AF] uppercase">
-                        O R
-                      </span>
-                    </div>
+                  {/* Password Input */}
+                  <div>
+                    <input
+                      type="password"
+                      value={passwordInput}
+                      onChange={(e) => setPasswordInput(e.target.value)}
+                      placeholder="Password"
+                      required
+                      className="w-full border border-[#D5D5D5] px-4 py-3 sm:py-3.5 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
+                    />
+                    {!isSignUp && (
+                      <div className="flex justify-end mt-1.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setForgotSent(true);
+                            setTimeout(() => setForgotSent(false), 4000);
+                          }}
+                          className="text-xs text-[#555555] hover:text-black hover:underline cursor-pointer transition-colors"
+                        >
+                          Forgot your password?
+                        </button>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Social Login Buttons */}
-                  <div className="space-y-3">
+                  {/* Gold Button Matching Reference Image (#F5DB8B) */}
+                  <div className="pt-2">
                     <button
-                      type="button"
-                      onClick={handleGoogleSignIn}
+                      type="submit"
                       disabled={submitting}
-                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
+                      className="w-full bg-[#F5DB8B] hover:bg-[#ECCF75] active:scale-99 text-[#2A2522] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase py-3.5 sm:py-4 transition-all cursor-pointer rounded-none shadow-xs text-center"
                     >
-                      <GoogleIcon className="w-4 h-4 shrink-0" />
-                      <span>Continue with Google</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleAppleSignIn}
-                      disabled={submitting}
-                      className="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9FAFB] text-[#14110E] font-medium text-sm sm:text-base py-3.5 px-5 rounded-xl flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-98"
-                    >
-                      <AppleIcon className="w-4 h-4 shrink-0" />
-                      <span>Continue with Apple</span>
+                      {submitting
+                        ? "PROCESSING..."
+                        : isSignUp
+                        ? "CREATE ACCOUNT"
+                        : "LOGIN"}
                     </button>
                   </div>
 
-                  {/* Switch to Phone link */}
-                  <div className="text-center pt-3">
-                    <button
-                      type="button"
-                      onClick={() => setAuthMethod("phone")}
-                      className="text-sm font-medium text-[#D25A24] hover:underline cursor-pointer"
-                    >
-                      Sign in with phone number
-                    </button>
-                  </div>
                 </form>
-              )
-            ) : (
-              /* OTP Verification Step */
-              <form onSubmit={handleVerifyOtp} className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
-                <div className="bg-[#FAF7F2] border border-[#EDE8E1] rounded-xl p-4 text-xs text-[#6B7280]">
-                  Verification code sent to{" "}
-                  <strong className="text-[#14110E]">
-                    {authMethod === "phone" ? `+91 ${phoneInput}` : emailInput}
-                  </strong>
+
+                {/* OR Divider Matching User Request */}
+                <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-[#E5E7EB]" />
+                  </div>
+                  <div className="relative flex justify-center text-xs">
+                    <span className="bg-white px-3 text-[#777777] font-medium tracking-[0.2em] uppercase">
+                      OR
+                    </span>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-[#14110E] mb-2.5">
-                    Enter 6-Digit Code
-                  </label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                    placeholder="123456"
-                    required
-                    maxLength={6}
-                    autoFocus
-                    className="w-full border border-[#E5E7EB] rounded-xl px-4 py-3.5 text-center text-xl font-mono tracking-widest text-[#14110E] placeholder:text-[#9CA3AF] outline-none focus:border-[#D25A24] transition-colors"
-                  />
-                </div>
-
+                {/* Continue with Google in OR section */}
                 <button
-                  type="submit"
-                  disabled={submitting || otpCode.length < 6}
-                  className="w-full bg-[#D25A24] hover:bg-[#B84E1F] disabled:opacity-50 text-white font-semibold text-base py-3.5 sm:py-4 px-5 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-98"
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  disabled={submitting}
+                  className="w-full bg-white border border-[#D5D5D5] hover:bg-[#F9FAFB] hover:border-black text-[#14110E] font-medium text-xs sm:text-sm py-3.5 sm:py-4 px-5 flex items-center justify-center gap-3 transition-all cursor-pointer shadow-xs active:scale-98 rounded-none"
                 >
-                  {submitting ? "Verifying..." : "Verify & Continue"}
+                  <GoogleIcon className="w-4 h-4 shrink-0" />
+                  <span>{submitting ? "Connecting..." : "Continue with Google"}</span>
                 </button>
+              </div>
 
-                <div className="flex items-center justify-between text-xs pt-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setStep("input");
-                      setOtpCode("");
-                    }}
-                    className="text-[#6B7280] hover:text-[#14110E] underline cursor-pointer"
-                  >
-                    {authMethod === "phone" ? "Change phone number" : "Change email"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOtpCode("123456");
-                    }}
-                    className="text-[#D25A24] font-semibold hover:underline cursor-pointer"
-                  >
-                    Resend code
-                  </button>
-                </div>
-              </form>
-            )}
+              {/* Sign Up / Log In Toggle Link (Outside Card) */}
+              <div className="text-center mt-5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSignUp(!isSignUp);
+                    setForgotSent(false);
+                  }}
+                  className="text-xs sm:text-sm text-[#555555] cursor-pointer hover:text-black transition"
+                >
+                  {isSignUp ? (
+                    <>
+                      Already have an account?{" "}
+                      <span className="text-[#14110E] underline font-semibold">Log in</span>
+                    </>
+                  ) : (
+                    <>
+                      Don&apos;t have an account?{" "}
+                      <span className="text-[#14110E] underline font-semibold">Sign up</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Return to boutique link */}
+              <div className="text-center mt-5">
+                <Link
+                  href="/"
+                  className="text-xs text-[#6B7280] hover:text-[#14110E] transition inline-flex items-center gap-1 font-medium"
+                >
+                  ← Return to Boutique
+                </Link>
+              </div>
+            </div>
           </div>
+        </main>
 
-          {/* Terms and Privacy Footer matching Reference Image 2 */}
-          <p className="text-center text-xs text-[#718096] mt-6 leading-relaxed">
-            By continuing you agree to Suitoholic&apos;s{" "}
-            <Link href="/terms" className="text-[#D25A24] hover:underline">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link href="/privacy" className="text-[#D25A24] hover:underline">
-              Privacy Policy
-            </Link>
-            .
-          </p>
-
-          {/* Return to store link */}
-          <div className="text-center mt-5">
-            <Link
-              href="/"
-              className="text-xs text-[#6B7280] hover:text-[#14110E] transition inline-flex items-center gap-1 font-medium"
-            >
-              ← Return to Boutique
-            </Link>
-          </div>
-        </div>
+        <Footer />
       </div>
     );
   }

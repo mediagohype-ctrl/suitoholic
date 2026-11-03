@@ -177,11 +177,9 @@ function ShopContent() {
 
             {/* Section Heading: Refined Luxury Title */}
             <div className="flex items-center justify-center gap-3 sm:gap-6 w-full pt-1 pb-1">
-              <div className="h-[1px] w-8 sm:w-16 md:w-24 bg-black/30" />
               <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight text-center">
                 {selectedCategory === "all" ? (c.title || "THE BESPOKE COLLECTION") : `${currentCategoryName} COLLECTION`}
               </h2>
-              <div className="h-[1px] w-8 sm:w-16 md:w-24 bg-black/30" />
             </div>
 
             {/* Top Control Bar with Filters & Sorting */}
@@ -429,7 +427,7 @@ function ShopContent() {
                 <section key={sec.id} id={sec.id} className="w-full flex flex-col items-center select-none">
                   {/* Centered Heading in Luxury Uppercase */}
                   <div className="text-center mb-6 sm:mb-8 lg:mb-10">
-                    <h2 className="text-base sm:text-lg lg:text-[20px] font-semibold tracking-[0.22em] text-black uppercase leading-tight">
+                    <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
                       {sec.title}
                     </h2>
                   </div>

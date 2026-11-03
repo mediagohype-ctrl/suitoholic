@@ -46,7 +46,7 @@ export default function Home() {
       {/* Main Interactive Hero Video Banner */}
       <HeroVideoBanner />
 
-      {/* Feature Highlights Bar (Positioned below the 1st Full Screen Hero Video) */}
+      {/* Feature Highlights Bar (Custom Fit | Premium Fabrics | Perfect Details | Easy Returns) */}
       <FeatureHighlightsBar />
 
       {/* Split Feature Banners (PREMIUM FABRICS & CUSTOM FIT - EDITORIAL CARDS MATCHING REFERENCE) */}

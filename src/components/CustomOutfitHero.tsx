@@ -1,424 +1,113 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { Check, Plus, ChevronRight } from "lucide-react";
-
-export type OutfitCategory = "ethnic" | "bespoke_suit";
-
-export interface OutfitGarment {
-  id: string;
-  name: string;
-  type: "kurta" | "pajama" | "sadri" | "coat" | "shirt" | "trouser" | "waistcoat" | "blazer";
-  selected: boolean;
-  category: OutfitCategory;
-}
-
-const INITIAL_GARMENTS: OutfitGarment[] = [
-  // Ethnic Set items (as seen in reference design)
-  { id: "kurta", name: "Kurta", type: "kurta", selected: true, category: "ethnic" },
-  { id: "pajama", name: "Pajama", type: "pajama", selected: true, category: "ethnic" },
-  { id: "sadri", name: "Sadri", type: "sadri", selected: true, category: "ethnic" },
-  { id: "coat", name: "Coat", type: "coat", selected: false, category: "ethnic" },
-
-  // Bespoke Suit items (Suitoholic signature menswear)
-  { id: "blazer", name: "Suit Blazer", type: "blazer", selected: true, category: "bespoke_suit" },
-  { id: "trouser", name: "Trousers", type: "trouser", selected: true, category: "bespoke_suit" },
-  { id: "shirt", name: "Bespoke Shirt", type: "shirt", selected: true, category: "bespoke_suit" },
-  { id: "waistcoat", name: "Waistcoat", type: "waistcoat", selected: false, category: "bespoke_suit" },
-];
-
-/* ========================================================================= */
-/* PRECISE SVG VECTOR SILHOUETTE ICONS MATCHING REFERENCE AESTHETIC          */
-/* ========================================================================= */
-
-function KurtaIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#000000" : "#888888";
-  const strokeColor = "#FFFFFF";
-  const dotColor = "#FFFFFF";
-  return (
-    <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Mandarin Collar */}
-      <path d="M34 10C36 8 44 8 46 10L48 14H32L34 10Z" fill={fillColor} />
-      {/* Kurta Body & Sleeves */}
-      <path
-        d="M32 14L16 28L23 35L29 27V88H38V50H42V88H51V27L57 35L64 28L48 14H32Z"
-        fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
-      />
-      {/* Placket line & pocket */}
-      <line x1="40" y1="14" x2="40" y2="38" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
-      <rect x="44" y="26" width="6" height="4" rx="1" fill={dotColor} opacity="0.8" />
-      {/* Buttons */}
-      <circle cx="40" cy="18" r="1.1" fill={dotColor} />
-      <circle cx="40" cy="24" r="1.1" fill={dotColor} />
-      <circle cx="40" cy="30" r="1.1" fill={dotColor} />
-    </svg>
-  );
-}
-
-function PajamaIcon({ className = "w-12 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#000000" : "#888888";
-  const strokeColor = "#FFFFFF";
-  return (
-    <svg viewBox="0 0 70 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Waistband */}
-      <rect x="22" y="10" width="26" height="4" rx="1" fill={fillColor} />
-      {/* Churidar / Pleated Trousers Legs */}
-      <path
-        d="M22 14L24 50L28 88H33L35 36L37 88H42L46 50L48 14H22Z"
-        fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
-      />
-      {/* Fabric gathering / pleat lines */}
-      <path d="M26 58C29 60 28 62 31 63" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.8" />
-      <path d="M39 58C42 60 41 62 44 63" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.8" />
-      <path d="M27 70C30 72 29 74 32 75" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.8" />
-      <path d="M38 70C41 72 40 74 43 75" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.8" />
-    </svg>
-  );
-}
-
-function SadriIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#000000" : "#888888";
-  const strokeColor = "#FFFFFF";
-  return (
-    <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Mandarin Collar */}
-      <path d="M33 12C36 10 44 10 47 12L49 16H31L33 12Z" fill={fillColor} />
-      {/* Sleeveless Nehru Jacket Body */}
-      <path
-        d="M31 16L24 23L27 34L26 78L40 82L54 78L53 34L56 23L49 16H31Z"
-        fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
-      />
-      {/* Center opening line */}
-      <line x1="40" y1="16" x2="40" y2="82" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
-      {/* Buttons */}
-      <circle cx="40" cy="24" r="1.2" fill={strokeColor} />
-      <circle cx="40" cy="32" r="1.2" fill={strokeColor} />
-      <circle cx="40" cy="40" r="1.2" fill={strokeColor} />
-      <circle cx="40" cy="48" r="1.2" fill={strokeColor} />
-      <circle cx="40" cy="56" r="1.2" fill={strokeColor} />
-      {/* Chest pocket & twin lower jetted pockets */}
-      <line x1="44" y1="28" x2="50" y2="28" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" opacity="0.9" />
-      <line x1="30" y1="58" x2="36" y2="58" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" opacity="0.9" />
-      <line x1="44" y1="58" x2="50" y2="58" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" opacity="0.9" />
-    </svg>
-  );
-}
-
-function CoatIcon({ className = "w-16 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#000000" : "#888888";
-  const strokeColor = "#FFFFFF";
-  return (
-    <svg viewBox="0 0 84 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Tailored Coat / Blazer with Lapels */}
-      <path
-        d="M32 14L15 26L21 44L22 84L42 86L62 84L63 44L69 26L52 14H32Z"
-        fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
-      />
-      {/* Inner lapel cuts */}
-      <path d="M32 14L37 36L42 56L47 36L52 14" stroke={strokeColor} strokeWidth="1.4" strokeLinecap="round" />
-      <line x1="42" y1="56" x2="42" y2="86" stroke={strokeColor} strokeWidth="1.4" strokeLinecap="round" />
-      {/* Buttons */}
-      <circle cx="42" cy="62" r="1.3" fill={strokeColor} />
-      <circle cx="42" cy="70" r="1.3" fill={strokeColor} />
-      {/* Flap pockets & welt breast pocket */}
-      <line x1="48" y1="36" x2="54" y2="36" stroke={strokeColor} strokeWidth="1.4" strokeLinecap="round" />
-      <rect x="25" y="66" width="9" height="3" rx="0.5" fill={strokeColor} opacity="0.85" />
-      <rect x="50" y="66" width="9" height="3" rx="0.5" fill={strokeColor} opacity="0.85" />
-    </svg>
-  );
-}
-
-function BespokeShirtIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#000000" : "#888888";
-  const strokeColor = "#FFFFFF";
-  return (
-    <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Cutaway Collar */}
-      <path d="M30 14L36 20L40 16L44 20L50 14L40 10L30 14Z" fill={fillColor} />
-      {/* Shirt Body with Cuffs */}
-      <path
-        d="M30 14L14 26L20 34L26 27V82L40 84L54 82V27L60 34L66 26L50 14H30Z"
-        fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
-      />
-      {/* Placket */}
-      <line x1="40" y1="18" x2="40" y2="84" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
-      <circle cx="40" cy="28" r="1.1" fill={strokeColor} />
-      <circle cx="40" cy="38" r="1.1" fill={strokeColor} />
-      <circle cx="40" cy="48" r="1.1" fill={strokeColor} />
-      <circle cx="40" cy="58" r="1.1" fill={strokeColor} />
-      {/* Pocket */}
-      <rect x="44" y="32" width="6" height="6" rx="1" fill={strokeColor} opacity="0.7" />
-    </svg>
-  );
-}
-
-function TrouserIcon({ className = "w-12 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#000000" : "#888888";
-  const strokeColor = "#FFFFFF";
-  return (
-    <svg viewBox="0 0 70 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Waistband & loops */}
-      <rect x="22" y="10" width="26" height="5" rx="1" fill={fillColor} />
-      {/* Straight tailored legs */}
-      <path
-        d="M22 15L24 50L26 86H33L35 38L37 86H44L46 50L48 15H22Z"
-        fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
-      />
-      {/* Crease lines */}
-      <line x1="29.5" y1="20" x2="29.5" y2="84" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.7" />
-      <line x1="40.5" y1="20" x2="40.5" y2="84" stroke={strokeColor} strokeWidth="1" strokeLinecap="round" opacity="0.7" />
-    </svg>
-  );
-}
-
-function WaistcoatIcon({ className = "w-14 h-16", isChecked = false }: { className?: string; isChecked?: boolean }) {
-  const fillColor = isChecked ? "#000000" : "#888888";
-  const strokeColor = "#FFFFFF";
-  return (
-    <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* V-Neck Cut */}
-      <path
-        d="M32 14L24 22L27 34L26 78L40 85L54 78L53 34L56 22L48 14L40 32L32 14Z"
-        fill={fillColor}
-        filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.12))"
-      />
-      {/* Center line & buttons */}
-      <line x1="40" y1="32" x2="40" y2="85" stroke={strokeColor} strokeWidth="1.2" strokeLinecap="round" />
-      <circle cx="40" cy="40" r="1.2" fill={strokeColor} />
-      <circle cx="40" cy="48" r="1.2" fill={strokeColor} />
-      <circle cx="40" cy="56" r="1.2" fill={strokeColor} />
-      <circle cx="40" cy="64" r="1.2" fill={strokeColor} />
-      {/* Welt pockets */}
-      <line x1="29" y1="52" x2="35" y2="52" stroke={strokeColor} strokeWidth="1.3" strokeLinecap="round" opacity="0.9" />
-      <line x1="45" y1="52" x2="51" y2="52" stroke={strokeColor} strokeWidth="1.3" strokeLinecap="round" opacity="0.9" />
-    </svg>
-  );
-}
-
-/* ========================================================================= */
-/* MAIN COMPONENT: CustomOutfitHero                                          */
-/* ========================================================================= */
+import React from "react";
+import { ChevronRight, ArrowDown } from "lucide-react";
+import { useCustomizer } from "@/context/CustomizerModalProvider";
+import { USER_CATALOG_SHIRTS } from "@/data/products";
 
 export default function CustomOutfitHero() {
-  const [activeCategory, setActiveCategory] = useState<OutfitCategory>("ethnic");
-  const [garments, setGarments] = useState<OutfitGarment[]>(INITIAL_GARMENTS);
-
-  const toggleGarment = (id: string) => {
-    setGarments((prev) =>
-      prev.map((g) => (g.id === id ? { ...g, selected: !g.selected } : g))
-    );
-  };
-
-  const currentCategoryGarments = garments.filter((g) => g.category === activeCategory);
-  const selectedCount = currentCategoryGarments.filter((g) => g.selected).length;
+  const { openCustomizer } = useCustomizer();
 
   const handleStartCustomizing = () => {
-    const target = document.getElementById("curated-starting-points") || document.getElementById("appointment-booking");
+    // Open the 6-step customizer modal with the signature bespoke shirting piece
+    const sampleShirt = USER_CATALOG_SHIRTS[0] || {
+      id: 51,
+      slug: "dark-chocolate-brown-satin-twill-shirt",
+      name: "Dark Chocolate Brown Satin Twill Shirt",
+      category: "formal_shirts",
+      price: "₹ 2,600",
+      rawPrice: 2600,
+      image: "/new_shirts/shirt_19.jpg",
+      gallery: ["/new_shirts/shirt_19.jpg"],
+    };
+    openCustomizer(sampleShirt);
+  };
+
+  const handleBookFitting = () => {
+    const target =
+      document.getElementById("appointment-booking") ||
+      document.getElementById("curated-starting-points");
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  const handleStartDesigning = () => {
-    const target = document.getElementById("curated-starting-points") || document.getElementById("appointment-booking");
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  // Content configuration based on active category
-  const isEthnic = activeCategory === "ethnic";
-
-  const heroTitle = isEthnic
-    ? "Custom Kurta Pajama Sets for Men"
-    : "Custom Bespoke Suits & Sets for Men";
-  const heroDescription = isEthnic
-    ? "Design a complete ethnic set for men — build the kurta and pajama together, add a Nehru jacket or coat, and have it tailored to your exact measurements for weddings and festive occasions."
-    : "Design a complete bespoke suit set for men — build the tailored jacket and trousers together, add a crisp bespoke shirt or waistcoat, and have it hand-cut to your unique posture in Delhi NCR.";
 
   return (
-    <section className="relative w-full min-h-[640px] sm:min-h-[720px] lg:min-h-[780px] flex items-center justify-center overflow-hidden bg-[#ECEAE5] select-none pt-[76px] sm:pt-[92px] lg:pt-[100px] pb-12 sm:pb-16 border-b border-[#E5E3DD]">
-      {/* 1. CINEMATIC DAYLIGHT PHOTOSHOOT */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={isEthnic ? "/banners/outfit_hero_ethnic_light.jpg" : "/banners/outfit_hero_suit_light.jpg"}
-          alt={isEthnic ? "Gentleman in bespoke ethnic outfit" : "Gentleman in bespoke tailored suit"}
-          className="w-full h-full object-cover object-center transition-all duration-700 ease-in-out"
-        />
-        {/* Subtle left scrim for flawless text readability on bright background */}
-        <div className="absolute inset-y-0 left-0 w-full lg:w-3/5 bg-gradient-to-r from-white/70 via-white/35 to-transparent pointer-events-none" />
-      </div>
-
-      {/* 2. HERO CONTENT GRID */}
-      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+    <section className="relative w-full overflow-hidden select-none bg-[#ECEAE5] border-b border-[#E5E3DD] pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-16">
+      <div className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
           
-          {/* LEFT COLUMN: HERO HEADLINE & CTA BUTTONS */}
-          <div className="lg:col-span-5 xl:col-span-5 text-left space-y-4 sm:space-y-6">
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rotate-45 bg-black inline-block" />
-              <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-black">
-                SUITOHOLIC BESPOKE ATELIER
-              </span>
-              <span className="w-1.5 h-1.5 rotate-45 bg-black inline-block" />
-            </div>
-
+          {/* ========================================================================= */}
+          {/* LEFT COLUMN: BESPOKE ATELIER EDITORIAL TEXT & ACTIONS                     */}
+          {/* ========================================================================= */}
+          <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-center text-left">
             {/* Main Editorial Headline */}
-            <h1 className="cormorant-garamond-700 text-3xl sm:text-4xl md:text-[38px] lg:text-[42px] xl:text-[45px] font-bold text-black tracking-tight leading-[1.12]">
-              {isEthnic ? (
-                <>
-                  Custom Kurta Pajama{" "}
-                  <span className="text-black italic font-serif">Sets for Men</span>
-                </>
-              ) : (
-                <>
-                  Custom Bespoke{" "}
-                  <span className="text-black italic font-serif">Suits for Men</span>
-                </>
-              )}
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl md:text-[40px] lg:text-[44px] xl:text-[48px] font-bold text-black tracking-tight leading-[1.15] mb-5">
+              <span>Crafted to Your Measure, </span>
+              <span className="italic font-serif text-black">Tailored to Your Posture</span>
             </h1>
 
-            {/* Narrative Subtitle */}
-            <p className="text-sm sm:text-[14px] text-[#444444] font-sans font-normal leading-[1.75] max-w-md">
-              {heroDescription}
+            {/* Authentic Atelier Philosophy (Concise, authentic, no AI text) */}
+            <p className="text-sm sm:text-[15px] lg:text-base text-[#444444] font-sans font-normal leading-relaxed mb-6 sm:mb-8 max-w-lg">
+              Individually hand-drafted patterns, master collar architecture, and pure natural Egyptian cottons tailored to your unique posture and proportions.
             </p>
 
-            {/* Action Buttons: START DESIGNING & VIEW COLLECTION */}
-            <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3.5 sm:gap-4">
-              {/* Primary Black Button */}
-              <button
-                type="button"
-                onClick={handleStartDesigning}
-                className="inline-flex items-center gap-2.5 px-8 sm:px-9 py-4 bg-black hover:bg-neutral-800 active:scale-[0.98] text-white font-bold text-xs sm:text-[13px] tracking-[0.16em] uppercase rounded-full transition-all duration-300 shadow-sm hover:shadow cursor-pointer group"
-              >
-                <span>START DESIGNING</span>
-                <ChevronRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 stroke-[2.5]" />
-              </button>
-
-              {/* Secondary Luxury Outline Button */}
-              <Link
-                href="/shop"
-                className="inline-flex items-center gap-2.5 px-8 sm:px-9 py-4 bg-white hover:bg-neutral-100 border border-[#E5E3DD] active:scale-[0.98] text-black font-bold text-xs sm:text-[13px] tracking-[0.16em] uppercase rounded-full transition-all duration-300 cursor-pointer group shadow-sm hover:shadow"
-              >
-                <span>VIEW COLLECTION</span>
-                <ChevronRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 stroke-[2.5]" />
-              </Link>
+            {/* Craftsmanship Pillars with Subtle Dividers */}
+            <div className="border-t border-[#DEDBD5] divide-y divide-[#DEDBD5] mb-8 max-w-lg">
+              <div className="py-3 sm:py-3.5 flex items-center justify-between text-xs sm:text-[13px] text-black font-semibold tracking-wide">
+                <span>Individual Paper Pattern Drafted to Stance</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-black inline-block" />
+              </div>
+              <div className="py-3 sm:py-3.5 flex items-center justify-between text-xs sm:text-[13px] text-black font-semibold tracking-wide">
+                <span>Hand-Turned Collars & French Seams</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-black inline-block" />
+              </div>
+              <div className="py-3 sm:py-3.5 flex items-center justify-between text-xs sm:text-[13px] text-black font-semibold tracking-wide">
+                <span>100% Fit Guarantee with Free Atelier Alterations</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-black inline-block" />
+              </div>
             </div>
-          </div>
 
-          {/* MIDDLE CLEAR COLUMN */}
-          <div className="hidden lg:block lg:col-span-2 xl:col-span-2 pointer-events-none" />
-
-          {/* RIGHT COLUMN: FLOATING "BUILD YOUR OUTFIT" INTERACTIVE CARD */}
-          <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end">
-            <div
-              className="w-full max-w-[440px] bg-white/95 backdrop-blur-xl border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] shadow-sm p-6 sm:p-7 relative overflow-hidden"
-            >
-              {/* Card Header Title */}
-              <div className="text-center mb-4">
-                <h3 className="font-serif-luxury text-xs sm:text-sm font-bold tracking-[0.24em] uppercase text-black">
-                  BUILD YOUR OUTFIT
-                </h3>
-              </div>
-
-              {/* Category Preset Switcher */}
-              <div className="flex items-center justify-center gap-2 mb-5">
-                <button
-                  type="button"
-                  onClick={() => setActiveCategory("ethnic")}
-                  className={`px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    isEthnic
-                      ? "bg-black text-white shadow-sm font-extrabold"
-                      : "bg-[#F5F4F0] hover:bg-neutral-200 text-[#666666] border border-[#E5E3DD]"
-                  }`}
-                >
-                  Ethnic Set
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveCategory("bespoke_suit")}
-                  className={`px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    !isEthnic
-                      ? "bg-black text-white shadow-sm font-extrabold"
-                      : "bg-[#F5F4F0] hover:bg-neutral-200 text-[#666666] border border-[#E5E3DD]"
-                  }`}
-                >
-                  Bespoke Suit
-                </button>
-              </div>
-
-              {/* 2x2 Interactive Garment Grid */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-3.5 mb-5">
-                {currentCategoryGarments.map((garment) => {
-                  const isChecked = garment.selected;
-                  return (
-                    <div
-                      key={garment.id}
-                      onClick={() => toggleGarment(garment.id)}
-                      className={`relative flex flex-col justify-between p-4 min-h-[150px] sm:min-h-[160px] rounded-2xl transition-all duration-300 cursor-pointer select-none group ${
-                        isChecked
-                          ? "bg-white border-2 border-black shadow-sm"
-                          : "bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black/50"
-                      }`}
-                    >
-                      {/* Top Bar */}
-                      <div className="flex items-center justify-between gap-1 w-full z-10">
-                        <span className={`text-xs sm:text-[13px] font-bold ${isChecked ? "text-black" : "text-[#666666] group-hover:text-black"}`}>
-                          {garment.name}
-                        </span>
-
-                        {isChecked ? (
-                          <div className="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center shrink-0 shadow-xs">
-                            <Check size={12} strokeWidth={3} />
-                          </div>
-                        ) : (
-                          <div className="w-5 h-5 rounded-full bg-white text-[#666666] border border-[#E5E3DD] flex items-center justify-center shrink-0 group-hover:border-black group-hover:text-black">
-                            <Plus size={11} strokeWidth={2.5} />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Center Silhouette */}
-                      <div className="flex-1 flex items-center justify-center py-2 transition-transform duration-300 group-hover:scale-105">
-                        {garment.type === "kurta" && <KurtaIcon isChecked={isChecked} />}
-                        {garment.type === "pajama" && <PajamaIcon isChecked={isChecked} />}
-                        {garment.type === "sadri" && <SadriIcon isChecked={isChecked} />}
-                        {garment.type === "coat" && <CoatIcon isChecked={isChecked} />}
-                        {garment.type === "shirt" && <BespokeShirtIcon isChecked={isChecked} />}
-                        {garment.type === "trouser" && <TrouserIcon isChecked={isChecked} />}
-                        {garment.type === "waistcoat" && <WaistcoatIcon isChecked={isChecked} />}
-                        {garment.type === "blazer" && <CoatIcon isChecked={isChecked} />}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Status Pill */}
-              <div className="text-center mb-5">
-                <span className="inline-block text-[11px] text-[#666666] font-semibold tracking-wide">
-                  {selectedCount} of 4 Garments Selected • 100% Fit Guarantee
-                </span>
-              </div>
-
-              {/* Wide CTA Button */}
+            {/* Action Buttons: START CUSTOMIZING & BOOK ATELIER FITTING */}
+            <div className="flex flex-wrap items-center gap-3.5 sm:gap-4">
+              {/* Primary Black Button: Opens the 6-Step Customizer */}
               <button
                 type="button"
                 onClick={handleStartCustomizing}
-                className="w-full py-4 bg-black hover:bg-neutral-800 active:scale-[0.99] text-white font-bold rounded-full text-xs sm:text-[13px] tracking-[0.16em] uppercase transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center gap-2 cursor-pointer group"
+                className="inline-flex items-center gap-2.5 px-8 sm:px-9 py-4 bg-black hover:bg-neutral-800 active:scale-[0.98] text-white font-bold text-xs sm:text-[13px] tracking-[0.16em] uppercase rounded-full transition-all duration-300 shadow-sm hover:shadow cursor-pointer group"
               >
                 <span>START CUSTOMIZING</span>
                 <ChevronRight size={16} className="transition-transform duration-300 group-hover:translate-x-1 stroke-[2.5]" />
               </button>
+
+              {/* Secondary Luxury Outline Button: Smooth scroll to Appointment Booking */}
+              <button
+                type="button"
+                onClick={handleBookFitting}
+                className="inline-flex items-center gap-2.5 px-8 sm:px-9 py-4 bg-white hover:bg-[#F5F4F0] border border-[#DEDBD5] active:scale-[0.98] text-black font-bold text-xs sm:text-[13px] tracking-[0.16em] uppercase rounded-full transition-all duration-300 shadow-2xs hover:shadow cursor-pointer group"
+              >
+                <span>BOOK ATELIER FITTING</span>
+                <ArrowDown size={14} className="transition-transform duration-300 group-hover:translate-y-0.5 stroke-[2.5]" />
+              </button>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* RIGHT COLUMN: DAYLIGHT LUXURY SHIRTING EDITORIAL PHOTOGRAPHY              */}
+          {/* ========================================================================= */}
+          <div className="lg:col-span-6 xl:col-span-7 flex justify-center">
+            <div className="relative w-full rounded-[12px] overflow-hidden border border-[#DEDBD5] shadow-sm bg-white aspect-[16/10] group">
+              {/* High-Resolution Clean Editorial Photography (Zero AI text, Warm Daylight Studio) */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/banners/bespoke_shirting_hero_light.jpg"
+                alt="Suitoholic Bespoke Handcrafted Shirting"
+                className="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
+                loading="eager"
+              />
+
+              {/* Subtle ambient lighting vignette overlay */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-60" />
             </div>
           </div>
 

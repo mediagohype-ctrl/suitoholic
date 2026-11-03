@@ -422,9 +422,7 @@ export default function CustomizationModal({
                 {/* Stepper Header */}
                 <div className="mb-4 sm:mb-5">
                   <div className="flex items-center justify-center space-x-3 text-[11px] font-bold tracking-[0.24em] text-black uppercase mb-2 select-none">
-                    <div className="w-10 sm:w-16 h-[1px] bg-[#E5E3DD]" />
                     <span>STEP {currentStep} OF {totalSteps}</span>
-                    <div className="w-10 sm:w-16 h-[1px] bg-[#E5E3DD]" />
                   </div>
 
                   <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-3xl font-bold text-black tracking-tight uppercase leading-tight text-center sm:text-left">

@@ -31,9 +31,9 @@ export default function ShopNatureHeroBanner() {
         <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-16 xl:px-24 pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-16 text-black relative z-20">
           <div className="max-w-xl">
             {/* Main Dual-Tone Headline matching website aesthetic */}
-            <h1 className="font-serif-luxury text-3xl sm:text-4xl md:text-[44px] lg:text-[48px] xl:text-[54px] font-bold tracking-tight leading-[1.1] mb-5">
-              <span className="block text-black">Grown by nature.</span>
-              <span className="block italic text-black font-serif">Guided by restraint.</span>
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl md:text-[40px] lg:text-[44px] xl:text-[48px] font-bold tracking-tight leading-[1.15] mb-5">
+              <span className="text-black">Grown by nature, </span>
+              <span className="italic text-black font-serif">guided by restraint</span>
             </h1>
 
             {/* Subtitle / Philosophy Description */}

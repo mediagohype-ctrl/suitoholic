@@ -41,7 +41,7 @@ const DEFAULT_PRINCIPLES: PrincipleItem[] = [
 export default function PrinciplesSection({
   eyebrow = "WHAT WE VALUE",
   titleLine = "Principles That Guide ",
-  titleAccent = "Every Garment.",
+  titleAccent = "Every Garment",
   principles = DEFAULT_PRINCIPLES,
   image = "/about_principles_model.jpg",
   imageAlt = "Suitoholic Bespoke Tailored Suit Silhouette",
@@ -60,14 +60,6 @@ export default function PrinciplesSection({
             
             {/* Header Block */}
             <div className="space-y-3">
-              {/* Eyebrow Line */}
-              <div className="inline-flex items-center gap-3">
-                <span className="w-8 h-[1.5px] bg-black" />
-                <span className="text-[11px] sm:text-xs font-mono font-bold tracking-[0.26em] text-black uppercase">
-                  {eyebrow}
-                </span>
-              </div>
-
               {/* Main Headline */}
               <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] font-bold text-black tracking-tight leading-[1.15]">
                 {titleLine}

@@ -131,6 +131,6 @@ export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
   if (text.includes("steel") || text.includes("grey") || text.includes("gray")) return "/customizer/full_shirt_25.jpg";
   if (text.includes("sandstone") || text.includes("linen") || text.includes("oatmeal")) return "/customizer/full_shirt_13.jpg";
 
-  // Fallback for shirts only
-  return "/customizer/full_shirt_21.jpg";
+  // Fallback for shirts: return empty so we never show an incorrect color image
+  return "";
 }

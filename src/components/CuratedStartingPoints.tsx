@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { ChevronRight, Check, Plus } from "lucide-react";
+import { ChevronRight, Check, Plus, Heart } from "lucide-react";
 import { ProductItem } from "@/data/products";
+import { useWishlist } from "@/context/WishlistProvider";
 
 export interface CuratedLookItem {
   id: string | number;
@@ -107,26 +108,19 @@ function HeadingFlourish({ className = "" }: { className?: string }) {
 }
 
 export default function CuratedStartingPoints({
-  eyebrow = "CURATED STARTING POINTS",
   title = "Signature Bespoke Ensembles",
   description = "Start with a master-tailored bespoke dress shirt where every cloth, drape, and silhouette is engineered to perfection. Select a starting point below to custom tailor it live in our 3D Atelier.",
   items = DEFAULT_LOOKS,
   activeProductSlug,
   onSelectLook,
 }: CuratedStartingPointsProps) {
+  const { isInWishlist, toggleWishlist } = useWishlist();
   return (
     <section id="curated-starting-points" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden select-none">
       <div className="relative z-10 w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header: Eyebrow, Ornate Calligraphic Title, Subtitle */}
+        {/* Section Header: Ornate Calligraphic Title, Subtitle */}
         <div className="text-center max-w-4xl mx-auto space-y-3 sm:space-y-4 mb-10 sm:mb-14">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2">
-            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.28em] text-black">
-              {eyebrow}
-            </span>
-          </div>
-
           {/* Title Row: Left Flourish + Calligraphic Script Title + Right Flourish */}
           <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 w-full">
             {/* Left Flourish */}
@@ -157,6 +151,27 @@ export default function CuratedStartingPoints({
               >
                 {/* Upper Image Container: Flush edge-to-edge with card, zero gap */}
                 <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#F5F4F0]">
+                  {/* Top-Right Heart Wishlist Button - Always Visible */}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(item.id);
+                    }}
+                    type="button"
+                    aria-label={isInWishlist(item.id) ? "Remove from wishlist" : "Save to wishlist"}
+                    className="absolute top-2.5 right-2.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md cursor-pointer flex items-center justify-center opacity-100"
+                  >
+                    <Heart
+                      size={15}
+                      className={
+                        isInWishlist(item.id)
+                          ? "text-red-500 fill-red-500"
+                          : "text-white fill-white/10 stroke-white stroke-[2]"
+                      }
+                    />
+                  </button>
+
                   {/* Default Image: Collar & Fabric Macro View */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

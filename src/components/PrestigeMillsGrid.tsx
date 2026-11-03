@@ -152,7 +152,7 @@ const MILLS: MillItem[] = [
           <path d="M 6 18 Q 15 2 24 16 Q 32 2 40 18 L 48 18 Q 54 8 56 12" />
         </svg>
         <span className="text-[9.5px] sm:text-[10.5px] font-sans font-bold tracking-[0.24em] text-[#14110E] uppercase">
-          — TESSITURA MONTI —
+          TESSITURA MONTI
         </span>
         <span className="text-[7.5px] sm:text-[8px] tracking-[0.22em] text-[#8C7A6D] uppercase font-mono mt-0.5">
           DAL 1911

@@ -22,7 +22,7 @@ export interface AtelierStoryTimelineProps {
 export default function AtelierStoryTimeline({
   eyebrow = "OUR STORY",
   titlePrefix = "Two Decades of Craft in ",
-  titleAccent = "Delhi NCR.",
+  titleAccent = "Delhi NCR",
   description = "Founded in New Delhi by master bespoke cutters dedicated to heritage tailoring. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture, drape, and silhouette.",
   image = "/master_tailor_story.jpg",
   imageCaption = "Master Bespoke Cutter • New Delhi Atelier Bench",
@@ -70,21 +70,12 @@ export default function AtelierStoryTimeline({
         {/* Main 2-Column Responsive CSS Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
-          {/* LEFT COLUMN: Eyebrow, Title, Narrative & Master Tailor Media Card */}
+          {/* LEFT COLUMN: Title, Narrative & Master Tailor Media Card */}
           <div className="lg:col-span-5 space-y-5 sm:space-y-6">
-            {/* Eyebrow Badge in website theme */}
-            <div
-              style={{ borderRadius: "7px" }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-[#F5F4F0] border border-[#E5E3DD] text-black text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] shadow-2xs"
-            >
-              <span className="w-1.5 h-1.5 rotate-45 bg-black inline-block" />
-              <span>{eyebrow}</span>
-            </div>
-
             {/* Main Headline */}
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-black tracking-tight leading-[1.16]">
-              {titlePrefix}
-              <span className="italic font-serif font-normal text-black block sm:inline">
+              {titlePrefix}{" "}
+              <span className="italic font-serif font-normal text-black">
                 {titleAccent}
               </span>
             </h2>
@@ -138,11 +129,6 @@ export default function AtelierStoryTimeline({
                     style={{ borderRadius: "7px" }}
                     className="bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black hover:bg-white p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   >
-                    {/* Period Eyebrow */}
-                    <span className="inline-block text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-black mb-2.5">
-                      {item.period}
-                    </span>
-
                     {/* Milestone Title */}
                     <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-black group-hover:opacity-75 transition-opacity mb-3 leading-snug">
                       {item.title}

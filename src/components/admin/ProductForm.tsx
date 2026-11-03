@@ -1030,11 +1030,9 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
                   {/* Top info header matching screenshot */}
                   <div className="text-center py-2">
                     <div className="flex items-center justify-center gap-3 mb-2">
-                      <div className="h-px w-16 bg-[#D6CEBF]" />
                       <span className="text-[11px] font-bold uppercase tracking-widest text-[#6B7280]">
                         Step 5 of 6
                       </span>
-                      <div className="h-px w-16 bg-[#D6CEBF]" />
                     </div>
                     <h3 className="font-serif text-2xl font-bold uppercase tracking-wider text-[#14110E]">
                       {form.selectedSleeves === "half" ? "Collar Style & Details" : "Collar, Cuffs & Details"}

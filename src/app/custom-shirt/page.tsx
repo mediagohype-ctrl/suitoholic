@@ -381,14 +381,6 @@ function CustomShirtConfiguratorContent() {
               
               {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}
               <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
-                {/* Badge: SUITOHOLIC BESPOKE ATELIER • DELHI NCR */}
-                <div
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#F5F4F0] border border-[#E5E3DD] text-black text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] rounded-full shadow-xs"
-                >
-                  <MapPin size={12} className="text-black" />
-                  <span>{heroCopy.badge}</span>
-                </div>
-
                 {/* Main Headline */}
                 <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-bold text-black tracking-tight leading-[1.14]">
                   {heroCopy.title}

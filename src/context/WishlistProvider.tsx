@@ -5,11 +5,11 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 const STORAGE_KEY = "suitoholic_wishlist_ids";
 
 interface WishlistContextValue {
-  wishlistIds: number[];
+  wishlistIds: (number | string)[];
   wishlistCount: number;
-  isInWishlist: (productId: number) => boolean;
-  toggleWishlist: (productId: number) => void;
-  removeFromWishlist: (productId: number) => void;
+  isInWishlist: (productId: number | string) => boolean;
+  toggleWishlist: (productId: number | string) => void;
+  removeFromWishlist: (productId: number | string) => void;
   clearWishlist: () => void;
   isWishlistOpen: boolean;
   openWishlist: () => void;
@@ -19,7 +19,7 @@ interface WishlistContextValue {
 const WishlistContext = createContext<WishlistContextValue | null>(null);
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
-  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
+  const [wishlistIds, setWishlistIds] = useState<(number | string)[]>([]);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
@@ -49,17 +49,17 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   }, [wishlistIds, loaded]);
 
   const isInWishlist = useCallback(
-    (productId: number) => wishlistIds.includes(productId),
+    (productId: number | string) => wishlistIds.includes(productId),
     [wishlistIds]
   );
 
-  const toggleWishlist = useCallback((productId: number) => {
+  const toggleWishlist = useCallback((productId: number | string) => {
     setWishlistIds((prev) =>
       prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
     );
   }, []);
 
-  const removeFromWishlist = useCallback((productId: number) => {
+  const removeFromWishlist = useCallback((productId: number | string) => {
     setWishlistIds((prev) => prev.filter((id) => id !== productId));
   }, []);
 
@@ -93,7 +93,7 @@ export function useWishlist(): WishlistContextValue {
   const ctx = useContext(WishlistContext);
   if (!ctx) {
     return {
-      wishlistIds: [] as number[],
+      wishlistIds: [] as (number | string)[],
       wishlistCount: 0,
       isInWishlist: () => false,
       toggleWishlist: () => {},

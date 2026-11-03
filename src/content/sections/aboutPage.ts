@@ -6,8 +6,8 @@
 export const aboutPage = {
   // 1. Hero: brand mission
   hero: {
-    titleLine: "BESPOKE TAILORING.",
-    titleAccent: "ENGINEERED FOR YOUR INDIVIDUAL SILHOUETTE.",
+    titleLine: "BESPOKE TAILORING",
+    titleAccent: "ENGINEERED FOR YOUR INDIVIDUAL SILHOUETTE",
     summary:
       "Suitoholic is an authentic bespoke and made-to-measure tailoring house. We craft custom dress shirts, canvas-constructed suits, precision trousers, and ceremonial wear—cut from pure natural fibers and individually drafted to your exact measurements with a 100% Fit Guarantee.",
     // This phrase inside the summary is shown in bold (leave empty for none).
@@ -29,7 +29,7 @@ export const aboutPage = {
   // 2. What we craft: garment categories / services
   services: {
     titleLine: "WHAT WE CRAFT",
-    titleAccent: "FOR DISCERNING GENTLEMEN.",
+    titleAccent: "FOR DISCERNING GENTLEMEN",
     items: [
       {
         id: "custom-shirts",
@@ -81,7 +81,7 @@ export const aboutPage = {
   // 3. How it works: the 4-step tailoring process
   process: {
     titleLine: "HOW OUR TAILORING",
-    titleAccent: "PROCESS WORKS.",
+    titleAccent: "PROCESS WORKS",
     intro:
       "From choosing your Italian cloth to receiving a master-tailored garment at your doorstep in four seamless steps.",
     phaseLabel: "PHASE {step}",
@@ -121,7 +121,7 @@ export const aboutPage = {
   // 4. Craftsmanship blueprint: interactive hallmarks
   anatomy: {
     titleLine: "ANATOMY OF A",
-    titleAccent: "SUITOHOLIC GARMENT.",
+    titleAccent: "SUITOHOLIC GARMENT",
     intro:
       "Select any hallmark below to inspect the micro-tailoring standards enforced across every bespoke shirt and suit.",
     metricTemplate: "STANDARD: {metric}",
@@ -187,7 +187,7 @@ export const aboutPage = {
   // 5. Heritage chronicle: interactive milestones
   heritage: {
     titleLine: "TWO DECADES OF",
-    titleAccent: "SARTORIAL LEADERSHIP.",
+    titleAccent: "SARTORIAL LEADERSHIP",
     intro:
       "From our first bespoke cutting table to dressing leaders across 42 countries. Select a milestone below to explore our historical archives.",
     benchmarkTemplate: "ARCHIVAL BENCHMARK: {label}",
@@ -293,7 +293,7 @@ export const aboutPage = {
   cta: {
     eyebrow: "OUR COMMITMENT",
     titleLine: "A Standard We Hold",
-    titleAccent: "Ourselves To.",
+    titleAccent: "Ourselves To",
     description:
       "Every client who walks through our door receives the same level of attention — whether commissioning a single shirt or a full wardrobe. Precision, honesty, and craft are not reserved for special occasions. They are the baseline.",
     primaryButtonLabel: "BEGIN YOUR CONSULTATION",

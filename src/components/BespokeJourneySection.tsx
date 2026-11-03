@@ -69,20 +69,11 @@ export default function BespokeJourneySection() {
       className="relative w-full py-16 sm:py-24 lg:py-28 bg-[#ECEAE5] border-b border-[#E5E3DD] overflow-hidden select-none"
     >
       <div className="relative z-10 w-full max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
-        {/* Header: Eyebrow + Luxury Serif Headline */}
+        {/* Header: Luxury Serif Headline */}
         <div className="text-center mb-16 sm:mb-20 lg:mb-24 space-y-4">
-          {/* Eyebrow with flanking delicate lines */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4">
-            <span className="w-8 sm:w-12 h-[1px] bg-[#8C7355]/50" />
-            <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-[0.3em] text-[#726254]">
-              THE JOURNEY
-            </span>
-            <span className="w-8 sm:w-12 h-[1px] bg-[#8C7355]/50" />
-          </div>
-
           {/* Headline */}
           <h2 className="font-serif-luxury text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-normal text-black leading-[1.12] tracking-tight">
-            Five steps to a <span className="italic font-normal">singular</span> suit.
+            Five steps to a <span className="italic font-normal">singular</span> suit
           </h2>
         </div>
 

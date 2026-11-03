@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 
 export default function WorldsFinestFabricsIntro() {
   return (
@@ -10,18 +9,6 @@ export default function WorldsFinestFabricsIntro() {
       className="relative w-full bg-[#ECEAE5] text-black py-14 sm:py-20 px-6 sm:px-10 lg:px-16 border-b border-[#E5E3DD] overflow-hidden"
     >
       <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
-        
-        {/* Top Right Breadcrumb Matching Reference */}
-        <div className="flex justify-end">
-          <nav aria-label="Breadcrumb" className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-[0.26em] text-[#666666]">
-            <Link href="/" className="hover:text-black transition-colors">
-              SUITOHOLIC
-            </Link>
-            <span className="mx-2 text-[#999999]">&gt;</span>
-            <span className="text-black">FABRICS</span>
-          </nav>
-        </div>
-
         {/* Centered Luxury Headline */}
         <div className="text-center pt-2 sm:pt-4">
           <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-normal tracking-[0.16em] uppercase text-black leading-tight">

@@ -6,7 +6,7 @@ export const homeHero = {
   video: "/video/Suitoholic%20Approved.mp4",
   eyebrow: "EFFORTLESSLY ELEGANT",
   headingLine1: "NOT EVERY BODY",
-  headingLine2: "IS THE SAME SIZE.",
+  headingLine2: "IS THE SAME SIZE",
   primaryCtaLabel: "SHOP SHIRTS",
   primaryCtaHref: "/shop",
   secondaryCtaLabel: "CUSTOM FIT",

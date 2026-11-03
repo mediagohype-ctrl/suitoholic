@@ -107,7 +107,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           ? "bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
           : "bg-transparent border-b border-transparent"
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-between relative">
 
           {/* Mobile: Hamburger Button (Left) */}
           <div className="flex items-center lg:hidden z-10 w-8">
@@ -130,7 +130,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 width={280}
                 height={220}
                 priority
-                className="h-16 sm:h-20 lg:h-24 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
+                className="h-10 sm:h-12 lg:h-[52px] w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
               />
             </Link>
           </div>

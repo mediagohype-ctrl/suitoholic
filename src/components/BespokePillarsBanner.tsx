@@ -23,8 +23,8 @@ const PILLARS: PillarItem[] = [
   {
     id: "fabrics",
     badge: "HERITAGE TEXTILES",
-    headingWhite: "EXCEPTIONAL FABRICS.",
-    headingGold: "THOUGHTFULLY CHOSEN.",
+    headingWhite: "EXCEPTIONAL FABRICS",
+    headingGold: "THOUGHTFULLY CHOSEN",
     description:
       "The perfect shirt demands the best fabrics. Wondering where to find fabrics that match your refined taste? Discover a curated range of pure Egyptian Giza 140s/160s cottons, Belgian linens, Italian poplins, and Royal Dobby weaves sourced directly from world-renowned heritage mills.",
     ctaText: "EXPLORE FABRICS COLLECTION",
@@ -109,21 +109,11 @@ export default function BespokePillarsBanner() {
                 } ${isImageLeft ? "order-2" : "order-2 lg:order-1"}`}
               >
                 <div className="max-w-xl mx-auto lg:mx-0 flex flex-col items-start space-y-4 sm:space-y-5">
-                  {/* Eyebrow Badge */}
-                  {pillar.badge && (
-                    <div className="inline-flex items-center gap-2">
-                      {pillar.badgeIcon}
-                      <span className="text-[11px] sm:text-[11.5px] font-bold uppercase tracking-[0.24em] text-black">
-                        {pillar.badge}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Two-Line Luxury Serif Heading with distinct hierarchy */}
-                  <h2 className="font-serif-luxury text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] xl:text-[40px] font-bold uppercase tracking-[0.025em] leading-[1.12] flex flex-col space-y-1">
+                  {/* Single-Line Luxury Serif Heading */}
+                  <h2 className="font-serif-luxury text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] xl:text-[40px] font-bold uppercase tracking-[0.025em] leading-tight">
                     <span className="text-black">
                       {pillar.headingWhite}
-                    </span>
+                    </span>{" "}
                     <span className="text-neutral-700">
                       {pillar.headingGold}
                     </span>

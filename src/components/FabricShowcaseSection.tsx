@@ -30,7 +30,7 @@ export const luxuryFabricsList: FabricSwatch[] = [
     weave: "High-Density Fine Twill Weave",
     weight: "120 GSM • All-Season",
     origin: "Nile Delta Harvest • Spun in Italy",
-    image: "/fabric_sh403_rose_stripe.jpg",
+    image: "/new_shirts/shirt_1.jpg",
     description:
       "Soft blossom rose pink and optic white alternating candy/banker stripes with fine diagonal twill ribbing. Provides an immaculate refined aesthetic for modern power dressing.",
     bestFor: "Power Dressing Dress Shirts, Spread Collars",
@@ -45,7 +45,7 @@ export const luxuryFabricsList: FabricSwatch[] = [
     weave: "High-Density Fine Twill Weave",
     weight: "120 GSM • All-Season",
     origin: "Nile Delta Harvest • Spun in Italy",
-    image: "/fabric_sh403_royal_stripe.jpg",
+    image: "/new_shirts/shirt_24.jpg",
     description:
       "Crisp royal blue and optic white alternating bengal stripes with micro-twill diagonal ribbing. Exceptional color vibrancy and soft, wrinkle-resistant luster.",
     bestFor: "Executive Boardroom Shirts, French Cuff Formals",
@@ -60,7 +60,7 @@ export const luxuryFabricsList: FabricSwatch[] = [
     weave: "Precision Vertical Bengal Weave",
     weight: "115 GSM • Lightweight",
     origin: "Combed Long-Staple Cotton",
-    image: "/fabric_st16974_terracotta_stripe.jpg",
+    image: "/new_shirts/shirt_9.jpg",
     description:
       "Subtle dusty terracotta rose and chalk-white stripe with a smooth compact surface. Delivers a modern sartorial presence with effortless drape.",
     bestFor: "Contemporary Sartorial Dress Shirts, Spread Collars",
@@ -75,7 +75,7 @@ export const luxuryFabricsList: FabricSwatch[] = [
     weave: "Natural Slub Textural Cross-Weave",
     weight: "155 GSM • Summer Drape",
     origin: "Artisanal European Flax Milling",
-    image: "/fabric_superviola_sand_linen.jpg",
+    image: "/new_shirts/shirt_13.jpg",
     description:
       "Undyed natural oatmeal sand tone with authentic linen slub texture. Air-permeable, cool to the skin, and develops a richer patina with each wear.",
     bestFor: "Resort Tailoring, Relaxed Bespoke Shirts, Gurkha Trousers",
@@ -90,7 +90,7 @@ export const luxuryFabricsList: FabricSwatch[] = [
     weave: "Luminous Satin Twill Weave",
     weight: "140 GSM • Year-Round",
     origin: "Multi-Tension Double Spun",
-    image: "/fabric_imperial_gold_twill.jpg",
+    image: "/new_shirts/shirt_19.jpg",
     description:
       "Opulent liquid-gold finish with fluid drape and warm sheen. Structured yet featherweight, designed for ceremonial luxury and evening statements.",
     bestFor: "Ceremonial Bandhgalas, Evening Blazers, Statement Tuxedos",
@@ -105,7 +105,7 @@ export const luxuryFabricsList: FabricSwatch[] = [
     weave: "Micro-Basket Cross-Weave",
     weight: "135 GSM • High Breathability",
     origin: "Soft-Washed Flax Fiber",
-    image: "/fabric_flx01069_dove_grey_linen.jpg",
+    image: "/new_shirts/shirt_8.jpg",
     description:
       "Refined cool dove grey tone with subtle cross-hatch texture. Pre-washed for a soft hand-feel that drapes with relaxed elegance.",
     bestFor: "Monogrammed Summer Shirts, Unstructured Blazers",

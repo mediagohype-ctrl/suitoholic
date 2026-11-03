@@ -97,7 +97,7 @@ export default function HeroVideoBanner() {
           preload="auto"
           onLoadedData={() => setIsVideoLoaded(true)}
           onTimeUpdate={handleTimeUpdate}
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-700 ease-out"
+          className="absolute inset-0 w-full h-full object-cover object-top pointer-events-none transition-opacity duration-700 ease-out"
           style={{
             opacity: isVideoLoaded ? 1 : 0.85,
           }}
@@ -106,6 +106,9 @@ export default function HeroVideoBanner() {
           <source src="/video/Suitoholic_Approved.mp4" type="video/mp4" />
           <source src="/video/Suitoholic Approved.mp4" type="video/mp4" />
         </video>
+
+        {/* Soft top luxury vignette to guarantee clean contrast under the navbar */}
+        <div className="absolute inset-x-0 top-0 h-24 sm:h-28 bg-gradient-to-b from-[#DDD1C3]/60 via-[#DDD1C3]/20 to-transparent pointer-events-none z-10" />
 
         {/* Soft natural ambient gradient on left for crystal clear readability */}
         <div
@@ -127,7 +130,7 @@ export default function HeroVideoBanner() {
           {/* Main Luxury High-Contrast Heading */}
           <h1 className="font-serif-luxury font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[50px] leading-[1.08] text-black tracking-[0.02em] uppercase mb-4 sm:mb-6">
             {c.headingLine1} <br />
-            {c.headingLine2}
+            {c.headingLine2 ? c.headingLine2.replace(/\.+$/, "") : c.headingLine2}
           </h1>
 
           {/* Action Buttons: Stacked on Mobile, Side-by-Side on Desktop */}

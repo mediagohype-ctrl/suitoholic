@@ -64,7 +64,7 @@ export const fabricsPage = {
       opacity: "100% Solid Opaque",
       breathability: "High (4.8 / 5.0)",
       wrinkleResistance: "Natural Resilient Basketweave",
-      image: "/fabric_roll_oxford_white.jpg",
+      image: "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg",
       description:
         "Immaculate optic white 2-ply royal oxford with distinctive 2x2 micro-basketweave texture. Delivers exceptional drape, breathability, and timeless bespoke elegance.",
       shortInfo: "140/2 Ne Royal Oxford • 130 GSM",
@@ -88,7 +88,7 @@ export const fabricsPage = {
       opacity: "100% Deep Opaque",
       breathability: "Medium (3.8 / 5.0)",
       wrinkleResistance: "Self-Recovering Plush Pile",
-      image: "/fabric_roll_emerald_velvet.jpg",
+      image: "/api/media/38/whatsapp-image-2026-11-01-at-12-49-06-am.jpeg",
       description:
         "Opulent royal emerald green velvet with deep multidimensional sheen and feather-soft hand feel. Engineered for evening statements, smoking jackets, and red-carpet ceremonial bandhgalas.",
       shortInfo: "300 GSM Silk-Touch Velvet • Plush Luster",
@@ -112,7 +112,7 @@ export const fabricsPage = {
       opacity: "100% Opaque",
       breathability: "Maximum Breathability (5.0 / 5.0)",
       wrinkleResistance: "Naturally Resilient Knit Stretch",
-      image: "/fabric_roll_waffle_sage.jpg",
+      image: "/api/media/23/whatsapp-image-2026-10-31-at-8-50-12-pm.jpeg",
       description:
         "Earthy botanical sage green with a tactile 3D honeycomb waffle knit structure. Offers superior air circulation, subtle texture contrast, and refined smart-casual luxury.",
       shortInfo: "120/2 Ne 3D Honeycomb Knit • 160 GSM",
@@ -136,7 +136,7 @@ export const fabricsPage = {
       opacity: "100% Rich Opaque",
       breathability: "High (4.4 / 5.0)",
       wrinkleResistance: "Silken Memory Drape",
-      image: "/fabric_roll_bordeaux_silk.jpg",
+      image: "/api/media/25/whatsapp-image-2026-10-31-at-10-25-46-pm.jpeg",
       description:
         "Deep bordeaux ruby jewel tone with luminous silk-touch luster. Woven on precision jacquard looms for black-tie dinner jackets, festive kurtas, and luxury bespoke vests.",
       shortInfo: "200/2 Ne High Luster Silk • 145 GSM",
@@ -160,7 +160,7 @@ export const fabricsPage = {
       opacity: "100% Solid Opaque",
       breathability: "Excellent Thermal Regulation (4.9 / 5.0)",
       wrinkleResistance: "Ultra-High Natural Wool Creep Recovery",
-      image: "/fabric_roll_charcoal_wool.jpg",
+      image: "/api/media/32/whatsapp-image-2026-10-31-at-10-40-00-pm-2.jpeg",
       description:
         "Sleek charcoal slate melange with superfine Australian merino wool fibers. Naturally fluid drape with impeccable crease recovery engineered for bespoke 2-piece and 3-piece suiting.",
       shortInfo: "Super 140s Australian Merino • 260 GSM",
@@ -184,7 +184,7 @@ export const fabricsPage = {
       opacity: "100% Jet Black Opaque",
       breathability: "High (4.7 / 5.0)",
       wrinkleResistance: "Crisp Resilient Twill Memory",
-      image: "/fabric_roll_diamond_twill.jpg",
+      image: "/api/media/26/whatsapp-image-2026-10-31-at-10-25-47-pm.jpeg",
       description:
         "Intense midnight obsidian black with subtle diagonal micro-diamond luster. Soft yet structured, crafted for dramatic black formal dress shirts and tuxedo accents.",
       shortInfo: "160/2 Ne Egyptian Giza • 135 GSM",
@@ -208,7 +208,7 @@ export const fabricsPage = {
       opacity: "100% Opaque",
       breathability: "Very High (4.8 / 5.0)",
       wrinkleResistance: "Smooth Silky Hand with Natural Drape",
-      image: "/fabric_roll_iceblue_twill.jpg",
+      image: "/api/media/46/suitoholic-23-done-jpg.jpeg",
       description:
         "Serene glacier ice blue shade with smooth, micro-diagonal twill ribbing. Highly versatile luxury tone that pairs flawlessly with dark navy, charcoal, and beige suits.",
       shortInfo: "120/2 Ne French Twill • 125 GSM",
@@ -232,7 +232,7 @@ export const fabricsPage = {
       opacity: "Rich Semi-Opaque",
       breathability: "Maximum Breathability (5.0 / 5.0)",
       wrinkleResistance: "Distinguished Artisanal Linen Patina",
-      image: "/fabric_roll_terracotta_linen.jpg",
+      image: "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg",
       description:
         "Warm Tuscan terracotta clay tone with pronounced artisanal slub textures. Superior airflow and unmatched rustic elegance for resort tailoring and casual bespoke shirting.",
       shortInfo: "55 Lea Pure Normandy Flax • 165 GSM",
@@ -256,7 +256,7 @@ export const fabricsPage = {
       opacity: "100% Solid Opaque",
       breathability: "High Thermal Insulation (4.6 / 5.0)",
       wrinkleResistance: "Supreme Crease Recovery & Loft",
-      image: "/fabric_roll_camel_flannel.jpg",
+      image: "/api/media/7/whatsapp-image-2026-10-27-at-2-47-01-pm-1.jpeg",
       description:
         "Warm sartorial camel tan with a velvety brushed cashmere-wool surface. Exquisite warmth and featherlight luxury tailored for autumn overshirts and unlined sport coats.",
       shortInfo: "Cashmere-Wool Blend • 280 GSM",
@@ -280,7 +280,7 @@ export const fabricsPage = {
       opacity: "100% Rugged Opaque",
       breathability: "Medium-High (4.3 / 5.0)",
       wrinkleResistance: "Indestructible Heavyweight Structure",
-      image: "/fabric_roll_cavalry_drill.jpg",
+      image: "/api/media/45/suitoholic-24-done-jpg.jpeg",
       description:
         "Heavyweight olive cavalry drill with prominent diagonal double-rib ridges. Robust, structured, and ideal for durable bespoke trousers, safari jackets, and workwear tailoring.",
       shortInfo: "Heavy Cavalry Double-Drill • 270 GSM",
@@ -304,7 +304,7 @@ export const fabricsPage = {
       opacity: "100% Opaque",
       breathability: "High (4.8 / 5.0)",
       wrinkleResistance: "Natural Resilient Twill Drape",
-      image: "/fabric_sh403_rose_stripe.jpg",
+      image: "/api/media/24/whatsapp-image-2026-10-31-at-10-22-18-pm.jpeg",
       description:
         "Soft blossom rose pink and optic white alternating candy stripes with fine diagonal twill ribbing. Provides an immaculate refined aesthetic for modern power dressing.",
       shortInfo: "140/2 Ne Egyptian Giza • 120 GSM",
@@ -328,7 +328,7 @@ export const fabricsPage = {
       opacity: "100% Opaque",
       breathability: "High (4.8 / 5.0)",
       wrinkleResistance: "Natural Resilient Twill Drape",
-      image: "/fabric_sh403_royal_stripe.jpg",
+      image: "/api/media/8/whatsapp-image-2026-10-27-at-2-47-02-pm-2.jpeg",
       description:
         "Crisp royal blue and optic white alternating bengal stripes with micro-twill diagonal ribbing. Exceptional color vibrancy and soft wrinkle-resistant luster.",
       shortInfo: "140/2 Ne Egyptian Giza • 120 GSM",
@@ -352,7 +352,7 @@ export const fabricsPage = {
       opacity: "100% Opaque",
       breathability: "Very High (4.9 / 5.0)",
       wrinkleResistance: "Smooth Compact Surface",
-      image: "/fabric_st16974_terracotta_stripe.jpg",
+      image: "/api/media/44/suitoholic-25done-jpg.jpeg",
       description:
         "Subtle dusty terracotta rose and chalk-white stripe with a smooth compact surface. Delivers a modern sartorial presence with effortless drape.",
       shortInfo: "120/2 Ne Long-Staple Cotton • 115 GSM",
@@ -376,7 +376,7 @@ export const fabricsPage = {
       opacity: "Semi-Opaque (Linen Texture)",
       breathability: "Maximum Breathability (5.0 / 5.0)",
       wrinkleResistance: "Characteristic Natural Linen Patina",
-      image: "/fabric_superviola_sand_linen.jpg",
+      image: "/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg",
       description:
         "Undyed natural oatmeal sand tone with authentic linen slub texture. Air-permeable, cool to the skin, and develops a richer softer hand-feel with each wear.",
       shortInfo: "60 Lea Pure Normandy Flax • 155 GSM",
@@ -414,7 +414,7 @@ export const fabricsPage = {
   editorial: {
     eyebrow: "SARTORIAL PRECISION",
     headingLine1: "INDIVIDUALLY DRAFTED & HAND-CUT",
-    headingLine2: "ON BESPOKE PATTERNS.",
+    headingLine2: "ON BESPOKE PATTERNS",
     body: "Before a single needle touches your chosen cloth, every meter is rested for 48 hours to neutralize weave tension, inspected under daylight lamps, and hand-chalked to your exact anatomical posture.",
     stats: [
       { value: "140/2 Ne", label: "Two-Fold Giza Yarn" },

@@ -5,7 +5,7 @@ export const atelierBanner = {
   image: "/tailoring_tools.jpg",
   imageAlt: "Bespoke Tailoring Atelier Craftsmanship",
   headingLine1: "MASTER CRAFTED",
-  headingAccent: "FOR DISTINCTION.",
+  headingAccent: "FOR DISTINCTION",
   description:
     "From hand-stitched canvas chest pieces and Italian horn buttons to precision 40-point custom measurement algorithms — experience luxury menswear tailored exclusively for your silhouette.",
   pillars: [

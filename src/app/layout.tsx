@@ -7,6 +7,7 @@ import { mergeContent } from "@/content/merge";
 import { contentDefaults } from "@/content/registry";
 import { CartProvider } from "@/context/CartProvider";
 import { WishlistProvider } from "@/context/WishlistProvider";
+import { CustomizerModalProvider } from "@/context/CustomizerModalProvider";
 import { SiteDataProvider } from "@/context/SiteDataProvider";
 import { getSiteBundle } from "@/lib/site-data";
 
@@ -65,7 +66,9 @@ export default async function RootLayout({
         <div className="relative z-10 flex-1 flex flex-col min-h-screen w-full overflow-x-clip">
           <SiteDataProvider value={site}>
             <CartProvider>
-              <WishlistProvider>{children}</WishlistProvider>
+              <WishlistProvider>
+                <CustomizerModalProvider>{children}</CustomizerModalProvider>
+              </WishlistProvider>
             </CartProvider>
           </SiteDataProvider>
         </div>

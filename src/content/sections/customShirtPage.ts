@@ -44,7 +44,7 @@ export const customShirtPage = {
   timelineStory: {
     eyebrow: "OUR STORY",
     titlePrefix: "Two Decades of Craft in ",
-    titleAccent: "Delhi NCR.",
+    titleAccent: "Delhi NCR",
     description:
       "Founded in New Delhi by master bespoke cutters dedicated to heritage craftsmanship. Reclaiming the uncompromising art of individual pattern drafting, Suitoholic crafts every single garment from a fresh paper pattern engineered to your unique posture, drape, and silhouette.",
     image: "/master_tailor_story.jpg",

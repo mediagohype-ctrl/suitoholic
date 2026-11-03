@@ -34,7 +34,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 88,
     durability: 96,
     drape: 92,
-    image: "/new_shirts/shirt_13.jpg",
+    image: "/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg",
     code: "V-13672/06",
   },
   {
@@ -50,7 +50,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 94,
     durability: 91,
     drape: 95,
-    image: "/new_shirts/shirt_21.jpg",
+    image: "/api/media/8/whatsapp-image-2026-10-27-at-2-47-02-pm-2.jpeg",
     code: "SH-403-BL",
   },
   {
@@ -66,7 +66,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 95,
     durability: 90,
     drape: 93,
-    image: "/new_shirts/shirt_14.jpg",
+    image: "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg",
     code: "SH-403-TC",
   },
   {
@@ -82,7 +82,7 @@ export const HERO_FABRIC_ITEMS: HeroFabricItem[] = [
     softness: 97,
     durability: 89,
     drape: 96,
-    image: "/new_shirts/shirt_19.jpg",
+    image: "/api/media/7/whatsapp-image-2026-10-27-at-2-47-01-pm-1.jpeg",
     code: "SJ-200-BX",
   },
 ];

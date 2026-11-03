@@ -2,9 +2,11 @@
 
 import React, { useRef, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Heart } from "lucide-react";
 import { CollectionCategory, ProductItem } from "@/data/products";
 import ModernProductCard from "./ModernProductCard";
+import { useCustomizer } from "@/context/CustomizerModalProvider";
+import { useWishlist } from "@/context/WishlistProvider";
 
 interface ModernCollectionSectionProps {
   collection: CollectionCategory;
@@ -81,6 +83,7 @@ const FALLBACK_FABRIC_ITEMS: ProductItem[] = [
 ];
 
 export default function ModernCollectionSection({
+
   collection,
   products,
   headerTitle,
@@ -125,6 +128,8 @@ export default function ModernCollectionSection({
   }, [uniqueProducts]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { openCustomizer } = useCustomizer();
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const handlePrev = () => {
     if (!scrollRef.current) return;
@@ -161,7 +166,7 @@ export default function ModernCollectionSection({
     >
       {/* Centered Heading & Subtitle matching luxury scale */}
       <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
+        <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
           {headerTitle || collection.title}
         </h2>
         {(collection.subtitle || (collection as unknown as { description?: string })?.description) && (
@@ -207,66 +212,75 @@ export default function ModernCollectionSection({
                 className="group flex flex-col items-center w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)] shrink-0"
               >
                 {/* Square Rounded Card Image Container with 9px border radius */}
-                <Link
-                  href={`/custom-shirt?product=${product.slug}`}
-                  className="relative w-full aspect-square rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-xs group-hover:shadow-md transition-all duration-500 block cursor-pointer"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                    loading="lazy"
-                  />
-                  {/* Subtle hover overlay */}
-                  <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
+                <div className="relative w-full aspect-square rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-xs group-hover:shadow-md transition-all duration-500 block">
+                  <Link
+                    href={`/product/${product.slug}`}
+                    className="block w-full h-full cursor-pointer relative"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                      loading="lazy"
+                    />
+                    {/* Subtle hover overlay */}
+                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
+                  </Link>
 
-                  {/* Floating Customise Pill on hover */}
-                  <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 px-3 pointer-events-none">
-                    <span className="bg-white/95 backdrop-blur-xs text-[#14110E] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] px-4 py-1.5 rounded-full shadow-md border border-[#E5E3DD] flex items-center gap-1.5">
-                      <Plus size={12} strokeWidth={2.5} />
-                      Customise Fit
-                    </span>
-                  </div>
-                </Link>
+                  {/* Top Right Heart Wishlist Button - Always Visible */}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(product.id);
+                    }}
+                    type="button"
+                    aria-label={isInWishlist(product.id) ? "Remove from wishlist" : "Save to wishlist"}
+                    className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md cursor-pointer flex items-center justify-center opacity-100"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        isInWishlist(product.id)
+                          ? "text-red-500 fill-red-500"
+                          : "text-white fill-white/10 stroke-white stroke-[2]"
+                      }
+                    />
+                  </button>
+                </div>
 
                 {/* Sub-label & Customise Button placed directly UNDER card */}
-                <div className="w-full pt-3 sm:pt-3.5 px-0.5 space-y-2.5">
-                  {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0 flex-1 space-y-0.5 text-left">
-                      <Link href={`/product/${product.slug}`} className="block">
-                        <h3
-                          title={product.name}
-                          className="text-[11.5px] sm:text-[12.5px] font-bold text-black hover:opacity-75 transition-opacity truncate tracking-wide uppercase leading-snug"
-                        >
-                          {product.name}
-                        </h3>
-                      </Link>
-                      <div className="text-[10px] sm:text-[11px] font-normal text-[#666666] tracking-normal uppercase">
-                        RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : (product.price || "").replace("₹", "").trim()}
-                      </div>
-                    </div>
-
-                    {/* Right: Prominent Customise Plus Button */}
-                    <Link
-                      href={`/custom-shirt?product=${product.slug}`}
-                      aria-label={`Customise ${product.name}`}
-                      title="Customise Shirt"
-                      className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
-                    >
-                      <Plus size={15} strokeWidth={2.5} />
+                <div className="w-full mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-0.5">
+                  {/* Left: Product Name & Price */}
+                  <div className="min-w-0 flex-1 space-y-0.5 text-left">
+                    <Link href={`/product/${product.slug}`} className="block">
+                      <h3
+                        title={product.name}
+                        className="text-[11px] sm:text-[12px] font-bold text-black hover:opacity-75 transition-opacity truncate tracking-wide uppercase leading-snug"
+                      >
+                        {product.name}
+                      </h3>
                     </Link>
+                    <div className="text-[10px] sm:text-[11px] font-normal text-[#666666] tracking-normal uppercase">
+                      RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : (product.price || "").replace("₹", "").trim()}
+                    </div>
                   </div>
 
-                  {/* Prominent Customise Pill Button with Plus */}
-                  <Link
-                    href={`/custom-shirt?product=${product.slug}`}
-                    className="w-full inline-flex items-center justify-center gap-1.5 bg-[#14110E] hover:bg-neutral-800 text-white text-[10px] sm:text-[11px] font-bold tracking-[0.2em] py-2 sm:py-2.5 rounded-full transition-all duration-300 uppercase shadow-xs hover:shadow-md hover:scale-101 active:scale-98 cursor-pointer"
+                  {/* Right: Customise Plus Button -> Opens 6-Step CustomizationModal */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      openCustomizer(product);
+                    }}
+                    aria-label={`Customise ${product.name}`}
+                    title="Customise Shirt (6 Steps)"
+                    className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
                   >
-                    <Plus size={13} strokeWidth={2.5} />
-                    <span>CUSTOMISE</span>
-                  </Link>
+                    <Plus size={15} strokeWidth={2.5} />
+                  </button>
                 </div>
               </div>
             ))}
