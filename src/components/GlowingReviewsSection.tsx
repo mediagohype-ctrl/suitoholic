@@ -115,7 +115,7 @@ export default function GlowingReviewsSection() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-10 sm:mb-14">
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-normal tracking-[0.03em] text-[#14110E] leading-tight">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             They came unsure, left glowing
           </h2>
           <div className="flex items-center justify-center gap-2 mt-2.5">

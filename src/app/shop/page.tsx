@@ -177,13 +177,13 @@ function ShopContent() {
 
             {/* Section Heading: Refined Luxury Title */}
             <div className="flex items-center justify-center gap-3 sm:gap-6 w-full pt-1 pb-1">
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight text-center">
+              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight text-center">
                 {selectedCategory === "all" ? (c.title || "THE BESPOKE COLLECTION") : `${currentCategoryName} COLLECTION`}
               </h2>
             </div>
 
             {/* Top Control Bar with Filters & Sorting */}
-            <div className="bg-white border border-[#E5E3DD] rounded-2xl md:rounded-full px-5 sm:px-6 py-3.5 flex flex-wrap gap-3 items-center justify-between text-[11px] text-[#666666] font-medium shadow-sm">
+            <div className="bg-white border border-[#E5E3DD] rounded-[12px] px-5 sm:px-6 py-3.5 flex flex-wrap gap-3 items-center justify-between text-[11px] text-[#666666] font-medium shadow-sm">
               <div className="flex items-center space-x-2 min-w-0">
                 <span className="font-semibold text-black uppercase tracking-wider truncate">{currentCategoryName}</span>
                 <span className="text-black/30">•</span>
@@ -195,7 +195,7 @@ function ShopContent() {
                 <button
                   type="button"
                   onClick={() => setFiltersOpen((prev) => !prev)}
-                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[8px] border text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     filtersOpen || activeFiltersCount > 0
                       ? "bg-black text-white border-black"
                       : "bg-[#F7F6F3] text-black border-[#E5E3DD] hover:border-black"
@@ -224,7 +224,7 @@ function ShopContent() {
                     </span>
                   </button>
                   {sortOpen && (
-                    <div className="absolute right-0 top-full mt-2 z-30 bg-white border border-[#E5E3DD] rounded-2xl shadow-xl py-2 min-w-[210px]">
+                    <div className="absolute right-0 top-full mt-2 z-30 bg-white border border-[#E5E3DD] rounded-[12px] shadow-xl py-2 min-w-[210px]">
                       {(Object.keys(c.sortOptions) as SortKey[]).map((key) => (
                         <button
                           key={key}
@@ -245,7 +245,7 @@ function ShopContent() {
 
             {/* Expandable Filter Drawer */}
             {filtersOpen && (
-              <div className="bg-white border border-[#E5E3DD] rounded-2xl p-5 sm:p-6 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200 space-y-6">
+              <div className="bg-white border border-[#E5E3DD] rounded-[12px] p-5 sm:p-6 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200 space-y-6">
                 <div className="flex items-center justify-between pb-3 border-b border-[#F0EFEA]">
                   <div className="flex items-center gap-2">
                     <Filter size={14} className="text-[#8C7355]" />
@@ -427,7 +427,7 @@ function ShopContent() {
                 <section key={sec.id} id={sec.id} className="w-full flex flex-col items-center select-none">
                   {/* Centered Heading in Luxury Uppercase */}
                   <div className="text-center mb-6 sm:mb-8 lg:mb-10">
-                    <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
+                    <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                       {sec.title}
                     </h2>
                   </div>

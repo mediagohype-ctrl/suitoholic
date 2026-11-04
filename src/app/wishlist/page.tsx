@@ -132,7 +132,7 @@ export default function WishlistPage() {
       ) : (
         <div className="space-y-6">
           {/* Top Control Bar */}
-          <div className="bg-white border border-[#E5E3DD] rounded-2xl md:rounded-full px-5 sm:px-6 py-3.5 flex flex-wrap gap-3 items-center justify-between text-[11px] text-[#666666] font-medium shadow-sm">
+          <div className="bg-white border border-[#E5E3DD] rounded-[12px] px-5 sm:px-6 py-3.5 flex flex-wrap gap-3 items-center justify-between text-[11px] text-[#666666] font-medium shadow-sm">
             <div className="flex items-center space-x-2">
               <span className="font-semibold text-black uppercase tracking-wider">
                 {savedProducts.length} {savedProducts.length === 1 ? "PIECE SAVED" : "PIECES SAVED"}
@@ -153,7 +153,7 @@ export default function WishlistPage() {
 
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F4F0] hover:bg-black hover:text-white text-black text-xs font-bold uppercase tracking-wider transition-all"
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-[8px] bg-[#F5F4F0] hover:bg-black hover:text-white text-black text-xs font-bold uppercase tracking-wider transition-all"
               >
                 <span>Continue Shopping</span>
                 <ArrowRight size={12} />

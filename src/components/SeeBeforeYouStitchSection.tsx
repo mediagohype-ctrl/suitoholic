@@ -126,7 +126,7 @@ export default function SeeBeforeYouStitchSection() {
         
         {/* Section Header: Main Title */}
         <div className="text-center mb-10 sm:mb-14">
-          <h2 className="font-serif-luxury text-2xl sm:text-4xl lg:text-[44px] font-normal tracking-[0.04em] text-black leading-tight">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             {content?.sectionTitle || "Your fabric, as a finished look"}
           </h2>
         </div>

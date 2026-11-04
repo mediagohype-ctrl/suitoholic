@@ -129,7 +129,7 @@ export default function CuratedStartingPoints({
             <HeadingFlourish className="text-black/30 shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto" />
 
             {/* Heading */}
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl md:text-5xl lg:text-[52px] text-black leading-[1.05] tracking-normal whitespace-nowrap">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight whitespace-nowrap">
               {title}
             </h2>
 
@@ -197,11 +197,11 @@ export default function CuratedStartingPoints({
 
                 {/* Lower Details Strip: Title, Price & Plus Button */}
                 <div className="p-3.5 sm:p-4 flex items-center justify-between gap-2 text-left">
-                  <h3 className="font-bold text-[11px] sm:text-[12.5px] text-black uppercase tracking-wide truncate group-hover:text-neutral-700 transition-colors leading-snug min-w-0">
+                  <h3 className="font-bold text-[10.5px] sm:text-xs tracking-[0.18em] text-black uppercase truncate group-hover:text-neutral-700 transition-colors leading-snug min-w-0">
                     {item.title}
                   </h3>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="font-bold text-xs text-black">{item.price}</span>
+                    <span className="font-bold text-[10.5px] sm:text-xs tracking-[0.08em] text-black">{item.price}</span>
                     <button
                       type="button"
                       onClick={(e) => {

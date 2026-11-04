@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, User } from "lucide-react";
 
 interface TestimonialItem {
   id: number;
@@ -216,7 +216,7 @@ export default function TestimonialsSection() {
     <section className="py-14 sm:py-18 lg:py-24 bg-[#F8F7F4] border-t border-b border-[#E5E3DD] w-full relative overflow-hidden select-none font-sans">
       {/* Header: Title + Subtitle */}
       <div className="flex flex-col items-center justify-center text-center mb-10 sm:mb-14 px-4 max-w-4xl mx-auto">
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
+        <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           WHAT OUR CUSTOMERS SAY
         </h2>
         <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[16px] text-[#666666] font-normal tracking-normal max-w-xl">
@@ -293,14 +293,9 @@ export default function TestimonialsSection() {
 
                 {/* BOTTOM ROW: AVATAR ON LEFT + AUTHOR DETAILS ON RIGHT */}
                 <div className="flex items-center gap-3.5 mt-auto pt-4 border-t border-[#F1EFEA]">
-                  {/* Circular Avatar */}
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden shrink-0 border border-[#E5E3DD] shadow-2xs bg-[#FAF8F5]">
-                    <img
-                      src={item.avatar}
-                      alt={item.name}
-                      className="w-full h-full object-cover rounded-full"
-                      loading="lazy"
-                    />
+                  {/* People / User Logo */}
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden shrink-0 border border-[#E5E3DD] shadow-2xs bg-[#F5F4F0] flex items-center justify-center text-[#222222]">
+                    <User size={19} className="text-[#333333] stroke-[1.8]" />
                   </div>
 
                   {/* Author Details (Name, Role/Product, Location/Tagline) */}

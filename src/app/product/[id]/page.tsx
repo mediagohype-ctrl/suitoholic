@@ -447,7 +447,7 @@ export default function ProductDetailPage() {
                 <span>SIGNATURE EDIT</span>
               </div>
 
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
+              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                 {c.macroTitle || "BEST SELLERS"}
               </h2>
 
@@ -475,7 +475,7 @@ export default function ProductDetailPage() {
                   <span className="text-[10.5px] font-bold tracking-[0.28em] text-[#666666] uppercase block mb-1">
                     {c.completeLookEyebrow}
                   </span>
-                  <h2 className="text-2xl sm:text-3xl font-normal font-serif-luxury text-black uppercase tracking-wider">
+                  <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                     {c.completeLookTitle}
                   </h2>
                 </div>

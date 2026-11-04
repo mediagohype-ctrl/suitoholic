@@ -420,41 +420,32 @@ export default function PrestigeMillsGrid() {
       aria-label="World-Renowned Textile Mills Partner Showcase"
       className="relative w-full bg-[#ECEAE5] py-14 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 border-b border-[#E5E3DD] select-none overflow-hidden"
     >
-      {/* Background Floating Luxury Typography Parallax Stream (Layer 1) */}
+      {/* Background Centered Luxury Typography Watermark (Static - No Horizontal Scroll Drift) */}
       <div 
         aria-hidden="true"
-        className="pointer-events-none absolute -top-8 sm:-top-12 left-0 w-full overflow-hidden opacity-[0.04] select-none"
-        style={{
-          transform: `translate3d(${scrollYProgress * -130 - mouseParallax.x * 1.5}px, ${scrollYProgress * 35 - mouseParallax.y}px, 0)`,
-          willChange: "transform",
-        }}
+        className="pointer-events-none absolute top-4 sm:top-6 inset-x-0 w-full overflow-hidden opacity-[0.04] select-none flex items-center justify-center"
       >
-        <span className="font-serif-luxury text-[130px] sm:text-[190px] lg:text-[230px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none">
-          SUITOHOLIC • SUITOHOLIC • SUITOHOLIC • SUITOHOLIC • SUITOHOLIC
+        <span className="font-serif-luxury text-[12vw] sm:text-[10vw] lg:text-[130px] xl:text-[160px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none text-center select-none">
+          SUITOHOLIC
         </span>
       </div>
 
-      {/* Background Floating Luxury Monogram Stream (Layer 2 - Counter Parallax) */}
+      {/* Background Centered Luxury Monogram Watermark (Bottom - Static) */}
       <div 
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-12 sm:-bottom-16 right-0 w-full overflow-hidden opacity-[0.03] select-none"
-        style={{
-          transform: `translate3d(${scrollYProgress * 130 + mouseParallax.x * 1.5}px, ${scrollYProgress * -35 + mouseParallax.y}px, 0)`,
-          willChange: "transform",
-        }}
+        className="pointer-events-none absolute bottom-4 sm:bottom-8 inset-x-0 w-full overflow-hidden opacity-[0.025] select-none flex items-center justify-center"
       >
-        <span className="font-serif-luxury text-[130px] sm:text-[190px] lg:text-[230px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none">
-          SUITOHOLIC • BESPOKE ATELIER • SUITOHOLIC • LUXURY FABRICS • SUITOHOLIC
+        <span className="font-serif-luxury text-[10vw] sm:text-[8vw] lg:text-[100px] xl:text-[120px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none text-center select-none">
+          SUITOHOLIC ATELIER
         </span>
       </div>
 
-      {/* Loom Thread Guide Lines (Parallax Depth Layer 3) */}
+      {/* Loom Thread Guide Lines (Static Texture) */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.035]"
         style={{
           backgroundImage: "repeating-linear-gradient(90deg, #000000 0, #000000 1px, transparent 1px, transparent 80px)",
-          transform: `translate3d(${scrollYProgress * 20}px, 0, 0)`,
         }}
       />
 
@@ -467,7 +458,7 @@ export default function PrestigeMillsGrid() {
             transform: `translate3d(0, ${scrollYProgress * -10}px, 0)`,
           }}
         >
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] uppercase text-black leading-tight">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             OUR ESTEEMED TEXTILE PARTNERS
           </h2>
 

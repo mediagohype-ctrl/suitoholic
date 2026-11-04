@@ -43,9 +43,9 @@ export default function NewsletterSection() {
 
   return (
     <section className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 my-12 sm:my-16 lg:my-20 select-none">
-      <div className="relative w-full bg-white rounded-[24px] sm:rounded-[32px] p-8 sm:p-12 lg:p-16 xl:p-20 border border-[#E5E3DD] shadow-sm overflow-hidden min-h-[280px] sm:min-h-[320px] lg:min-h-[360px] flex items-center">
+      <div className="relative w-full bg-white rounded-[12px] p-10 sm:p-14 lg:p-20 xl:p-24 border border-[#E5E3DD] shadow-sm overflow-hidden min-h-[340px] sm:min-h-[390px] lg:min-h-[430px] flex items-center">
 
-        <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 py-3 sm:py-6">
+        <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 py-4 sm:py-8">
 
           {/* Left Column: Title & Subtitle Information */}
           <div className="w-full lg:w-5/12 space-y-3.5 text-left">

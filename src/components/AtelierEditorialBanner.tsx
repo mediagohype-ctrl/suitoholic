@@ -26,14 +26,14 @@ export default function AtelierEditorialBanner() {
   return (
     <section className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-8 sm:my-12 lg:my-16 select-none">
       {/* Luxury Editorial Heading */}
-      <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8 lg:mb-10 flex flex-col items-center">
+      <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8 lg:mb-10 flex flex-col items-center">
         {/* Main Heading */}
-        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           {c.videoTitle || "TAILORING IN MOTION"}
         </h2>
 
-        {/* Editorial Subtitle */}
-        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal tracking-normal max-w-xl text-center leading-relaxed">
+        {/* Editorial Subtitle - Single Line */}
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal tracking-normal max-w-none sm:whitespace-nowrap text-center leading-relaxed">
           {c.videoSubtitle || "Artisanal precision, 360° fluid drape, and bespoke master craftsmanship in motion."}
         </p>
       </div>

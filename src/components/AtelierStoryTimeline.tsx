@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 
 export interface TimelineMilestone {
@@ -47,6 +47,41 @@ export default function AtelierStoryTimeline({
     },
   ],
 }: AtelierStoryTimelineProps) {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!timelineRef.current) return;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!timelineRef.current) return;
+          const rect = timelineRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+
+          // Start growing as timeline enters lower portion of viewport (75% from top)
+          const startTrigger = windowHeight * 0.75;
+          // Finish reaching 100% when timeline bottom reaches upper-middle (35% from top)
+          const endTrigger = windowHeight * 0.35;
+
+          const totalDistance = rect.height + (startTrigger - endTrigger);
+          const scrolled = startTrigger - rect.top;
+          const rawProgress = scrolled / totalDistance;
+
+          setScrollProgress(Math.max(0, Math.min(1, rawProgress)));
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section className="relative w-full bg-white text-black py-16 sm:py-20 lg:py-24 border-b border-[#E5E3DD] overflow-hidden select-none">
       {/* Subtle Tailor Cutting Grid Pattern */}
@@ -105,42 +140,65 @@ export default function AtelierStoryTimeline({
 
           {/* RIGHT COLUMN: Vertical Timeline & Milestone Cards in CSS Grid */}
           <div className="lg:col-span-7 pt-8 sm:pt-12 lg:pt-20 xl:pt-24">
-            <div className="relative grid grid-cols-1 gap-8 sm:gap-10 lg:gap-11">
+            <div ref={timelineRef} className="relative grid grid-cols-1 gap-8 sm:gap-10 lg:gap-11">
               
-              {/* Continuous Timeline Line (aligned on x = 12px) */}
+              {/* Continuous Timeline Track Container (aligned on x = 12px) */}
               <div
-                className="pointer-events-none absolute left-3 top-3 bottom-8 w-[2px] -translate-x-1/2 bg-[#E5E3DD]"
+                className="pointer-events-none absolute left-3 top-3 bottom-8 w-[2px] -translate-x-1/2 bg-[#E5E3DD] overflow-hidden rounded-full"
                 aria-hidden="true"
-              />
+              >
+                {/* Active Scroll Progress Line that increases downwards */}
+                <div
+                  className="w-full bg-black rounded-b-full transition-[height] duration-75 ease-out will-change-[height]"
+                  style={{
+                    height: `${scrollProgress * 100}%`,
+                  }}
+                />
+              </div>
 
               {/* Milestone Rows in CSS Grid [24px_1fr] */}
-              {milestones.map((item, idx) => (
-                <div key={idx} className="relative grid grid-cols-[24px_1fr] gap-5 sm:gap-7 items-start group">
-                  {/* Column 1: Timeline Circular Target Node */}
-                  <div
-                    className="w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 border-black bg-white flex items-center justify-center shadow-xs group-hover:scale-110 transition-all z-10"
-                    aria-hidden="true"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-black group-hover:bg-neutral-800 transition-colors" />
-                  </div>
+              {milestones.map((item, idx) => {
+                const nodeThreshold = milestones.length > 1
+                  ? (idx / (milestones.length - 1)) * 0.78 + 0.05
+                  : 0.05;
+                const isReached = scrollProgress >= nodeThreshold;
 
-                  {/* Column 2: Milestone Content Box */}
-                  <div
-                    style={{ borderRadius: "7px" }}
-                    className="bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black hover:bg-white p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
-                  >
-                    {/* Milestone Title */}
-                    <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-black group-hover:opacity-75 transition-opacity mb-3 leading-snug">
-                      {item.title}
-                    </h3>
+                return (
+                  <div key={idx} className="relative grid grid-cols-[24px_1fr] gap-5 sm:gap-7 items-start group">
+                    {/* Column 1: Timeline Circular Target Node */}
+                    <div
+                      className={`w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-300 z-10 ${
+                        isReached
+                          ? "border-black shadow-xs ring-4 ring-black/10 scale-105"
+                          : "border-[#C8C5BD] scale-95"
+                      } group-hover:scale-110`}
+                      aria-hidden="true"
+                    >
+                      <div
+                        className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                          isReached ? "bg-black" : "bg-[#C8C5BD]"
+                        } group-hover:bg-neutral-800`}
+                      />
+                    </div>
 
-                    {/* Milestone Story */}
-                    <p className="text-[13px] sm:text-sm text-[#666666] leading-[1.8] font-sans font-normal">
-                      {item.story}
-                    </p>
+                    {/* Column 2: Milestone Content Box */}
+                    <div
+                      style={{ borderRadius: "7px" }}
+                      className="bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black hover:bg-white p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                    >
+                      {/* Milestone Title */}
+                      <h3 className="font-serif-luxury text-lg sm:text-xl lg:text-[22px] font-bold text-black group-hover:opacity-75 transition-opacity mb-3 leading-snug">
+                        {item.title}
+                      </h3>
+
+                      {/* Milestone Story */}
+                      <p className="text-[13px] sm:text-sm text-[#666666] leading-[1.8] font-sans font-normal">
+                        {item.story}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
             </div>
           </div>

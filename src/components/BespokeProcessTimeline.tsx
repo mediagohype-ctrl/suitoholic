@@ -135,7 +135,7 @@ export default function BespokeProcessTimeline() {
             </h2>
 
             {/* Tagline / Subtitle */}
-            <div className="border-l-2 border-black pl-4 py-1 space-y-1.5">
+            <div className="py-1 space-y-1.5">
               <p className="text-sm sm:text-base font-semibold text-black">
                 From First Measure to Final Delivery.
               </p>
@@ -157,7 +157,7 @@ export default function BespokeProcessTimeline() {
                 key={item.step}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onClick={() => handleOpenModal(index)}
-                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E5E3DD] transition-colors duration-300 hover:bg-white/90 rounded-2xl px-4 sm:px-6 group cursor-pointer select-none"
+                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E5E3DD] transition-colors duration-300 hover:bg-white/90 rounded-[6px] px-4 sm:px-6 group cursor-pointer select-none"
               >
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
                   {/* Step Number (01, 02, etc.) */}
@@ -200,7 +200,7 @@ export default function BespokeProcessTimeline() {
       >
         {hoveredIndex !== null && (
           <div
-            className="w-[300px] sm:w-[350px] lg:w-[380px] overflow-hidden shadow-2xl border border-[#E5E3DD] bg-black rounded-2xl"
+            className="w-[300px] sm:w-[350px] lg:w-[380px] overflow-hidden shadow-2xl border border-[#E5E3DD] bg-black rounded-[12px]"
           >
             <div
               className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-900"
@@ -248,7 +248,7 @@ export default function BespokeProcessTimeline() {
           onClick={handleCloseModal}
         >
           <div
-            className="relative w-full max-w-3xl bg-white text-black overflow-hidden shadow-2xl border border-[#E5E3DD] rounded-[24px] animate-in zoom-in-95 duration-200"
+            className="relative w-full max-w-3xl bg-white text-black overflow-hidden shadow-2xl border border-[#E5E3DD] rounded-[12px] animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}

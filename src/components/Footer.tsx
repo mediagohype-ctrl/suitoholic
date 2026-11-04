@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, Clock, MapPin, ArrowUp, ExternalLink } from "lucide-react";
+import { Phone, Mail, Clock, MapPin, ExternalLink } from "lucide-react";
 import { useContent } from "@/context/SiteDataProvider";
 
 const SOCIAL_ICON_PATHS: Record<string, string> = {
@@ -85,11 +85,6 @@ function renderPaymentBadge(brand: string, title: string) {
 
 export default function Footer() {
   const c = useContent("footer");
-  const scrollToTop = () => {
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
 
   return (
     <footer className="w-full bg-gradient-to-b from-[#FFFFFF] via-[#FAF9F6] to-[#ECEAE5] text-[#14110E] rounded-t-[28px] sm:rounded-t-[42px] lg:rounded-t-[52px] border-t border-[#E5E3DD] font-sans antialiased relative z-20 shadow-[0_-20px_50px_rgba(0,0,0,0.03)] overflow-hidden mt-8 sm:mt-12 select-none flex flex-col justify-between">
@@ -232,7 +227,7 @@ export default function Footer() {
         </div>
 
         {/* Horizontal Secure Payment Strip */}
-        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 pb-4 border-b border-[#E5E3DD]">
+        <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 pb-2">
           <div className="flex items-center space-x-2">
             <span className="text-xs font-semibold text-[#000000] tracking-wide uppercase">
               {c.securePaymentLabel}
@@ -256,8 +251,8 @@ export default function Footer() {
             <span>{c.rightsText}</span>
           </div>
 
-          {/* Quick Legal Links & Smooth Back to Top */}
-          <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-4 sm:gap-6">
+          {/* Quick Legal Links */}
+          <div className="w-full md:w-auto flex items-center justify-center md:justify-end">
             <div className="flex items-center space-x-3 sm:space-x-4">
               {(c.legalLinks ?? []).map((link, i, arr) => (
                 <React.Fragment key={i}>
@@ -266,15 +261,6 @@ export default function Footer() {
                 </React.Fragment>
               ))}
             </div>
-
-            <button
-              onClick={scrollToTop}
-              aria-label="Back to top"
-              title="Back to top"
-              className="w-8 h-8 rounded-full flex-shrink-0 inline-flex items-center justify-center bg-[#000000] hover:bg-[#222222] text-white transition-all shadow-sm hover:shadow-md cursor-pointer group hover:scale-105 active:scale-95"
-            >
-              <ArrowUp size={14} className="transform group-hover:-translate-y-0.5 transition-transform" />
-            </button>
           </div>
 
         </div>

@@ -128,7 +128,7 @@ export default function FabricShowcaseSection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 border-b border-[#E5E3DD] pb-6">
           <div className="space-y-2.5">
-            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold uppercase leading-tight text-black tracking-[0.14em]">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
               THE ATELIER FABRIC ARCHIVE
             </h2>
             <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-sans max-w-2xl leading-relaxed">
@@ -149,7 +149,7 @@ export default function FabricShowcaseSection() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedCategory(tab.id)}
-                  className={`text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full transition-all duration-200 border cursor-pointer ${
+                  className={`text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-[8px] transition-all duration-200 border cursor-pointer ${
                     isActive
                       ? "bg-black text-white border-black shadow-sm"
                       : "bg-white hover:bg-neutral-100 text-black border-[#E5E3DD]"

@@ -138,19 +138,19 @@ export default function FabricHeroShowcaseBanner({
   return (
     <section 
       aria-label="Interactive Bespoke Fabric Weave Showcase"
-      className="relative w-full bg-[#ECEAE5] py-10 sm:py-14 select-none border-b border-[#E5E3DD]"
+      className="relative w-full bg-[#ECEAE5] py-12 sm:py-16 lg:py-20 select-none border-b border-[#E5E3DD]"
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
-        <div className="text-center mb-6">
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl font-normal tracking-[0.14em] uppercase text-black">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             INSPECT WEAVE &amp; TEXTURE
           </h2>
         </div>
 
         {/* Fabric Switcher Pills */}
-        <div className="flex items-center justify-center gap-2 mb-5 flex-wrap">
+        <div className="flex items-center justify-center gap-2 mb-6 sm:mb-8 flex-wrap">
           {HERO_FABRIC_ITEMS.map((item) => {
             const isSelected = activeFabric.id === item.id;
             return (
@@ -158,7 +158,7 @@ export default function FabricHeroShowcaseBanner({
                 key={item.id}
                 type="button"
                 onClick={() => setSelectedFabricId(item.id)}
-                className={`px-3.5 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-[8px] text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer ${
                   isSelected
                     ? "bg-black text-white shadow-xs"
                     : "bg-white text-[#666666] border border-[#E5E3DD] hover:text-black hover:border-black"
@@ -170,8 +170,8 @@ export default function FabricHeroShowcaseBanner({
           })}
         </div>
 
-        {/* Compact Framed Weave Inspection Box (Chhota sa framed container) */}
-        <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E3DD] shadow-md bg-white">
+        {/* Enlarged Framed Weave Inspection Box with 12px Border Radius */}
+        <div className="relative w-full h-[360px] sm:h-[440px] md:h-[500px] lg:h-[540px] rounded-[12px] overflow-hidden border border-[#E5E3DD] shadow-md bg-white">
           <div 
             ref={imageContainerRef}
             onMouseEnter={() => setIsHovering(true)}

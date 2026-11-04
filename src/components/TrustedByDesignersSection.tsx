@@ -144,7 +144,7 @@ export default function TrustedByDesignersSection() {
         {/* Section Header: Main Title + Subtitle */}
         <div className="text-center mb-8 sm:mb-12 px-4 max-w-4xl mx-auto">
           {/* Main Title */}
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] xl:text-[42px] font-normal tracking-[0.14em] uppercase text-black leading-tight mb-3">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight mb-3">
             TRUSTED BY TOP DESIGNERS
           </h2>
 

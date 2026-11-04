@@ -11,7 +11,7 @@ export default function WorldsFinestFabricsIntro() {
       <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
         {/* Centered Luxury Headline */}
         <div className="text-center pt-2 sm:pt-4">
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-normal tracking-[0.16em] uppercase text-black leading-tight">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             WORLDS FINEST FABRICS
           </h2>
         </div>

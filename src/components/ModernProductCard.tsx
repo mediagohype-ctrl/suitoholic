@@ -57,8 +57,8 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
 
   return (
     <div className="group flex flex-col w-full">
-      {/* Upper Tall Rounded Image Container */}
-      <div className="relative w-full aspect-[3/4.1] min-h-[350px] sm:min-h-[410px] lg:min-h-[470px] xl:min-h-[510px] rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-2xs transition-all duration-300 group-hover:shadow-md">
+      {/* Upper Rounded Image Container - Matching Home Page Aspect Ratio & Style */}
+      <div className="relative w-full aspect-[3/4.2] rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-2xs transition-all duration-300 group-hover:shadow-md">
         
         {/* Main Product Image Container */}
         <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden">
@@ -155,17 +155,17 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           <Link href={`/product/${product.slug}`} className="block">
             <h3 
               title={product.name}
-              className="text-[11px] sm:text-[12px] font-bold text-black hover:opacity-75 transition-opacity truncate tracking-wide uppercase leading-snug"
+              className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.18em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
             >
               {product.name}
             </h3>
           </Link>
-          <div className="text-[10px] sm:text-[11px] font-normal text-[#666666] tracking-normal uppercase">
+          <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
             RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : product.price.replace("₹", "").trim()}
           </div>
         </div>
 
-        {/* Right: Plus Button -> Redirects to Product Details Page */}
+        {/* Right: Plus Button -> Opens Customizer Modal */}
         <button
           type="button"
           onClick={(e) => {
@@ -175,9 +175,9 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
           }}
           aria-label={`Customise ${product.name}`}
           title="Customise Shirt (6 Steps)"
-          className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
+          className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
         >
-          <Plus size={15} strokeWidth={2.5} />
+          <Plus size={13} strokeWidth={2.5} />
         </button>
 
       </div>

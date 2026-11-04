@@ -296,7 +296,7 @@ export default function FabricNewArrivalsSection({
         
         {/* Section Header: Matching Website Luxury Typography */}
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-normal tracking-[0.16em] uppercase text-black leading-tight">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             NEW ARRIVALS
           </h2>
 
