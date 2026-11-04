@@ -6,7 +6,10 @@ import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 interface TestimonialItem {
   id: number;
   name: string;
-  product: string;
+  role: string;
+  tagline?: string;
+  flag: string;
+  location: string;
   rating: number;
   avatar: string;
   review: string;
@@ -15,75 +18,99 @@ interface TestimonialItem {
 const TESTIMONIALS: TestimonialItem[] = [
   {
     id: 1,
-    name: "Aditi Verma",
-    product: "for Satin Shirt",
-    rating: 5,
-    avatar: "/reviews/avatar1.jpg",
-    review:
-      "“ Honestly surprised by the quality. It's lightweight, soft, and gives that rich satin shine without looking loud. Perfect for office + weekend both. ”",
-  },
-  {
-    id: 2,
-    name: "Avni Singh",
-    product: "for Co-ords Set",
-    rating: 4,
-    avatar: "/reviews/avatar2.jpg",
-    review:
-      "“ So flattering and comfortable! I wore it for a small party and it looked very expensive. The fit is on point and the overall look is super stylish. ”",
-  },
-  {
-    id: 3,
-    name: "Priyanka Yadav",
-    product: "for Floral Mini Dress",
-    rating: 4,
-    avatar: "/reviews/avatar3.jpg",
-    review:
-      "“ This mini dress is adorable. The floral print is pretty, the fit is flattering, and it's very comfy to wear for long hours. Perfect for day outings and vacations. ”",
-  },
-  {
-    id: 4,
-    name: "Dia Ajmera",
-    product: "for Tiger Printed Shirt",
-    rating: 4,
-    avatar: "/reviews/avatar4.jpg",
-    review:
-      "“ This shirt is a total show-stopper. The print looks premium and the fit sits perfectly on the shoulders. I styled it with jeans and everyone asked where it's from. ”",
-  },
-  {
-    id: 5,
     name: "Vikramaditya Singhania",
-    product: "for Bespoke Royal Dobby",
+    role: "Managing Partner, Singhania Capital",
+    tagline: "Bespoke Royal Dobby Cotton",
+    flag: "🇮🇳",
+    location: "New Delhi, India",
     rating: 5,
     avatar: "/reviews/avatar5.jpg",
     review:
-      "“ The fit around the shoulders and collar roll is unbelievable. Egyptian Giza 140s drape feels superior in every boardroom meeting. Best tailoring experience. ”",
+      "The fit around the shoulders and collar roll is unbelievable. Egyptian Giza 140s drape feels superior in every boardroom meeting. Best bespoke tailoring experience in India.",
   },
   {
-    id: 6,
+    id: 2,
     name: "Devendra Kapoor",
-    product: "for Italian Banker Stripe",
+    role: "Founder & CEO, Horizon Ventures",
+    tagline: "Italian Banker Stripe Shirt",
+    flag: "🇦🇪",
+    location: "Dubai, UAE",
     rating: 5,
     avatar: "/reviews/avatar6.jpg",
     review:
-      "“ Ordered with French double cuffs. The mother-of-pearl buttons and split yoke are true hallmarks of master craftsmanship. Immaculate white-glove finish. ”",
+      "Ordered with French double cuffs and mother-of-pearl buttons. The split yoke and chest drape are true hallmarks of master craftsmanship. Immaculate white-glove delivery.",
   },
   {
-    id: 7,
+    id: 3,
     name: "Arjun Mehta",
-    product: "for Sea Island White Formal",
+    role: "Senior Advocate, High Court",
+    tagline: "Sea Island White Formal",
+    flag: "🇮🇳",
+    location: "Mumbai, India",
     rating: 5,
     avatar: "/reviews/avatar7.jpg",
     review:
-      "“ Finally a brand that understands sleeve pitch and waist tapering without multiple trial visits. The custom collar spread frames my tie knot like a painting. ”",
+      "Finally a brand that understands sleeve pitch and waist tapering without multiple trial visits. The custom collar spread frames my tie knot like a painting.",
   },
   {
-    id: 8,
-    name: "Siddharth Verma",
-    product: "for Austrian Herringbone Sky",
+    id: 4,
+    name: "Callum MacLeod",
+    role: "Director of Investment Strategy",
+    tagline: "Austrian Herringbone Sky Shirt",
+    flag: "🇬🇧",
+    location: "London, UK",
     rating: 5,
     avatar: "/reviews/avatar8.jpg",
     review:
-      "“ Exceptional craftsmanship. The fabric texture in hand is vastly superior to off-the-rack luxury fashion houses. Calibrated my exact measurements flawlessly. ”",
+      "Exceptional craftsmanship. The fabric texture in hand is vastly superior to Savile Row off-the-rack luxury houses. Calibrated my exact measurements flawlessly.",
+  },
+  {
+    id: 5,
+    name: "Aditi Verma",
+    role: "Creative Director & Stylist",
+    tagline: "Pure Satin Silk Bespoke Shirt",
+    flag: "🇮🇳",
+    location: "Bengaluru, India",
+    rating: 5,
+    avatar: "/reviews/avatar1.jpg",
+    review:
+      "Honestly surprised by the fabric quality. It's lightweight, breathable, and gives that rich satin luster without looking loud. Perfect for executive meetings and evening dinners.",
+  },
+  {
+    id: 6,
+    name: "Avni Singh",
+    role: "Luxury Lifestyle Consultant",
+    tagline: "Artisanal Co-ords Silk Set",
+    flag: "🇦🇪",
+    location: "Abu Dhabi, UAE",
+    rating: 5,
+    avatar: "/reviews/avatar2.jpg",
+    review:
+      "So flattering and comfortable! Wore it for an exclusive preview gala in Abu Dhabi and received endless compliments. The fit is on point and the drape is world-class.",
+  },
+  {
+    id: 7,
+    name: "Priyanka Yadav",
+    role: "Head of Private Wealth",
+    tagline: "Pure Mulberry Silk Floral",
+    flag: "🇸🇬",
+    location: "Singapore",
+    rating: 5,
+    avatar: "/reviews/avatar3.jpg",
+    review:
+      "The hand-feel of this bespoke fabric is divine. The print clarity, shoulder structure, and natural fall make it effortless to wear for long days across Asia.",
+  },
+  {
+    id: 8,
+    name: "Dia Ajmera",
+    role: "Architect & Design Principal",
+    tagline: "Tailored Textured Jacquard Shirt",
+    flag: "🇮🇳",
+    location: "Hyderabad, India",
+    rating: 5,
+    avatar: "/reviews/avatar4.jpg",
+    review:
+      "A total masterpiece. The geometric jacquard weave looks regal and the tailored fit sits perfectly on the shoulders. Unmatched attention to detail.",
   },
 ];
 
@@ -180,26 +207,26 @@ export default function TestimonialsSection() {
     if (isPaused || step === 0) return;
     const timer = setInterval(() => {
       handleNext();
-    }, 3500);
+    }, 3800);
 
     return () => clearInterval(timer);
   }, [handleNext, isPaused, step]);
 
   return (
-    <section className="py-14 sm:py-18 lg:py-24 bg-white border-t border-b border-[#E5E3DD] w-full relative overflow-hidden select-none">
+    <section className="py-14 sm:py-18 lg:py-24 bg-[#F8F7F4] border-t border-b border-[#E5E3DD] w-full relative overflow-hidden select-none font-sans">
       {/* Header: Title + Subtitle */}
-      <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 px-4 max-w-4xl mx-auto">
+      <div className="flex flex-col items-center justify-center text-center mb-10 sm:mb-14 px-4 max-w-4xl mx-auto">
         <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
           WHAT OUR CUSTOMERS SAY
         </h2>
-        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal tracking-normal max-w-xl">
-          Real words from real customers - style, comfort, and bespoke confidence.
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[16px] text-[#666666] font-normal tracking-normal max-w-xl">
+          Real words from gentlemen &amp; patrons across the globe on bespoke fit and fabric luxury.
         </p>
       </div>
 
       {/* Reviews Carousel Wrapper */}
       <div
-        className="relative w-full max-w-[1580px] mx-auto px-4 sm:px-6 lg:px-12"
+        className="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -239,47 +266,59 @@ export default function TestimonialsSection() {
             {ALL_ITEMS.map((item, idx) => (
               <div
                 key={`${item.id}-${idx}`}
-                className="w-full sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-60px)/4)] shrink-0 bg-[#F5F4F0] border border-[#E5E3DD] rounded-[16px] p-6 sm:p-7 pt-8 pb-8 flex flex-col items-center text-center shadow-xs hover:shadow-md transition-shadow min-h-[380px]"
+                className="w-full sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-60px)/4)] shrink-0 bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between min-h-[300px] sm:min-h-[320px] text-left group"
               >
-                {/* Customer Avatar Circle */}
-                <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] rounded-full p-[2px] border-2 border-black overflow-hidden mx-auto shrink-0 bg-white shadow-xs">
-                  <img
-                    src={item.avatar}
-                    alt={item.name}
-                    className="w-full h-full object-cover rounded-full"
-                    loading="lazy"
-                  />
+                {/* TOP ROW: 5 RED STARS */}
+                <div className="flex items-center justify-start w-full mb-4 sm:mb-5">
+                  {/* 5 Filled Red Stars */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        size={15}
+                        className={
+                          i < item.rating
+                            ? "fill-[#E53935] text-[#E53935]"
+                            : "fill-transparent text-[#E53935]/30 stroke-[1.5]"
+                        }
+                      />
+                    ))}
+                  </div>
                 </div>
 
-                {/* Customer Name */}
-                <h3 className="mt-4 font-bold text-black text-base sm:text-[17px] tracking-normal">
-                  {item.name}
-                </h3>
-
-                {/* Product Subtitle */}
-                <span className="italic text-xs sm:text-[13px] text-[#666666] mt-0.5 font-normal tracking-wide">
-                  {item.product}
-                </span>
-
-                {/* Stars Rating */}
-                <div className="flex items-center justify-center gap-1 mt-3">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      size={14}
-                      className={
-                        i < item.rating
-                          ? "fill-black text-black"
-                          : "fill-transparent text-black/30 stroke-[1.5]"
-                      }
-                    />
-                  ))}
-                </div>
-
-                {/* Review Text */}
-                <p className="mt-4 text-[#444444] italic text-sm sm:text-[14px] leading-[1.65] max-w-[290px] font-normal">
-                  {item.review}
+                {/* MIDDLE ROW: REVIEW QUOTE IN CLEAN SANS */}
+                <p className="text-[13.5px] sm:text-[14px] text-[#1E293B] leading-[1.65] font-normal font-sans mb-6 line-clamp-4">
+                  &ldquo;{item.review}&rdquo;
                 </p>
+
+                {/* BOTTOM ROW: AVATAR ON LEFT + AUTHOR DETAILS ON RIGHT */}
+                <div className="flex items-center gap-3.5 mt-auto pt-4 border-t border-[#F1EFEA]">
+                  {/* Circular Avatar */}
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden shrink-0 border border-[#E5E3DD] shadow-2xs bg-[#FAF8F5]">
+                    <img
+                      src={item.avatar}
+                      alt={item.name}
+                      className="w-full h-full object-cover rounded-full"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Author Details (Name, Role/Product, Location/Tagline) */}
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-[13px] sm:text-[14px] font-bold text-[#0F172A] leading-tight truncate font-sans">
+                      {item.name}
+                    </h4>
+                    <p className="text-[11px] text-[#64748B] leading-tight truncate mt-0.5 font-sans">
+                      {item.role}
+                    </p>
+                    {item.tagline && (
+                      <p className="text-[10px] text-[#94A3B8] leading-tight truncate mt-0.5 font-sans">
+                        {item.tagline}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
               </div>
             ))}
           </div>

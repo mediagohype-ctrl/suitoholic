@@ -11,8 +11,9 @@ import ShopByFabricsSection from "@/components/ShopByFabricsSection";
 import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
 import BespokeJourneySection from "@/components/BespokeJourneySection";
 import BespokePillarsBanner from "@/components/BespokePillarsBanner";
+import SeeBeforeYouStitchSection from "@/components/SeeBeforeYouStitchSection";
 import CustomOutfitHero from "@/components/CustomOutfitHero";
-import TestimonialsSection from "@/components/TestimonialsSection";
+import GlowingReviewsSection from "@/components/GlowingReviewsSection";
 
 const ShowcaseDivider = () => (
   <div className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8 my-6 sm:my-8 lg:my-10">
@@ -365,6 +366,11 @@ function CustomShirtConfiguratorContent() {
 
       <ShowcaseDivider />
 
+      {/* SEE BEFORE YOU STITCH: Your fabric, as a finished look */}
+      <SeeBeforeYouStitchSection />
+
+      <ShowcaseDivider />
+
       {/* 1. Behind The Scenes / Tailoring In Motion Video Banner */}
       <AtelierEditorialBanner />
 
@@ -513,8 +519,8 @@ function CustomShirtConfiguratorContent() {
         </div>
       </section>
 
-      {/* 4. Customer Testimonials Reviews */}
-      <TestimonialsSection />
+      {/* 4. Customer Testimonials Reviews matching reference design */}
+      <GlowingReviewsSection />
 
       {/* Bottom Feature Highlights Bar */}
       <FeatureHighlightsBar />

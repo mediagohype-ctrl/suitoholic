@@ -49,7 +49,7 @@ export function CustomizerModalProvider({ children }: { children: React.ReactNod
       if (targetProduct && targetProduct.id) {
         try {
           await addItem({
-            productId: targetProduct.id,
+            productId: Number(targetProduct.id) || 1,
             quantity: 1,
             size: String(customFit.chestSize),
             customization: customFit,

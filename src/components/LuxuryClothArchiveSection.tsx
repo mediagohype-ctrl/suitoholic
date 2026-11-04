@@ -4,6 +4,7 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Search, ChevronDown, X, ZoomIn, Plus, Scissors, ArrowRight, Check, Heart } from "lucide-react";
 import { useWishlist } from "@/context/WishlistProvider";
+import { useCustomizer } from "@/context/CustomizerModalProvider";
 import { useCatalog } from "@/context/SiteDataProvider";
 
 export interface LuxuryClothItem {
@@ -557,6 +558,7 @@ export default function LuxuryClothArchiveSection({
   onRequestSwatchModal,
 }: LuxuryClothArchiveSectionProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { openCustomizer } = useCustomizer();
   const { products } = useCatalog();
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -1079,12 +1081,27 @@ export default function LuxuryClothArchiveSection({
                     <div className="text-xs sm:text-[13px] font-bold text-black transition-colors">
                       {cloth.formattedPrice}
                     </div>
-                    <span
-                      title="Customise in this fabric"
-                      className="mt-1 w-6 h-6 rounded-full border border-black/20 group-hover:border-black bg-white group-hover:bg-black text-black group-hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs group-hover:scale-110"
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openCustomizer({
+                          id: cloth.id,
+                          name: `${cloth.mill} ${cloth.code} Bespoke Shirt`,
+                          image: cloth.image,
+                          slug: cloth.id,
+                          price: cloth.formattedPrice,
+                          rawPrice: cloth.pricePerMetre,
+                          fabric: `${cloth.mill} ${cloth.fibre}`,
+                        });
+                      }}
+                      title="Customise Shirt in this fabric (6 Steps)"
+                      aria-label={`Customise shirt in ${cloth.mill} ${cloth.code}`}
+                      className="mt-1 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer"
                     >
                       <Plus size={13} strokeWidth={2.5} />
-                    </span>
+                    </button>
                   </div>
 
                 </div>

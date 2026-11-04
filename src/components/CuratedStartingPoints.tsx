@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { ChevronRight, Check, Plus, Heart } from "lucide-react";
+import { Plus, Heart } from "lucide-react";
 import { ProductItem } from "@/data/products";
 import { useWishlist } from "@/context/WishlistProvider";
+import { useCustomizer } from "@/context/CustomizerModalProvider";
 
 export interface CuratedLookItem {
   id: string | number;
@@ -25,7 +26,7 @@ interface CuratedStartingPointsProps {
   onSelectLook: (item: CuratedLookItem) => void;
 }
 
-const DEFAULT_LOOKS: CuratedLookItem[] = [
+export const DEFAULT_LOOKS: CuratedLookItem[] = [
   {
     id: "look-1",
     slug: "dark-chocolate-brown-satin-twill-shirt",
@@ -115,6 +116,7 @@ export default function CuratedStartingPoints({
   onSelectLook,
 }: CuratedStartingPointsProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { openCustomizer } = useCustomizer();
   return (
     <section id="curated-starting-points" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden select-none">
       <div className="relative z-10 w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -193,36 +195,34 @@ export default function CuratedStartingPoints({
                   )}
                 </div>
 
-                {/* Lower Details Strip & Action Button */}
-                <div className="p-3.5 sm:p-4 flex flex-col justify-between flex-1 text-left">
-                  {/* Title & Price */}
-                  <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-bold text-[11px] sm:text-[12.5px] text-black uppercase tracking-wide truncate group-hover:text-neutral-700 transition-colors leading-snug">
-                      {item.title}
-                    </h3>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="font-bold text-xs text-black">{item.price}</span>
-                      <span className="w-6 h-6 rounded-full border border-black/20 group-hover:border-black bg-white group-hover:bg-black text-black group-hover:text-white flex items-center justify-center transition-all shadow-2xs">
-                        <Plus size={13} strokeWidth={2.5} />
-                      </span>
-                    </div>
+                {/* Lower Details Strip: Title, Price & Plus Button */}
+                <div className="p-3.5 sm:p-4 flex items-center justify-between gap-2 text-left">
+                  <h3 className="font-bold text-[11px] sm:text-[12.5px] text-black uppercase tracking-wide truncate group-hover:text-neutral-700 transition-colors leading-snug min-w-0">
+                    {item.title}
+                  </h3>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="font-bold text-xs text-black">{item.price}</span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openCustomizer({
+                          id: item.id,
+                          name: item.title,
+                          image: item.image,
+                          slug: item.slug,
+                          price: item.price,
+                          fabric: item.subtitle,
+                        });
+                      }}
+                      title="Customise Shirt (6 Steps)"
+                      aria-label={`Customise ${item.title}`}
+                      className="w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all shadow-2xs hover:scale-110 active:scale-95 cursor-pointer"
+                    >
+                      <Plus size={13} strokeWidth={2.5} />
+                    </button>
                   </div>
-
-                  {/* Full-width Divider Line */}
-                  <div className="w-full h-[1px] bg-[#E5E3DD] my-2.5" />
-
-                  {/* CUSTOMIZE THIS LOOK Button */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSelectLook(item);
-                    }}
-                    className="w-full bg-black hover:bg-neutral-800 text-white text-[10px] sm:text-[10.5px] font-bold uppercase tracking-[0.14em] py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-full flex items-center justify-between transition-all duration-300 shadow-xs hover:shadow cursor-pointer group"
-                  >
-                    <span className="flex items-center gap-1.5"><Plus size={13} strokeWidth={2.5} /><span>CUSTOMIZE THIS LOOK</span></span>
-                    <ChevronRight size={13} className="text-white group-hover:translate-x-0.5 transition-transform stroke-[2.5]" />
-                  </button>
                 </div>
               </div>
           ))}

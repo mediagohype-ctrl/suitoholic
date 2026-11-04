@@ -10,6 +10,9 @@ import BespokeProcessTimeline from "@/components/BespokeProcessTimeline";
 import FabricHeroShowcaseBanner from "@/components/FabricHeroShowcaseBanner";
 import WorldsFinestFabricsIntro from "@/components/WorldsFinestFabricsIntro";
 import PrestigeMillsGrid from "@/components/PrestigeMillsGrid";
+import FabricNewArrivalsSection from "@/components/FabricNewArrivalsSection";
+import TrustedByDesignersSection from "@/components/TrustedByDesignersSection";
+import FabricsHeroCarouselBanner from "@/components/FabricsHeroCarouselBanner";
 import AtelierConsultationBanner from "@/components/AtelierConsultationBanner";
 import { 
   ArrowRight, 
@@ -197,11 +200,13 @@ export default function FabricsPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-clip selection:bg-black selection:text-white">
-      {/* Header with active 'fabrics' tab indicator */}
-      <Header activeTab="fabrics" />
+      {/* Header with active 'fabrics' tab indicator (forceSolid guarantees high-contrast solid white navbar) */}
+      <Header activeTab="fabrics" forceSolid />
 
-      {/* 1. INTERACTIVE BESPOKE FABRIC WEAVE SHOWCASE HERO BANNER */}
-      <FabricHeroShowcaseBanner activeFabricId={activeFabric?.id} />
+      {/* 1. FULL-WIDTH 4-SLIDE HERO BANNER CAROUSEL (MALE + FABRICS + LIGHT BG, HEADING ONLY) */}
+      <div className="pt-[68px] sm:pt-[106px] w-full">
+        <FabricsHeroCarouselBanner />
+      </div>
 
       {/* 2. WORLDS FINEST FABRICS ATELIER PREFACE SECTION (MATCHING REFERENCE) */}
       <WorldsFinestFabricsIntro />
@@ -228,6 +233,24 @@ export default function FabricsPage() {
           setSwatchModalOpen(true);
         }}
       />
+
+      {/* NEW ARRIVALS FABRICS SLIDER (EMBROIDERED, JACQUARD, PRINTED) */}
+      <FabricNewArrivalsSection
+        onSelectFabric={(code) => {
+          const matched = fabrics.find((f: any) => f.code === code);
+          if (matched) {
+            setActiveFabricId(matched.id);
+          }
+        }}
+      />
+
+      {/* TRUSTED BY TOP DESIGNERS (OUR CLIENTS) */}
+      <TrustedByDesignersSection />
+
+      {/* ========================================================================= */}
+      {/* INTERACTIVE WEAVE SHOWCASE & LAB SPECIFICATIONS (MOVED FROM HERO TO HERE)  */}
+      {/* ========================================================================= */}
+      <FabricHeroShowcaseBanner activeFabricId={activeFabric?.id} />
 
       {/* ========================================================================= */}
       {/* 4. BESPOKE PROCESS TIMELINE (HOW WE TAILOR PERFECTION)                    */}

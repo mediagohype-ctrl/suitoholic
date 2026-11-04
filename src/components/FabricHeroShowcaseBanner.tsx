@@ -98,7 +98,13 @@ export default function FabricHeroShowcaseBanner({
   onRequestSwatch,
   activeFabricId,
 }: FabricHeroShowcaseBannerProps) {
-  const activeFabric = (activeFabricId ? HERO_FABRIC_ITEMS.find((f) => f.id === activeFabricId || f.code === activeFabricId) : null) || HERO_FABRIC_ITEMS[0];
+  const [selectedFabricId, setSelectedFabricId] = useState<string>(
+    activeFabricId || HERO_FABRIC_ITEMS[0].id
+  );
+
+  const activeFabric =
+    HERO_FABRIC_ITEMS.find((f) => f.id === selectedFabricId || f.code === selectedFabricId) ||
+    HERO_FABRIC_ITEMS[0];
 
   // Magnifier inspection state
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -132,58 +138,90 @@ export default function FabricHeroShowcaseBanner({
   return (
     <section 
       aria-label="Interactive Bespoke Fabric Weave Showcase"
-      className="relative w-full h-[100dvh] min-h-[580px] sm:min-h-[640px] overflow-hidden bg-[#ECEAE5] select-none border-b border-[#E5E3DD]"
+      className="relative w-full bg-[#ECEAE5] py-10 sm:py-14 select-none border-b border-[#E5E3DD]"
     >
-      <div 
-        ref={imageContainerRef}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-        onMouseMove={handleMouseMove}
-        onTouchStart={() => setIsHovering(true)}
-        onTouchEnd={() => setIsHovering(false)}
-        onTouchMove={handleTouchMove}
-        className="relative w-full h-full overflow-hidden bg-[#ECEAE5] cursor-crosshair group select-none"
-      >
-        {/* Base Fabric Texture with Dynamic Zoom Origin */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          key={activeFabric.image}
-          src={activeFabric.image}
-          alt={`${activeFabric.title} Weave Texture`}
-          className="w-full h-full object-cover object-center transition-transform duration-150 ease-out will-change-transform"
-          style={{
-            transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
-            transform: isHovering ? "scale(2.4)" : "scale(1.0)",
-          }}
-          loading="eager"
-        />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        
+        {/* Section Heading */}
+        <div className="text-center mb-6">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl font-normal tracking-[0.14em] uppercase text-black">
+            INSPECT WEAVE &amp; TEXTURE
+          </h2>
+        </div>
 
-        {/* Clean Subtle Ambient Lighting Sheen (Light Theme) */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-black/10" />
-        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5" />
+        {/* Fabric Switcher Pills */}
+        <div className="flex items-center justify-center gap-2 mb-5 flex-wrap">
+          {HERO_FABRIC_ITEMS.map((item) => {
+            const isSelected = activeFabric.id === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setSelectedFabricId(item.id)}
+                className={`px-3.5 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-black text-white shadow-xs"
+                    : "bg-white text-[#666666] border border-[#E5E3DD] hover:text-black hover:border-black"
+                }`}
+              >
+                {item.tabLabel}
+              </button>
+            );
+          })}
+        </div>
 
-        {/* Centered "HOVER TO INSPECT WEAVE" Badge in Crisp Luxury Light Glass */}
-        <div
-          className={`pointer-events-none absolute inset-0 flex flex-col items-center justify-center transition-all duration-300 ${
-            isHovering ? "opacity-0 scale-90" : "opacity-100 scale-100"
-          }`}
-        >
-          <div className="flex flex-col items-center justify-center p-3.5 sm:p-4 bg-white/95 backdrop-blur-md border border-[#E5E3DD] rounded-full shadow-lg">
-            <div className="w-10 h-10 rounded-full bg-[#F5F4F0] border border-[#E5E3DD] flex items-center justify-center mb-1 shadow-2xs">
-              <ZoomIn size={18} className="text-black stroke-[2.2]" />
+        {/* Compact Framed Weave Inspection Box (Chhota sa framed container) */}
+        <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E3DD] shadow-md bg-white">
+          <div 
+            ref={imageContainerRef}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            onMouseMove={handleMouseMove}
+            onTouchStart={() => setIsHovering(true)}
+            onTouchEnd={() => setIsHovering(false)}
+            onTouchMove={handleTouchMove}
+            className="relative w-full h-full overflow-hidden bg-[#ECEAE5] cursor-crosshair group select-none"
+          >
+            {/* Base Fabric Texture with Dynamic Zoom Origin */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              key={activeFabric.image}
+              src={activeFabric.image}
+              alt={`${activeFabric.title} Weave Texture`}
+              className="w-full h-full object-cover object-center transition-transform duration-150 ease-out will-change-transform"
+              style={{
+                transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
+                transform: isHovering ? "scale(2.4)" : "scale(1.0)",
+              }}
+              loading="lazy"
+            />
+
+            {/* Clean Subtle Ambient Lighting Sheen */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-black/10" />
+
+            {/* Centered "HOVER TO INSPECT WEAVE" Badge in Crisp Luxury Light Glass */}
+            <div
+              className={`pointer-events-none absolute inset-0 flex items-center justify-center transition-all duration-300 ${
+                isHovering ? "opacity-0 scale-90" : "opacity-100 scale-100"
+              }`}
+            >
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-md border border-[#E5E3DD] rounded-full shadow-lg">
+                <ZoomIn size={16} className="text-[#8C7355] stroke-[2.2]" />
+                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-black">
+                  HOVER TO INSPECT WEAVE
+                </span>
+              </div>
             </div>
-            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.24em] text-black px-3">
-              HOVER TO INSPECT WEAVE
-            </span>
+
+            {/* Top Right Corner: Zoom Factor indicator when active */}
+            {isHovering && (
+              <div className="pointer-events-none absolute top-3.5 right-3.5 z-10 px-3 py-1 bg-black text-white backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono font-bold shadow-md">
+                2.4X MACRO ZOOM
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Top Right Corner: Zoom Factor indicator when active */}
-        {isHovering && (
-          <div className="pointer-events-none absolute top-24 sm:top-28 right-4 sm:right-8 z-10 px-3.5 py-1.5 bg-black text-white backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono font-bold shadow-md">
-            2.4X MACRO ZOOM
-          </div>
-        )}
       </div>
     </section>
   );

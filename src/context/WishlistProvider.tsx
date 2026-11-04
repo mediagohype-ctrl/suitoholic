@@ -29,7 +29,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          setWishlistIds(parsed);
+          setWishlistIds(parsed.map(String));
         }
       }
     } catch {
@@ -49,18 +49,25 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   }, [wishlistIds, loaded]);
 
   const isInWishlist = useCallback(
-    (productId: number | string) => wishlistIds.includes(productId),
+    (productId: number | string) => {
+      const sId = String(productId);
+      return wishlistIds.some((id) => String(id) === sId);
+    },
     [wishlistIds]
   );
 
   const toggleWishlist = useCallback((productId: number | string) => {
+    const sId = String(productId);
     setWishlistIds((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+      prev.some((id) => String(id) === sId)
+        ? prev.filter((id) => String(id) !== sId)
+        : [...prev, sId]
     );
   }, []);
 
   const removeFromWishlist = useCallback((productId: number | string) => {
-    setWishlistIds((prev) => prev.filter((id) => id !== productId));
+    const sId = String(productId);
+    setWishlistIds((prev) => prev.filter((id) => String(id) !== sId));
   }, []);
 
   const clearWishlist = useCallback(() => {

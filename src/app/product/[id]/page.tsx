@@ -128,7 +128,7 @@ export default function ProductDetailPage() {
     setIsCustomizerOpen(true);
   };
 
-  const handleConfirmCustomization = async (customFit: CustomFit, chosenProduct?: { id?: number; name?: string } | null) => {
+  const handleConfirmCustomization = async (customFit: CustomFit, chosenProduct?: { id?: number | string; name?: string } | null) => {
     const targetProduct = (chosenProduct && chosenProduct.id) ? (products.find((p) => p.id === chosenProduct.id) || activeProduct) : activeProduct;
     try {
       await addItem({

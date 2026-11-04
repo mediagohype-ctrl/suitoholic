@@ -24,6 +24,7 @@ import { useCart } from "@/context/CartProvider";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import { allProducts, EIGHT_CANONICAL_SISTER_SHIRTS } from "@/data/products";
 import { getShirtId, getShirtColorFamily } from "@/components/MannequinShirtViewer";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 import type { CustomFit, ProductItem } from "@/lib/types";
 
 function getShortShirtTitle(name: string): string {
@@ -261,33 +262,65 @@ export default function CartPage() {
                 Select any shirt to start bespoke tailoring with interactive 3D mannequin preview.
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-              {sisterProducts.map((shirt) => (
-                <div
-                  key={shirt.id}
-                  onClick={() => handleStartNewCustomization(shirt)}
-                  className="group p-3 rounded-2xl border border-[#E5E3DD] hover:border-black bg-white hover:bg-[#F5F4F0]/60 transition-all flex flex-col justify-between cursor-pointer"
-                >
-                  <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#ECEAE5] border border-[#E5E3DD] relative shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={getShirtImage(shirt)}
-                      alt={shirt.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="mt-2 min-w-0 flex-1">
-                    <h4 className="text-xs font-bold text-black uppercase truncate">{getShortShirtTitle(shirt.name)}</h4>
-                    <span className="font-extrabold text-black text-[11px] block mt-0.5">{shirt.price}</span>
-                  </div>
-                  <button
-                    type="button"
-                    className="mt-2.5 w-full h-8 rounded-xl text-[10px] font-bold uppercase tracking-wider bg-black text-white hover:bg-neutral-800 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+              {sisterProducts.slice(0, 4).map((shirt) => {
+                const hoverFullShirt = getMatchingFullShirtImage(shirt);
+                return (
+                  <div
+                    key={shirt.id}
+                    onClick={() => handleStartNewCustomization(shirt)}
+                    className="group bg-white rounded-[18px] sm:rounded-[22px] border border-[#E5E3DD] hover:border-black p-3.5 sm:p-4 shadow-2xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer"
                   >
-                    <Scissors size={11} /> <span>Tailor (Step 1)</span>
-                  </button>
-                </div>
-              ))}
+                    {/* Tall Portrait Image Container matching signature website formatting */}
+                    <div className="relative w-full aspect-[3/4] sm:aspect-[3/4.1] rounded-[14px] sm:rounded-[16px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shrink-0">
+                      {/* Close-up Collar & Fabric swatch */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={getShirtImage(shirt)}
+                        alt={shirt.name}
+                        className={`w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105 ${
+                          hoverFullShirt ? "group-hover:opacity-0" : ""
+                        }`}
+                        loading="lazy"
+                      />
+
+                      {/* Matching Full Tailored Shirt Revealed on Hover */}
+                      {hoverFullShirt && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={hoverFullShirt}
+                          alt={`${shirt.name} Full Tailored Shirt`}
+                          className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      )}
+                    </div>
+
+                    {/* Details */}
+                    <div className="mt-3.5 min-w-0 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="text-[10px] font-medium tracking-[0.14em] text-[#888888] uppercase block truncate">
+                          {shirt.fabric?.includes("Linen") ? "Pure Natural Linen" : "100% Egyptian Giza Cotton"}
+                        </span>
+                        <h4 className="text-xs sm:text-[13px] font-bold text-black uppercase tracking-wide truncate mt-0.5 group-hover:text-[#9E774C] transition-colors" title={shirt.name}>
+                          {getShortShirtTitle(shirt.name)}
+                        </h4>
+                      </div>
+                      <span className="font-extrabold text-black text-xs sm:text-sm block mt-1.5">
+                        {shirt.price}
+                      </span>
+                    </div>
+
+                    {/* Action Button */}
+                    <button
+                      type="button"
+                      className="mt-3.5 w-full h-9 rounded-xl text-[10.5px] font-bold uppercase tracking-[0.14em] bg-black text-white hover:bg-neutral-800 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer active:scale-[0.98]"
+                    >
+                      <Scissors size={12} strokeWidth={2.2} /> <span>Tailor (Step 1)</span>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -488,46 +521,65 @@ export default function CartPage() {
             </div>
 
             {/* 4 Cards in a Responsive Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-1">
-              {sisterProducts.map((shirt) => {
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-1">
+              {sisterProducts.slice(0, 4).map((shirt) => {
                 const inBagCount = items
                   .filter((item) => item.productId === shirt.id || item.slug === shirt.slug)
                   .reduce((sum, item) => sum + item.quantity, 0);
                 const shortTitle = getShortShirtTitle(shirt.name);
                 const img = getShirtImage(shirt);
+                const hoverFullShirt = getMatchingFullShirtImage(shirt);
 
                 return (
                   <div
                     key={shirt.id}
                     onClick={() => setChoiceModalProduct(shirt)}
-                    className="group p-3 rounded-2xl border border-[#E5E3DD] hover:border-black bg-white hover:bg-[#F5F4F0]/60 transition-all flex flex-col justify-between cursor-pointer relative shadow-xs hover:shadow"
+                    className="group bg-white rounded-[18px] sm:rounded-[22px] border border-[#E5E3DD] hover:border-black p-3.5 sm:p-4 shadow-2xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer relative"
                   >
-                    {/* Top: High-Res Shirt Photo */}
-                    <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#ECEAE5] border border-[#E5E3DD] relative shrink-0">
+                    {/* Top: High-Res Shirt Photo matching signature website formatting */}
+                    <div className="relative w-full aspect-[3/4] sm:aspect-[3/4.1] rounded-[14px] sm:rounded-[16px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shrink-0">
+                      {/* Close-up Collar & Fabric swatch */}
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img}
                         alt={shirt.name}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                        className={`w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105 ${
+                          hoverFullShirt ? "group-hover:opacity-0" : ""
+                        }`}
+                        loading="lazy"
                       />
+
+                      {/* Matching Full Tailored Shirt Revealed on Hover */}
+                      {hoverFullShirt && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={hoverFullShirt}
+                          alt={`${shirt.name} Full Tailored Shirt`}
+                          className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      )}
+
                       {inBagCount > 0 && (
-                        <span className="absolute top-1.5 right-1.5 bg-black text-white text-[8.5px] font-bold px-2 py-0.5 rounded shadow-xs flex items-center gap-1">
+                        <span className="absolute top-2 right-2 z-10 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
                           <Check size={10} strokeWidth={2.5} /> {inBagCount} in bag
                         </span>
                       )}
                     </div>
 
                     {/* Middle: Details */}
-                    <div className="mt-2.5 min-w-0 flex-1">
-                      <h4 className="text-xs font-bold text-black uppercase truncate leading-tight" title={shirt.name}>
-                        {shortTitle}
-                      </h4>
-                      <div className="flex items-center justify-between text-[11px] mt-1">
-                        <span className="font-extrabold text-black">{shirt.price}</span>
-                        <span className="text-[#888888] text-[10px] uppercase truncate max-w-[85px]">
-                          {shirt.fabric?.includes("Linen") ? "Linen Blend" : "100% Giza Cotton"}
+                    <div className="mt-3.5 min-w-0 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="text-[10px] font-medium tracking-[0.14em] text-[#888888] uppercase block truncate">
+                          {shirt.fabric?.includes("Linen") ? "Pure Natural Linen" : "100% Egyptian Giza Cotton"}
                         </span>
+                        <h4 className="text-xs sm:text-[13px] font-bold text-black uppercase tracking-wide truncate mt-0.5 group-hover:text-[#9E774C] transition-colors" title={shirt.name}>
+                          {shortTitle}
+                        </h4>
                       </div>
+                      <span className="font-extrabold text-black text-xs sm:text-sm block mt-1.5">
+                        {shirt.price}
+                      </span>
                     </div>
 
                     {/* Bottom Action Button */}
@@ -537,7 +589,7 @@ export default function CartPage() {
                         e.stopPropagation();
                         setChoiceModalProduct(shirt);
                       }}
-                      className="mt-3 w-full h-8 rounded-xl text-[10px] font-bold tracking-wider uppercase transition-all flex items-center justify-center space-x-1.5 shadow-xs cursor-pointer bg-[#F5F4F0] group-hover:bg-black group-hover:text-white text-black border border-[#E5E3DD] group-hover:border-black"
+                      className="mt-3.5 w-full h-9 rounded-xl text-[10.5px] font-bold tracking-[0.14em] uppercase transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-black text-white hover:bg-neutral-800 active:scale-[0.98]"
                     >
                       <Plus size={12} className="stroke-[2.5]" />
                       <span>Select &amp; Tailor</span>

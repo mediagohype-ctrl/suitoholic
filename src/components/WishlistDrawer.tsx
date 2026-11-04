@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { X, Heart, Trash2, ArrowRight, ShoppingBag } from "lucide-react";
 import { useWishlist } from "@/context/WishlistProvider";
 import { useCatalog } from "@/context/SiteDataProvider";
+import { allProducts, ProductItem } from "@/data/products";
+import { DEFAULT_LOOKS } from "@/components/CuratedStartingPoints";
+import { LUXURY_CLOTH_ITEMS } from "@/components/LuxuryClothArchiveSection";
 
 export default function WishlistDrawer() {
   const { wishlistIds, isWishlistOpen, closeWishlist, removeFromWishlist } = useWishlist();
@@ -29,7 +32,85 @@ export default function WishlistDrawer() {
 
   if (!isWishlistOpen || !mounted) return null;
 
-  const savedProducts = products.filter((p) => wishlistIds.includes(p.id));
+  const savedProducts: ProductItem[] = useMemo(() => {
+    const productMap = new Map<string, ProductItem>();
+
+    allProducts.forEach((p) => {
+      productMap.set(String(p.id), p);
+      if (p.slug) productMap.set(p.slug.toLowerCase(), p);
+    });
+
+    (products || []).forEach((p) => {
+      productMap.set(String(p.id), p);
+      if (p.slug) productMap.set(p.slug.toLowerCase(), p);
+    });
+
+    DEFAULT_LOOKS.forEach((look, index) => {
+      const p: ProductItem = {
+        id: 1000 + index,
+        slug: look.slug,
+        name: look.title,
+        category: "formal_bespoke",
+        price: look.price,
+        rawPrice: 2600,
+        subtitle: look.subtitle,
+        description: look.subtitle,
+        fabric: look.subtitle || "Italian Luxury Cotton",
+        threadCount: "140s",
+        rating: 5,
+        reviewsCount: 18,
+        image: look.image,
+        gallery: look.hoverImage ? [look.image, look.hoverImage] : [look.image],
+      };
+      productMap.set(String(look.id), p);
+      productMap.set(look.slug.toLowerCase(), p);
+    });
+
+    LUXURY_CLOTH_ITEMS.forEach((cloth, index) => {
+      const p: ProductItem = {
+        id: 2000 + index,
+        slug: cloth.id,
+        name: `${cloth.mill} ${cloth.code} Swatch`,
+        category: "fabrics",
+        price: cloth.formattedPrice,
+        rawPrice: cloth.pricePerMetre,
+        subtitle: `${cloth.mill} • ${cloth.fibre}`,
+        description: cloth.description,
+        fabric: `${cloth.mill} • ${cloth.fibre}`,
+        threadCount: cloth.weightLabel || "135 GSM",
+        rating: 5,
+        reviewsCount: 12,
+        image: cloth.image,
+        gallery: [cloth.image],
+      };
+      productMap.set(String(cloth.id), p);
+    });
+
+    const result: ProductItem[] = [];
+    const seen = new Set<string>();
+
+    for (const rawId of wishlistIds) {
+      const sId = String(rawId);
+      if (seen.has(sId)) continue;
+
+      let matched = productMap.get(sId);
+      if (!matched && sId.startsWith("cloth-prod-")) {
+        const numId = sId.replace("cloth-prod-", "");
+        matched = productMap.get(numId);
+      }
+      if (!matched && sId.startsWith("look-")) {
+        matched = productMap.get(sId);
+      }
+
+      if (matched) {
+        seen.add(sId);
+        seen.add(String(matched.id));
+        result.push(matched);
+      }
+    }
+
+    return result;
+  }, [wishlistIds, products]);
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] overflow-hidden select-none animate-in fade-in duration-200">

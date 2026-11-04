@@ -78,7 +78,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           visible ? "translate-y-0" : "-translate-y-full"
         } ${
           scrolled || forceSolid
-            ? "shadow-sm bg-white/95 backdrop-blur-md"
+            ? "shadow-sm bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
             : "bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
         }`}
       >

@@ -16,7 +16,7 @@ import { EIGHT_CANONICAL_SISTER_SHIRTS } from "@/data/products";
 export type CustomFitState = CustomFit;
 
 export interface CustomizationModalProduct {
-  id?: number;
+  id?: number | string;
   name: string;
   image: string;
   gallery?: string[];

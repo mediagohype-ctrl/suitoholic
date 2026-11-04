@@ -1,18 +1,108 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
-import { Heart, ArrowRight, ShoppingBag, Trash2 } from "lucide-react";
+import { Heart, ArrowRight, Trash2 } from "lucide-react";
 import PageShell from "@/components/bag/PageShell";
 import ModernProductCard from "@/components/ModernProductCard";
 import { useWishlist } from "@/context/WishlistProvider";
 import { useCatalog } from "@/context/SiteDataProvider";
+import { allProducts, ProductItem } from "@/data/products";
+import { DEFAULT_LOOKS } from "@/components/CuratedStartingPoints";
+import { LUXURY_CLOTH_ITEMS } from "@/components/LuxuryClothArchiveSection";
 
 export default function WishlistPage() {
   const { wishlistIds, clearWishlist } = useWishlist();
   const { products } = useCatalog();
 
-  const savedProducts = products.filter((p) => wishlistIds.includes(p.id));
+  // Resolve all saved items against catalog, allProducts, curated looks, and luxury cloth items
+  const savedProducts: ProductItem[] = useMemo(() => {
+    const productMap = new Map<string, ProductItem>();
+
+    // 1. Static allProducts
+    allProducts.forEach((p) => {
+      productMap.set(String(p.id), p);
+      if (p.slug) productMap.set(p.slug.toLowerCase(), p);
+    });
+
+    // 2. Dynamic backend catalog products
+    (products || []).forEach((p) => {
+      productMap.set(String(p.id), p);
+      if (p.slug) productMap.set(p.slug.toLowerCase(), p);
+    });
+
+    // 3. Curated starting points fallback
+    DEFAULT_LOOKS.forEach((look, index) => {
+      const p: ProductItem = {
+        id: 1000 + index,
+        slug: look.slug,
+        name: look.title,
+        category: "formal_bespoke",
+        price: look.price,
+        rawPrice: 2600,
+        subtitle: look.subtitle,
+        description: look.subtitle,
+        fabric: look.subtitle || "Italian Luxury Cotton",
+        threadCount: "140s",
+        rating: 5,
+        reviewsCount: 18,
+        image: look.image,
+        gallery: look.hoverImage ? [look.image, look.hoverImage] : [look.image],
+      };
+      productMap.set(String(look.id), p);
+      productMap.set(look.slug.toLowerCase(), p);
+    });
+
+    // 4. Luxury cloth archive swatches fallback
+    LUXURY_CLOTH_ITEMS.forEach((cloth, index) => {
+      const p: ProductItem = {
+        id: 2000 + index,
+        slug: cloth.id,
+        name: `${cloth.mill} ${cloth.code} Swatch`,
+        category: "fabrics",
+        price: cloth.formattedPrice,
+        rawPrice: cloth.pricePerMetre,
+        subtitle: `${cloth.mill} • ${cloth.fibre}`,
+        description: cloth.description,
+        fabric: `${cloth.mill} • ${cloth.fibre}`,
+        threadCount: cloth.weightLabel || "135 GSM",
+        rating: 5,
+        reviewsCount: 12,
+        image: cloth.image,
+        gallery: [cloth.image],
+      };
+      productMap.set(String(cloth.id), p);
+    });
+
+    const result: ProductItem[] = [];
+    const seen = new Set<string>();
+
+    for (const rawId of wishlistIds) {
+      const sId = String(rawId);
+      if (seen.has(sId)) continue;
+
+      let matched = productMap.get(sId);
+
+      // Match cloth-prod-X -> X
+      if (!matched && sId.startsWith("cloth-prod-")) {
+        const numId = sId.replace("cloth-prod-", "");
+        matched = productMap.get(numId);
+      }
+
+      // Match look-X
+      if (!matched && sId.startsWith("look-")) {
+        matched = productMap.get(sId);
+      }
+
+      if (matched) {
+        seen.add(sId);
+        seen.add(String(matched.id));
+        result.push(matched);
+      }
+    }
+
+    return result;
+  }, [wishlistIds, products]);
 
   return (
     <PageShell eyebrow="PERSONAL COLLECTION" title="SAVED PIECES">

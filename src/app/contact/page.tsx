@@ -16,7 +16,6 @@ import {
   HelpCircle,
   ExternalLink,
   User,
-  Scissors,
   ShieldCheck,
   Headphones,
   ChevronDown,
@@ -109,24 +108,16 @@ export default function ContactPage() {
         {/* ========================================================================= */}
         {/* 2. HERO SECTION: Light Luxury Editorial Split Layout                      */}
         {/* ========================================================================= */}
-        <section className="w-full bg-[#ECEAE5] border-b border-[#E5E3DD] text-black pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 lg:pb-20">
+        <section className="w-full bg-[#ECEAE5] border-b border-[#E5E3DD] text-black pt-24 sm:pt-32 lg:pt-36 pb-12 sm:pb-16 lg:pb-20">
           <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-12">
             
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               
-              {/* Left Column: Typography & Heading (lg:col-span-7) */}
-              <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+              {/* Left Column: Typography & Heading (lg:col-span-6) */}
+              <div className="lg:col-span-6 space-y-5 sm:space-y-6">
                 
-                {/* Eyebrow Pill */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#E5E3DD] shadow-2xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-black" />
-                  <span className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.24em] text-black uppercase font-bold">
-                    GET IN TOUCH
-                  </span>
-                </div>
-
                 {/* Main Luxury Heading */}
-                <h1 className="font-serif-luxury text-4xl sm:text-5xl lg:text-[56px] xl:text-[62px] font-normal leading-[1.08] tracking-tight text-black">
+                <h1 className="font-serif-luxury text-4xl sm:text-5xl lg:text-[54px] xl:text-[60px] font-normal leading-[1.08] tracking-tight text-black">
                   Let&apos;s Create Your <br className="hidden sm:inline" />
                   <span className="italic font-serif">Perfect Fit</span>
                 </h1>
@@ -136,40 +127,18 @@ export default function ContactPage() {
                   Book a consultation, ask a question, or start your tailoring journey with our team today. We craft custom garments that reflect your personal style, with attention to every detail from start to finish.
                 </p>
 
-                {/* Atelier Feature Bullets / Micro-highlights */}
-                <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs text-black font-sans max-w-xl">
-                  <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E5E3DD] shadow-2xs">
-                    <Scissors size={15} className="text-black shrink-0" />
-                    <span className="font-medium">Master Cutter Appointments</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-white border border-[#E5E3DD] shadow-2xs">
-                    <Clock size={15} className="text-black shrink-0" />
-                    <span className="font-medium">Replies Within 1 Business Day</span>
-                  </div>
-                </div>
-
               </div>
 
-              {/* Right Column: High-End Framed Bespoke Fitting Image (lg:col-span-5) */}
-              <div className="lg:col-span-5">
-                <div className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] w-full rounded-[24px] sm:rounded-[32px] overflow-hidden border border-[#E5E3DD] shadow-sm bg-white group">
+              {/* Right Column: High-End Framed Bespoke Fitting Image (lg:col-span-6, 12px border radius) */}
+              <div className="lg:col-span-6">
+                <div className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] min-h-[340px] sm:min-h-[420px] lg:min-h-[470px] w-full rounded-[12px] overflow-hidden border border-[#E5E3DD] shadow-sm bg-white group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/contact_hero_fitting.jpg"
+                    src="/contact_hero_indian_gentleman.jpg"
                     alt="Master Tailor Bespoke Fitting and Craftsmanship"
                     className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                     loading="eager"
                   />
-                  {/* Subtle ambient lighting vignette */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-80" />
-                  
-                  {/* Floating Caption Badge */}
-                  <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 z-10 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-full border border-[#E5E3DD] shadow-xs">
-                    <span className="text-[10px] sm:text-[10.5px] font-mono tracking-widest uppercase text-black font-semibold flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      BESPOKE ATELIER · PERSONAL CONSULTATION
-                    </span>
-                  </div>
                 </div>
               </div>
 
@@ -222,10 +191,7 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="mb-2">
-                      <span className="text-[11px] font-mono font-bold uppercase tracking-[0.24em] text-[#666666] block mb-1">
-                        ONLINE ENQUIRY
-                      </span>
+                    <div className="mb-4">
                       <h2 className="font-serif-luxury text-2xl sm:text-3xl text-black font-normal">
                         Bespoke Consultation
                       </h2>

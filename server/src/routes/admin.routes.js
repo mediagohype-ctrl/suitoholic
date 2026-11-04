@@ -66,6 +66,7 @@ router.patch("/orders/:id", validate(s.idParam, "params"), validate(s.orderUpdat
 
 // --------------------------------------------------------------- content
 router.get("/content", content.adminList);
+router.get("/content/:key", validate(s.contentKey, "params"), content.getOne);
 router.put("/content/:key", validate(s.contentKey, "params"), validate(s.contentBody), content.adminSave);
 router.delete("/content/:key", validate(s.contentKey, "params"), content.adminReset);
 

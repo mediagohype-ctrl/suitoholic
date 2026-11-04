@@ -9,6 +9,7 @@ import { customizer } from "./sections/customizer";
 import { customShirtPage } from "./sections/customShirtPage";
 import { fabricsPage } from "./sections/fabricsPage";
 import { featureHighlights } from "./sections/featureHighlights";
+import { finishedLooks } from "./sections/finishedLooks";
 import { footer } from "./sections/footer";
 import { header } from "./sections/header";
 import { infoPages } from "./sections/infoPages";
@@ -38,6 +39,7 @@ export const contentDefaults = {
   aboutPage,
   customShirtPage,
   fabricsPage,
+  finishedLooks,
   infoPages,
 };
 
@@ -73,5 +75,6 @@ export const contentSections: ContentSectionMeta[] = [
   { key: "aboutPage", label: "About Us Page", group: "Pages", description: "All sections of the About page.", previewPath: "/about" },
   { key: "customShirtPage", label: "Custom Fit Page", group: "Pages", description: "All sections of the Custom Fit configurator page.", previewPath: "/custom-shirt" },
   { key: "fabricsPage", label: "Fabrics Page", group: "Pages", description: "All sections of the Fabrics page.", previewPath: "/fabrics" },
+  { key: "finishedLooks", label: "Finished Looks Showcase", group: "Pages", description: "Your fabric, as a finished look - fabric swatches and tailored model previews.", previewPath: "/custom-shirt" },
   { key: "infoPages", label: "Info Pages (Policies, FAQ)", group: "Pages", description: "Text pages served at /<slug>: returns, shipping, privacy, terms, fabric care, FAQ. Add a page here to create a new URL.", previewPath: "/faq" },
 ];

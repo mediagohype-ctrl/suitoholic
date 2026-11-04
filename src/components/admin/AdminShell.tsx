@@ -17,6 +17,7 @@ import {
   Scissors,
   Settings,
   ShoppingBag,
+  Sparkles,
   Tags,
   UserCircle,
   Users,
@@ -52,6 +53,7 @@ const NAV: { section?: string; items: NavItem[] }[] = [
       { href: "/admin/inventory", label: "Inventory", icon: <Boxes className="h-4 w-4" /> },
       { href: "/admin/categories", label: "Categories", icon: <Tags className="h-4 w-4" /> },
       { href: "/admin/fabrics", label: "Fabrics", icon: <Scissors className="h-4 w-4" /> },
+      { href: "/admin/finished-looks", label: "Finished Looks", icon: <Sparkles className="h-4 w-4" /> },
     ],
   },
   {

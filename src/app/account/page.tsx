@@ -16,6 +16,8 @@ import {
   Heart,
   Ruler,
   ShoppingBag,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -47,6 +49,8 @@ function GoogleIcon({ className }: { className?: string }) {
 interface UserProfile {
   email: string;
   name: string;
+  firstName?: string;
+  lastName?: string;
   phone?: string;
   isLoggedIn: boolean;
   offersOptIn?: boolean;
@@ -60,6 +64,13 @@ export default function AccountPage() {
   const [submitting, setSubmitting] = useState(false);
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState("");
+  const [firstNameInput, setFirstNameInput] = useState("");
+  const [lastNameInput, setLastNameInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [offersOptIn, setOffersOptIn] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [isSignUp, setIsSignUp] = useState(false);
   const [forgotSent, setForgotSent] = useState(false);
   const { wishlistCount } = useWishlist();
@@ -83,22 +94,74 @@ export default function AccountPage() {
 
   const handleEmailPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!emailInput.trim()) return;
-    setSubmitting(true);
-    setTimeout(() => {
-      const rawName = emailInput.split("@")[0] || "Patron";
-      const cleanName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
-      const profile: UserProfile = {
-        email: emailInput,
-        name: cleanName,
-        isLoggedIn: true,
-      };
-      setUser(profile);
-      try {
-        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(profile));
-      } catch {}
-      setSubmitting(false);
-    }, 400);
+    setFormError(null);
+
+    if (isSignUp) {
+      if (!firstNameInput.trim() || !lastNameInput.trim()) {
+        setFormError("Please enter your full first and last name.");
+        return;
+      }
+      if (!emailInput.trim()) {
+        setFormError("Please enter a valid email address.");
+        return;
+      }
+      const rawPhoneDigits = phoneInput.replace(/\D/g, "");
+      if (rawPhoneDigits.length < 10) {
+        setFormError("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+      if (passwordInput.length < 6) {
+        setFormError("Password must be at least 6 characters.");
+        return;
+      }
+      if (passwordInput !== confirmPasswordInput) {
+        setFormError("Passwords do not match. Please re-enter.");
+        return;
+      }
+
+      setSubmitting(true);
+      setTimeout(() => {
+        const fullName = `${firstNameInput.trim()} ${lastNameInput.trim()}`;
+        const formattedPhone = phoneInput.trim().startsWith("+")
+          ? phoneInput.trim()
+          : `+91 ${phoneInput.trim()}`;
+
+        const profile: UserProfile = {
+          email: emailInput.trim(),
+          name: fullName,
+          firstName: firstNameInput.trim(),
+          lastName: lastNameInput.trim(),
+          phone: formattedPhone,
+          offersOptIn: offersOptIn,
+          isLoggedIn: true,
+        };
+        setUser(profile);
+        try {
+          localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(profile));
+        } catch {}
+        setSubmitting(false);
+      }, 500);
+    } else {
+      if (!emailInput.trim() || !passwordInput.trim()) {
+        setFormError("Please enter both email and password.");
+        return;
+      }
+      setSubmitting(true);
+      setTimeout(() => {
+        const rawName = emailInput.split("@")[0] || "Patron";
+        const cleanName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+        const profile: UserProfile = {
+          email: emailInput.trim(),
+          name: cleanName,
+          isLoggedIn: true,
+        };
+        setUser(profile);
+        try {
+          localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(profile));
+        } catch {}
+        setSubmitting(false);
+      }, 400);
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -126,6 +189,11 @@ export default function AccountPage() {
     setUser(null);
     setEmailInput("");
     setPasswordInput("");
+    setConfirmPasswordInput("");
+    setFirstNameInput("");
+    setLastNameInput("");
+    setPhoneInput("");
+    setFormError(null);
     setForgotSent(false);
     setIsSignUp(false);
   };
@@ -198,29 +266,106 @@ export default function AccountPage() {
                 )}
 
                 {/* Main Email & Password Form */}
-                <form onSubmit={handleEmailPasswordSubmit} className="space-y-4">
+                <form onSubmit={handleEmailPasswordSubmit} className="space-y-3.5">
+                  {/* Error Alert */}
+                  {formError && (
+                    <div className="p-3 bg-[#FFF5F5] border border-[#FCA5A5] text-xs text-[#DC2626] text-center font-medium">
+                      {formError}
+                    </div>
+                  )}
+
+                  {/* SIGN UP ONLY: First and Last Name */}
+                  {isSignUp && (
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <input
+                          type="text"
+                          value={firstNameInput}
+                          onChange={(e) => {
+                            setFirstNameInput(e.target.value);
+                            setFormError(null);
+                          }}
+                          placeholder="First Name *"
+                          required
+                          className="w-full border border-[#D5D5D5] px-3.5 py-3 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
+                        />
+                      </div>
+                      <div>
+                        <input
+                          type="text"
+                          value={lastNameInput}
+                          onChange={(e) => {
+                            setLastNameInput(e.target.value);
+                            setFormError(null);
+                          }}
+                          placeholder="Last Name *"
+                          required
+                          className="w-full border border-[#D5D5D5] px-3.5 py-3 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   {/* Email Input */}
                   <div>
                     <input
                       type="email"
                       value={emailInput}
-                      onChange={(e) => setEmailInput(e.target.value)}
-                      placeholder="E-mail"
+                      onChange={(e) => {
+                        setEmailInput(e.target.value);
+                        setFormError(null);
+                      }}
+                      placeholder={isSignUp ? "E-mail Address *" : "E-mail"}
                       required
-                      className="w-full border border-[#D5D5D5] px-4 py-3 sm:py-3.5 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
+                      className="w-full border border-[#D5D5D5] px-3.5 py-3 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
                     />
                   </div>
 
+                  {/* SIGN UP ONLY: Phone Number */}
+                  {isSignUp && (
+                    <div className="flex border border-[#D5D5D5] focus-within:border-black transition-colors bg-white">
+                      <div className="flex items-center px-3 border-r border-[#E5E5E5] bg-[#FAF8F5] text-xs font-semibold text-[#444444] select-none shrink-0">
+                        <span>🇮🇳 +91</span>
+                      </div>
+                      <input
+                        type="tel"
+                        value={phoneInput}
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/[^\d\s]/g, "");
+                          setPhoneInput(val);
+                          setFormError(null);
+                        }}
+                        placeholder="Mobile Number (10 digits) *"
+                        required
+                        maxLength={14}
+                        className="w-full px-3.5 py-3 text-sm text-[#14110E] placeholder:text-[#888888] outline-none bg-white rounded-none"
+                      />
+                    </div>
+                  )}
+
                   {/* Password Input */}
                   <div>
-                    <input
-                      type="password"
-                      value={passwordInput}
-                      onChange={(e) => setPasswordInput(e.target.value)}
-                      placeholder="Password"
-                      required
-                      className="w-full border border-[#D5D5D5] px-4 py-3 sm:py-3.5 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={passwordInput}
+                        onChange={(e) => {
+                          setPasswordInput(e.target.value);
+                          setFormError(null);
+                        }}
+                        placeholder={isSignUp ? "Create Password (min 6 characters) *" : "Password"}
+                        required
+                        className="w-full border border-[#D5D5D5] px-3.5 py-3 pr-10 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888888] hover:text-black cursor-pointer transition-colors p-1"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
                     {!isSignUp && (
                       <div className="flex justify-end mt-1.5">
                         <button
@@ -237,6 +382,46 @@ export default function AccountPage() {
                     )}
                   </div>
 
+                  {/* SIGN UP ONLY: Confirm Password */}
+                  {isSignUp && (
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={confirmPasswordInput}
+                        onChange={(e) => {
+                          setConfirmPasswordInput(e.target.value);
+                          setFormError(null);
+                        }}
+                        placeholder="Confirm Password *"
+                        required
+                        className="w-full border border-[#D5D5D5] px-3.5 py-3 text-sm text-[#14110E] placeholder:text-[#888888] outline-none focus:border-black rounded-none transition-colors bg-white"
+                      />
+                    </div>
+                  )}
+
+                  {/* SIGN UP ONLY: Opt-in and Terms */}
+                  {isSignUp && (
+                    <div className="pt-1 space-y-2">
+                      <label className="flex items-start gap-2.5 text-xs text-[#555555] cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={offersOptIn}
+                          onChange={(e) => setOffersOptIn(e.target.checked)}
+                          className="mt-0.5 rounded text-black focus:ring-black accent-[#14110E] cursor-pointer"
+                        />
+                        <span className="leading-tight">
+                          Receive bespoke collection previews, private fittings & atelier updates.
+                        </span>
+                      </label>
+                      <p className="text-[11px] text-[#777777] leading-relaxed">
+                        By creating an account, you agree to Suitoholic&apos;s{" "}
+                        <Link href="/terms" className="underline hover:text-black">Terms of Service</Link>{" "}
+                        and{" "}
+                        <Link href="/privacy" className="underline hover:text-black">Privacy Policy</Link>.
+                      </p>
+                    </div>
+                  )}
+
                   {/* Gold Button Matching Reference Image (#F5DB8B) */}
                   <div className="pt-2">
                     <button
@@ -247,12 +432,10 @@ export default function AccountPage() {
                       {submitting
                         ? "PROCESSING..."
                         : isSignUp
-                        ? "CREATE ACCOUNT"
+                        ? "CREATE ATELIER ACCOUNT"
                         : "LOGIN"}
                     </button>
-                  </div>
-
-                </form>
+                  </div></form>
 
                 {/* OR Divider Matching User Request */}
                 <div className="relative my-6">
@@ -285,6 +468,9 @@ export default function AccountPage() {
                   onClick={() => {
                     setIsSignUp(!isSignUp);
                     setForgotSent(false);
+                    setFormError(null);
+                    setPasswordInput("");
+                    setConfirmPasswordInput("");
                   }}
                   className="text-xs sm:text-sm text-[#555555] cursor-pointer hover:text-black transition"
                 >
