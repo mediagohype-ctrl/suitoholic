@@ -4,7 +4,7 @@ import React, { useState, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart, Package, MapPin, LogOut, LogIn } from "lucide-react";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import { useCart } from "@/context/CartProvider";
 import { useWishlist } from "@/context/WishlistProvider";
@@ -42,6 +42,43 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
   const bagCount = isClient ? (cartCount ?? itemCount) : (cartCount ?? 0);
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string; isLoggedIn: boolean } | null>(null);
+
+  useEffect(() => {
+    const syncUser = () => {
+      try {
+        const stored = localStorage.getItem("suitoholic_client_user");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed?.isLoggedIn) {
+            setCurrentUser(parsed);
+            return;
+          }
+        }
+        setCurrentUser(null);
+      } catch {
+        setCurrentUser(null);
+      }
+    };
+
+    syncUser();
+    window.addEventListener("storage", syncUser);
+    window.addEventListener("suitoholic_auth_change", syncUser);
+    return () => {
+      window.removeEventListener("storage", syncUser);
+      window.removeEventListener("suitoholic_auth_change", syncUser);
+    };
+  }, []);
+
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("suitoholic_client_user");
+      window.dispatchEvent(new Event("suitoholic_auth_change"));
+    } catch {}
+    setCurrentUser(null);
+    window.location.href = "/account";
+  };
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -245,14 +282,101 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
               )}
             </Link>
 
-            {/* Client Concierge / Account Link (Opens Full Page) */}
-            <Link
-              href="/account"
-              className="p-1 hover:text-[#726254] transition-colors cursor-pointer"
-              aria-label="Client Concierge Account"
-            >
-              <User size={18} strokeWidth={1.75} />
-            </Link>
+            {/* Client Concierge / Account Dropdown (Flipkart style) */}
+            <div className="relative group py-1.5">
+              <Link
+                href="/account"
+                className="p-1 hover:text-[#726254] transition-colors cursor-pointer flex items-center"
+                aria-label="Client Concierge Account"
+              >
+                <User size={18} strokeWidth={1.75} />
+              </Link>
+
+              {/* Floating Dropdown Menu (Centered right underneath Account icon) */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50">
+                <div className="w-[280px] bg-white border border-[#E5E3DD] rounded-[20px] shadow-[0_16px_48px_rgba(0,0,0,0.14)] py-2.5 backdrop-blur-md overflow-hidden text-left animate-in fade-in zoom-in-95 duration-150">
+                  {/* Header Title */}
+                  <div className="px-5 py-3.5 border-b border-[#F0EFEB]">
+                    <h4 className="text-[15px] font-bold text-black tracking-tight font-serif-luxury">
+                      Your Account
+                    </h4>
+                    {currentUser ? (
+                      <p className="text-xs text-[#666666] font-mono truncate mt-0.5">
+                        {currentUser.name}
+                      </p>
+                    ) : (
+                      <p className="text-[11px] text-[#888888] mt-0.5 leading-tight">
+                        Sign in for bespoke atelier access
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Marked Sections: My Profile, Orders, Saved Addresses, Wishlist */}
+                  <div className="py-1.5">
+                    <Link
+                      href="/account"
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14px] font-medium text-[#222222] hover:bg-[#F7F6F3] hover:text-black transition-colors group/item"
+                    >
+                      <User size={18} strokeWidth={1.75} className="text-[#555555] group-hover/item:text-black shrink-0" />
+                      <span>My Profile</span>
+                    </Link>
+
+                    <Link
+                      href="/orders"
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14px] font-medium text-[#222222] hover:bg-[#F7F6F3] hover:text-black transition-colors group/item"
+                    >
+                      <Package size={18} strokeWidth={1.75} className="text-[#555555] group-hover/item:text-black shrink-0" />
+                      <span>Orders</span>
+                    </Link>
+
+                    <Link
+                      href="/saved-addresses"
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14px] font-medium text-[#222222] hover:bg-[#F7F6F3] hover:text-black transition-colors group/item"
+                    >
+                      <MapPin size={18} strokeWidth={1.75} className="text-[#555555] group-hover/item:text-black shrink-0" />
+                      <span>Saved Addresses</span>
+                    </Link>
+
+                    <Link
+                      href="/wishlist"
+                      className="flex items-center justify-between px-5 py-3 text-[14px] font-medium text-[#222222] hover:bg-[#F7F6F3] hover:text-black transition-colors group/item"
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <Heart size={18} strokeWidth={1.75} className="text-[#555555] group-hover/item:text-black shrink-0" />
+                        <span>Wishlist</span>
+                      </div>
+                      {wishlistCount > 0 && (
+                        <span className="min-w-[20px] h-[20px] px-1.5 text-[11px] font-mono font-bold rounded-full bg-[#8C7355] text-white flex items-center justify-center">
+                          {wishlistCount}
+                        </span>
+                      )}
+                    </Link>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-[#F0EFEB] my-1.5" />
+
+                  {/* Marked Section: Logout (or Sign In if guest) */}
+                  {currentUser ? (
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3.5 px-5 py-3 text-[14px] font-medium text-[#D32F2F] hover:bg-red-50/70 transition-colors text-left cursor-pointer"
+                    >
+                      <LogOut size={18} strokeWidth={1.75} className="shrink-0" />
+                      <span>Logout</span>
+                    </button>
+                  ) : (
+                    <Link
+                      href="/account"
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14px] font-semibold text-[#14110E] hover:bg-[#F7F6F3] transition-colors"
+                    >
+                      <LogIn size={18} strokeWidth={1.75} className="shrink-0" />
+                      <span>Log In / Sign Up</span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
 
             {/* Shopping Bag Link (Opens Full Page) */}
             <Link
@@ -323,6 +447,68 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
               </Link>
             );
           })}
+
+          {/* Mobile: Your Account (Flipkart Style Marked Options) */}
+          <div className="pt-3 border-t border-[#DAC2AB]/60">
+            <div className="text-[10px] font-bold tracking-[0.2em] text-[#8C7355] uppercase mb-2">
+              Your Account {currentUser ? `• ${currentUser.name}` : ""}
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[11px] font-semibold">
+              <Link
+                href="/account"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 p-2 rounded-lg bg-[#FAF8F5] border border-[#E5E3DD] text-[#1F1C18]"
+              >
+                <User size={14} className="shrink-0" />
+                <span className="truncate">My Profile</span>
+              </Link>
+              <Link
+                href="/orders"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 p-2 rounded-lg bg-[#FAF8F5] border border-[#E5E3DD] text-[#1F1C18]"
+              >
+                <Package size={14} className="shrink-0" />
+                <span className="truncate">Orders</span>
+              </Link>
+              <Link
+                href="/saved-addresses"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 p-2 rounded-lg bg-[#FAF8F5] border border-[#E5E3DD] text-[#1F1C18]"
+              >
+                <MapPin size={14} className="shrink-0" />
+                <span className="truncate">Addresses</span>
+              </Link>
+              <Link
+                href="/wishlist"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 p-2 rounded-lg bg-[#FAF8F5] border border-[#E5E3DD] text-[#1F1C18]"
+              >
+                <Heart size={14} className="shrink-0" />
+                <span className="truncate">Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ""}</span>
+              </Link>
+            </div>
+            {currentUser ? (
+              <button
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleLogout(e);
+                }}
+                className="mt-2 w-full flex items-center justify-center gap-2 p-2 rounded-lg bg-red-50 text-red-600 text-xs font-semibold"
+              >
+                <LogOut size={14} />
+                <span>Logout</span>
+              </button>
+            ) : (
+              <Link
+                href="/account"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mt-2 w-full flex items-center justify-center gap-2 p-2 rounded-lg bg-black text-white text-xs font-semibold uppercase tracking-wider"
+              >
+                <LogIn size={14} />
+                <span>Log In / Sign Up</span>
+              </Link>
+            )}
+          </div>
 
           <div className="pt-2 border-t border-[#DAC2AB]/60 flex justify-between text-[10px] tracking-wider text-[#5C5247] uppercase">
             {c.topLinks.map((link, i) => (

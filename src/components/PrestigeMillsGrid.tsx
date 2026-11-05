@@ -420,26 +420,6 @@ export default function PrestigeMillsGrid() {
       aria-label="World-Renowned Textile Mills Partner Showcase"
       className="relative w-full bg-[#ECEAE5] py-14 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 border-b border-[#E5E3DD] select-none overflow-hidden"
     >
-      {/* Background Centered Luxury Typography Watermark (Static - No Horizontal Scroll Drift) */}
-      <div 
-        aria-hidden="true"
-        className="pointer-events-none absolute top-4 sm:top-6 inset-x-0 w-full overflow-hidden opacity-[0.04] select-none flex items-center justify-center"
-      >
-        <span className="font-serif-luxury text-[12vw] sm:text-[10vw] lg:text-[130px] xl:text-[160px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none text-center select-none">
-          SUITOHOLIC
-        </span>
-      </div>
-
-      {/* Background Centered Luxury Monogram Watermark (Bottom - Static) */}
-      <div 
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-4 sm:bottom-8 inset-x-0 w-full overflow-hidden opacity-[0.025] select-none flex items-center justify-center"
-      >
-        <span className="font-serif-luxury text-[10vw] sm:text-[8vw] lg:text-[100px] xl:text-[120px] font-bold uppercase tracking-[0.2em] whitespace-nowrap text-black block leading-none text-center select-none">
-          SUITOHOLIC ATELIER
-        </span>
-      </div>
-
       {/* Loom Thread Guide Lines (Static Texture) */}
       <div
         aria-hidden="true"

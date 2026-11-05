@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AlertCircle, ArrowLeft, Lock } from "lucide-react";
@@ -50,6 +50,49 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Auto-fill from saved addresses & logged-in profile
+  useEffect(() => {
+    try {
+      const userRaw = localStorage.getItem("suitoholic_client_user");
+      let uName = "";
+      let uEmail = "";
+      let uPhone = "";
+      if (userRaw) {
+        const u = JSON.parse(userRaw);
+        if (u.name) uName = u.name;
+        if (u.email) uEmail = u.email;
+        if (u.phone) uPhone = u.phone;
+      }
+      const addrRaw = localStorage.getItem("suitoholic_saved_addresses");
+      if (addrRaw) {
+        const addrs = JSON.parse(addrRaw);
+        const def = addrs.find((a: any) => a.isDefault) || addrs[0];
+        if (def) {
+          setForm((prev) => ({
+            ...prev,
+            name: prev.name || def.name || uName,
+            email: prev.email || uEmail,
+            phone: prev.phone || def.phone || uPhone,
+            line1: prev.line1 || def.address || "",
+            line2: prev.line2 || def.locality || "",
+            city: prev.city || def.city || "",
+            state: prev.state || def.state || "",
+            postalCode: prev.postalCode || def.pincode || "",
+          }));
+          return;
+        }
+      }
+      if (uName || uEmail || uPhone) {
+        setForm((prev) => ({
+          ...prev,
+          name: prev.name || uName,
+          email: prev.email || uEmail,
+          phone: prev.phone || uPhone,
+        }));
+      }
+    } catch {}
+  }, []);
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
