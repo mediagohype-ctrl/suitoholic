@@ -281,7 +281,7 @@ export default function MannequinShirtViewer({
   const shirtFilter ="contrast(1.0) drop-shadow(0 16px 28px rgba(20,17,14,0.25))";
 
   return (
-    <div className={`relative w-full ${currentStep === 5 ?"max-w-none" :"max-w-[420px]"} h-full mx-auto flex flex-col items-center justify-center py-1 flex-1`}>
+    <div className={`relative w-full ${currentStep === 5 ?"max-w-none" :"max-w-[420px]"} mx-auto flex flex-col items-center justify-start py-0 flex-1`}>
 
       {/* ============================================================ */}
       {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
@@ -347,12 +347,12 @@ export default function MannequinShirtViewer({
         </div>
       ) : (
         /* Steps 1, 2, 3, 4, 6: Full Ghost Mannequin Stage */
-        <div className="relative w-full flex items-center justify-center flex-1 py-1">
+        <div className="relative w-full flex items-center justify-start flex-1 py-0">
 
           {/* ============================================================ */}
           {/* CORE SHIRT PHOTO: FULL MADE SHIRT IN MATCHING CHOSEN COLOR   */}
           {/* ============================================================ */}
-          <div className="relative w-full max-w-[340px] sm:max-w-[370px] lg:max-w-[390px] h-[360px] sm:h-[400px] lg:h-[450px] aspect-[5/6] flex items-center justify-center z-10 mx-auto">
+          <div className="relative w-full max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px] aspect-[5/6] flex items-center justify-center z-10 mx-auto -translate-y-3 sm:-translate-y-5 lg:-translate-y-7">
             <div
               className="relative w-full h-full flex items-center justify-center transition-all duration-500 ease-out"
               style={{

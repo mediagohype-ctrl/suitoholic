@@ -22,9 +22,8 @@ export default function MensFabricShowcaseGrid({
       {/* Top Header Row with Accent Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5E3DD] pb-5">
         
-        {/* Title with Accent Bar */}
-        <div className="flex items-center gap-3.5">
-          <div className="w-1.5 h-8 sm:h-10 rounded-full bg-black" />
+        {/* Title */}
+        <div className="flex items-center">
           <div>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
               {grid?.heading}

@@ -7,7 +7,8 @@ import Header from"@/components/Header";
 import Footer from"@/components/Footer";
 import AtelierEditorialBanner from"@/components/AtelierEditorialBanner";
 import ShopByFabricsSection from"@/components/ShopByFabricsSection";
-import CuratedStartingPoints, { CuratedLookItem } from"@/components/CuratedStartingPoints";
+import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
+import FreedomCollectionSection from "@/components/FreedomCollectionSection";
 import BespokeJourneySection from"@/components/BespokeJourneySection";
 import BespokePillarsBanner from"@/components/BespokePillarsBanner";
 import SeeBeforeYouStitchSection from"@/components/SeeBeforeYouStitchSection";
@@ -353,6 +354,9 @@ function CustomShirtConfiguratorContent() {
         activeProductSlug={activeProduct?.slug}
         onSelectLook={handleSelectCuratedLook}
       />
+
+      {/* FREEDOM COLLECTION: Suos-Style Collage Grid with Authentic Suitoholic Imagery */}
+      <FreedomCollectionSection />
 
       {/* THE JOURNEY: Five Steps to a Singular Suit Timeline */}
       <BespokeJourneySection />

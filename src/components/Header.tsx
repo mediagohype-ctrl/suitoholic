@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useSyncExternalStore } from"react";
+import React, { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import Link from"next/link";
 import Image from"next/image";
 import { usePathname } from"next/navigation";
@@ -42,6 +42,30 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
   const { wishlistCount } = useWishlist();
   const bagCount = isClient ? (cartCount ?? itemCount) : (cartCount ?? 0);
   const [currentUser, setCurrentUser] = useState<{ name: string; email: string; isLoggedIn: boolean } | null>(null);
+  const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
+  const shopMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMenuEnter = () => {
+    if (shopMenuTimeoutRef.current) clearTimeout(shopMenuTimeoutRef.current);
+    setIsShopMenuOpen(true);
+  };
+
+  const handleMenuLeave = () => {
+    if (shopMenuTimeoutRef.current) clearTimeout(shopMenuTimeoutRef.current);
+    shopMenuTimeoutRef.current = setTimeout(() => {
+      setIsShopMenuOpen(false);
+    }, 150);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (shopMenuTimeoutRef.current) clearTimeout(shopMenuTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsShopMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const syncUser = () => {
@@ -113,8 +137,8 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-transform duration-300 ease-in-out ${
           visible ?"translate-y-0" :"-translate-y-full"
         } ${
-          scrolled || forceSolid
-            ?"shadow-sm bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
+          scrolled || forceSolid || isShopMenuOpen
+            ?"shadow-sm bg-white/98 backdrop-blur-md border-b border-[#E5E3DD]"
             :"bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
         }`}
       >
@@ -179,71 +203,36 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
 
               if (isShop) {
                 return (
-                  <div key={`${link.href}-${i}`} className="relative group py-2">
+                  <div
+                    key={`${link.href}-${i}`}
+                    className="relative py-2"
+                    onMouseEnter={handleMenuEnter}
+                    onMouseLeave={handleMenuLeave}
+                  >
                     <Link
                       href={link.href}
                       className={`transition-colors duration-200 pb-1 flex items-center gap-1.5 relative ${
-                        active
-                          ?"text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
-                          :"text-[#666666] hover:text-[#000000]"
+                        active || isShopMenuOpen
+                          ? "text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
+                          : "text-[#666666] hover:text-[#000000]"
                       }`}
                     >
                       <span>{link.label}</span>
                       <ChevronDown
                         size={12}
-                        className="transition-transform duration-200 group-hover:rotate-180 text-[#666666]"
+                        className={`transition-transform duration-300 ${
+                          isShopMenuOpen ? "rotate-180 text-[#000000]" : "text-[#666666]"
+                        }`}
                       />
                     </Link>
-
-                    {/* Shop Category Hover Dropdown */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50">
-                      <div className="w-[340px] bg-white border border-[#E5E3DD] rounded-2xl shadow-2xl p-4 space-y-1.5 backdrop-blur-md">
-                        <div className="px-3 py-1.5 border-b border-[#E5E3DD] flex items-center justify-between">
-                          <span className="text-[10px] font-bold tracking-[0.22em] text-[#000000] uppercase">
-                            SHOP CATEGORIES
-                          </span>
-                          <span className="text-[9px] text-[#666666] tracking-wider uppercase font-semibold">
-                            SUITOHOLIC
-                          </span>
-                        </div>
-
-                        <div className="pt-1.5 space-y-1">
-                          <Link
-                            href="/shop"
-                            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[11px] font-bold tracking-[0.16em] uppercase text-[#000000] hover:bg-[#000000] hover:text-white transition-all group/item"
-                          >
-                            <span>ALL SHIRTS &amp; PRODUCTS</span>
-                            <span className="text-xs text-[#666666] group-hover/item:text-white transition-colors">→</span>
-                          </Link>
-
-                          {categories.map((cat) => (
-                            <Link
-                              key={cat.id}
-                              href={`/shop?category=${cat.id}`}
-                              className="flex items-center justify-between px-3.5 py-2 rounded-xl text-[10.5px] font-semibold tracking-[0.14em] uppercase text-[#444444] hover:text-[#000000] hover:bg-[#F5F4F0] transition-all group/item"
-                            >
-                              <span className="truncate pr-2">{cat.title}</span>
-                              <span className="text-xs text-[#666666] opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
-                            </Link>
-                          ))}
-                        </div>
-
-                        <div className="pt-2 border-t border-[#E5E3DD] mt-2 px-3 flex items-center justify-between text-[9.5px] font-bold tracking-[0.18em] uppercase text-[#666666]">
-                          <span>BESPOKE ATELIER</span>
-                          <Link href="/custom-shirt" className="text-[#000000] hover:underline transition-colors">
-                            CUSTOM CONFIGURATOR →
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 );
               }
-
               return (
                 <Link
                   key={`${link.href}-${i}`}
                   href={link.href}
+                  onMouseEnter={() => setIsShopMenuOpen(false)}
                   className={`transition-colors duration-200 pb-1 relative ${
                     active
                       ?"text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
@@ -392,6 +381,179 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 {bagCount > 99 ?"99+" : bagCount}
               </span>
             </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* SUOS India-Style Full-Width Shop Mega-Menu Dropdown Panel */}
+      <div
+        onMouseEnter={handleMenuEnter}
+        onMouseLeave={handleMenuLeave}
+        className="absolute left-0 top-full hidden w-full overflow-hidden bg-white text-black border-b border-black/10 shadow-[0_24px_60px_rgba(0,0,0,0.08)] [will-change:clip-path] lg:block z-50"
+        style={{
+          clipPath: isShopMenuOpen ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
+          transition: isShopMenuOpen
+            ? "clip-path 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease-out"
+            : "clip-path 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in",
+          opacity: isShopMenuOpen ? 1 : 0,
+          pointerEvents: isShopMenuOpen ? "auto" : "none",
+        }}
+      >
+        <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-14 py-8">
+          <div className="flex h-full w-full items-start gap-12 xl:gap-16">
+            
+            {/* Left Column: Categories List */}
+            <div className="min-w-[14rem] max-w-[20rem] flex-1">
+              <div className="pb-3 mb-3 border-b border-black/10 flex items-center justify-between">
+                <h4 className="text-[12px] font-bold tracking-[0.2em] text-black uppercase font-sans">
+                  EDITS
+                </h4>
+                <span className="text-[9.5px] text-[#888888] tracking-widest uppercase font-semibold">
+                  SUITOHOLIC
+                </span>
+              </div>
+
+              <ul className="space-y-2.5">
+                <li>
+                  <Link
+                    href="/shop"
+                    onClick={() => setIsShopMenuOpen(false)}
+                    className="inline-flex cursor-pointer items-start text-left text-[13px] font-bold uppercase leading-[1.4] tracking-[0.08em] text-black transition-colors duration-200 hover:opacity-60 focus-visible:outline-none"
+                  >
+                    SHOP ALL
+                  </Link>
+                </li>
+                {categories && categories.length > 0 ? (
+                  categories.map((cat) => (
+                    <li key={cat.id}>
+                      <Link
+                        href={`/shop?category=${cat.id}`}
+                        onClick={() => setIsShopMenuOpen(false)}
+                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
+                      >
+                        {cat.title}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li>
+                      <Link
+                        href="/shop?category=formal_shirts"
+                        onClick={() => setIsShopMenuOpen(false)}
+                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
+                      >
+                        FORMAL SHIRTS
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/shop?category=formal_stripes"
+                        onClick={() => setIsShopMenuOpen(false)}
+                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
+                      >
+                        ORIGINALS
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/shop?category=formal_bespoke"
+                        onClick={() => setIsShopMenuOpen(false)}
+                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
+                      >
+                        FREEDOM
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/shop?category=timeless"
+                        onClick={() => setIsShopMenuOpen(false)}
+                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
+                      >
+                        TIMELESS
+                      </Link>
+                    </li>
+                  </>
+                )}
+              </ul>
+
+              {/* Bespoke Atelier Shortcut */}
+              <div className="pt-4 border-t border-black/10 mt-5 flex items-center justify-between text-[10px] font-bold tracking-[0.18em] uppercase text-[#666666]">
+                <span>BESPOKE ATELIER</span>
+                <Link
+                  href="/custom-shirt"
+                  onClick={() => setIsShopMenuOpen(false)}
+                  className="text-black hover:opacity-60 flex items-center gap-1 transition-opacity"
+                >
+                  <span>CUSTOM FIT</span>
+                  <span className="text-xs">→</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column: Two Editorial Cards matching SUOS India layout */}
+            <div className="flex shrink-0 gap-5 lg:gap-6">
+              
+              {/* Card 1: NEW LAUNCH / COUNTRY EDIT */}
+              <Link
+                href="/shop?category=country-edit"
+                onClick={() => setIsShopMenuOpen(false)}
+                className="group/card relative block aspect-[3/2] w-[340px] sm:w-[380px] lg:w-[420px] shrink-0 cursor-pointer overflow-hidden bg-neutral-100"
+              >
+                <div className="absolute inset-0">
+                  <img
+                    src="/banners/menu_card_country_edit.jpg"
+                    alt="Suitoholic Country Edit - New Launch"
+                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover/card:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.45)_100%)]" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/90 mb-1 font-sans">
+                    NEW LAUNCH
+                  </span>
+                  <h4 className="font-serif-luxury text-2xl lg:text-3xl font-bold uppercase tracking-[0.1em] text-white">
+                    COUNTRY EDIT
+                  </h4>
+                </div>
+              </Link>
+
+              {/* Card 2: EXPLORE / TIMELESS */}
+              <Link
+                href="/shop?category=timeless"
+                onClick={() => setIsShopMenuOpen(false)}
+                className="group/card relative block aspect-[3/2] w-[340px] sm:w-[380px] lg:w-[420px] shrink-0 cursor-pointer overflow-hidden bg-neutral-100"
+              >
+                <div className="absolute inset-0">
+                  <img
+                    src="/banners/menu_card_timeless.jpg"
+                    alt="Suitoholic Timeless Collection"
+                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover/card:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.45)_100%)]" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/90 mb-1 font-sans">
+                    EXPLORE
+                  </span>
+                  <h4 className="font-serif-luxury text-2xl lg:text-3xl font-bold uppercase tracking-[0.1em] text-white">
+                    TIMELESS
+                  </h4>
+                </div>
+
+                {/* Bottom-Left Subtle Specification (Screenshot format) */}
+                <div className="absolute bottom-3.5 left-4 z-10 text-left pointer-events-none drop-shadow-sm">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/85 leading-tight">
+                    LIGHT FIT DENIM
+                  </p>
+                  <p className="text-[8px] font-normal uppercase tracking-[0.14em] text-white/65 leading-tight mt-0.5">
+                    COTTON • NON-STRETCH
+                  </p>
+                </div>
+              </Link>
+
+            </div>
+
           </div>
         </div>
       </div>

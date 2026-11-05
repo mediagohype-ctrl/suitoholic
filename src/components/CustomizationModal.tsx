@@ -298,7 +298,7 @@ export default function CustomizationModal({
         </div>
 
         {/* Modal Scrollable Content Body */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 lg:p-6 lg:pt-4 space-y-3 sm:space-y-4">
           <div className={`w-full ${currentStep >= 5 ?"max-w-[1360px]" :"max-w-[1184px]"} mx-auto space-y-4 sm:space-y-6 transition-all duration-300`}>
             
             {/* Breadcrumb Steps Header */}
@@ -327,7 +327,7 @@ export default function CustomizationModal({
                       </React.Fragment>
                     ))}
                   </h3>
-                  <div className="w-12 h-[2px] bg-black mt-2" />
+
                 </div>
 
                 {/* Floating"Your Selection" Box - Dynamically reveals selections per step */}
@@ -396,7 +396,7 @@ export default function CustomizationModal({
               </div>
 
               {/* Center: 3D Interactive Mannequin Shirt */}
-              <div className="relative w-full h-full flex flex-col items-center justify-center flex-1">
+              <div className="relative w-full flex flex-col items-center justify-start flex-1 -mt-2 sm:-mt-4 lg:-mt-6">
                 <MannequinShirtViewer
                   chestSize={customFit.chestSize}
                   bodyFit={asMannequinFit(customFit.bodyFit)}

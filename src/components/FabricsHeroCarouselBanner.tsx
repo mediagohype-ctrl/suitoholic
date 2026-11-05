@@ -17,9 +17,8 @@ export default function FabricsHeroCarouselBanner() {
         loading="eager"
       />
 
-      {/* Left Bottom: Subtle Minimalist Small Line */}
-      <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-16 z-20 flex items-center gap-3">
-        <span className="w-8 h-[1.5px] bg-[#14110E]/70 inline-block" />
+      {/* Left Bottom: Minimalist Label */}
+      <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-16 z-20 flex items-center">
         <p className="font-sans text-xs sm:text-[13px] font-medium tracking-[0.22em] uppercase text-[#14110E]/90">
           The World&apos;s Finest Fabrics &middot; Tailored For You
         </p>
