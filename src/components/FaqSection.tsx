@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { ChevronDown, MessageCircle, Mail } from "lucide-react";
-import Link from "next/link";
+import React, { useState, useEffect, useRef } from"react";
+import { ChevronDown, MessageCircle, Mail } from"lucide-react";
+import Link from"next/link";
 
 interface FaqItem {
   question: string;
@@ -11,44 +11,36 @@ interface FaqItem {
 
 const FAQS: FaqItem[] = [
   {
-    question: "How does the custom fit and sizing algorithm work?",
-    answer:
-      "We utilize an intelligent 40-point measurement calibration algorithm. Simply select your chest size, height, and fit silhouette (Slim, Tailored, or Classic), and our master tailors draft an individualized digital pattern tailored to your posture, shoulder slope, and collar preference without needing a tape measure.",
+    question:"How does the custom fit and sizing algorithm work?",
+    answer:"We utilize an intelligent 40-point measurement calibration algorithm. Simply select your chest size, height, and fit silhouette (Slim, Tailored, or Classic), and our master tailors draft an individualized digital pattern tailored to your posture, shoulder slope, and collar preference without needing a tape measure.",
   },
   {
-    question: "Can I customize collar styles, cuffs, and personalized monograms?",
-    answer:
-      "Absolutely. For every shirt, you can select your preferred collar spread (Cutaway, Classic English Spread, Button-Down), cuff style (French Double Cuff or Single Mitred), genuine Australian Mother-of-Pearl buttons, and add complimentary personalized cuff monogram embroidery with your initials.",
+    question:"Can I customize collar styles, cuffs, and personalized monograms?",
+    answer:"Absolutely. For every shirt, you can select your preferred collar spread (Cutaway, Classic English Spread, Button-Down), cuff style (French Double Cuff or Single Mitred), genuine Australian Mother-of-Pearl buttons, and add complimentary personalized cuff monogram embroidery with your initials.",
   },
   {
-    question: "What fabrics and yarn thread-counts do you use?",
-    answer:
-      "We source exclusively from world-renowned heritage mills. Our lineup features pure 100% Egyptian Giza 140s/2-ply long-staple cotton, rare West Indian Sea Island cotton, 100% pure European linens, and high-lustre royal dobby weaves that offer unmatched breathability, drape, and enduring crispness.",
+    question:"What fabrics and yarn thread-counts do you use?",
+    answer:"We source exclusively from world-renowned heritage mills. Our lineup features pure 100% Egyptian Giza 140s/2-ply long-staple cotton, rare West Indian Sea Island cotton, 100% pure European linens, and high-lustre royal dobby weaves that offer unmatched breathability, drape, and enduring crispness.",
   },
   {
-    question: "How long does bespoke tailoring and delivery take?",
-    answer:
-      "Each shirt is individualized and handcrafted in our master atelier. Crafting takes 3–5 business days, followed by complimentary insured express delivery (2–4 days across all major pin-codes in India). You receive live tracking updates via WhatsApp and email upon dispatch.",
+    question:"How long does bespoke tailoring and delivery take?",
+    answer:"Each shirt is individualized and handcrafted in our master atelier. Crafting takes 3–5 business days, followed by complimentary insured express delivery (2–4 days across all major pin-codes in India). You receive live tracking updates via WhatsApp and email upon dispatch.",
   },
   {
-    question: "What is Suitoholic's 100% Perfect Fit Guarantee?",
-    answer:
-      "Your confidence is our highest priority. If your first bespoke garment does not fit exactly as expected, our concierge team will arrange a complimentary adjustment or a full remake at zero additional cost within 30 days of delivery.",
+    question:"What is Suitoholic's 100% Perfect Fit Guarantee?",
+    answer:"Your confidence is our highest priority. If your first bespoke garment does not fit exactly as expected, our concierge team will arrange a complimentary adjustment or a full remake at zero additional cost within 30 days of delivery.",
   },
   {
-    question: "Do you offer Cash on Delivery (COD) and international shipping?",
-    answer:
-      "Yes! Cash on Delivery (COD) is available across all eligible pin codes in India alongside UPI, Credit/Debit cards, and Net Banking. We also ship worldwide via DHL Express with duties prepaid options.",
+    question:"Do you offer Cash on Delivery (COD) and international shipping?",
+    answer:"Yes! Cash on Delivery (COD) is available across all eligible pin codes in India alongside UPI, Credit/Debit cards, and Net Banking. We also ship worldwide via DHL Express with duties prepaid options.",
   },
   {
-    question: "How should I care for and wash my bespoke shirts?",
-    answer:
-      "We recommend cold machine wash or hand wash with mild luxury detergent. Always remove the removable brass collar stays prior to laundering. Hang dry in shade and iron while the fabric is slightly damp for a pristine, crisp finish.",
+    question:"How should I care for and wash my bespoke shirts?",
+    answer:"We recommend cold machine wash or hand wash with mild luxury detergent. Always remove the removable brass collar stays prior to laundering. Hang dry in shade and iron while the fabric is slightly damp for a pristine, crisp finish.",
   },
   {
-    question: "Can I alter or change my order details after placing it?",
-    answer:
-      "Yes, you may modify collar, monogram, or measurement details within 24 hours of placing your order by connecting with our WhatsApp Concierge before fabric cutting begins.",
+    question:"Can I alter or change my order details after placing it?",
+    answer:"Yes, you may modify collar, monogram, or measurement details within 24 hours of placing your order by connecting with our WhatsApp Concierge before fabric cutting begins.",
   },
 ];
 
@@ -69,7 +61,7 @@ export default function FaqSection() {
             observer.unobserve(el);
           }
         },
-        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+        { threshold: 0.12, rootMargin:"0px 0px -40px 0px" }
       );
       observer.observe(el);
       observers.push(observer);
@@ -85,7 +77,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-10 xl:px-14 w-full max-w-[1400px] mx-auto relative z-10 flex flex-col justify-center select-none overflow-x-clip">
+    <section className="py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-10 xl:px-14 w-full max-w-[1400px] mx-auto relative z-10 flex flex-col justify-center overflow-x-clip">
       {/* Header: Title & Subtitle */}
       <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 w-full max-w-5xl mx-auto px-4">
         <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
@@ -110,18 +102,18 @@ export default function FaqSection() {
                 itemRefs.current[index] = el;
               }}
               style={{
-                transitionDelay: isVisible ? `${(index % 4) * 90}ms` : "0ms",
+                transitionDelay: isVisible ? `${(index % 4) * 90}ms` :"0ms",
               }}
               className={`bg-white rounded-[12px] border overflow-hidden transform transition-[transform,opacity,border-color,box-shadow] duration-700 ease-out ${
                 isVisible
-                  ? "translate-x-0 opacity-100"
+                  ?"translate-x-0 opacity-100"
                   : isFromLeft
-                  ? "-translate-x-20 sm:-translate-x-32 opacity-0"
-                  : "translate-x-20 sm:translate-x-32 opacity-0"
+                  ?"-translate-x-20 sm:-translate-x-32 opacity-0"
+                  :"translate-x-20 sm:translate-x-32 opacity-0"
               } ${
                 isOpen
-                  ? "border-black/40 shadow-sm ring-1 ring-black/10"
-                  : "border-[#E5E3DD] hover:border-black/30 shadow-2xs"
+                  ?"border-black/40 shadow-sm ring-1 ring-black/10"
+                  :"border-[#E5E3DD] hover:border-black/30 shadow-2xs"
               }`}
             >
               <button
@@ -133,8 +125,8 @@ export default function FaqSection() {
                 <span
                   className={`text-sm sm:text-base font-semibold tracking-tight transition-colors duration-300 ${
                     isOpen
-                      ? "text-black"
-                      : "text-black group-hover:opacity-75"
+                      ?"text-black"
+                      :"text-black group-hover:opacity-75"
                   }`}
                 >
                   {faq.question}
@@ -143,8 +135,8 @@ export default function FaqSection() {
                 <div
                   className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-500 ease-out ${
                     isOpen
-                      ? "bg-black text-white rotate-180"
-                      : "bg-[#F5F4F0] text-black group-hover:bg-[#EBE9E4]"
+                      ?"bg-black text-white rotate-180"
+                      :"bg-[#F5F4F0] text-black group-hover:bg-[#EBE9E4]"
                   }`}
                 >
                   <ChevronDown size={16} />
@@ -155,8 +147,8 @@ export default function FaqSection() {
               <div
                 className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out overflow-hidden ${
                   isOpen
-                    ? "grid-rows-[1fr] opacity-100"
-                    : "grid-rows-[0fr] opacity-0"
+                    ?"grid-rows-[1fr] opacity-100"
+                    :"grid-rows-[0fr] opacity-0"
                 }`}
               >
                 <div className="overflow-hidden">

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
-import Link from "next/link";
-import { X, User, Package, Calendar, RefreshCcw, HelpCircle, Shield, Phone, Mail, Clock, ArrowRight } from "lucide-react";
+import React, { useState, useEffect } from"react";
+import { createPortal } from"react-dom";
+import Link from"next/link";
+import { X, User, Package, Calendar, RefreshCcw, HelpCircle, Shield, Phone, Mail, Clock, ArrowRight } from"lucide-react";
 
 interface AccountDrawerProps {
   isOpen: boolean;
@@ -19,19 +19,19 @@ export default function AccountDrawer({ isOpen, onClose }: AccountDrawerProps) {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow ="hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
     };
   }, [isOpen]);
 
   if (!isOpen || !mounted) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] overflow-hidden select-none animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[9999] overflow-hidden animate-in fade-in duration-200">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/65 backdrop-blur-xs transition-opacity"
@@ -51,7 +51,7 @@ export default function AccountDrawer({ isOpen, onClose }: AccountDrawerProps) {
                 <h2 className="font-serif-luxury text-lg font-bold uppercase tracking-wider text-black">
                   CLIENT CONCIERGE
                 </h2>
-                <p className="text-[10px] text-[#666666] font-mono">SUITOHOLIC PRIVATE ATELIER</p>
+                <p className="text-[10px] text-[#666666] font-sans font-medium tracking-wider">SUITOHOLIC PRIVATE ATELIER</p>
               </div>
             </div>
             <button
@@ -64,10 +64,10 @@ export default function AccountDrawer({ isOpen, onClose }: AccountDrawerProps) {
           </div>
 
           {/* Body Links */}
-          <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5">
+          <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5 font-sans">
             {/* Quick Actions Card */}
             <div className="bg-white border border-[#E5E3DD] rounded-2xl p-4 shadow-2xs space-y-1">
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-[#726254] block px-2 mb-2">
+              <span className="text-[10px] font-sans font-bold tracking-[0.2em] uppercase text-[#726254] block px-2 mb-2">
                 ORDER & SERVICES
               </span>
 
@@ -141,8 +141,8 @@ export default function AccountDrawer({ isOpen, onClose }: AccountDrawerProps) {
             </div>
 
             {/* Direct Atelier Support Card */}
-            <div className="bg-white border border-[#E5E3DD] rounded-2xl p-5 shadow-2xs space-y-3">
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-[#726254] block">
+            <div className="bg-white border border-[#E5E3DD] rounded-2xl p-5 shadow-2xs space-y-3 font-sans">
+              <span className="text-[10px] font-sans font-bold tracking-[0.2em] uppercase text-[#726254] block">
                 DIRECT CONCIERGE ASSISTANCE
               </span>
               <div className="space-y-2 text-xs text-[#555555]">

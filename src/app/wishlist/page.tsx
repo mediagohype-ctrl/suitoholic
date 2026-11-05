@@ -161,8 +161,8 @@ export default function WishlistPage() {
             </div>
           </div>
 
-          {/* Full-Page Products Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
+          {/* Full-Page Products Grid (254:350 aspect ratio, 2px gap) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start">
             {savedProducts.map((product) => (
               <div key={product.id} className="w-full">
                 <ModernProductCard product={product} />

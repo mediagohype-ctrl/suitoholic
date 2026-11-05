@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React from"react";
 
 export interface PrincipleItem {
   number: string;
@@ -19,35 +19,32 @@ export interface PrinciplesSectionProps {
 
 const DEFAULT_PRINCIPLES: PrincipleItem[] = [
   {
-    number: "01",
-    title: "Measured Personally",
-    description:
-      "Up to 30 individual anatomical measurements help us understand posture, movement, and the details that make a garment feel natural.",
+    number:"01",
+    title:"Measured Personally",
+    description:"Up to 30 individual anatomical measurements help us understand posture, movement, and the details that make a garment feel natural.",
   },
   {
-    number: "02",
-    title: "Crafted By Experience",
-    description:
-      "Our tailoring team brings 18–32 years of experience across cutting, fitting, finishing, and garment repair.",
+    number:"02",
+    title:"Crafted By Experience",
+    description:"Our tailoring team brings 18–32 years of experience across cutting, fitting, finishing, and garment repair.",
   },
   {
-    number: "03",
-    title: "Natural Materials",
-    description:
-      "We focus on 100% natural fabrics, with organic and fair-trade materials wherever possible.",
+    number:"03",
+    title:"Natural Materials",
+    description:"We focus on 100% natural fabrics, with organic and fair-trade materials wherever possible.",
   },
 ];
 
 export default function PrinciplesSection({
-  eyebrow = "WHAT WE VALUE",
-  titleLine = "Principles That Guide ",
-  titleAccent = "Every Garment",
+  eyebrow ="WHAT WE VALUE",
+  titleLine ="Principles That Guide",
+  titleAccent ="Every Garment",
   principles = DEFAULT_PRINCIPLES,
-  image = "/about_principles_model.jpg",
-  imageAlt = "Suitoholic Bespoke Tailored Suit Silhouette",
+  image ="/about_principles_model.jpg",
+  imageAlt ="Suitoholic Bespoke Tailored Suit Silhouette",
 }: PrinciplesSectionProps) {
   return (
-    <section className="relative w-full bg-white text-black py-16 sm:py-24 border-b border-[#E5E3DD] select-none overflow-hidden">
+    <section className="relative w-full bg-white text-black py-16 sm:py-24 border-b border-[#E5E3DD] overflow-hidden">
       {/* Subtle minimalist background glow */}
       <div className="pointer-events-none absolute -top-32 right-10 w-96 h-96 bg-black/[0.02] rounded-full blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 left-10 w-96 h-96 bg-black/[0.02] rounded-full blur-3xl" />
@@ -77,7 +74,7 @@ export default function PrinciplesSection({
                   className="grid grid-cols-[44px_1fr] sm:grid-cols-[56px_1fr] gap-4 sm:gap-6 items-start pt-6 sm:pt-7 first:pt-0 border-t first:border-t-0 border-[#E5E3DD] group"
                 >
                   {/* Number (01, 02, 03) */}
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-black group-hover:scale-105 transition-transform inline-block select-none leading-none pt-0.5">
+                  <span className="font-serif text-2xl sm:text-3xl font-bold text-black group-hover:scale-105 transition-transform inline-block leading-none pt-0.5">
                     {p.number}
                   </span>
 
@@ -99,7 +96,7 @@ export default function PrinciplesSection({
           {/* RIGHT COLUMN: Editorial Bespoke Suit Portrait */}
           <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
             <div
-              style={{ borderRadius: "11px" }}
+              style={{ borderRadius:"11px" }}
               className="relative w-full max-w-[460px] aspect-[3/4.2] rounded-[11px] overflow-hidden border border-[#E5E3DD] bg-[#F5F4F0] shadow-sm group"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}

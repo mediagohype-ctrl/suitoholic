@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, Tag, Check, AlertCircle } from "lucide-react";
-import { useCart } from "@/context/CartProvider";
-import CustomizationDetails from "@/components/bag/CustomizationDetails";
+import React, { useState, useEffect } from"react";
+import { createPortal } from"react-dom";
+import Link from"next/link";
+import { useRouter } from"next/navigation";
+import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, Tag, Check, AlertCircle } from"lucide-react";
+import { useCart } from"@/context/CartProvider";
+import CustomizationDetails from"@/components/bag/CustomizationDetails";
 
 export default function CartDrawer() {
   const {
@@ -34,12 +34,12 @@ export default function CartDrawer() {
 
   useEffect(() => {
     if (isDrawerOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow ="hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
     };
   }, [isDrawerOpen]);
 
@@ -65,7 +65,7 @@ export default function CartDrawer() {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] overflow-hidden select-none animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[9999] overflow-hidden animate-in fade-in duration-200">
       {/* Dimmed backdrop */}
       <div
         className="fixed inset-0 bg-black/65 backdrop-blur-xs transition-opacity"
@@ -154,29 +154,29 @@ export default function CartDrawer() {
                         </button>
                       </div>
 
-                      <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                      <div className="mt-1 flex flex-wrap items-center gap-1.5 font-sans">
                         {item.customization ? (
-                          <span className="inline-flex items-center gap-1 bg-black text-white text-[8.5px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 bg-black text-white text-[8.5px] font-sans font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
                             <Check size={9} /> BESPOKE FIT
                           </span>
                         ) : (
                           item.size && (
-                            <span className="text-[10px] text-[#666666]">
-                              Size: <strong className="text-black font-mono">{item.size}</strong>
+                            <span className="text-[10px] text-[#666666] font-sans">
+                              Size: <strong className="text-black font-sans font-bold">{item.size}</strong>
                             </span>
                           )
                         )}
                       </div>
 
                       {item.customization && (
-                        <div className="mt-2 bg-[#F5F4F0] border border-[#E5E3DD] rounded-lg p-2 text-[10px]">
+                        <div className="mt-2 bg-[#F5F4F0] border border-[#E5E3DD] rounded-lg p-2 text-[10px] font-sans">
                           <CustomizationDetails customization={item.customization} />
                         </div>
                       )}
                     </div>
 
                     {/* Quantity & Price */}
-                    <div className="flex items-center justify-between pt-2 border-t border-[#F5F4F0] mt-2">
+                    <div className="flex items-center justify-between pt-2 border-t border-[#F5F4F0] mt-2 font-sans">
                       <div className="flex items-center border border-[#E5E3DD] rounded-full bg-[#F5F4F0] px-1 py-0.5">
                         <button
                           type="button"
@@ -186,7 +186,7 @@ export default function CartDrawer() {
                         >
                           <Minus size={12} />
                         </button>
-                        <span className="px-2 text-xs font-mono font-bold">{item.quantity}</span>
+                        <span className="px-2 text-xs font-sans font-bold">{item.quantity}</span>
                         <button
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
@@ -196,7 +196,7 @@ export default function CartDrawer() {
                           <Plus size={12} />
                         </button>
                       </div>
-                      <span className="font-bold text-sm text-black">{item.lineTotalLabel}</span>
+                      <span className="font-bold text-sm text-black font-sans">{item.lineTotalLabel}</span>
                     </div>
                   </div>
                 </div>
@@ -206,12 +206,12 @@ export default function CartDrawer() {
 
           {/* Drawer Footer with Coupon & Checkout */}
           {items.length > 0 && (
-            <div className="bg-white border-t border-[#E5E3DD] p-5 space-y-4">
+            <div className="bg-white border-t border-[#E5E3DD] p-5 space-y-4 font-sans">
               {/* Coupon Form */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 font-sans">
                 {couponCode ? (
-                  <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-xl text-xs text-emerald-800">
-                    <div className="flex items-center gap-1.5 font-mono font-bold">
+                  <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-xl text-xs text-emerald-800 font-sans">
+                    <div className="flex items-center gap-1.5 font-sans font-bold tracking-wide">
                       <Tag size={12} />
                       <span>{couponCode}</span>
                       <span className="font-sans font-normal text-[11px]">(-₹{discountAmount.toLocaleString("en-IN")})</span>
@@ -219,13 +219,13 @@ export default function CartDrawer() {
                     <button
                       type="button"
                       onClick={removeCoupon}
-                      className="text-xs text-emerald-900 underline font-semibold cursor-pointer"
+                      className="text-xs text-emerald-900 underline font-semibold cursor-pointer font-sans"
                     >
                       Remove
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                  <form onSubmit={handleApplyCoupon} className="flex gap-2 font-sans">
                     <input
                       type="text"
                       value={couponInput}
@@ -234,7 +234,7 @@ export default function CartDrawer() {
                         if (couponFeedback) setCouponFeedback(null);
                       }}
                       placeholder="Promo code (e.g. WELCOME10)"
-                      className="flex-1 bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black rounded-full px-4 py-2 text-xs outline-none uppercase font-mono placeholder:normal-case placeholder:font-sans"
+                      className="flex-1 bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black rounded-full px-4 py-2 text-xs outline-none uppercase font-sans font-semibold tracking-wider placeholder:normal-case placeholder:font-sans"
                     />
                     <button
                       type="submit"
@@ -248,7 +248,7 @@ export default function CartDrawer() {
                 {couponFeedback && !couponCode && (
                   <p
                     className={`text-[10px] flex items-center gap-1 font-medium ${
-                      couponFeedback.success ? "text-emerald-700" : "text-rose-600"
+                      couponFeedback.success ?"text-emerald-700" :"text-rose-600"
                     }`}
                   >
                     {couponFeedback.success ? <Check size={11} /> : <AlertCircle size={11} />}

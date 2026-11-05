@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { useContent } from "@/context/SiteDataProvider";
+import React, { useRef, useEffect } from"react";
+import { useContent } from"@/context/SiteDataProvider";
 
 export default function AtelierEditorialBanner() {
   const c = useContent("atelierBanner");
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const videoSource = c.video || "/video/create_a_second_premium_shirt_video.mp4";
+  const videoSource = c.video ||"/video/create_a_second_premium_shirt_video.mp4";
 
   useEffect(() => {
     const video = videoRef.current;
@@ -24,17 +24,17 @@ export default function AtelierEditorialBanner() {
   }, [videoSource]);
 
   return (
-    <section className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-8 sm:my-12 lg:my-16 select-none">
+    <section className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-10 xl:px-12 my-8 sm:my-12 lg:my-16">
       {/* Luxury Editorial Heading */}
       <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8 lg:mb-10 flex flex-col items-center">
         {/* Main Heading */}
         <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-          {c.videoTitle || "TAILORING IN MOTION"}
+          {c.videoTitle ||"TAILORING IN MOTION"}
         </h2>
 
         {/* Editorial Subtitle - Single Line */}
         <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal tracking-normal max-w-none sm:whitespace-nowrap text-center leading-relaxed">
-          {c.videoSubtitle || "Artisanal precision, 360° fluid drape, and bespoke master craftsmanship in motion."}
+          {c.videoSubtitle ||"Artisanal precision, 360° fluid drape, and bespoke master craftsmanship in motion."}
         </p>
       </div>
 
@@ -51,9 +51,9 @@ export default function AtelierEditorialBanner() {
           preload="auto"
           className="absolute inset-0 w-full h-full object-cover object-center"
           style={{
-            transform: "translate3d(0, 0, 0)",
-            willChange: "transform",
-            backfaceVisibility: "hidden",
+            transform:"translate3d(0, 0, 0)",
+            willChange:"transform",
+            backfaceVisibility:"hidden",
           }}
         >
           <source src={videoSource} type="video/mp4" />

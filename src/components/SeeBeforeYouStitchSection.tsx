@@ -1,52 +1,52 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useCatalog, useContent } from "@/context/SiteDataProvider";
-import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
-import type { FinishedLookSlide } from "@/content/sections/finishedLooks";
+import React, { useState, useEffect, useRef, useMemo } from"react";
+import { ChevronLeft, ChevronRight } from"lucide-react";
+import { useCatalog, useContent } from"@/context/SiteDataProvider";
+import { getMatchingFullShirtImage } from"@/lib/matchingFullShirt";
+import type { FinishedLookSlide } from"@/content/sections/finishedLooks";
 
 // Authentic Fallback Slides (Directly derived from the 13 backend catalog shirts)
 const DEFAULT_BACKEND_SLIDES: FinishedLookSlide[] = [
   {
-    id: "look-linen-shirt",
-    fabricImage: "/new_shirts/shirt_13.jpg",
-    lookImage: "/customizer/full_shirt_13.jpg",
-    title: "Fabric to bespoke natural linen shirt",
-    description: "Shown to you in minutes, in store & online",
-    fabricName: "Beige Textured Linen Cotton",
+    id:"look-linen-shirt",
+    fabricImage:"/new_shirts/shirt_13.jpg",
+    lookImage:"/customizer/full_shirt_13.jpg",
+    title:"Fabric to bespoke natural linen shirt",
+    description:"Shown to you in minutes, in store & online",
+    fabricName:"Beige Textured Linen Cotton",
   },
   {
-    id: "look-chocolate-shirt",
-    fabricImage: "/new_shirts/shirt_19.jpg",
-    lookImage: "/customizer/full_shirt_19.jpg",
-    title: "Fabric to bespoke Italian chocolate luxury shirt",
-    description: "Shown to you in minutes, in store & online",
-    fabricName: "Dark Chocolate Brown Satin Twill",
+    id:"look-chocolate-shirt",
+    fabricImage:"/new_shirts/shirt_19.jpg",
+    lookImage:"/customizer/full_shirt_19.jpg",
+    title:"Fabric to bespoke Italian chocolate luxury shirt",
+    description:"Shown to you in minutes, in store & online",
+    fabricName:"Dark Chocolate Brown Satin Twill",
   },
   {
-    id: "look-banker-shirt",
-    fabricImage: "/new_shirts/shirt_21.jpg",
-    lookImage: "/customizer/full_shirt_21.jpg",
-    title: "Fabric to Italian bespoke banker stripe shirt",
-    description: "Shown to you in minutes, in store & online",
-    fabricName: "Royal Blue Classic Bengal Stripe Twill",
+    id:"look-banker-shirt",
+    fabricImage:"/new_shirts/shirt_21.jpg",
+    lookImage:"/customizer/full_shirt_21.jpg",
+    title:"Fabric to Italian bespoke banker stripe shirt",
+    description:"Shown to you in minutes, in store & online",
+    fabricName:"Royal Blue Classic Bengal Stripe Twill",
   },
   {
-    id: "look-terracotta-shirt",
-    fabricImage: "/new_shirts/shirt_14.jpg",
-    lookImage: "/customizer/full_shirt_14.jpg",
-    title: "Fabric to bespoke coral bengal stripe shirt",
-    description: "Shown to you in minutes, in store & online",
-    fabricName: "Coral Red Bold Bengal Stripe Twill",
+    id:"look-terracotta-shirt",
+    fabricImage:"/new_shirts/shirt_14.jpg",
+    lookImage:"/customizer/full_shirt_14.jpg",
+    title:"Fabric to bespoke coral bengal stripe shirt",
+    description:"Shown to you in minutes, in store & online",
+    fabricName:"Coral Red Bold Bengal Stripe Twill",
   },
   {
-    id: "look-sage-shirt",
-    fabricImage: "/new_shirts/shirt_18.jpg",
-    lookImage: "/customizer/full_shirt_18.jpg",
-    title: "Fabric to bespoke sage green striped shirt",
-    description: "Shown to you in minutes, in store & online",
-    fabricName: "Sage Green Bengal Striped Twill",
+    id:"look-sage-shirt",
+    fabricImage:"/new_shirts/shirt_18.jpg",
+    lookImage:"/customizer/full_shirt_18.jpg",
+    title:"Fabric to bespoke sage green striped shirt",
+    description:"Shown to you in minutes, in store & online",
+    fabricName:"Sage Green Bengal Striped Twill",
   },
 ];
 
@@ -67,7 +67,7 @@ export default function SeeBeforeYouStitchSection() {
 
     const shirtProducts = (products || []).filter(
       (p) =>
-        (p.category?.includes("formal") || p.category?.includes("shirt") || p.category === "formal_bespoke") &&
+        (p.category?.includes("formal") || p.category?.includes("shirt") || p.category ==="formal_bespoke") &&
         p.image &&
         !p.name.toLowerCase().includes("pant") &&
         !p.name.toLowerCase().includes("trouser") &&
@@ -86,7 +86,7 @@ export default function SeeBeforeYouStitchSection() {
           fabricImage: p.image,
           lookImage: fullShirt,
           title: `Fabric to bespoke ${p.name.toLowerCase()}`,
-          description: "Shown to you in minutes, in store & online",
+          description:"Shown to you in minutes, in store & online",
           fabricName: p.fabric || p.subtitle || p.name,
           active: true,
         };
@@ -120,39 +120,39 @@ export default function SeeBeforeYouStitchSection() {
   return (
     <section 
       aria-label="See Before You Stitch"
-      className="relative w-full bg-[#ECEAE5] py-16 sm:py-24 border-b border-[#E5E3DD] select-none overflow-hidden font-sans"
+      className="relative w-full bg-[#ECEAE5] py-16 sm:py-24 border-b border-[#E5E3DD] overflow-hidden font-sans"
     >
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header: Main Title */}
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-            {content?.sectionTitle || "Your fabric, as a finished look"}
+            {content?.sectionTitle ||"Your fabric, as a finished look"}
           </h2>
         </div>
 
-        {/* Carousel Container */}
+        {/* Carousel Container - Slightly Wider with Refined Border Radius */}
         <div
-          className="relative max-w-4xl mx-auto"
+          className="relative max-w-5xl lg:max-w-5xl xl:max-w-[1080px] mx-auto"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Main White Card matching reference */}
-          <div className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] p-5 sm:p-8 shadow-xl transition-all duration-500">
+          {/* Main White Card with Reduced, Elegant Border Radius */}
+          <div className="bg-white border border-[#E5E3DD] rounded-[14px] sm:rounded-[18px] p-5 sm:p-7 lg:p-8 shadow-lg transition-all duration-500">
             
             {/* Visuals Split: Left Fabric Swatch + Right Finished Look on Model */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-7 items-center">
               
               {/* Left Sub-Card: Fabric Swatch */}
               <div className="md:col-span-4 flex flex-col justify-center">
-                <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-xs group">
+                <div className="relative aspect-square w-full rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-xs group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeSlide.fabricImage}
                     alt={activeSlide.title}
                     className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-105"
                   />
-                  {/* "Your fabric" Badge */}
+                  {/*"Your fabric" Badge */}
                   <span className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-xs text-white text-[11px] font-medium px-3 py-1 rounded-full shadow-md">
                     Your fabric
                   </span>
@@ -161,7 +161,7 @@ export default function SeeBeforeYouStitchSection() {
 
               {/* Right Sub-Card: Finished Look on Model */}
               <div className="md:col-span-8">
-                <div className="relative aspect-[4/4.8] sm:aspect-[4/4.5] w-full rounded-2xl overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-sm group">
+                <div className="relative aspect-[4/4.8] sm:aspect-[4/4.5] w-full rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-sm group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeSlide.lookImage}
@@ -169,7 +169,7 @@ export default function SeeBeforeYouStitchSection() {
                     className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-103"
                   />
 
-                  {/* "PREVIEW" Badge */}
+                  {/*"PREVIEW" Badge */}
                   <span className="absolute top-3.5 right-3.5 bg-black/85 backdrop-blur-xs text-white text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-[6px] shadow-md">
                     PREVIEW
                   </span>
@@ -229,8 +229,8 @@ export default function SeeBeforeYouStitchSection() {
                   aria-label={`Go to slide ${i + 1}`}
                   className={`transition-all duration-300 rounded-full h-2 cursor-pointer ${
                     isActive
-                      ? "w-7 bg-black shadow-xs"
-                      : "w-2 bg-black/25 hover:bg-black/50"
+                      ?"w-7 bg-black shadow-xs"
+                      :"w-2 bg-black/25 hover:bg-black/50"
                   }`}
                 />
               );

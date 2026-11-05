@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { useContent } from "@/context/SiteDataProvider";
+import React from"react";
+import { useContent } from"@/context/SiteDataProvider";
 
 function CustomFitIcon() {
   return (
@@ -54,7 +54,7 @@ function ReturnsIcon() {
   );
 }
 
-/** Custom line icons available to the CMS (`items[].icon`). Unknown keys fall back to "details". */
+/** Custom line icons available to the CMS (`items[].icon`). Unknown keys fall back to"details". */
 const ICONS: Record<string, () => React.JSX.Element> = {
   customFit: CustomFitIcon,
   fabric: FabricIcon,
@@ -67,38 +67,38 @@ function renderIcon(key: string) {
   return <Icon />;
 }
 
-export default function FeatureHighlightsBar({ className = "" }: { className?: string }) {
+export default function FeatureHighlightsBar({ className ="" }: { className?: string }) {
   const c = useContent("featureHighlights");
   const items = c.items ?? [];
 
   if (items.length === 0) return null;
 
   return (
-    <section className={`w-full z-30 shrink-0 bg-white border-t border-b border-[#E5E3DD] py-3.5 sm:py-4 px-4 sm:px-6 select-none transition-all ${className}`}>
+    <section className={`w-full z-30 shrink-0 bg-white border-t border-b border-[#E5E3DD] py-6 sm:py-7 lg:py-8 px-4 sm:px-6 transition-all ${className}`}>
       <div className="w-full max-w-7xl mx-auto">
 
         {/* MOBILE VIEW: 2 Columns × 2 Rows with Center Vertical Divider */}
-        <div className="grid grid-cols-2 gap-y-4 sm:gap-y-5 md:hidden">
+        <div className="grid grid-cols-2 gap-y-5 sm:gap-y-6 md:hidden">
           {items.map((item, i) => {
             const leftColumn = i % 2 === 0;
             return (
               <div
                 key={i}
-                className={`flex items-center space-x-2.5 sm:space-x-3 ${leftColumn ? "pr-2.5 sm:pr-4 relative" : "pl-3 sm:pl-4"}`}
+                className={`flex items-center space-x-3 sm:space-x-3.5 ${leftColumn ?"pr-3 sm:pr-4 relative" :"pl-3.5 sm:pl-4"}`}
               >
-                <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center shrink-0 text-black">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center shrink-0 text-black">
                   {renderIcon(item.icon)}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="text-[10.5px] sm:text-xs font-bold tracking-[0.06em] text-black uppercase leading-tight font-sans">
+                  <h4 className="text-[11px] sm:text-xs font-bold tracking-[0.08em] text-black uppercase leading-tight font-sans">
                     {item.title}
                   </h4>
-                  <p className="text-[9px] sm:text-[10px] font-normal text-[#666666] mt-0.5 leading-tight font-sans">
+                  <p className="text-[9.5px] sm:text-[10.5px] font-normal text-[#666666] mt-0.5 leading-tight font-sans">
                     {item.subtitle}
                   </p>
                 </div>
                 {/* Center Vertical Divider Line */}
-                {leftColumn && <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-[#E5E3DD]" />}
+                {leftColumn && <div className="absolute right-0 top-1 bottom-1 w-[1px] bg-[#E5E3DD]" />}
               </div>
             );
           })}
@@ -107,21 +107,21 @@ export default function FeatureHighlightsBar({ className = "" }: { className?: s
         {/* DESKTOP VIEW: 1 Row 4 Columns with Vertical Dividers */}
         <div className="hidden md:grid grid-cols-4 w-full">
           {items.map((item, i) => (
-            <div key={i} className="relative flex items-center space-x-3.5 px-3 lg:px-6 justify-center lg:justify-start">
-              <div className="w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center shrink-0 text-black">
+            <div key={i} className="relative flex items-center space-x-4 px-4 lg:px-7 justify-center lg:justify-start">
+              <div className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center shrink-0 text-black">
                 {renderIcon(item.icon)}
               </div>
               <div className="min-w-0">
-                <h4 className="text-[11px] lg:text-[12px] font-bold tracking-[0.12em] text-black uppercase leading-tight font-sans">
+                <h4 className="text-[11.5px] lg:text-[13px] font-bold tracking-[0.12em] text-black uppercase leading-tight font-sans">
                   {item.title}
                 </h4>
-                <p className="text-[10px] lg:text-[11px] font-normal text-[#666666] mt-0.5 leading-tight font-sans whitespace-nowrap">
+                <p className="text-[10.5px] lg:text-[11.5px] font-normal text-[#666666] mt-0.5 leading-tight font-sans whitespace-nowrap">
                   {item.subtitle}
                 </p>
               </div>
               {/* Taller Vertical Separation Line */}
               {i < items.length - 1 && (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 sm:h-11 lg:h-12 w-[1px] bg-[#E5E3DD]" />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 h-12 sm:h-14 lg:h-16 w-[1px] bg-[#E5E3DD]" />
               )}
             </div>
           ))}

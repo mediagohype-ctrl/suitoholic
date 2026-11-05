@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React from"react";
+import Link from"next/link";
 
 interface OurPromiseSectionProps {
   eyebrow?: string;
@@ -13,15 +13,15 @@ interface OurPromiseSectionProps {
 }
 
 export default function OurPromiseSection({
-  eyebrow = "OUR PROMISE",
-  headingPrefix = "You Will Always Leave Feeling ",
-  headingHighlight = "Understood, Confident, and Cared For",
-  description = "We take time to understand your style and needs, ensuring every step of the process feels personal and considered. Every garment is made with care and attention to detail, so what you wear always feels right for you.",
-  ctaLabel = "BOOK A CONSULTATION",
-  ctaHref = "/custom-shirt#appointment-booking",
+  eyebrow ="OUR PROMISE",
+  headingPrefix ="You Will Always Leave Feeling",
+  headingHighlight ="Understood, Confident, and Cared For",
+  description ="We take time to understand your style and needs, ensuring every step of the process feels personal and considered. Every garment is made with care and attention to detail, so what you wear always feels right for you.",
+  ctaLabel ="BOOK A CONSULTATION",
+  ctaHref ="/custom-shirt#appointment-booking",
 }: OurPromiseSectionProps) {
   return (
-    <section className="relative w-full bg-[#ECEAE5] select-none flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24 border-t border-[#E5E3DD]">
+    <section className="relative w-full bg-[#ECEAE5] flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24 border-t border-[#E5E3DD]">
       {/* Central Editorial Content */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-8 text-center flex flex-col items-center">
         {/* Main Headline: Two-tone luxury typography matching website color palette */}

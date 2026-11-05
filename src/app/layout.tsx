@@ -8,6 +8,7 @@ import { CartProvider } from "@/context/CartProvider";
 import { WishlistProvider } from "@/context/WishlistProvider";
 import { CustomizerModalProvider } from "@/context/CustomizerModalProvider";
 import { SiteDataProvider } from "@/context/SiteDataProvider";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { getSiteBundle } from "@/lib/site-data";
 
 // Content, catalog and prices are edited live from /admin, so render on every request.
@@ -34,7 +35,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Orbitron:wght@600;700;800;900&family=Pinyon+Script&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <link
@@ -48,13 +49,15 @@ export default async function RootLayout({
 
         {/* Page Content Container */}
         <div className="relative z-10 flex-1 flex flex-col min-h-screen w-full overflow-x-clip">
-          <SiteDataProvider value={site}>
-            <CartProvider>
-              <WishlistProvider>
-                <CustomizerModalProvider>{children}</CustomizerModalProvider>
-              </WishlistProvider>
-            </CartProvider>
-          </SiteDataProvider>
+          <SmoothScrollProvider>
+            <SiteDataProvider value={site}>
+              <CartProvider>
+                <WishlistProvider>
+                  <CustomizerModalProvider>{children}</CustomizerModalProvider>
+                </WishlistProvider>
+              </CartProvider>
+            </SiteDataProvider>
+          </SmoothScrollProvider>
         </div>
       </body>
     </html>

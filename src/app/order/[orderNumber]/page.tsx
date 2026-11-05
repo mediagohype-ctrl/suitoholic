@@ -229,7 +229,7 @@ export default function OrderConfirmationPage() {
                   <div className="flex flex-wrap items-center justify-between gap-3 bg-[#F5F4F0] border border-[#E5E3DD] p-3 rounded-xl">
                     <div>
                       <span className="text-[9.5px] font-bold text-[#888888] uppercase tracking-wider block">Atelier UPI ID</span>
-                      <strong className="text-xs font-mono font-bold text-black block mt-0.5">{upiId}</strong>
+                      <strong className="text-xs font-sans font-bold text-black block mt-0.5 tracking-wider">{upiId}</strong>
                     </div>
                     <button
                       type="button"
@@ -308,7 +308,7 @@ export default function OrderConfirmationPage() {
                   <div className="flex flex-wrap items-center justify-between gap-3 bg-[#F5F4F0] border border-[#E5E3DD] p-3 rounded-xl">
                     <div>
                       <span className="text-[9.5px] font-bold text-[#888888] uppercase tracking-wider block">Atelier UPI ID</span>
-                      <strong className="text-xs font-mono font-bold text-black block mt-0.5">{upiId}</strong>
+                      <strong className="text-xs font-sans font-bold text-black block mt-0.5 tracking-wider">{upiId}</strong>
                     </div>
                     <button
                       type="button"

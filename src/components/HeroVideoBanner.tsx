@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useCallback } from "react";
-import Link from "next/link";
-import { useContent } from "@/context/SiteDataProvider";
+import React, { useRef, useEffect, useState, useCallback } from"react";
+import Link from"next/link";
+import { useContent } from"@/context/SiteDataProvider";
 
 const swatchGradient = (from: string, to: string) => `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
 
@@ -81,13 +81,13 @@ export default function HeroVideoBanner() {
   }, []);
 
   return (
-    <section className="relative w-full h-[100dvh] min-h-[560px] flex flex-col justify-between overflow-hidden bg-[#DDD1C3] select-none">
+    <section className="relative w-full h-[100dvh] min-h-[560px] flex flex-col justify-between overflow-hidden bg-[#DDD1C3]">
       
       {/* 1. Background Video Layer */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
           ref={videoRef}
-          src={c.video || "/video/Suitoholic%20Approved.mp4"}
+          src={c.video ||"/video/Suitoholic%20Approved.mp4"}
           autoPlay
           loop
           muted
@@ -102,7 +102,7 @@ export default function HeroVideoBanner() {
             opacity: isVideoLoaded ? 1 : 0.85,
           }}
         >
-          <source src={c.video || "/video/Suitoholic%20Approved.mp4"} type="video/mp4" />
+          <source src={c.video ||"/video/Suitoholic%20Approved.mp4"} type="video/mp4" />
           <source src="/video/Suitoholic_Approved.mp4" type="video/mp4" />
           <source src="/video/Suitoholic Approved.mp4" type="video/mp4" />
         </video>
@@ -114,8 +114,8 @@ export default function HeroVideoBanner() {
         <div
           className={`absolute inset-0 bg-gradient-to-r from-[#DDD1C3]/85 via-[#DDD1C3]/35 to-transparent pointer-events-none transition-all duration-700 ${
             variants.length > 1 && activeIndex === variants.length - 1
-              ? "w-[45%] sm:w-[40%] md:w-[35%] lg:w-[32%] opacity-60"
-              : "w-[85%] sm:w-[70%] md:w-[58%] lg:w-[48%] opacity-100"
+              ?"w-[45%] sm:w-[40%] md:w-[35%] lg:w-[32%] opacity-60"
+              :"w-[85%] sm:w-[70%] md:w-[58%] lg:w-[48%] opacity-100"
           }`}
         />
         <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-[#DDD1C3]/80 via-[#DDD1C3]/20 to-transparent pointer-events-none" />
@@ -130,7 +130,7 @@ export default function HeroVideoBanner() {
           {/* Main Luxury High-Contrast Heading */}
           <h1 className="font-serif-luxury font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[50px] leading-[1.08] text-black tracking-[0.02em] uppercase mb-4 sm:mb-6">
             {c.headingLine1} <br />
-            {c.headingLine2 ? c.headingLine2.replace(/\.+$/, "") : c.headingLine2}
+            {c.headingLine2 ? c.headingLine2.replace(/\.+$/,"") : c.headingLine2}
           </h1>
 
           {/* Action Buttons: Stacked on Mobile, Side-by-Side on Desktop */}
@@ -152,7 +152,7 @@ export default function HeroVideoBanner() {
           </div>
 
           {/* Color Swatches & 01-04 Range Tracker (Positioned on the Left under Buttons) */}
-          <div className="flex items-center gap-3.5 sm:gap-4.5 mt-4 sm:mt-5 md:mt-6 select-none">
+          <div className="flex items-center gap-3.5 sm:gap-4.5 mt-4 sm:mt-5 md:mt-6">
             
             {/* Color Swatches (in exact order of video shirts) */}
             <div className="flex flex-col items-center gap-2.5 sm:gap-3 bg-transparent p-0">
@@ -165,7 +165,7 @@ export default function HeroVideoBanner() {
                     {/* Tooltip on right side of swatch */}
                     <div
                       className={`absolute left-full ml-3 px-2.5 py-1 bg-[#14110E] text-[#FAF8F5] text-[10px] font-medium tracking-wider uppercase rounded shadow-lg whitespace-nowrap pointer-events-none transition-all duration-200 z-30 ${
-                        isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+                        isHovered ?"opacity-100 translate-x-0" :"opacity-0 -translate-x-2"
                       }`}
                     >
                       {variant.shortLabel}
@@ -174,8 +174,8 @@ export default function HeroVideoBanner() {
                     <div
                       className={`rounded-full p-0.5 transition-all duration-300 flex items-center justify-center ${
                         isActive
-                          ? "ring-1 ring-black ring-offset-2 ring-offset-[#DDD1C3] scale-105"
-                          : "ring-0 ring-transparent ring-offset-0"
+                          ?"ring-1 ring-black ring-offset-2 ring-offset-[#DDD1C3] scale-105"
+                          :"ring-0 ring-transparent ring-offset-0"
                       }`}
                     >
                       <button
@@ -185,8 +185,8 @@ export default function HeroVideoBanner() {
                         onMouseLeave={() => setHoveredIndex(null)}
                         className={`w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full transition-all duration-300 cursor-pointer relative shadow-xs active:scale-90 ${
                           isActive
-                            ? "opacity-100"
-                            : "opacity-75 hover:opacity-100 hover:scale-105"
+                            ?"opacity-100"
+                            :"opacity-75 hover:opacity-100 hover:scale-105"
                         }`}
                         style={{
                           background: swatchGradient(variant.swatchFrom, variant.swatchTo),
@@ -201,8 +201,8 @@ export default function HeroVideoBanner() {
             </div>
 
             {/* 01 ... 04 Vertical Range Dynamic Tracker */}
-            <div className="flex flex-col items-center select-none py-0.5">
-              <span className="text-[9px] sm:text-[9.5px] font-normal text-black/80 tracking-wider mb-1 font-mono">
+            <div className="flex flex-col items-center py-0.5 font-sans">
+              <span className="text-[9px] sm:text-[9.5px] font-medium text-black/80 tracking-wider mb-1 font-sans">
                 {c.trackerStartLabel}
               </span>
               
@@ -229,7 +229,7 @@ export default function HeroVideoBanner() {
                     >
                       <span
                         className={`w-0.5 h-0.5 rounded-full transition-all duration-300 ${
-                          isPastOrActive ? "bg-black" : "bg-black/30"
+                          isPastOrActive ?"bg-black" :"bg-black/30"
                         }`}
                       />
                     </button>
@@ -246,7 +246,7 @@ export default function HeroVideoBanner() {
                 </div>
               </div>
 
-              <span className="text-[9px] sm:text-[9.5px] font-normal text-black/80 tracking-wider mt-1 font-mono">
+              <span className="text-[9px] sm:text-[9.5px] font-medium text-black/80 tracking-wider mt-1 font-sans">
                 {c.trackerEndLabel}
               </span>
             </div>

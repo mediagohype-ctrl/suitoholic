@@ -96,24 +96,24 @@ export default function OrdersPage() {
               className="bg-white border border-[#E5E3DD] rounded-[20px] p-6 sm:p-8 shadow-xs space-y-6"
             >
               {/* Top Bar: Order ID, Date & Status */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#F0ECE1]">
+              <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#F0ECE1] font-sans">
                 <div>
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#888888]">Commission ID</span>
-                  <h3 className="font-mono text-base sm:text-lg font-bold text-black">{order.orderNumber}</h3>
+                  <span className="text-[11px] font-sans font-bold uppercase tracking-wider text-[#888888]">Commission ID</span>
+                  <h3 className="font-sans text-base sm:text-lg font-bold text-black">{order.orderNumber}</h3>
                   <p className="text-xs text-[#888888] mt-0.5">Placed on {order.date}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#E5E3DD] text-xs font-mono font-bold text-[#8C7355] flex items-center gap-1.5">
+                  <span className="px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#E5E3DD] text-xs font-sans font-bold text-[#8C7355] flex items-center gap-1.5">
                     <Clock size={13} />
                     <span>{order.statusLabel}</span>
                   </span>
-                  <span className="font-mono text-base font-bold text-black">{order.totalLabel}</span>
+                  <span className="font-sans text-base font-bold text-black">{order.totalLabel}</span>
                 </div>
               </div>
 
               {/* 4-Stage Visual Tailoring Progress Tracker */}
-              <div className="space-y-2 py-2">
-                <div className="flex justify-between text-[11px] font-mono text-[#666666]">
+              <div className="space-y-2 py-2 font-sans">
+                <div className="flex justify-between text-[11px] font-sans font-medium text-[#666666]">
                   <span>Progress: {order.currentStage}</span>
                   <span>{order.estimatedDelivery}</span>
                 </div>
@@ -123,7 +123,7 @@ export default function OrdersPage() {
                     style={{ width: `${order.progressPercent}%` }}
                   />
                 </div>
-                <div className="grid grid-cols-4 text-[10px] font-mono text-[#888888] pt-1 text-center">
+                <div className="grid grid-cols-4 text-[10px] font-sans font-medium text-[#888888] pt-1 text-center">
                   <span className="font-bold text-black">1. Pattern Draft</span>
                   <span className="font-bold text-black">2. Hand-Cut</span>
                   <span className="font-bold text-[#8C7355]">3. Stitch &amp; Press</span>
@@ -132,8 +132,8 @@ export default function OrdersPage() {
               </div>
 
               {/* Items List */}
-              <div className="space-y-3 pt-2">
-                <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#888888]">
+              <div className="space-y-3 pt-2 font-sans">
+                <h4 className="text-[11px] font-sans font-bold uppercase tracking-wider text-[#888888]">
                   Commissioned Garments ({order.items.length})
                 </h4>
                 {order.items.map((item, idx) => (
@@ -146,12 +146,12 @@ export default function OrdersPage() {
                         <ShoppingBag size={22} className="text-[#8C7355]" />
                       </div>
                       <div>
-                        <h5 className="font-serif-luxury text-sm font-bold uppercase text-black">{item.name}</h5>
+                        <h5 className="font-sans text-sm font-bold uppercase text-black">{item.name}</h5>
                         <p className="text-xs text-[#666666] mt-0.5">{item.details}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className="font-mono text-xs sm:text-sm font-bold text-black">{item.price}</span>
+                      <span className="font-sans text-xs sm:text-sm font-bold text-black">{item.price}</span>
                       <p className="text-[10px] text-[#888888]">Qty: {item.quantity}</p>
                     </div>
                   </div>

@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
-import Link from "next/link";
-import { ChevronLeft, ChevronRight, Plus, Heart } from "lucide-react";
-import { CollectionCategory, ProductItem } from "@/data/products";
-import ModernProductCard from "./ModernProductCard";
-import { useCustomizer } from "@/context/CustomizerModalProvider";
-import { useWishlist } from "@/context/WishlistProvider";
+import React, { useRef, useMemo } from"react";
+import Link from"next/link";
+import { ChevronLeft, ChevronRight, Plus, Heart } from"lucide-react";
+import { CollectionCategory, ProductItem } from"@/data/products";
+import ModernProductCard from"./ModernProductCard";
+import { useCustomizer } from"@/context/CustomizerModalProvider";
+import { useWishlist } from"@/context/WishlistProvider";
 
 interface ModernCollectionSectionProps {
   collection: CollectionCategory;
@@ -18,65 +18,65 @@ interface ModernCollectionSectionProps {
 const FALLBACK_FABRIC_ITEMS: ProductItem[] = [
   {
     id: 51,
-    slug: "dark-chocolate-brown-satin-twill-shirt",
-    name: "Dark Chocolate Brown Satin Twill Shirt",
-    category: "formal_shirts",
-    price: "₹ 2,600",
+    slug:"dark-chocolate-brown-satin-twill-shirt",
+    name:"Dark Chocolate Brown Satin Twill Shirt",
+    category:"formal_shirts",
+    price:"₹ 2,600",
     rawPrice: 2600,
-    subtitle: "Luxurious silk-touch satin twill shirt with a rich lustrous finish",
-    description: "Tailored from an ultra-fine cotton satin twill blend, this rich dark chocolate brown shirt exudes pure luxury and refinement.",
-    fabric: "Ultra-Fine Cotton Satin Twill Blend",
-    threadCount: "140s Silk-Touch Sateen",
-    image: "/new_shirts/shirt_19.jpg",
-    gallery: ["/new_shirts/shirt_19.jpg", "/customizer/full_shirt_19.jpg"],
+    subtitle:"Luxurious silk-touch satin twill shirt with a rich lustrous finish",
+    description:"Tailored from an ultra-fine cotton satin twill blend, this rich dark chocolate brown shirt exudes pure luxury and refinement.",
+    fabric:"Ultra-Fine Cotton Satin Twill Blend",
+    threadCount:"140s Silk-Touch Sateen",
+    image:"/new_shirts/shirt_19.jpg",
+    gallery: ["/new_shirts/shirt_19.jpg","/customizer/full_shirt_19.jpg"],
     rating: 5.0,
     reviewsCount: 114,
   },
   {
     id: 50,
-    slug: "beige-textured-linen-cotton-shirt",
-    name: "Beige Textured Linen Cotton Shirt",
-    category: "formal_shirts",
-    price: "₹ 2,600",
+    slug:"beige-textured-linen-cotton-shirt",
+    name:"Beige Textured Linen Cotton Shirt",
+    category:"formal_shirts",
+    price:"₹ 2,600",
     rawPrice: 2600,
-    subtitle: "Lightweight breathable textured shirt for effortless smart styling",
-    description: "Woven from a premium linen-cotton blend, this subtle textured beige shirt combines breathable comfort with an understated elegance.",
-    fabric: "Premium Linen-Cotton Blend",
-    threadCount: "Breathable Melange Texture",
-    image: "/new_shirts/shirt_13.jpg",
-    gallery: ["/new_shirts/shirt_13.jpg", "/customizer/full_shirt_13.jpg"],
+    subtitle:"Lightweight breathable textured shirt for effortless smart styling",
+    description:"Woven from a premium linen-cotton blend, this subtle textured beige shirt combines breathable comfort with an understated elegance.",
+    fabric:"Premium Linen-Cotton Blend",
+    threadCount:"Breathable Melange Texture",
+    image:"/new_shirts/shirt_13.jpg",
+    gallery: ["/new_shirts/shirt_13.jpg","/customizer/full_shirt_13.jpg"],
     rating: 5.0,
     reviewsCount: 76,
   },
   {
     id: 52,
-    slug: "royal-blue-classic-bengal-stripe-twill-shirt",
-    name: "Royal Blue Classic Bengal Stripe Twill Shirt",
-    category: "formal_stripes",
-    price: "₹ 2,600",
+    slug:"royal-blue-classic-bengal-stripe-twill-shirt",
+    name:"Royal Blue Classic Bengal Stripe Twill Shirt",
+    category:"formal_stripes",
+    price:"₹ 2,600",
     rawPrice: 2600,
-    subtitle: "Sharp and timeless royal blue striped shirt in premium twill weave",
-    description: "Woven from high-grade cotton in a diagonal twill weave, this shirt features vibrant royal blue and white Bengal stripes.",
-    fabric: "100% High-Grade Cotton",
-    threadCount: "Diagonal Twill Weave",
-    image: "/new_shirts/shirt_21.jpg",
-    gallery: ["/new_shirts/shirt_21.jpg", "/customizer/full_shirt_21.jpg"],
+    subtitle:"Sharp and timeless royal blue striped shirt in premium twill weave",
+    description:"Woven from high-grade cotton in a diagonal twill weave, this shirt features vibrant royal blue and white Bengal stripes.",
+    fabric:"100% High-Grade Cotton",
+    threadCount:"Diagonal Twill Weave",
+    image:"/new_shirts/shirt_21.jpg",
+    gallery: ["/new_shirts/shirt_21.jpg","/customizer/full_shirt_21.jpg"],
     rating: 5.0,
     reviewsCount: 112,
   },
   {
     id: 49,
-    slug: "coral-red-bold-bengal-stripe-twill-shirt",
-    name: "Coral Red Bold Bengal Stripe Twill Shirt",
-    category: "formal_stripes",
-    price: "₹ 2,633",
+    slug:"coral-red-bold-bengal-stripe-twill-shirt",
+    name:"Coral Red Bold Bengal Stripe Twill Shirt",
+    category:"formal_stripes",
+    price:"₹ 2,633",
     rawPrice: 2633,
-    subtitle: "Premium twill weave striped shirt for a sharp, confident look",
-    description: "Crafted with precision, this custom-made shirt features prominent coral red and white Bengal stripes woven in an ultra-smooth twill texture.",
-    fabric: "100% Fine Twill Cotton",
-    threadCount: "130s Luxury Twill",
-    image: "/new_shirts/shirt_14.jpg",
-    gallery: ["/new_shirts/shirt_14.jpg", "/customizer/full_shirt_14.jpg"],
+    subtitle:"Premium twill weave striped shirt for a sharp, confident look",
+    description:"Crafted with precision, this custom-made shirt features prominent coral red and white Bengal stripes woven in an ultra-smooth twill texture.",
+    fabric:"100% Fine Twill Cotton",
+    threadCount:"130s Luxury Twill",
+    image:"/new_shirts/shirt_14.jpg",
+    gallery: ["/new_shirts/shirt_14.jpg","/customizer/full_shirt_14.jpg"],
     rating: 5.0,
     reviewsCount: 65,
   },
@@ -92,7 +92,7 @@ export default function ModernCollectionSection({
   const colId = collection.id || (collection as unknown as { key?: string })?.key;
   const isThreeCardMode =
     cardsPerView === 3 ||
-    colId === "formal_bespoke" ||
+    colId ==="formal_bespoke" ||
     (headerTitle && headerTitle.toLowerCase().includes("fabric"));
 
   const uniqueProducts = useMemo(() => {
@@ -123,9 +123,19 @@ export default function ModernCollectionSection({
   // Ensure 4-column grids never render an awkward incomplete trailing row with 1-3 empty spaces
   const gridProducts = useMemo(() => {
     if (uniqueProducts.length === 0) return [];
+    const isFabrics = 
+      headerTitle?.toLowerCase().includes("fabric") || 
+      collection?.title?.toLowerCase().includes("fabric") ||
+      collection?.id ==="formal_bespoke" ||
+      collection?.id ==="fabrics";
+    
+    if (isFabrics) {
+      return uniqueProducts.slice(0, 8);
+    }
+
     const remainder = uniqueProducts.length % 4;
     return remainder === 0 ? uniqueProducts : uniqueProducts.slice(0, uniqueProducts.length - remainder);
-  }, [uniqueProducts]);
+  }, [uniqueProducts, headerTitle, collection]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const { openCustomizer } = useCustomizer();
@@ -135,11 +145,11 @@ export default function ModernCollectionSection({
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth } = scrollRef.current;
     if (scrollLeft <= 10) {
-      scrollRef.current.scrollTo({ left: scrollWidth, behavior: "smooth" });
+      scrollRef.current.scrollTo({ left: scrollWidth, behavior:"smooth" });
     } else {
       const card = scrollRef.current.firstElementChild as HTMLElement;
       const step = (card?.offsetWidth ?? 340) + 20;
-      scrollRef.current.scrollBy({ left: -step, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: -step, behavior:"smooth" });
     }
   };
 
@@ -147,22 +157,18 @@ export default function ModernCollectionSection({
     if (!scrollRef.current) return;
     const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
     if (scrollLeft + clientWidth >= scrollWidth - 15) {
-      scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
+      scrollRef.current.scrollTo({ left: 0, behavior:"smooth" });
     } else {
       const card = scrollRef.current.firstElementChild as HTMLElement;
       const step = (card?.offsetWidth ?? 340) + 20;
-      scrollRef.current.scrollBy({ left: step, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: step, behavior:"smooth" });
     }
   };
 
   return (
     <section
       id={collection.id}
-      className={`py-10 sm:py-14 lg:py-18 w-full max-w-[1720px] mx-auto relative z-10 flex flex-col justify-center select-none ${
-        isThreeCardMode
-          ? "px-6 sm:px-10 lg:px-16 xl:px-20"
-          : "px-4 sm:px-6 lg:px-10 xl:px-14"
-      }`}
+      className="py-10 sm:py-14 lg:py-18 w-full relative z-10 flex flex-col justify-center px-0"
     >
       {/* Centered Heading & Subtitle matching luxury scale */}
       <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
@@ -176,140 +182,24 @@ export default function ModernCollectionSection({
         )}
       </div>
 
-      {isThreeCardMode ? (
-        /* ========================================================================= */
-        /* EXACT SCREENSHOT FORMAT: 3 SQUARE CARDS WITH LABEL UNDERNEATH & SIDE NAV  */
-        /* ========================================================================= */
-        <div className="relative w-full">
-          {/* Circular Left Arrow Button */}
-          <button
-            type="button"
-            onClick={handlePrev}
-            aria-label="Previous fabric"
-            className="absolute -left-4 sm:-left-7 lg:-left-11 xl:-left-13 top-[calc(50%-18px)] -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
-          >
-            <ChevronLeft size={20} className="transform -translate-x-0.5" />
-          </button>
-
-          {/* Circular Right Arrow Button */}
-          <button
-            type="button"
-            onClick={handleNext}
-            aria-label="Next fabric"
-            className="absolute -right-4 sm:-right-7 lg:-right-11 xl:-right-13 top-[calc(50%-18px)] -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 cursor-pointer"
-          >
-            <ChevronRight size={20} className="transform translate-x-0.5" />
-          </button>
-
-          {/* 3-Cards Row */}
-          <div
-            ref={scrollRef}
-            className="flex items-start gap-3 sm:gap-4 lg:gap-5 overflow-x-auto scrollbar-none scroll-smooth pb-3 pt-1 px-0.5"
-          >
-            {displayProducts.map((product, idx) => (
-              <div
-                key={`${product.id}-${product.slug || idx}`}
-                className="group flex flex-col items-center w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)] shrink-0"
-              >
-                {/* Square Rounded Card Image Container with 9px border radius */}
-                <div className="relative w-full aspect-square rounded-[9px] overflow-hidden bg-white border border-[#E5E3DD] shadow-xs group-hover:shadow-md transition-all duration-500 block">
-                  <Link
-                    href={`/product/${product.slug}`}
-                    className="block w-full h-full cursor-pointer relative"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                      loading="lazy"
-                    />
-                    {/* Subtle hover overlay */}
-                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
-                  </Link>
-
-                  {/* Top Right Heart Wishlist Button - Always Visible */}
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(product.id);
-                    }}
-                    type="button"
-                    aria-label={isInWishlist(product.id) ? "Remove from wishlist" : "Save to wishlist"}
-                    className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md cursor-pointer flex items-center justify-center opacity-100"
-                  >
-                    <Heart
-                      size={16}
-                      className={
-                        isInWishlist(product.id)
-                          ? "text-red-500 fill-red-500"
-                          : "text-white fill-white/10 stroke-white stroke-[2]"
-                      }
-                    />
-                  </button>
-                </div>
-
-                {/* Sub-label & Customise Button placed directly UNDER card */}
-                <div className="w-full mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-0.5">
-                  {/* Left: Product Name & Price */}
-                  <div className="min-w-0 flex-1 space-y-0.5 text-left">
-                    <Link href={`/product/${product.slug}`} className="block">
-                      <h3
-                        title={product.name}
-                        className="text-[11px] sm:text-[12px] font-bold text-black hover:opacity-75 transition-opacity truncate tracking-wide uppercase leading-snug"
-                      >
-                        {product.name}
-                      </h3>
-                    </Link>
-                    <div className="text-[10px] sm:text-[11px] font-normal text-[#666666] tracking-normal uppercase">
-                      RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : (product.price || "").replace("₹", "").trim()}
-                    </div>
-                  </div>
-
-                  {/* Right: Customise Plus Button -> Opens 6-Step CustomizationModal */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      openCustomizer(product);
-                    }}
-                    aria-label={`Customise ${product.name}`}
-                    title="Customise Shirt (6 Steps)"
-                    className="shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
-                  >
-                    <Plus size={15} strokeWidth={2.5} />
-                  </button>
-                </div>
-              </div>
-            ))}
+      {/* 4-Column Product Cards Grid - END TO END (Full-Width Edge-to-Edge) with Exact 2px Gap */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start">
+        {(gridProducts.length > 0 ? gridProducts : displayProducts).map((product, idx) => (
+          <div key={`${product.id}-${product.slug || idx}`} className="w-full">
+            <ModernProductCard product={product} />
           </div>
-        </div>
-      ) : (
-        /* ======================================================== */
-        /* STANDARD 4-COLUMN PRODUCT CARDS GRID                     */
-        /* ======================================================== */
-        <>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
-            {gridProducts.map((product, idx) => (
-              <div key={`${product.id}-${product.slug || idx}`} className="w-full">
-                <ModernProductCard product={product} />
-              </div>
-            ))}
-          </div>
+        ))}
+      </div>
 
-          {/* Centered VIEW ALL Button (Only for standard collections) */}
-          <div className="flex items-center justify-center mt-8 sm:mt-10 lg:mt-12">
-            <Link
-              href={colId === "all" ? "/shop" : `/shop?category=${colId || "formal_bespoke"}`}
-              className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white text-xs sm:text-[13px] font-bold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 rounded-full transition-all duration-300 uppercase shadow-sm hover:shadow-md active:scale-98"
-            >
-              VIEW ALL
-            </Link>
-          </div>
-        </>
-      )}
+      {/* Centered VIEW ALL Button */}
+      <div className="flex items-center justify-center mt-8 sm:mt-10 lg:mt-12 px-4">
+        <Link
+          href={colId ==="all" ?"/shop" : `/shop?category=${colId ||"formal_bespoke"}`}
+          className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white text-xs sm:text-[13px] font-bold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 rounded-full transition-all duration-300 uppercase shadow-sm hover:shadow-md active:scale-98"
+        >
+          VIEW ALL
+        </Link>
+      </div>
     </section>
   );
 }

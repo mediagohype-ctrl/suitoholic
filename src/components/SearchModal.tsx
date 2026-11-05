@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Search, X, ArrowRight, ShoppingBag } from "lucide-react";
-import { useCatalog } from "@/context/SiteDataProvider";
+import React, { useState, useEffect, useRef } from"react";
+import { createPortal } from"react-dom";
+import Link from"next/link";
+import { useRouter } from"next/navigation";
+import { Search, X, ArrowRight, ShoppingBag } from"lucide-react";
+import { useCatalog } from"@/context/SiteDataProvider";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -26,20 +26,20 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 80);
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow ="hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
       setQuery("");
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
     };
   }, [isOpen]);
 
   // Handle ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
+      if (e.key ==="Escape" && isOpen) {
         onClose();
       }
     };
@@ -52,28 +52,28 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   // Curated collections list matching user reference screenshot
   const curatedCollections = [
     {
-      id: "winter_2026",
-      title: "Winter Collection 2026",
-      href: "/shop?category=formal_shirts",
-      image: "/new_shirts/shirt_21.jpg",
+      id:"winter_2026",
+      title:"Winter Collection 2026",
+      href:"/shop?category=formal_shirts",
+      image:"/new_shirts/shirt_21.jpg",
     },
     {
-      id: "formal_stripes",
-      title: "Bengal Stripe Collection",
-      href: "/shop?category=formal_stripes",
-      image: "/new_shirts/shirt_19.jpg",
+      id:"formal_stripes",
+      title:"Bengal Stripe Collection",
+      href:"/shop?category=formal_stripes",
+      image:"/new_shirts/shirt_19.jpg",
     },
     {
-      id: "formal_bespoke",
-      title: "Bespoke Cutaway & Twill Shirts",
-      href: "/shop?category=formal_bespoke",
-      image: "/new_shirts/shirt_14.jpg",
+      id:"formal_bespoke",
+      title:"Bespoke Cutaway & Twill Shirts",
+      href:"/shop?category=formal_bespoke",
+      image:"/new_shirts/shirt_14.jpg",
     },
     {
-      id: "fabrics",
-      title: "Pure Bespoke Fabrics & Linens",
-      href: "/fabrics",
-      image: "/fabric_cat_suits_sets.jpg",
+      id:"fabrics",
+      title:"Pure Bespoke Fabrics & Linens",
+      href:"/fabrics",
+      image:"/fabric_cat_suits_sets.jpg",
     },
   ];
 
@@ -82,10 +82,10 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const matchingProducts = trimmed
     ? products
         .filter((p) => {
-          const name = p.name?.toLowerCase() ?? "";
-          const desc = p.description?.toLowerCase() ?? "";
-          const fabric = p.fabric?.toLowerCase() ?? "";
-          const cat = p.category?.toLowerCase() ?? "";
+          const name = p.name?.toLowerCase() ??"";
+          const desc = p.description?.toLowerCase() ??"";
+          const fabric = p.fabric?.toLowerCase() ??"";
+          const cat = p.category?.toLowerCase() ??"";
           return (
             name.includes(trimmed) ||
             desc.includes(trimmed) ||
@@ -104,7 +104,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-[9999] flex flex-col justify-start select-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9999] flex flex-col justify-start animate-in fade-in duration-200"
     >
       {/* Dark semi-transparent backdrop below header panel */}
       <div
@@ -147,7 +147,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
           {/* Content Body: Collections list (default) OR Live Search Results */}
           <div className="mt-6 overflow-y-auto max-h-[62vh] pr-1">
-            {trimmed === "" ? (
+            {trimmed ==="" ? (
               /* Default State: Collections list as in user reference screenshot */
               <div className="max-w-2xl">
                 <h3 className="text-base sm:text-lg font-bold text-black tracking-tight mb-3">

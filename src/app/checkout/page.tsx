@@ -243,7 +243,7 @@ export default function CheckoutPage() {
           <div className="pt-2 border-t border-[#E5E3DD]">
             {couponCode ? (
               <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3.5 py-2.5 rounded-xl text-xs text-emerald-800">
-                <div className="flex items-center gap-1.5 font-mono font-bold">
+                <div className="flex items-center gap-1.5 font-sans font-bold tracking-wide">
                   <span>{couponCode}</span>
                   <span className="font-sans font-normal text-[11px]">(-₹{discountAmount.toLocaleString("en-IN")})</span>
                 </div>
@@ -275,7 +275,7 @@ export default function CheckoutPage() {
                       }
                     }}
                     placeholder="Promo Code"
-                    className="flex-1 bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black rounded-full px-4 py-2 text-xs outline-none uppercase font-mono placeholder:normal-case placeholder:font-sans"
+                    className="flex-1 bg-[#F5F4F0] border border-[#E5E3DD] focus:border-black rounded-full px-4 py-2 text-xs outline-none uppercase font-sans font-semibold tracking-wider placeholder:normal-case placeholder:font-sans"
                   />
                   <button
                     type="button"

@@ -34,10 +34,13 @@ export default function ShopByFabricsSection() {
     fabricProducts = products;
   }
 
+  // Strictly only 8 images for the Shop by Fabrics section
+  const displayFabrics = fabricProducts.slice(0, 8);
+
   return (
     <ModernCollectionSection
       collection={fabricCollection}
-      products={fabricProducts}
+      products={displayFabrics}
       headerTitle="SHOP BY FABRICS"
       cardsPerView={3}
     />

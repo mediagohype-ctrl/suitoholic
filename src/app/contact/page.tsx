@@ -121,12 +121,6 @@ export default function ContactPage() {
                   Let&apos;s Create Your <br className="hidden sm:inline" />
                   <span className="italic font-serif">Perfect Fit</span>
                 </h1>
-
-                {/* Narrative Subtitle */}
-                <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-sans leading-relaxed max-w-xl font-normal">
-                  Book a consultation, ask a question, or start your tailoring journey with our team today. We craft custom garments that reflect your personal style, with attention to every detail from start to finish.
-                </p>
-
               </div>
 
               {/* Right Column: High-End Framed Bespoke Fitting Image (lg:col-span-6, 12px border radius) */}
@@ -164,19 +158,19 @@ export default function ContactPage() {
                       <CheckCircle2 size={32} />
                     </div>
                     <div className="space-y-1.5">
-                      <span className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-[#666666]">
+                      <span className="text-[11px] font-sans font-bold uppercase tracking-[0.22em] text-[#666666]">
                         ENQUIRY TRANSMITTED
                       </span>
                       <h3 className="font-serif-luxury text-2xl sm:text-3xl font-normal text-black">
                         Thank You, {fullName || "Esteemed Client"}
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#666666] leading-relaxed max-w-md mx-auto">
+                      <p className="text-xs sm:text-sm text-[#666666] leading-relaxed max-w-md mx-auto font-sans">
                         Your bespoke commission inquiry has been sent to our master tailors. We reply within one business day.
                       </p>
                     </div>
 
-                    <div className="bg-[#F5F4F0] border border-[#E5E3DD] p-3.5 rounded-xl inline-block text-xs text-black font-mono">
-                      Reference ID: <strong className="text-black">{ticketId}</strong>
+                    <div className="bg-[#F5F4F0] border border-[#E5E3DD] p-3.5 rounded-xl inline-block text-xs text-black font-sans font-medium">
+                      Reference ID: <strong className="text-black font-bold">{ticketId}</strong>
                     </div>
 
                     <div className="pt-2">
@@ -198,9 +192,9 @@ export default function ContactPage() {
                     </div>
                     
                     {/* Row 1: Full Name & Email */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 font-sans">
                       <div className="space-y-2">
-                        <label className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#666666] font-bold block">
+                        <label className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
                           FULL NAME
                         </label>
                         <input
@@ -214,7 +208,7 @@ export default function ContactPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#666666] font-bold block">
+                        <label className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
                           EMAIL
                         </label>
                         <input
@@ -229,9 +223,9 @@ export default function ContactPage() {
                     </div>
 
                     {/* Row 2: Phone & Service */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 font-sans">
                       <div className="space-y-2">
-                        <label className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#666666] font-bold block">
+                        <label className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
                           PHONE
                         </label>
                         <input
@@ -244,7 +238,7 @@ export default function ContactPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#666666] font-bold block">
+                        <label className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
                           SERVICE
                         </label>
                         <div className="relative">
@@ -267,8 +261,8 @@ export default function ContactPage() {
                     </div>
 
                     {/* Row 3: Preferred Date */}
-                    <div className="space-y-2">
-                      <label className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#666666] font-bold block">
+                    <div className="space-y-2 font-sans">
+                      <label className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
                         PREFERRED DATE
                       </label>
                       <input
@@ -280,8 +274,8 @@ export default function ContactPage() {
                     </div>
 
                     {/* Row 4: Your Commission */}
-                    <div className="space-y-2">
-                      <label className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#666666] font-bold block">
+                    <div className="space-y-2 font-sans">
+                      <label className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
                         YOUR COMMISSION
                       </label>
                       <textarea
@@ -300,8 +294,8 @@ export default function ContactPage() {
                       </p>
                     )}
 
-                    {/* Submit Button & Subtext */}
-                    <div className="pt-2 space-y-3">
+                    {/* Submit Button */}
+                    <div className="pt-2">
                       <button
                         type="submit"
                         disabled={isSubmitting}
@@ -309,10 +303,6 @@ export default function ContactPage() {
                       >
                         {isSubmitting ? "TRANSMITTING..." : "SEND ENQUIRY"}
                       </button>
-
-                      <p className="text-[11.5px] sm:text-xs text-[#666666] font-sans">
-                        By appointment · Monday – Saturday · We reply within one business day.
-                      </p>
                     </div>
 
                   </form>
@@ -332,8 +322,8 @@ export default function ContactPage() {
                   </h2>
 
                   {/* 1. EMAIL */}
-                  <div className="space-y-1.5">
-                    <span className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.24em] text-[#666666] uppercase font-bold block">
+                  <div className="space-y-1.5 font-sans">
+                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
                       EMAIL
                     </span>
                     <a
@@ -348,8 +338,8 @@ export default function ContactPage() {
                   <div className="border-t border-[#E5E3DD]" />
 
                   {/* 2. TELEPHONE */}
-                  <div className="space-y-1.5">
-                    <span className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.24em] text-[#666666] uppercase font-bold block">
+                  <div className="space-y-1.5 font-sans">
+                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
                       TELEPHONE
                     </span>
                     <a
@@ -358,7 +348,7 @@ export default function ContactPage() {
                     >
                       +91 95914 44298
                     </a>
-                    <span className="text-xs sm:text-sm text-[#666666] block">
+                    <span className="text-xs sm:text-sm text-[#666666] block font-sans">
                       +91 (0) 129 415 8890
                     </span>
                   </div>
@@ -367,8 +357,8 @@ export default function ContactPage() {
                   <div className="border-t border-[#E5E3DD]" />
 
                   {/* 3. HOURS */}
-                  <div className="space-y-1.5">
-                    <span className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.24em] text-[#666666] uppercase font-bold block">
+                  <div className="space-y-1.5 font-sans">
+                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
                       HOURS
                     </span>
                     <div className="text-base sm:text-[17px] text-black font-medium font-sans">
@@ -377,19 +367,6 @@ export default function ContactPage() {
                     <div className="text-xs sm:text-sm text-[#666666] font-sans">
                       10:00 — 18:00 · By appointment
                     </div>
-                  </div>
-
-                  {/* Divider */}
-                  <div className="border-t border-[#E5E3DD]" />
-
-                  {/* 4. PRIVATE CONSULTATIONS */}
-                  <div className="space-y-1.5">
-                    <span className="text-[10.5px] sm:text-[11px] font-mono tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      PRIVATE CONSULTATIONS
-                    </span>
-                    <p className="text-xs sm:text-sm text-[#666666] leading-relaxed font-sans">
-                      Evening and at-residence appointments available on request.
-                    </p>
                   </div>
 
                 </div>

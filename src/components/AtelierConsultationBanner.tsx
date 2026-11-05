@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React from"react";
+import Link from"next/link";
 
 interface AtelierConsultationBannerProps {
   eyebrow?: string;
@@ -13,15 +13,15 @@ interface AtelierConsultationBannerProps {
 }
 
 export default function AtelierConsultationBanner({
-  eyebrow = "BEGIN YOUR JOURNEY",
-  headingPrefix = "Ready to Look and Feel ",
-  headingHighlight = "Your Very Best?",
-  body = "Book a private consultation with our master tailors today. Whether you are visiting us locally or from abroad, we will guide you through our finest fabrics and design a flawless look crafted just for you.",
-  ctaLabel = "BOOK CONSULTATION",
-  ctaHref = "/custom-shirt#appointment-booking",
+  eyebrow ="BEGIN YOUR JOURNEY",
+  headingPrefix ="Ready to Look and Feel",
+  headingHighlight ="Your Very Best?",
+  body ="Book a private consultation with our master tailors today. Whether you are visiting us locally or from abroad, we will guide you through our finest fabrics and design a flawless look crafted just for you.",
+  ctaLabel ="BOOK CONSULTATION",
+  ctaHref ="/custom-shirt#appointment-booking",
 }: AtelierConsultationBannerProps) {
   return (
-    <section className="relative w-full bg-[#ECEAE5] py-10 sm:py-14 select-none">
+    <section className="relative w-full bg-[#ECEAE5] py-10 sm:py-14">
       <div className="max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] py-16 sm:py-24 px-6 sm:px-12 text-center flex flex-col items-center shadow-sm">
           {/* Main Headline */}

@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import MannequinShirtViewer, { getShirtColorFamily } from "@/components/MannequinShirtViewer";
-import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
-import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, Sparkles } from "lucide-react";
-import confetti from "canvas-confetti";
-import { fillTemplate } from "@/content/merge";
-import { useCatalog, useContent, useSettings } from "@/context/SiteDataProvider";
-import { useCart } from "@/context/CartProvider";
-import { formatMoney } from "@/lib/api";
-import type { CustomFit, ProductItem } from "@/lib/types";
+import React, { useState } from"react";
+import MannequinShirtViewer, { getShirtColorFamily } from"@/components/MannequinShirtViewer";
+import { CollarIllustration, CuffIllustration } from"@/components/customizer/StyleIllustrations";
+import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, Sparkles } from"lucide-react";
+import confetti from"canvas-confetti";
+import { fillTemplate } from"@/content/merge";
+import { useCatalog, useContent, useSettings } from"@/context/SiteDataProvider";
+import { useCart } from"@/context/CartProvider";
+import { formatMoney } from"@/lib/api";
+import type { CustomFit, ProductItem } from"@/lib/types";
 
-import { EIGHT_CANONICAL_SISTER_SHIRTS } from "@/data/products";
+import { EIGHT_CANONICAL_SISTER_SHIRTS } from"@/data/products";
 
 export type CustomFitState = CustomFit;
 
@@ -40,32 +40,32 @@ interface CustomizationModalProps {
   onConfirmCustomization: (customFit: CustomFitState, chosenProduct?: CustomizationModalProduct | ProductItem | null) => void | Promise<void>;
 }
 
-type MannequinFit = "lean" | "regular" | "tummy";
-const asMannequinFit = (fit: string): MannequinFit => (fit === "regular" || fit === "tummy" ? fit : "lean");
+type MannequinFit ="lean" |"regular" |"tummy";
+const asMannequinFit = (fit: string): MannequinFit => (fit ==="regular" || fit ==="tummy" ? fit :"lean");
 
 function getSuggestionThumbnail(p: any): string {
   if (p?.image) return p.image;
   if (p?.gallery && p.gallery.length > 0) return p.gallery[0];
-  return "/new_shirts/shirt_21.jpg";
+  return"/new_shirts/shirt_21.jpg";
 }
 
 function getShortShirtTitle(name: string): string {
-  const n = (name || "").toUpperCase();
-  if (n.includes("TERRACOTTA") || n.includes("CORAL")) return "Terracotta Coral";
-  if (n.includes("ESPRESSO") || n.includes("DARK")) return "Dark Espresso";
-  if (n.includes("SANDSTONE") || n.includes("LINEN") || n.includes("OATMEAL")) return "Sandstone Linen";
-  if (n.includes("WHITE") || n.includes("CRISP")) return "Crisp White";
-  if (n.includes("SKY") || n.includes("OXFORD")) return "Sky Blue Oxford";
-  if (n.includes("SOLID") || (n.includes("MIDNIGHT") && n.includes("NAVY"))) return "Midnight Navy";
-  if (n.includes("CHARCOAL") || n.includes("ANTHRACITE")) return "Charcoal Twill";
-  if (n.includes("PINSTRIPE") || n.includes("BENGAL") || n.includes("NAVY")) return "Navy Pinstripe";
-  return name.replace(/FORMAL|SAVILE ROW/gi, "").trim();
+  const n = (name ||"").toUpperCase();
+  if (n.includes("TERRACOTTA") || n.includes("CORAL")) return"Terracotta Coral";
+  if (n.includes("ESPRESSO") || n.includes("DARK")) return"Dark Espresso";
+  if (n.includes("SANDSTONE") || n.includes("LINEN") || n.includes("OATMEAL")) return"Sandstone Linen";
+  if (n.includes("WHITE") || n.includes("CRISP")) return"Crisp White";
+  if (n.includes("SKY") || n.includes("OXFORD")) return"Sky Blue Oxford";
+  if (n.includes("SOLID") || (n.includes("MIDNIGHT") && n.includes("NAVY"))) return"Midnight Navy";
+  if (n.includes("CHARCOAL") || n.includes("ANTHRACITE")) return"Charcoal Twill";
+  if (n.includes("PINSTRIPE") || n.includes("BENGAL") || n.includes("NAVY")) return"Navy Pinstripe";
+  return name.replace(/FORMAL|SAVILE ROW/gi,"").trim();
 }
 
 export default function CustomizationModal({
   isOpen,
   onClose,
-  productName = "Azure Sky Blue Bengal Stripe",
+  productName ="Azure Sky Blue Bengal Stripe",
   product = null,
   initialChestSize,
   submitting = false,
@@ -108,10 +108,10 @@ export default function CustomizationModal({
       sleeveType: c.defaults.sleeveType,
       collarStyle: c.defaults.collarStyle,
       cuffStyle: c.defaults.cuffStyle,
-      pocket: "pocket",
+      pocket:"pocket",
       initials: c.defaults.initials,
       threadColor: c.defaults.threadColor,
-      shirtColor: "white",
+      shirtColor:"white",
     };
   });
 
@@ -130,12 +130,12 @@ export default function CustomizationModal({
     if (!products || products.length === 0) return EIGHT_CANONICAL_SISTER_SHIRTS;
 
     const curated = products.filter((p) => {
-      const cat = (p.category || "").toLowerCase();
-      const slug = (p.slug || "").toLowerCase();
+      const cat = (p.category ||"").toLowerCase();
+      const slug = (p.slug ||"").toLowerCase();
       return (
-        cat === "formal_shirts" ||
-        cat === "formal_stripes" ||
-        cat === "formal_bespoke" ||
+        cat ==="formal_shirts" ||
+        cat ==="formal_stripes" ||
+        cat ==="formal_bespoke" ||
         slug.includes("shirt")
       );
     });
@@ -206,7 +206,7 @@ export default function CustomizationModal({
       }, 4000);
     } catch (err) {
       setQuickAddToast({
-        message: (err as Error).message || "Could not add item to bag",
+        message: (err as Error).message ||"Could not add item to bag",
         visible: true,
       });
       setTimeout(() => {
@@ -220,11 +220,11 @@ export default function CustomizationModal({
   // The initial state is seeded from initialChestSize; selections are kept if the modal is closed and reopened.
   if (!isOpen) return null;
 
-  const isFullSleeve = customFit.sleeveType === "full";
+  const isFullSleeve = customFit.sleeveType ==="full";
   const totalSteps = 6;
-  const stepCopy = (n: number) => c.steps[n - 1] ?? { breadcrumb: "", title: "", subtitle: "" };
+  const stepCopy = (n: number) => c.steps[n - 1] ?? { breadcrumb:"", title:"", subtitle:"" };
 
-  // Selections in "YOUR SELECTION" are shown strictly up to the active step;
+  // Selections in"YOUR SELECTION" are shown strictly up to the active step;
   // going back (e.g. from Step 6 to Step 2) dynamically hides future step choices.
   const showBodyType = currentStep >= 2;
   const showHeight = currentStep >= 3;
@@ -260,9 +260,9 @@ export default function CustomizationModal({
   const getHeightCleanTitle = (h: string) => {
     const match = c.heights.find((opt) => opt.id === h);
     if (match?.shortTitle) return match.shortTitle;
-    if (h.toLowerCase().includes("extra")) return "Extra Tall";
-    if (h.toLowerCase().includes("regular") || h.toLowerCase().includes("5.5") || h.toLowerCase().includes("standard")) return "Regular Height";
-    return "Tall Height";
+    if (h.toLowerCase().includes("extra")) return"Extra Tall";
+    if (h.toLowerCase().includes("regular") || h.toLowerCase().includes("5.5") || h.toLowerCase().includes("standard")) return"Regular Height";
+    return"Tall Height";
   };
 
   return (
@@ -299,7 +299,7 @@ export default function CustomizationModal({
 
         {/* Modal Scrollable Content Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
-          <div className={`w-full ${currentStep >= 5 ? "max-w-[1360px]" : "max-w-[1184px]"} mx-auto space-y-4 sm:space-y-6 transition-all duration-300`}>
+          <div className={`w-full ${currentStep >= 5 ?"max-w-[1360px]" :"max-w-[1184px]"} mx-auto space-y-4 sm:space-y-6 transition-all duration-300`}>
             
             {/* Breadcrumb Steps Header */}
             <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
@@ -311,14 +311,14 @@ export default function CustomizationModal({
             </div>
 
             {/* Main 2-Column Grid with Equal Height Columns */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch min-h-[490px] sm:min-h-[530px] lg:min-h-[560px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
             
             {/* LEFT COLUMN: 3D Interactive Mannequin Shirt Viewer & Selection Panel */}
-            <div className={`${currentStep >= 5 ? "lg:col-span-7" : "lg:col-span-6"} flex flex-col justify-center relative h-full min-h-[470px] sm:min-h-[520px] transition-all duration-300`}>
+            <div className={`${currentStep >= 5 ?"lg:col-span-7" :"lg:col-span-6"} flex flex-col justify-start relative transition-all duration-300`}>
               
               {/* Top Row: Inscription & Selection Summary (Shown from Step 1 onwards) */}
               <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
-                <div className="select-none">
+                <div className="">
                   <h3 className="font-serif-luxury text-xl sm:text-2xl font-bold text-black tracking-[0.06em] uppercase leading-tight">
                     {c.studioTitleLines.map((line, i) => (
                       <React.Fragment key={i}>
@@ -330,8 +330,8 @@ export default function CustomizationModal({
                   <div className="w-12 h-[2px] bg-black mt-2" />
                 </div>
 
-                {/* Floating "Your Selection" Box - Dynamically reveals selections per step */}
-                <div className="select-none text-left min-w-[130px] sm:min-w-[155px] bg-white p-3 rounded-2xl border border-[#E5E3DD] shadow-sm transition-all duration-300">
+                {/* Floating"Your Selection" Box - Dynamically reveals selections per step */}
+                <div className="text-left min-w-[130px] sm:min-w-[155px] bg-white p-3 rounded-2xl border border-[#E5E3DD] shadow-sm transition-all duration-300">
                   <h5 className="text-[11px] font-bold tracking-[0.14em] text-black uppercase mb-1.5 pb-1 border-b border-[#E5E3DD]">
                     {c.selectionTitle}
                   </h5>
@@ -363,7 +363,7 @@ export default function CustomizationModal({
                       <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
                         <span className="text-[#666666] font-medium">Sleeve</span>
                         <strong className="text-black font-bold capitalize">
-                          {customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve"}
+                          {customFit.sleeveType ==="half" ?"Half Sleeve" :"Full Sleeve"}
                         </strong>
                       </div>
                     )}
@@ -372,7 +372,7 @@ export default function CustomizationModal({
                     {showCollar && (
                       <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
                         <span className="text-[#666666] font-medium">Collar</span>
-                        <strong className="text-black font-bold">{customFit.collarStyle.split(" ")[0]}</strong>
+                        <strong className="text-black font-bold">{customFit.collarStyle.split("")[0]}</strong>
                       </div>
                     )}
 
@@ -380,7 +380,7 @@ export default function CustomizationModal({
                     {showCuff && (
                       <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
                         <span className="text-[#666666] font-medium">Cuff</span>
-                        <strong className="text-black font-bold">{customFit.cuffStyle.split(" ")[0]}</strong>
+                        <strong className="text-black font-bold">{customFit.cuffStyle.split("")[0]}</strong>
                       </div>
                     )}
 
@@ -401,10 +401,10 @@ export default function CustomizationModal({
                   chestSize={customFit.chestSize}
                   bodyFit={asMannequinFit(customFit.bodyFit)}
                   height={customFit.height}
-                  sleeveType={customFit.sleeveType === "half" ? "half" : "full"}
+                  sleeveType={customFit.sleeveType ==="half" ?"half" :"full"}
                   collarStyle={customFit.collarStyle}
                   cuffStyle={customFit.cuffStyle}
-                  pocket={customFit.pocket === "no-pocket" ? "no-pocket" : "pocket"}
+                  pocket={customFit.pocket ==="no-pocket" ?"no-pocket" :"pocket"}
                   initials={customFit.initials}
                   threadColor={customFit.threadColor}
                   currentStep={currentStep}
@@ -415,13 +415,13 @@ export default function CustomizationModal({
             </div>
 
             {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
-            <div className={`${currentStep >= 5 ? "lg:col-span-5" : "lg:col-span-6"} relative flex flex-col h-full min-h-[470px] sm:min-h-[520px] transition-all duration-300`}>
+            <div className={`${currentStep >= 5 ?"lg:col-span-5" :"lg:col-span-6"} relative flex flex-col transition-all duration-300`}>
               
-              <div className="bg-white border border-[#E5E3DD] rounded-[24px] p-5 sm:p-7 shadow-sm relative z-10 flex-1 flex flex-col justify-between h-full">
+              <div className="bg-white border border-[#E5E3DD] rounded-[24px] p-5 sm:p-7 shadow-sm relative z-10 flex flex-col justify-start gap-4 sm:gap-5">
                 
                 {/* Stepper Header */}
-                <div className="mb-4 sm:mb-5">
-                  <div className="flex items-center justify-center space-x-3 text-[11px] font-bold tracking-[0.24em] text-black uppercase mb-2 select-none">
+                <div className="mb-0.5 sm:mb-1">
+                  <div className="flex items-center justify-center space-x-3 text-[11px] font-bold tracking-[0.24em] text-black uppercase mb-2">
                     <span>STEP {currentStep} OF {totalSteps}</span>
                   </div>
 
@@ -450,8 +450,8 @@ export default function CustomizationModal({
                               onClick={() => handleChestSelect(size)}
                               className={`py-2.5 sm:py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 isSelected
-                                  ? "bg-black text-white shadow-sm ring-1 ring-black"
-                                  : "bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
+                                  ?"bg-black text-white shadow-sm ring-1 ring-black"
+                                  :"bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
                               }`}
                             >
                               {size}
@@ -493,8 +493,8 @@ export default function CustomizationModal({
                         onClick={() => setCustomFit((prev) => ({ ...prev, bodyFit: fit.id }))}
                         className={`w-full p-3.5 rounded-2xl text-left transition-all flex items-center space-x-3 border cursor-pointer ${
                           customFit.bodyFit === fit.id
-                            ? "bg-white border-black shadow-sm ring-1 ring-black"
-                            : "bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
+                            ?"bg-white border-black shadow-sm ring-1 ring-black"
+                            :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
                         }`}
                       >
                         <div className="w-4 h-4 rounded-full border-2 border-black flex items-center justify-center shrink-0">
@@ -522,8 +522,8 @@ export default function CustomizationModal({
                           onClick={() => setCustomFit((prev) => ({ ...prev, height: opt.id }))}
                           className={`w-full p-3.5 rounded-2xl text-left transition-all flex items-center space-x-3 border cursor-pointer ${
                             isSelected
-                              ? "bg-white border-black shadow-sm ring-1 ring-black"
-                              : "bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
+                              ?"bg-white border-black shadow-sm ring-1 ring-black"
+                              :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
                           }`}
                         >
                           <div className="w-4 h-4 rounded-full border-2 border-black flex items-center justify-center shrink-0">
@@ -545,15 +545,15 @@ export default function CustomizationModal({
                   <div className="space-y-3 pt-1 animate-in fade-in duration-200">
                     <div className="grid grid-cols-2 gap-3">
                       <button
-                        onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half" }))}
+                        onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType:"half" }))}
                         className={`p-4 rounded-2xl text-center transition-all border flex flex-col justify-between items-center relative cursor-pointer ${
-                          customFit.sleeveType === "half"
-                            ? "bg-white border-black shadow-sm ring-1 ring-black"
-                            : "bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
+                          customFit.sleeveType ==="half"
+                            ?"bg-white border-black shadow-sm ring-1 ring-black"
+                            :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
                         }`}
                       >
                         <div className="absolute top-3 left-3 w-4 h-4 rounded-full border-2 border-black flex items-center justify-center">
-                          {customFit.sleeveType === "half" && <div className="w-2 h-2 rounded-full bg-black" />}
+                          {customFit.sleeveType ==="half" && <div className="w-2 h-2 rounded-full bg-black" />}
                         </div>
                         <div className="my-2 w-16 h-18 text-black">
                           <svg viewBox="0 0 100 110" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -565,15 +565,15 @@ export default function CustomizationModal({
                       </button>
 
                       <button
-                        onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "full" }))}
+                        onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType:"full" }))}
                         className={`p-4 rounded-2xl text-center transition-all border flex flex-col justify-between items-center relative cursor-pointer ${
-                          customFit.sleeveType === "full"
-                            ? "bg-white border-black shadow-sm ring-1 ring-black"
-                            : "bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
+                          customFit.sleeveType ==="full"
+                            ?"bg-white border-black shadow-sm ring-1 ring-black"
+                            :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
                         }`}
                       >
                         <div className="absolute top-3 left-3 w-4 h-4 rounded-full border-2 border-black flex items-center justify-center">
-                          {customFit.sleeveType === "full" && <div className="w-2 h-2 rounded-full bg-black" />}
+                          {customFit.sleeveType ==="full" && <div className="w-2 h-2 rounded-full bg-black" />}
                         </div>
                         <div className="my-2 w-16 h-18 text-black">
                           <svg viewBox="0 0 100 110" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -603,8 +603,8 @@ export default function CustomizationModal({
                               onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: collar.name }))}
                               className={`p-2.5 rounded-xl text-left transition-all flex items-center gap-2.5 cursor-pointer group ${
                                 selected
-                                  ? "bg-black text-white shadow-sm ring-1 ring-black"
-                                  : "bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
+                                  ?"bg-black text-white shadow-sm ring-1 ring-black"
+                                  :"bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
                               }`}
                             >
                               <span className="w-10 h-8 shrink-0 flex items-center justify-center">
@@ -618,7 +618,7 @@ export default function CustomizationModal({
                               <span className="min-w-0 flex-1">
                                 <span className="block text-xs font-bold leading-tight">{collar.name}</span>
                                 {collar.description && (
-                                  <span className={`block text-[9.5px] leading-tight mt-0.5 ${selected ? "text-white/70" : "text-[#666666] group-hover:text-black"}`}>
+                                  <span className={`block text-[9.5px] leading-tight mt-0.5 ${selected ?"text-white/70" :"text-[#666666] group-hover:text-black"}`}>
                                     {collar.description}
                                   </span>
                                 )}
@@ -644,8 +644,8 @@ export default function CustomizationModal({
                                 onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.name }))}
                                 className={`p-2 rounded-xl text-center text-[11px] font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
                                   selected
-                                    ? "bg-black text-white shadow-sm ring-1 ring-black"
-                                    : "bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
+                                    ?"bg-black text-white shadow-sm ring-1 ring-black"
+                                    :"bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
                                 }`}
                               >
                                 <span className="w-12 h-9 flex items-center justify-center">
@@ -751,7 +751,7 @@ export default function CustomizationModal({
                       )}
                       <div className="flex justify-between items-center">
                         <span className="text-[#666666]">{c.reviewLabels.monogram}</span>
-                        <strong className="text-black uppercase">{customFit.initials || "None"} ({customFit.threadColor})</strong>
+                        <strong className="text-black uppercase">{customFit.initials ||"None"} ({customFit.threadColor})</strong>
                       </div>
                       {customizationFee > 0 && (
                         <div className="flex justify-between items-center border-t border-[#E5E3DD] pt-1.5">
@@ -765,7 +765,7 @@ export default function CustomizationModal({
                 )}
 
                 {/* BOTTOM NAVIGATION ACTIONS */}
-                <div className="mt-5 pt-3 border-t border-[#E5E3DD] flex items-center justify-between gap-3">
+                <div className="pt-3 sm:pt-4 border-t border-[#E5E3DD] flex items-center justify-between gap-3">
                   {currentStep > 1 && (
                     <button
                       onClick={handlePrevStep}
@@ -828,8 +828,8 @@ export default function CustomizationModal({
                       onClick={() => handleSelectSisterProduct(sister)}
                       className={`group p-3 rounded-2xl border transition-all flex flex-col justify-between cursor-pointer relative ${
                         isSelected
-                          ? "bg-[#F5F4F0] border-black ring-2 ring-black shadow-sm"
-                          : "bg-white hover:bg-[#F5F4F0]/60 border-[#E5E3DD]"
+                          ?"bg-[#F5F4F0] border-black ring-2 ring-black shadow-sm"
+                          :"bg-white hover:bg-[#F5F4F0]/60 border-[#E5E3DD]"
                       }`}
                     >
                       {/* Top: High-Res Shirt Photo */}
@@ -860,7 +860,7 @@ export default function CustomizationModal({
                         <div className="flex items-center justify-between text-[11px] mt-1">
                           <span className="font-extrabold text-black">{sister.price}</span>
                           <span className="text-[#888888] text-[10px] uppercase truncate max-w-[80px]">
-                            {sister.fabric?.includes("Linen") ? "Linen Blend" : "100% Giza Cotton"}
+                            {sister.fabric?.includes("Linen") ?"Linen Blend" :"100% Giza Cotton"}
                           </span>
                         </div>
                       </div>
@@ -872,8 +872,8 @@ export default function CustomizationModal({
                         disabled={addingId === sister.id}
                         className={`mt-2.5 w-full h-8 rounded-xl text-[10px] font-bold tracking-wider uppercase transition-all flex items-center justify-center space-x-1.5 shadow-xs cursor-pointer ${
                           count > 0
-                            ? "bg-black text-white hover:bg-neutral-800"
-                            : "bg-[#F5F4F0] hover:bg-black hover:text-white text-black border border-[#E5E3DD]"
+                            ?"bg-black text-white hover:bg-neutral-800"
+                            :"bg-[#F5F4F0] hover:bg-black hover:text-white text-black border border-[#E5E3DD]"
                         }`}
                         title="Add with exact same bespoke measurements to bag"
                       >

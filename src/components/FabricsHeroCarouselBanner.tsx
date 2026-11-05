@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
+import React from"react";
 
 export default function FabricsHeroCarouselBanner() {
   return (
     <section
       aria-label="Fabrics Hero Banner"
-      className="relative w-full h-[460px] sm:h-[540px] lg:h-[620px] overflow-hidden bg-[#ECEAE5] select-none"
+      className="relative w-full h-[100dvh] min-h-[580px] overflow-hidden bg-[#ECEAE5]"
     >
-      {/* Background Photographic Image: Natural, crisp, and fully visible without any light shade overlay */}
+      {/* Background Photographic Image: Natural, crisp, full 100vh viewport coverage */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/banners/outfit_hero_suit_light.jpg"
@@ -17,18 +17,12 @@ export default function FabricsHeroCarouselBanner() {
         loading="eager"
       />
 
-      {/* Banner Content: Clean Luxury Heading */}
-      <div className="absolute inset-0 z-20 flex items-center">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full">
-          <div className="max-w-2xl">
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-[56px] xl:text-[62px] font-normal text-[#1A1815] leading-[1.12] tracking-tight drop-shadow-xs">
-              <span>The World&apos;s Finest Fabrics.</span>{" "}
-              <span className="italic font-light text-[#8C6D38] block mt-1.5">
-                Tailored For You.
-              </span>
-            </h1>
-          </div>
-        </div>
+      {/* Left Bottom: Subtle Minimalist Small Line */}
+      <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-16 z-20 flex items-center gap-3">
+        <span className="w-8 h-[1.5px] bg-[#14110E]/70 inline-block" />
+        <p className="font-sans text-xs sm:text-[13px] font-medium tracking-[0.22em] uppercase text-[#14110E]/90">
+          The World&apos;s Finest Fabrics &middot; Tailored For You
+        </p>
       </div>
     </section>
   );

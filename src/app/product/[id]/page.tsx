@@ -1,18 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
-import ShopByCategoryGrid from "@/components/ShopByCategoryGrid";
-import ModernProductCard from "@/components/ModernProductCard";
-import { useCart } from "@/context/CartProvider";
-import { useCatalog, useContent } from "@/context/SiteDataProvider";
-import { useWishlist } from "@/context/WishlistProvider";
-import { fillTemplate } from "@/content/merge";
-import type { CustomFit, ProductItem } from "@/lib/types";
+import React, { useState } from"react";
+import Link from"next/link";
+import { useParams, useRouter } from"next/navigation";
+import Header from"@/components/Header";
+import Footer from"@/components/Footer";
+import ShopByCategoryGrid from"@/components/ShopByCategoryGrid";
+import ModernProductCard from"@/components/ModernProductCard";
+import { useCart } from"@/context/CartProvider";
+import { useCatalog, useContent } from"@/context/SiteDataProvider";
+import { useWishlist } from"@/context/WishlistProvider";
+import { fillTemplate } from"@/content/merge";
+import type { CustomFit, ProductItem } from"@/lib/types";
 import {
   AlertCircle,
   ArrowLeft,
@@ -27,10 +26,10 @@ import {
   Sparkles,
   Layers,
   type LucideIcon,
-} from "lucide-react";
-import confetti from "canvas-confetti";
-import CustomizationModal from "@/components/CustomizationModal";
-import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
+} from"lucide-react";
+import confetti from"canvas-confetti";
+import CustomizationModal from"@/components/CustomizationModal";
+import CommonAtelierShowcase from"@/components/CommonAtelierShowcase";
 
 // Icon keys usable in the productPage.badges content
 const BADGE_ICONS: Record<string, LucideIcon> = {
@@ -45,7 +44,7 @@ const BADGE_ICONS: Record<string, LucideIcon> = {
 
 /** True for pale swatches that need a dark check mark. */
 const isLightHex = (hex: string) => {
-  const h = hex.replace("#", "");
+  const h = hex.replace("#","");
   const full = h.length === 3 ? h.split("").map((x) => x + x).join("") : h.slice(0, 6);
   const n = parseInt(full, 16);
   if (Number.isNaN(n)) return false;
@@ -111,9 +110,9 @@ export default function ProductDetailPage() {
 
   const colorways = activeProduct.colorways ?? [];
   const rawGallery = activeProduct.gallery?.length ? activeProduct.gallery : [activeProduct.image];
-  const gallery = rawGallery.map((g) => (g ? g.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : ""));
+  const gallery = rawGallery.map((g) => (g ? g.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i,"/") :""));
   const outOfStock = activeProduct.stock === 0;
-  const lowStock = typeof activeProduct.stock === "number" && activeProduct.stock > 0 && activeProduct.stock <= 5;
+  const lowStock = typeof activeProduct.stock ==="number" && activeProduct.stock > 0 && activeProduct.stock <= 5;
 
   const showToast = (message: string, isError = false, ms = 5000) => {
     setToastMessage(message);
@@ -173,7 +172,7 @@ export default function ProductDetailPage() {
     .filter((p) => p.category === activeProduct.category && p.id !== activeProduct.id)
     .slice(0, 8);
   const macroProducts = products
-    .filter((p) => p.category === "formal_stripes")
+    .filter((p) => p.category ==="formal_stripes")
     .slice(0, 4);
 
   return (
@@ -206,7 +205,7 @@ export default function ProductDetailPage() {
               <div className="relative w-full aspect-[4/4.1] sm:aspect-[4/4.1] lg:aspect-[4/4] max-h-[485px] sm:max-h-[520px] lg:max-h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden bg-white border border-[#E5E3DD] shadow-sm flex items-center justify-center group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={gallery[selectedImageIndex] || (activeProduct.image ? activeProduct.image.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : "")}
+                  src={gallery[selectedImageIndex] || (activeProduct.image ? activeProduct.image.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i,"/") :"")}
                   alt={activeProduct.name}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   loading="eager"
@@ -220,7 +219,7 @@ export default function ProductDetailPage() {
                 >
                   <Heart
                     size={18}
-                    className={isWishlisted ? "fill-[#E04B4B] text-[#E04B4B]" : "text-white"}
+                    className={isWishlisted ?"fill-[#E04B4B] text-[#E04B4B]" :"text-white"}
                   />
                 </button>
               </div>
@@ -233,8 +232,8 @@ export default function ProductDetailPage() {
                       key={idx}
                       onClick={() => setSelectedImageIndex(idx)}
                       className={`aspect-[4/3.2] rounded-[16px] overflow-hidden transition-all relative cursor-pointer border ${selectedImageIndex === idx
-                        ? "border-black ring-2 ring-black shadow-sm opacity-100"
-                        : "border-[#E5E3DD] opacity-60 hover:opacity-100"
+                        ?"border-black ring-2 ring-black shadow-sm opacity-100"
+                        :"border-[#E5E3DD] opacity-60 hover:opacity-100"
                         }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -280,7 +279,7 @@ export default function ProductDetailPage() {
                 <div className="flex items-center space-x-2.5 mt-2.5">
                   <div className="flex text-black">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={15} className={i < Math.round(activeProduct.rating) ? "fill-current" : ""} />
+                      <Star key={i} size={15} className={i < Math.round(activeProduct.rating) ?"fill-current" :""} />
                     ))}
                   </div>
                   <span className="text-xs font-bold text-black">{activeProduct.rating} / 5.0</span>
@@ -302,7 +301,7 @@ export default function ProductDetailPage() {
                   </span>
                 </div>
                 {(outOfStock || lowStock) && (
-                  <p className={`mt-2 text-[11px] font-bold uppercase tracking-wider ${outOfStock ? "text-red-600" : "text-[#666666]"}`}>
+                  <p className={`mt-2 text-[11px] font-bold uppercase tracking-wider ${outOfStock ?"text-red-600" :"text-[#666666]"}`}>
                     {outOfStock ? c.outOfStockLabel : fillTemplate(c.lowStockTemplate, { stock: activeProduct.stock ?? 0 })}
                   </p>
                 )}
@@ -315,7 +314,7 @@ export default function ProductDetailPage() {
                     <label className="text-[10.5px] font-bold tracking-[0.2em] uppercase text-black">
                       {c.colorwaysLabel}
                     </label>
-                    <span className="text-[11px] font-bold text-[#666666] uppercase">{activeProduct.name.split(" ")[0]}</span>
+                    <span className="text-[11px] font-bold text-[#666666] uppercase">{activeProduct.name.split("")[0]}</span>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3">
@@ -329,19 +328,19 @@ export default function ProductDetailPage() {
                             if (target) {
                               setActiveProduct(target);
                               setSelectedImageIndex(0);
-                              window.history.replaceState(null, "", `/product/${target.slug}`);
+                              window.history.replaceState(null,"", `/product/${target.slug}`);
                             }
                           }}
                           className={`w-9 h-9 rounded-full border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm relative group ${isSelected
-                            ? "border-black ring-2 ring-black scale-110"
-                            : "border-[#E5E3DD] opacity-80 hover:opacity-100"
+                            ?"border-black ring-2 ring-black scale-110"
+                            :"border-[#E5E3DD] opacity-80 hover:opacity-100"
                             }`}
                           style={{ backgroundColor: cw.hex }}
                           title={cw.name}
                           aria-label={cw.name}
                         >
                           {isSelected && (
-                            <Check size={14} className={isLightHex(cw.hex) ? "text-black" : "text-white"} />
+                            <Check size={14} className={isLightHex(cw.hex) ?"text-black" :"text-white"} />
                           )}
                         </button>
                       );
@@ -383,7 +382,7 @@ export default function ProductDetailPage() {
                 {toastVisible && (
                   <div
                     role="status"
-                    className={`${toastError ? "bg-red-600" : "bg-black"} text-white p-3.5 rounded-full text-center text-xs font-bold tracking-wider animate-in slide-in-from-top-2 duration-300 shadow-lg flex flex-wrap items-center justify-center gap-2`}
+                    className={`${toastError ?"bg-red-600" :"bg-black"} text-white p-3.5 rounded-full text-center text-xs font-bold tracking-wider animate-in slide-in-from-top-2 duration-300 shadow-lg flex flex-wrap items-center justify-center gap-2`}
                   >
                     {toastError ? <AlertCircle size={16} /> : <Check size={16} />}
                     <span>{toastMessage}</span>
@@ -439,7 +438,7 @@ export default function ProductDetailPage() {
 
           {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES (SHOP PAGE STYLING) */}
           {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES */}
-          <div className="w-full space-y-6 pt-6 sm:pt-8 select-none">
+          <div className="w-full space-y-6 pt-6 sm:pt-8">
             <div className="text-center max-w-2xl mx-auto space-y-2">
               <div className="inline-flex items-center justify-center space-x-2 text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-[#666666] uppercase">
                 <span>EXECUTIVE ATELIER</span>
@@ -448,7 +447,7 @@ export default function ProductDetailPage() {
               </div>
 
               <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                {c.macroTitle || "BEST SELLERS"}
+                {c.macroTitle ||"BEST SELLERS"}
               </h2>
 
               {c.macroSubtitle && (
@@ -458,7 +457,7 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 pt-2">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start pt-2">
               {(macroProducts.length >= 4 ? macroProducts : products.slice(0, 4)).map((item) => (
                 <div key={item.id} className="w-full">
                   <ModernProductCard product={item} />
@@ -467,7 +466,7 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* SECTION 3: "COMPLETE THE LOOK" E-COMMERCE OUTFIT GRID */}
+          {/* SECTION 3:"COMPLETE THE LOOK" E-COMMERCE OUTFIT GRID */}
           {completeLookItems.length > 0 && (
             <div className="w-full space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
@@ -484,7 +483,7 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 pt-2">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start pt-2">
                 {completeLookItems.map((item) => (
                   <div key={item.id} className="w-full">
                     <ModernProductCard product={item} />
@@ -512,7 +511,7 @@ export default function ProductDetailPage() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 pt-2">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start pt-2">
                 {moreColorways.map((p) => (
                   <div key={p.id} className="w-full">
                     <ModernProductCard product={p} />
@@ -530,9 +529,6 @@ export default function ProductDetailPage() {
 
       {/* Common Atelier Showcase: Video Banner, Shop By Fabrics & Customer Testimonials */}
       <CommonAtelierShowcase />
-
-      {/* Bottom Feature Highlights Bar */}
-      <FeatureHighlightsBar />
 
       {/* Comprehensive Luxury E-Commerce Footer */}
       <Footer />

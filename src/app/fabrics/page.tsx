@@ -203,8 +203,8 @@ export default function FabricsPage() {
       {/* Header with active 'fabrics' tab indicator (forceSolid guarantees high-contrast solid white navbar) */}
       <Header activeTab="fabrics" forceSolid />
 
-      {/* 1. FULL-WIDTH 4-SLIDE HERO BANNER CAROUSEL (MALE + FABRICS + LIGHT BG, HEADING ONLY) */}
-      <div className="pt-[68px] sm:pt-[106px] w-full">
+      {/* 1. FULL-WIDTH 4-SLIDE HERO BANNER CAROUSEL (MALE + FABRICS + LIGHT BG, HEADING ONLY - ZERO GAP UNDER NAVBAR) */}
+      <div className="w-full">
         <FabricsHeroCarouselBanner />
       </div>
 
@@ -276,9 +276,9 @@ export default function FabricsPage() {
             onClick={(e) => e.stopPropagation()}
             className="relative bg-white border border-[#E5E3DD] rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl space-y-4 p-6 text-black"
           >
-            <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-4">
+            <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-4 font-sans">
               <div>
-                <span className="font-mono text-xs text-[#666666] font-bold block">{activeFabric.code}</span>
+                <span className="font-sans text-xs text-[#666666] font-bold block">{activeFabric.code}</span>
                 <h3 className="font-serif-luxury text-2xl font-normal uppercase text-black">{activeFabric.name}</h3>
               </div>
               <button
@@ -298,7 +298,7 @@ export default function FabricsPage() {
                 alt={activeFabric.name}
                 className="w-full h-full object-cover object-center scale-125 transition-transform duration-700 cursor-zoom-in"
               />
-              <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono tracking-wider border border-white/20 text-white">
+              <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-sans font-bold tracking-wider border border-white/20 text-white">
                 {zoom?.magnificationBadge}
               </div>
             </div>
@@ -333,7 +333,7 @@ export default function FabricsPage() {
           >
             <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
               <div>
-                <span className="text-[10px] font-bold tracking-[0.2em] text-[#666666] uppercase font-mono block">{swatch?.eyebrow}</span>
+                <span className="text-[10px] font-bold tracking-[0.2em] text-[#666666] uppercase font-sans block">{swatch?.eyebrow}</span>
                 <h3 className="font-serif-luxury text-xl sm:text-2xl font-normal uppercase text-black">{swatch?.heading}</h3>
               </div>
               <button

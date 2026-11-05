@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { useContent } from "@/context/SiteDataProvider";
+import React from"react";
+import Link from"next/link";
+import { ArrowUpRight } from"lucide-react";
+import { useContent } from"@/context/SiteDataProvider";
 
 interface FabricCategoryQuickRowProps {
   onSelectCategory?: (categoryId: string) => void;
@@ -18,7 +18,7 @@ export default function FabricCategoryQuickRow({
   const categories = c.categoryQuickRow?.items ?? [];
 
   return (
-    <section className="w-full py-8 sm:py-12 lg:py-14 my-2 sm:my-4 border-b border-[#D5C2AF]/60 bg-transparent select-none">
+    <section className="w-full py-8 sm:py-12 lg:py-14 my-2 sm:my-4 border-b border-[#D5C2AF]/60 bg-transparent">
       <div className="max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
         
         {/* Horizontal Category Cards Scroll / Spread Row */}
@@ -62,8 +62,8 @@ export default function FabricCategoryQuickRow({
                 <div
                   className={`relative w-full aspect-square rounded-[18px] sm:rounded-[22px] overflow-hidden bg-[#E8DDD0] transition-all duration-300 shadow-2xs group-hover:shadow-md group-hover:scale-105 active:scale-95 ${
                     isActive
-                      ? "ring-2 ring-[#9E774C] ring-offset-2 border-transparent"
-                      : "border border-black/10 group-hover:border-black/30"
+                      ?"ring-2 ring-[#9E774C] ring-offset-2 border-transparent"
+                      :"border border-black/10 group-hover:border-black/30"
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -81,8 +81,8 @@ export default function FabricCategoryQuickRow({
                 <span
                   className={`text-[11px] sm:text-xs text-center mt-2.5 sm:mt-3 leading-tight tracking-tight transition-colors ${
                     isActive
-                      ? "font-bold text-[#9E774C]"
-                      : "font-semibold text-[#14110E] group-hover:text-[#9E774C]"
+                      ?"font-bold text-[#9E774C]"
+                      :"font-semibold text-[#14110E] group-hover:text-[#9E774C]"
                   }`}
                 >
                   {cat.name}

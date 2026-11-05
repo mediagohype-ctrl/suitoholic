@@ -117,12 +117,15 @@ export default function Home() {
                     p.category === "formal_shirts"))
             );
 
+            // Strictly 8 products for the Shop by Fabrics section
+            const finalProducts = isShopByFabrics ? collectionProducts.slice(0, 8) : collectionProducts;
+
             return (
               <React.Fragment key={colId || index}>
                 {index > 0 && <Divider />}
                 <ModernCollectionSection
                   collection={collection}
-                  products={collectionProducts}
+                  products={finalProducts}
                   headerTitle={
                     index === 0
                       ? c.firstCollectionTitle

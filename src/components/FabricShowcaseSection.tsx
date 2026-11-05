@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { ArrowRight, Check, Eye, Layers, ShieldCheck, ZoomIn } from "lucide-react";
+import React, { useState } from"react";
+import Link from"next/link";
+import { ArrowRight, Check, Eye, Layers, ShieldCheck, ZoomIn } from"lucide-react";
 
 export interface FabricSwatch {
   id: string;
   code: string;
   name: string;
-  category: "stripes" | "linen" | "luster";
+  category:"stripes" |"linen" |"luster";
   categoryLabel: string;
   composition: string;
   weave: string;
@@ -21,94 +21,88 @@ export interface FabricSwatch {
 
 export const luxuryFabricsList: FabricSwatch[] = [
   {
-    id: "fabric-sh403-rose",
-    code: "SH-403 (Shade 01)",
-    name: "Blossom Rose Banker Stripe",
-    category: "stripes",
-    categoryLabel: "EGYPTIAN GIZA STRIPE",
-    composition: "100% Egyptian Giza 140s Cotton (2-Ply)",
-    weave: "High-Density Fine Twill Weave",
-    weight: "120 GSM • All-Season",
-    origin: "Nile Delta Harvest • Spun in Italy",
-    image: "/new_shirts/shirt_1.jpg",
-    description:
-      "Soft blossom rose pink and optic white alternating candy/banker stripes with fine diagonal twill ribbing. Provides an immaculate refined aesthetic for modern power dressing.",
-    bestFor: "Power Dressing Dress Shirts, Spread Collars",
+    id:"fabric-sh403-rose",
+    code:"SH-403 (Shade 01)",
+    name:"Blossom Rose Banker Stripe",
+    category:"stripes",
+    categoryLabel:"EGYPTIAN GIZA STRIPE",
+    composition:"100% Egyptian Giza 140s Cotton (2-Ply)",
+    weave:"High-Density Fine Twill Weave",
+    weight:"120 GSM • All-Season",
+    origin:"Nile Delta Harvest • Spun in Italy",
+    image:"/new_shirts/shirt_1.jpg",
+    description:"Soft blossom rose pink and optic white alternating candy/banker stripes with fine diagonal twill ribbing. Provides an immaculate refined aesthetic for modern power dressing.",
+    bestFor:"Power Dressing Dress Shirts, Spread Collars",
   },
   {
-    id: "fabric-sh403",
-    code: "SH-403 (Shade 02)",
-    name: "Royal Bengal Banker Stripe",
-    category: "stripes",
-    categoryLabel: "EGYPTIAN GIZA STRIPE",
-    composition: "100% Egyptian Giza 140s Cotton (2-Ply)",
-    weave: "High-Density Fine Twill Weave",
-    weight: "120 GSM • All-Season",
-    origin: "Nile Delta Harvest • Spun in Italy",
-    image: "/new_shirts/shirt_24.jpg",
-    description:
-      "Crisp royal blue and optic white alternating bengal stripes with micro-twill diagonal ribbing. Exceptional color vibrancy and soft, wrinkle-resistant luster.",
-    bestFor: "Executive Boardroom Shirts, French Cuff Formals",
+    id:"fabric-sh403",
+    code:"SH-403 (Shade 02)",
+    name:"Royal Bengal Banker Stripe",
+    category:"stripes",
+    categoryLabel:"EGYPTIAN GIZA STRIPE",
+    composition:"100% Egyptian Giza 140s Cotton (2-Ply)",
+    weave:"High-Density Fine Twill Weave",
+    weight:"120 GSM • All-Season",
+    origin:"Nile Delta Harvest • Spun in Italy",
+    image:"/new_shirts/shirt_24.jpg",
+    description:"Crisp royal blue and optic white alternating bengal stripes with micro-twill diagonal ribbing. Exceptional color vibrancy and soft, wrinkle-resistant luster.",
+    bestFor:"Executive Boardroom Shirts, French Cuff Formals",
   },
   {
-    id: "fabric-st16974",
-    code: "ST-16974",
-    name: "Terracotta & Chalk Stripe",
-    category: "stripes",
-    categoryLabel: "LONG-STAPLE STRIPE",
-    composition: "100% Extra-Long Staple Luxury Cotton",
-    weave: "Precision Vertical Bengal Weave",
-    weight: "115 GSM • Lightweight",
-    origin: "Combed Long-Staple Cotton",
-    image: "/new_shirts/shirt_9.jpg",
-    description:
-      "Subtle dusty terracotta rose and chalk-white stripe with a smooth compact surface. Delivers a modern sartorial presence with effortless drape.",
-    bestFor: "Contemporary Sartorial Dress Shirts, Spread Collars",
+    id:"fabric-st16974",
+    code:"ST-16974",
+    name:"Terracotta & Chalk Stripe",
+    category:"stripes",
+    categoryLabel:"LONG-STAPLE STRIPE",
+    composition:"100% Extra-Long Staple Luxury Cotton",
+    weave:"Precision Vertical Bengal Weave",
+    weight:"115 GSM • Lightweight",
+    origin:"Combed Long-Staple Cotton",
+    image:"/new_shirts/shirt_9.jpg",
+    description:"Subtle dusty terracotta rose and chalk-white stripe with a smooth compact surface. Delivers a modern sartorial presence with effortless drape.",
+    bestFor:"Contemporary Sartorial Dress Shirts, Spread Collars",
   },
   {
-    id: "fabric-superviola",
-    code: "V-13672/06",
-    name: "Superviola Sand Flax Linen",
-    category: "linen",
-    categoryLabel: "SUPERVIOLA LINEN",
-    composition: "100% Pure Artisanal Normandy Flax Linen",
-    weave: "Natural Slub Textural Cross-Weave",
-    weight: "155 GSM • Summer Drape",
-    origin: "Artisanal European Flax Milling",
-    image: "/new_shirts/shirt_13.jpg",
-    description:
-      "Undyed natural oatmeal sand tone with authentic linen slub texture. Air-permeable, cool to the skin, and develops a richer patina with each wear.",
-    bestFor: "Resort Tailoring, Relaxed Bespoke Shirts, Gurkha Trousers",
+    id:"fabric-superviola",
+    code:"V-13672/06",
+    name:"Superviola Sand Flax Linen",
+    category:"linen",
+    categoryLabel:"SUPERVIOLA LINEN",
+    composition:"100% Pure Artisanal Normandy Flax Linen",
+    weave:"Natural Slub Textural Cross-Weave",
+    weight:"155 GSM • Summer Drape",
+    origin:"Artisanal European Flax Milling",
+    image:"/new_shirts/shirt_13.jpg",
+    description:"Undyed natural oatmeal sand tone with authentic linen slub texture. Air-permeable, cool to the skin, and develops a richer patina with each wear.",
+    bestFor:"Resort Tailoring, Relaxed Bespoke Shirts, Gurkha Trousers",
   },
   {
-    id: "fabric-imperial-gold",
-    code: "IGT-2003",
-    name: "Imperial Gold Satin Twill",
-    category: "luster",
-    categoryLabel: "LUSTER SATIN TWILL",
-    composition: "100% Combed Compact Cotton with Silk Luster",
-    weave: "Luminous Satin Twill Weave",
-    weight: "140 GSM • Year-Round",
-    origin: "Multi-Tension Double Spun",
-    image: "/new_shirts/shirt_19.jpg",
-    description:
-      "Opulent liquid-gold finish with fluid drape and warm sheen. Structured yet featherweight, designed for ceremonial luxury and evening statements.",
-    bestFor: "Ceremonial Bandhgalas, Evening Blazers, Statement Tuxedos",
+    id:"fabric-imperial-gold",
+    code:"IGT-2003",
+    name:"Imperial Gold Satin Twill",
+    category:"luster",
+    categoryLabel:"LUSTER SATIN TWILL",
+    composition:"100% Combed Compact Cotton with Silk Luster",
+    weave:"Luminous Satin Twill Weave",
+    weight:"140 GSM • Year-Round",
+    origin:"Multi-Tension Double Spun",
+    image:"/new_shirts/shirt_19.jpg",
+    description:"Opulent liquid-gold finish with fluid drape and warm sheen. Structured yet featherweight, designed for ceremonial luxury and evening statements.",
+    bestFor:"Ceremonial Bandhgalas, Evening Blazers, Statement Tuxedos",
   },
   {
-    id: "fabric-flx01069",
-    code: "FLX-01069",
-    name: "Platinum Dove Grey Linen",
-    category: "linen",
-    categoryLabel: "FLAX LINEN COLLECTION",
-    composition: "100% Natural Fine-Spun Pure Linen",
-    weave: "Micro-Basket Cross-Weave",
-    weight: "135 GSM • High Breathability",
-    origin: "Soft-Washed Flax Fiber",
-    image: "/new_shirts/shirt_8.jpg",
-    description:
-      "Refined cool dove grey tone with subtle cross-hatch texture. Pre-washed for a soft hand-feel that drapes with relaxed elegance.",
-    bestFor: "Monogrammed Summer Shirts, Unstructured Blazers",
+    id:"fabric-flx01069",
+    code:"FLX-01069",
+    name:"Platinum Dove Grey Linen",
+    category:"linen",
+    categoryLabel:"FLAX LINEN COLLECTION",
+    composition:"100% Natural Fine-Spun Pure Linen",
+    weave:"Micro-Basket Cross-Weave",
+    weight:"135 GSM • High Breathability",
+    origin:"Soft-Washed Flax Fiber",
+    image:"/new_shirts/shirt_8.jpg",
+    description:"Refined cool dove grey tone with subtle cross-hatch texture. Pre-washed for a soft hand-feel that drapes with relaxed elegance.",
+    bestFor:"Monogrammed Summer Shirts, Unstructured Blazers",
   },
 ];
 
@@ -117,12 +111,12 @@ export default function FabricShowcaseSection() {
   const [activeFabric, setActiveFabric] = useState<FabricSwatch>(luxuryFabricsList[0]);
   const [zoomModalOpen, setZoomModalOpen] = useState(false);
 
-  const filteredFabrics = selectedCategory === "all"
+  const filteredFabrics = selectedCategory ==="all"
     ? luxuryFabricsList
     : luxuryFabricsList.filter((f) => f.category === selectedCategory);
 
   return (
-    <section id="fabrics" className="py-6 sm:py-10 lg:py-14 px-3.5 sm:px-6 lg:px-10 xl:px-12 select-none">
+    <section id="fabrics" className="py-6 sm:py-10 lg:py-14 px-3.5 sm:px-6 lg:px-10 xl:px-12">
       <div className="max-w-[1720px] mx-auto space-y-8 sm:space-y-10">
         
         {/* Section Header */}
@@ -139,10 +133,10 @@ export default function FabricShowcaseSection() {
           {/* Filter Tabs */}
           <div className="flex flex-wrap items-center gap-2">
             {[
-              { id: "all", label: "ALL FABRICS (6)" },
-              { id: "stripes", label: "GIZA STRIPES" },
-              { id: "linen", label: "PURE LINEN" },
-              { id: "luster", label: "SATIN & LUSTER" },
+              { id:"all", label:"ALL FABRICS (6)" },
+              { id:"stripes", label:"GIZA STRIPES" },
+              { id:"linen", label:"PURE LINEN" },
+              { id:"luster", label:"SATIN & LUSTER" },
             ].map((tab) => {
               const isActive = selectedCategory === tab.id;
               return (
@@ -151,8 +145,8 @@ export default function FabricShowcaseSection() {
                   onClick={() => setSelectedCategory(tab.id)}
                   className={`text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-[8px] transition-all duration-200 border cursor-pointer ${
                     isActive
-                      ? "bg-black text-white border-black shadow-sm"
-                      : "bg-white hover:bg-neutral-100 text-black border-[#E5E3DD]"
+                      ?"bg-black text-white border-black shadow-sm"
+                      :"bg-white hover:bg-neutral-100 text-black border-[#E5E3DD]"
                   }`}
                 >
                   {tab.label}
@@ -174,7 +168,7 @@ export default function FabricShowcaseSection() {
                 <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#666666] uppercase font-sans">
                   {activeFabric.categoryLabel}
                 </span>
-                <span className="font-mono text-xs font-bold text-black bg-[#F5F4F0] px-2.5 py-1 rounded border border-[#E5E3DD]">
+                <span className="font-sans text-xs font-bold text-black bg-[#F5F4F0] px-2.5 py-1 rounded border border-[#E5E3DD] tracking-wide">
                   {activeFabric.code}
                 </span>
               </div>
@@ -240,8 +234,8 @@ export default function FabricShowcaseSection() {
                   onClick={() => setActiveFabric(fabric)}
                   className={`rounded-[24px] p-4 transition-all duration-300 border flex flex-col justify-between space-y-3 cursor-pointer group ${
                     isSelected
-                      ? "bg-black text-white border-black shadow-lg ring-2 ring-black scale-[1.02]"
-                      : "bg-white hover:bg-[#F5F4F0] text-black border-[#E5E3DD] shadow-xs"
+                      ?"bg-black text-white border-black shadow-lg ring-2 ring-black scale-[1.02]"
+                      :"bg-white hover:bg-[#F5F4F0] text-black border-[#E5E3DD] shadow-xs"
                   }`}
                 >
                   {/* Swatch Square Image */}
@@ -263,17 +257,17 @@ export default function FabricShowcaseSection() {
 
                   {/* Swatch Details */}
                   <div className="space-y-1">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between font-sans">
                       <span
-                        className={`text-[9px] font-bold tracking-wider uppercase font-mono ${
-                          isSelected ? "text-neutral-300" : "text-[#666666]"
+                        className={`text-[9px] font-bold tracking-wider uppercase font-sans ${
+                          isSelected ?"text-neutral-300" :"text-[#666666]"
                         }`}
                       >
                         {fabric.code}
                       </span>
                       <span
                         className={`text-[8.5px] font-semibold uppercase ${
-                          isSelected ? "text-white/60" : "text-[#888888]"
+                          isSelected ?"text-white/60" :"text-[#888888]"
                         }`}
                       >
                         {fabric.category.toUpperCase()}
@@ -286,7 +280,7 @@ export default function FabricShowcaseSection() {
 
                     <p
                       className={`text-[10px] font-sans line-clamp-1 ${
-                        isSelected ? "text-neutral-300" : "text-[#666666]"
+                        isSelected ?"text-neutral-300" :"text-[#666666]"
                       }`}
                     >
                       {fabric.composition}
@@ -295,7 +289,7 @@ export default function FabricShowcaseSection() {
 
                   {/* Click to Inspect Action */}
                   <div className="pt-2 border-t border-current/15 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
-                    <span>{isSelected ? "ACTIVE SELECTION" : "SELECT SWATCH"}</span>
+                    <span>{isSelected ?"ACTIVE SELECTION" :"SELECT SWATCH"}</span>
                     <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform" />
                   </div>
 
@@ -320,7 +314,7 @@ export default function FabricShowcaseSection() {
                 <h3 className="font-serif-luxury text-xl sm:text-2xl font-bold uppercase">
                   {activeFabric.name}
                 </h3>
-                <span className="text-xs font-mono text-[#C5A069]">CODE: {activeFabric.code} • {activeFabric.composition}</span>
+                <span className="text-xs font-sans font-medium text-[#C5A069]">CODE: {activeFabric.code} • {activeFabric.composition}</span>
               </div>
               <button 
                 onClick={() => setZoomModalOpen(false)}

@@ -1,16 +1,16 @@
 "use client";
 
-import React from "react";
-import { useContent } from "@/context/SiteDataProvider";
+import React from"react";
+import { useContent } from"@/context/SiteDataProvider";
 
 export interface MannequinShirtViewerProps {
   chestSize: number;
-  bodyFit: "lean" | "regular" | "tummy";
+  bodyFit:"lean" |"regular" |"tummy";
   height?: string;
-  sleeveType?: "full" | "half";
+  sleeveType?:"full" |"half";
   collarStyle?: string;
   cuffStyle?: string;
-  pocket?: "pocket" | "no-pocket";
+  pocket?:"pocket" |"no-pocket";
   initials?: string;
   threadColor?: string;
   currentStep?: number;
@@ -19,14 +19,14 @@ export interface MannequinShirtViewerProps {
 }
 
 export type ShirtColorFamily =
-  | "bengal_blue"
-  | "espresso"
-  | "sandstone_linen"
-  | "coral_stripe"
-  | "white"
-  | "skyblue"
-  | "navy_solid"
-  | "charcoal";
+  |"bengal_blue"
+  |"espresso"
+  |"sandstone_linen"
+  |"coral_stripe"
+  |"white"
+  |"skyblue"
+  |"navy_solid"
+  |"charcoal";
 
 /**
  * Resolves the complete made shirt model based on the chosen product, fabric, or colorway.
@@ -35,42 +35,42 @@ export type ShirtColorFamily =
 export function getShirtColorFamily(
   product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null
 ): ShirtColorFamily {
-  if (!product) return "bengal_blue";
+  if (!product) return"bengal_blue";
 
-  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
-  const slug = (product.slug || "").toLowerCase();
-  const name = (product.name || "").toLowerCase();
+  const img = (product.image || (product.gallery && product.gallery[0]) ||"").toLowerCase();
+  const slug = (product.slug ||"").toLowerCase();
+  const name = (product.name ||"").toLowerCase();
 
   // 1. Direct matching by user uploaded shirt images (13 to 25)
-  if (img.includes("shirt_13") || img.includes("sandstone") || img.includes("linen")) return "sandstone_linen";
-  if (img.includes("shirt_14") || img.includes("terracotta") || img.includes("coral")) return "coral_stripe";
-  if (img.includes("shirt_15") || img.includes("rose") || img.includes("pink")) return "coral_stripe";
-  if (img.includes("shirt_16") || img.includes("magenta") || img.includes("wine")) return "coral_stripe";
-  if (img.includes("shirt_17") || img.includes("charcoal")) return "charcoal";
-  if (img.includes("shirt_18") || img.includes("sage") || img.includes("mint")) return "bengal_blue";
-  if (img.includes("shirt_19") || img.includes("espresso") || img.includes("dark")) return "espresso";
-  if (img.includes("shirt_20") || img.includes("navy")) return "bengal_blue";
-  if (img.includes("shirt_21") || img.includes("azure") || img.includes("bengal")) return "bengal_blue";
-  if (img.includes("shirt_22") || img.includes("violet") || img.includes("purple")) return "bengal_blue";
-  if (img.includes("shirt_23") || img.includes("shadow")) return "charcoal";
-  if (img.includes("shirt_24") || img.includes("chocolate")) return "espresso";
-  if (img.includes("shirt_25") || img.includes("steel") || img.includes("grey")) return "charcoal";
+  if (img.includes("shirt_13") || img.includes("sandstone") || img.includes("linen")) return"sandstone_linen";
+  if (img.includes("shirt_14") || img.includes("terracotta") || img.includes("coral")) return"coral_stripe";
+  if (img.includes("shirt_15") || img.includes("rose") || img.includes("pink")) return"coral_stripe";
+  if (img.includes("shirt_16") || img.includes("magenta") || img.includes("wine")) return"coral_stripe";
+  if (img.includes("shirt_17") || img.includes("charcoal")) return"charcoal";
+  if (img.includes("shirt_18") || img.includes("sage") || img.includes("mint")) return"bengal_blue";
+  if (img.includes("shirt_19") || img.includes("espresso") || img.includes("dark")) return"espresso";
+  if (img.includes("shirt_20") || img.includes("navy")) return"bengal_blue";
+  if (img.includes("shirt_21") || img.includes("azure") || img.includes("bengal")) return"bengal_blue";
+  if (img.includes("shirt_22") || img.includes("violet") || img.includes("purple")) return"bengal_blue";
+  if (img.includes("shirt_23") || img.includes("shadow")) return"charcoal";
+  if (img.includes("shirt_24") || img.includes("chocolate")) return"espresso";
+  if (img.includes("shirt_25") || img.includes("steel") || img.includes("grey")) return"charcoal";
 
   // 2. Specific Product Slugs
-  if (slug.includes("espresso") || slug.includes("chocolate")) return "espresso";
-  if (slug.includes("navy") || slug.includes("bengal") || slug.includes("azure") || slug.includes("royal")) return "bengal_blue";
-  if (slug.includes("sandstone") || slug.includes("oatmeal") || slug.includes("linen") || slug.includes("beige")) return "sandstone_linen";
-  if (slug.includes("terracotta") || slug.includes("coral") || slug.includes("rose") || slug.includes("magenta")) return "coral_stripe";
-  if (slug.includes("charcoal") || slug.includes("shadow") || slug.includes("steel")) return "charcoal";
+  if (slug.includes("espresso") || slug.includes("chocolate")) return"espresso";
+  if (slug.includes("navy") || slug.includes("bengal") || slug.includes("azure") || slug.includes("royal")) return"bengal_blue";
+  if (slug.includes("sandstone") || slug.includes("oatmeal") || slug.includes("linen") || slug.includes("beige")) return"sandstone_linen";
+  if (slug.includes("terracotta") || slug.includes("coral") || slug.includes("rose") || slug.includes("magenta")) return"coral_stripe";
+  if (slug.includes("charcoal") || slug.includes("shadow") || slug.includes("steel")) return"charcoal";
 
   // 3. Product Names
-  if (name.includes("espresso") || name.includes("chocolate")) return "espresso";
-  if (name.includes("bengal") || name.includes("azure") || name.includes("navy") || name.includes("royal")) return "bengal_blue";
-  if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen") || name.includes("beige")) return "sandstone_linen";
-  if (name.includes("coral") || name.includes("terracotta") || name.includes("rose") || name.includes("wine")) return "coral_stripe";
-  if (name.includes("charcoal") || name.includes("shadow") || name.includes("grey")) return "charcoal";
+  if (name.includes("espresso") || name.includes("chocolate")) return"espresso";
+  if (name.includes("bengal") || name.includes("azure") || name.includes("navy") || name.includes("royal")) return"bengal_blue";
+  if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen") || name.includes("beige")) return"sandstone_linen";
+  if (name.includes("coral") || name.includes("terracotta") || name.includes("rose") || name.includes("wine")) return"coral_stripe";
+  if (name.includes("charcoal") || name.includes("shadow") || name.includes("grey")) return"charcoal";
 
-  return "bengal_blue";
+  return"bengal_blue";
 }
 
 const ID_TO_SHIRT_NUM: Record<number, number> = {
@@ -95,10 +95,10 @@ export function getShirtId(
   if (!product) return 21;
 
   // 1. Check direct numeric ID (1 to 13)
-  if (typeof product.id === "number" && ID_TO_SHIRT_NUM[product.id]) {
+  if (typeof product.id ==="number" && ID_TO_SHIRT_NUM[product.id]) {
     return ID_TO_SHIRT_NUM[product.id];
   }
-  if (typeof product.id === "string") {
+  if (typeof product.id ==="string") {
     const parsed = parseInt(product.id, 10);
     if (!isNaN(parsed) && ID_TO_SHIRT_NUM[parsed]) {
       return ID_TO_SHIRT_NUM[parsed];
@@ -106,7 +106,7 @@ export function getShirtId(
   }
 
   // 2. Direct matching from image path (shirt_13 to shirt_25)
-  const img = (product.image || (product.gallery && product.gallery[0]) || "").toLowerCase();
+  const img = (product.image || (product.gallery && product.gallery[0]) ||"").toLowerCase();
   for (let i = 13; i <= 25; i++) {
     if (img.includes(`shirt_${i}`) || img.includes(`full_shirt_${i}`)) {
       return i;
@@ -116,7 +116,7 @@ export function getShirtId(
   // 3. Direct matching from gallery array
   if (product.gallery) {
     for (const g of product.gallery) {
-      const gLower = (g || "").toLowerCase();
+      const gLower = (g ||"").toLowerCase();
       for (let i = 13; i <= 25; i++) {
         if (gLower.includes(`shirt_${i}`) || gLower.includes(`full_shirt_${i}`)) {
           return i;
@@ -125,9 +125,9 @@ export function getShirtId(
     }
   }
 
-  // 4. Exact slug matching (CRITICAL: specific colors first, NEVER generic "bengal"!)
-  const slug = (product.slug || "").toLowerCase();
-  const name = (product.name || "").toLowerCase();
+  // 4. Exact slug matching (CRITICAL: specific colors first, NEVER generic"bengal"!)
+  const slug = (product.slug ||"").toLowerCase();
+  const name = (product.name ||"").toLowerCase();
 
   if (slug.includes("terracotta") || slug.includes("brick") || name.includes("terracotta")) return 14;
   if (slug.includes("rose") || slug.includes("pastel") || name.includes("rose")) return 15;
@@ -146,19 +146,19 @@ export function getShirtId(
   return 21;
 }
 
-function getCollarKey(collarStyle: string): "mandarin" | "buttondown" | "cutaway" | "spread" {
-  const norm = (collarStyle || "").toLowerCase();
-  if (norm.includes("mandarin") || norm.includes("band")) return "mandarin";
-  if (norm.includes("button")) return "buttondown";
-  if (norm.includes("cutaway")) return "cutaway";
-  return "spread";
+function getCollarKey(collarStyle: string):"mandarin" |"buttondown" |"cutaway" |"spread" {
+  const norm = (collarStyle ||"").toLowerCase();
+  if (norm.includes("mandarin") || norm.includes("band")) return"mandarin";
+  if (norm.includes("button")) return"buttondown";
+  if (norm.includes("cutaway")) return"cutaway";
+  return"spread";
 }
 
-function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
-  const norm = (cuffStyle || "").toLowerCase();
-  if (norm.includes("french") || norm.includes("double")) return "french";
-  if (norm.includes("rounded") || norm.includes("round")) return "rounded";
-  return "classic";
+function getCuffKey(cuffStyle: string):"classic" |"french" |"rounded" {
+  const norm = (cuffStyle ||"").toLowerCase();
+  if (norm.includes("french") || norm.includes("double")) return"french";
+  if (norm.includes("rounded") || norm.includes("round")) return"rounded";
+  return"classic";
 }
 
 /**
@@ -169,8 +169,8 @@ function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
 function getMatchingShirtModel(
   product?: { id?: number | string; name?: string; image?: string; gallery?: string[]; slug?: string } | null,
   isHalfSleeve: boolean = false,
-  bodyFit: "lean" | "regular" | "tummy" = "lean",
-  collarStyle: string = ""
+  bodyFit:"lean" |"regular" |"tummy" ="lean",
+  collarStyle: string =""
 ): string {
   const shirtId = getShirtId(product);
   return `/customizer/full_shirt_${shirtId}.png`;
@@ -178,8 +178,8 @@ function getMatchingShirtModel(
 
 function getFoldedAndCuffAssets(
   product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null,
-  cuffStyle: string = "CLASSIC CUFF",
-  collarStyle: string = "SPREAD"
+  cuffStyle: string ="CLASSIC CUFF",
+  collarStyle: string ="SPREAD"
 ): { foldedImage: string; cuffDetailImage: string; shirtId: number; colorKey: string } {
   const shirtId = getShirtId(product);
   const cuffKey = getCuffKey(cuffStyle);
@@ -196,17 +196,17 @@ function getFoldedAndCuffAssets(
 
 export default function MannequinShirtViewer({
   chestSize = 38,
-  bodyFit = "lean",
-  height = "TALL HEIGHT (5.8 - 5.10\")",
-  sleeveType = "full",
-  collarStyle = "",
-  cuffStyle = "",
+  bodyFit ="lean",
+  height ="TALL HEIGHT (5.8 - 5.10\")",
+  sleeveType ="full",
+  collarStyle ="",
+  cuffStyle ="",
   currentStep = 1,
   product = null,
 }: MannequinShirtViewerProps) {
   const c = useContent("customizer");
 
-  const isHalfSleeve = sleeveType === "half";
+  const isHalfSleeve = sleeveType ==="half";
 
   // Step 5: High-end luxury folded shirt (showing collar & cuff) and macro cuff close-up
   const cuffKey = getCuffKey(cuffStyle);
@@ -225,9 +225,9 @@ export default function MannequinShirtViewer({
   const stomachSizeTummy = `${chestSize + 2}" – ${chestSize + 4}"`;
 
   const currentStomachValue =
-    bodyFit === "lean"
+    bodyFit ==="lean"
       ? `${stomachSizeLean}"`
-      : bodyFit === "regular"
+      : bodyFit ==="regular"
       ? `${stomachSizeRegular}"`
       : `${stomachSizeTummy}`;
 
@@ -238,25 +238,25 @@ export default function MannequinShirtViewer({
   const fitConfig = {
     lean: {
       stomachArrowWidth: 175,
-      label: c.bodyFits.find((f) => f.id === "lean")?.title ?? "LEAN FIT",
+      label: c.bodyFits.find((f) => f.id ==="lean")?.title ??"LEAN FIT",
     },
     regular: {
       stomachArrowWidth: 212,
-      label: c.bodyFits.find((f) => f.id === "regular")?.title ?? "REGULAR FIT",
+      label: c.bodyFits.find((f) => f.id ==="regular")?.title ??"REGULAR FIT",
     },
     tummy: {
       stomachArrowWidth: 264,
-      label: c.bodyFits.find((f) => f.id === "tummy")?.title ?? "TUMMY COMFORT FIT",
+      label: c.bodyFits.find((f) => f.id ==="tummy")?.title ??"TUMMY COMFORT FIT",
     },
   }[bodyFit];
 
   // Dynamic visual height scaling factors
   const heightOption = c.heights.find((h) => h.id === height);
   const heightConfig = height.toLowerCase().includes("extra")
-    ? { scaleY: 1.045, label: heightOption?.shortTitle ?? "Extra Tall" }
+    ? { scaleY: 1.045, label: heightOption?.shortTitle ??"Extra Tall" }
     : height.toLowerCase().includes("regular") || height.toLowerCase().includes("5.5") || height.toLowerCase().includes("standard")
-    ? { scaleY: 0.965, label: heightOption?.shortTitle ?? "Regular Height" }
-    : { scaleY: 1.0, label: heightOption?.shortTitle ?? "Tall Height" };
+    ? { scaleY: 0.965, label: heightOption?.shortTitle ??"Regular Height" }
+    : { scaleY: 1.0, label: heightOption?.shortTitle ??"Tall Height" };
 
   // Responsive Chest Scale Calculations (Base = 40")
   const chestDiff = chestSize - 40;
@@ -278,10 +278,10 @@ export default function MannequinShirtViewer({
   const chestRightLineStart = chestBadgeX + chestBadgeWidth + 4; // 248
 
   // Completely uniform drop-shadow so the chest and shirt tone never change between fits
-  const shirtFilter = "contrast(1.0) drop-shadow(0 16px 28px rgba(20,17,14,0.25))";
+  const shirtFilter ="contrast(1.0) drop-shadow(0 16px 28px rgba(20,17,14,0.25))";
 
   return (
-    <div className={`relative w-full ${currentStep === 5 ? "max-w-none" : "max-w-[520px]"} h-full mx-auto flex flex-col items-center justify-center select-none py-1 flex-1`}>
+    <div className={`relative w-full ${currentStep === 5 ?"max-w-none" :"max-w-[420px]"} h-full mx-auto flex flex-col items-center justify-center py-1 flex-1`}>
 
       {/* ============================================================ */}
       {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
@@ -295,7 +295,7 @@ export default function MannequinShirtViewer({
               <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10 max-w-[calc(100%-16px)]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C] shrink-0" />
                 <span className="truncate">
-                  Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Spread"} &nbsp;•&nbsp; Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic"}
+                  Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi,"").trim() :"Spread"} &nbsp;•&nbsp; Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi,"").trim() :"Classic"}
                 </span>
               </div>
               <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] lg:min-h-[440px] overflow-hidden bg-[#161311] flex items-center justify-center">
@@ -314,7 +314,7 @@ export default function MannequinShirtViewer({
               <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] text-white">
                 <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider shrink-0">Folded Shirt</span>
                 <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate ml-2">
-                  {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Classic Spread"} • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic Cuff"}
+                  {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi,"").trim() :"Classic Spread"} • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi,"").trim() :"Classic Cuff"}
                 </span>
               </div>
             </div>
@@ -323,7 +323,7 @@ export default function MannequinShirtViewer({
             <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-[4/5] sm:aspect-auto">
               <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8.5px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C]" />
-                <span>Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic"}</span>
+                <span>Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi,"").trim() :"Classic"}</span>
               </div>
               <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] lg:min-h-[440px] overflow-hidden bg-[#161311] flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -340,24 +340,24 @@ export default function MannequinShirtViewer({
               </div>
               <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] text-white">
                 <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider">Wrist Cuff</span>
-                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{cuffStyle || "Classic Cuff"}</span>
+                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{cuffStyle ||"Classic Cuff"}</span>
               </div>
             </div>
           </div>
         </div>
       ) : (
         /* Steps 1, 2, 3, 4, 6: Full Ghost Mannequin Stage */
-        <div className="relative w-full h-full min-h-[420px] sm:min-h-[470px] lg:min-h-[510px] flex items-center justify-center flex-1">
+        <div className="relative w-full flex items-center justify-center flex-1 py-1">
 
           {/* ============================================================ */}
           {/* CORE SHIRT PHOTO: FULL MADE SHIRT IN MATCHING CHOSEN COLOR   */}
           {/* ============================================================ */}
-          <div className="relative w-full h-full flex items-center justify-center z-10 pt-1 sm:pt-2">
+          <div className="relative w-full max-w-[340px] sm:max-w-[370px] lg:max-w-[390px] h-[360px] sm:h-[400px] lg:h-[450px] aspect-[5/6] flex items-center justify-center z-10 mx-auto">
             <div
               className="relative w-full h-full flex items-center justify-center transition-all duration-500 ease-out"
               style={{
                 transform: `scaleX(${totalScaleX}) scaleY(${totalScaleY})`,
-                transformOrigin: "center 30%",
+                transformOrigin:"center 30%",
               }}
             >
               {/* Full Sleeve Shirt Photo */}
@@ -365,9 +365,9 @@ export default function MannequinShirtViewer({
               <img
                 key={`full-${fullShirtPhoto}`}
                 src={fullShirtPhoto}
-                alt={product?.name ?? "Custom Bespoke Made Shirt (Full Sleeve)"}
+                alt={product?.name ??"Custom Bespoke Made Shirt (Full Sleeve)"}
                 className={`w-full h-full object-contain object-top transition-all duration-300 ease-out animate-in fade-in-50 ${
-                  isHalfSleeve ? "opacity-0 pointer-events-none absolute inset-0" : "opacity-100 relative"
+                  isHalfSleeve ?"opacity-0 pointer-events-none absolute inset-0" :"opacity-100 relative"
                 }`}
                 style={{ filter: shirtFilter }}
                 loading="eager"
@@ -378,9 +378,9 @@ export default function MannequinShirtViewer({
               <img
                 key={`half-${halfShirtPhoto}`}
                 src={halfShirtPhoto}
-                alt={product?.name ?? "Custom Bespoke Made Shirt (Half Sleeve)"}
+                alt={product?.name ??"Custom Bespoke Made Shirt (Half Sleeve)"}
                 className={`w-full h-full object-contain object-top transition-all duration-300 ease-out animate-in fade-in-50 ${
-                  isHalfSleeve ? "opacity-100 relative" : "opacity-0 pointer-events-none absolute inset-0"
+                  isHalfSleeve ?"opacity-100 relative" :"opacity-0 pointer-events-none absolute inset-0"
                 }`}
                 style={{ filter: shirtFilter }}
                 loading="eager"
@@ -424,7 +424,7 @@ export default function MannequinShirtViewer({
                 {currentStep >= 2 && (() => {
                   const halfWidth = (fitConfig.stomachArrowWidth * chestScaleX) / 2;
                   const stomachY = 278 * heightConfig.scaleY * chestScaleY;
-                  const isTummy = bodyFit === "tummy";
+                  const isTummy = bodyFit ==="tummy";
                   const badgeWidth = isTummy ? 128 : 92;
                   const badgeX = 200 - badgeWidth / 2;
                   const leftArrowX = Math.min(badgeX - 8, 200 - halfWidth);
@@ -436,7 +436,7 @@ export default function MannequinShirtViewer({
                       <line x1={leftArrowX} y1={stomachY} x2={badgeX - 6} y2={stomachY} stroke="#14110E" strokeWidth="2.2" markerStart="url(#arrowLeft)" strokeLinecap="round" className="transition-all duration-500 ease-out" />
 
                       <rect x={badgeX} y={stomachY - 16} width={badgeWidth} height="32" rx="16" fill="#14110E" stroke="#C68A4C" strokeWidth="1.75" className="transition-all duration-500 ease-out" />
-                      <text x="200" y={stomachY + 5} textAnchor="middle" fontSize={isTummy ? "13.5" : "17"} fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" fill="#FFFFFF">
+                      <text x="200" y={stomachY + 5} textAnchor="middle" fontSize={isTummy ?"13.5" :"17"} fontWeight="800" fontFamily="system-ui, -apple-system, sans-serif" fill="#FFFFFF">
                         {currentStomachValue}
                       </text>
 

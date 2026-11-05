@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { createPortal } from "react-dom";
-import Link from "next/link";
-import { X, Heart, Trash2, ArrowRight, ShoppingBag } from "lucide-react";
-import { useWishlist } from "@/context/WishlistProvider";
-import { useCatalog } from "@/context/SiteDataProvider";
-import { allProducts, ProductItem } from "@/data/products";
-import { DEFAULT_LOOKS } from "@/components/CuratedStartingPoints";
-import { LUXURY_CLOTH_ITEMS } from "@/components/LuxuryClothArchiveSection";
+import React, { useState, useEffect, useMemo } from"react";
+import { createPortal } from"react-dom";
+import Link from"next/link";
+import { X, Heart, Trash2, ArrowRight, ShoppingBag } from"lucide-react";
+import { useWishlist } from"@/context/WishlistProvider";
+import { useCatalog } from"@/context/SiteDataProvider";
+import { allProducts, ProductItem } from"@/data/products";
+import { DEFAULT_LOOKS } from"@/components/CuratedStartingPoints";
+import { LUXURY_CLOTH_ITEMS } from"@/components/LuxuryClothArchiveSection";
 
 export default function WishlistDrawer() {
   const { wishlistIds, isWishlistOpen, closeWishlist, removeFromWishlist } = useWishlist();
@@ -21,12 +21,12 @@ export default function WishlistDrawer() {
 
   useEffect(() => {
     if (isWishlistOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow ="hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow ="unset";
     };
   }, [isWishlistOpen]);
 
@@ -50,13 +50,13 @@ export default function WishlistDrawer() {
         id: 1000 + index,
         slug: look.slug,
         name: look.title,
-        category: "formal_bespoke",
+        category:"formal_bespoke",
         price: look.price,
         rawPrice: 2600,
         subtitle: look.subtitle,
         description: look.subtitle,
-        fabric: look.subtitle || "Italian Luxury Cotton",
-        threadCount: "140s",
+        fabric: look.subtitle ||"Italian Luxury Cotton",
+        threadCount:"140s",
         rating: 5,
         reviewsCount: 18,
         image: look.image,
@@ -71,13 +71,13 @@ export default function WishlistDrawer() {
         id: 2000 + index,
         slug: cloth.id,
         name: `${cloth.mill} ${cloth.code} Swatch`,
-        category: "fabrics",
+        category:"fabrics",
         price: cloth.formattedPrice,
         rawPrice: cloth.pricePerMetre,
         subtitle: `${cloth.mill} • ${cloth.fibre}`,
         description: cloth.description,
         fabric: `${cloth.mill} • ${cloth.fibre}`,
-        threadCount: cloth.weightLabel || "135 GSM",
+        threadCount: cloth.weightLabel ||"135 GSM",
         rating: 5,
         reviewsCount: 12,
         image: cloth.image,
@@ -95,7 +95,7 @@ export default function WishlistDrawer() {
 
       let matched = productMap.get(sId);
       if (!matched && sId.startsWith("cloth-prod-")) {
-        const numId = sId.replace("cloth-prod-", "");
+        const numId = sId.replace("cloth-prod-","");
         matched = productMap.get(numId);
       }
       if (!matched && sId.startsWith("look-")) {
@@ -113,7 +113,7 @@ export default function WishlistDrawer() {
   }, [wishlistIds, products]);
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] overflow-hidden select-none animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[9999] overflow-hidden animate-in fade-in duration-200">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/65 backdrop-blur-xs transition-opacity"

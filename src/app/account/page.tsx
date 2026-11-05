@@ -940,7 +940,7 @@ export default function AccountPage() {
                     <div className="w-full border-t border-[#E5E3DD]" />
                   </div>
                   <div className="relative flex justify-center text-[10px] sm:text-xs uppercase">
-                    <span className="bg-white px-3 text-[#888888] tracking-widest font-mono">OR</span>
+                    <span className="bg-white px-3 text-[#888888] tracking-widest font-sans font-bold">OR</span>
                   </div>
                 </div>
 
@@ -1022,11 +1022,11 @@ export default function AccountPage() {
                 <h1 className="font-serif-luxury text-2xl sm:text-3xl font-bold uppercase tracking-tight text-black">
                   {user.name}
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8F5] border border-[#E5E3DD] text-[10px] font-mono font-bold text-[#8C7355] uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8F5] border border-[#E5E3DD] text-[10px] font-sans font-bold text-[#8C7355] uppercase tracking-wider">
                   Patron
                 </span>
               </div>
-              <p className="text-xs text-[#666666] font-mono mt-0.5">{user.phone || user.email}</p>
+              <p className="text-xs text-[#666666] font-sans mt-0.5">{user.phone || user.email}</p>
             </div>
           </div>
 
@@ -1065,7 +1065,7 @@ export default function AccountPage() {
           >
             <Package size={15} />
             <span>Orders &amp; Commissions</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${activeTab === "orders" ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-black border border-[#E5E3DD]"}`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-sans font-bold ${activeTab === "orders" ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-black border border-[#E5E3DD]"}`}>
               {ordersList.length}
             </span>
           </button>
@@ -1081,7 +1081,7 @@ export default function AccountPage() {
           >
             <MapPin size={15} />
             <span>Saved Addresses</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${activeTab === "addresses" ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-black border border-[#E5E3DD]"}`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-sans font-bold ${activeTab === "addresses" ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-black border border-[#E5E3DD]"}`}>
               {addresses.length}
             </span>
           </button>
@@ -1097,7 +1097,7 @@ export default function AccountPage() {
           >
             <Heart size={15} className={activeTab === "wishlist" ? "fill-current" : ""} />
             <span>Wishlist</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${activeTab === "wishlist" ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-black border border-[#E5E3DD]"}`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-sans font-bold ${activeTab === "wishlist" ? "bg-white/20 text-white" : "bg-[#FAF8F5] text-black border border-[#E5E3DD]"}`}>
               {wishlistCount}
             </span>
           </button>
@@ -1121,31 +1121,31 @@ export default function AccountPage() {
               ordersList.map((order) => (
                 <div key={order.orderNumber} className="bg-white border border-[#E5E3DD] rounded-[16px] p-6 sm:p-8 shadow-xs space-y-6">
                   {/* Top Bar: Order ID, Date & Status */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#F0ECE1]">
+                  <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#F0ECE1] font-sans">
                     <div>
-                      <span className="text-[11px] font-mono uppercase tracking-wider text-[#888888]">Commission ID</span>
-                      <h3 className="font-mono text-base sm:text-lg font-bold text-black">{order.orderNumber}</h3>
+                      <span className="text-[11px] font-sans font-bold uppercase tracking-wider text-[#888888]">Commission ID</span>
+                      <h3 className="font-sans text-base sm:text-lg font-bold text-black">{order.orderNumber}</h3>
                       <p className="text-xs text-[#888888] mt-0.5">Placed on {order.date}</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#E5E3DD] text-xs font-mono font-bold text-[#8C7355] flex items-center gap-1.5">
+                      <span className="px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#E5E3DD] text-xs font-sans font-bold text-[#8C7355] flex items-center gap-1.5">
                         <Clock size={13} />
                         <span>{order.statusLabel}</span>
                       </span>
-                      <span className="font-mono text-base font-bold text-black">{order.totalLabel}</span>
+                      <span className="font-sans text-base font-bold text-black">{order.totalLabel}</span>
                     </div>
                   </div>
 
                   {/* 4-Stage Visual Tailoring Progress Tracker */}
-                  <div className="space-y-2 py-2">
-                    <div className="flex justify-between text-[11px] font-mono text-[#666666]">
+                  <div className="space-y-2 py-2 font-sans">
+                    <div className="flex justify-between text-[11px] font-sans font-medium text-[#666666]">
                       <span className="font-bold text-black">Stage: {order.currentStage}</span>
                       <span className="text-[#8C7355] font-semibold">{order.estimatedDelivery}</span>
                     </div>
                     <div className="w-full bg-[#EFECE6] rounded-full h-2 overflow-hidden">
                       <div className="bg-black h-2 rounded-full transition-all duration-500" style={{ width: `${order.progressPercent}%` }} />
                     </div>
-                    <div className="grid grid-cols-4 gap-2 text-[10px] font-mono uppercase text-[#888888] pt-1">
+                    <div className="grid grid-cols-4 gap-2 text-[10px] font-sans uppercase text-[#888888] pt-1">
                       <span className={order.progressPercent >= 25 ? "text-black font-bold" : ""}>1. Pattern Draft</span>
                       <span className={order.progressPercent >= 50 ? "text-black font-bold" : ""}>2. Hand-Cut</span>
                       <span className={order.progressPercent >= 75 ? "text-black font-bold" : ""}>3. Stitch &amp; Press</span>
@@ -1154,7 +1154,7 @@ export default function AccountPage() {
                   </div>
 
                   {/* Items List */}
-                  <div className="divide-y divide-[#F0ECE1] py-2 border-y border-[#F0ECE1]">
+                  <div className="divide-y divide-[#F0ECE1] py-2 border-y border-[#F0ECE1] font-sans">
                     {order.items.map((item, idx) => (
                       <div key={idx} className="flex items-center gap-4 py-3">
                         <div className="w-16 h-16 rounded-[8px] bg-neutral-100 border border-[#E5E3DD] overflow-hidden shrink-0 relative">
@@ -1164,7 +1164,7 @@ export default function AccountPage() {
                         <div className="flex-1 min-w-0">
                           <h4 className="font-bold text-xs sm:text-sm text-black uppercase truncate">{item.name}</h4>
                           <p className="text-[11px] text-[#666666] truncate mt-0.5">{item.details}</p>
-                          <p className="text-xs font-mono font-bold text-black mt-1">{item.price} • Qty {item.quantity}</p>
+                          <p className="text-xs font-sans font-bold text-black mt-1">{item.price} • Qty {item.quantity}</p>
                         </div>
                       </div>
                     ))}
@@ -1298,7 +1298,7 @@ export default function AccountPage() {
                         onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
                         placeholder="e.g. 9876543210"
                         required
-                        className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none font-mono"
+                        className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none"
                       />
                     </div>
                   </div>
@@ -1314,7 +1314,7 @@ export default function AccountPage() {
                         onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value })}
                         placeholder="e.g. 110021"
                         required
-                        className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none font-mono"
+                        className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none"
                       />
                     </div>
                     <div>
@@ -1397,7 +1397,7 @@ export default function AccountPage() {
                         value={addressForm.alternatePhone || ""}
                         onChange={(e) => setAddressForm({ ...addressForm, alternatePhone: e.target.value })}
                         placeholder="Optional backup number"
-                        className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none font-mono"
+                        className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none"
                       />
                     </div>
                   </div>
@@ -1484,15 +1484,15 @@ export default function AccountPage() {
                   >
                     <div>
                       {/* Top Header: Badge, Default indicator, and Quick Actions */}
-                      <div className="flex items-center justify-between pb-3 border-b border-[#F5F3EF] mb-3">
+                      <div className="flex items-center justify-between pb-3 border-b border-[#F5F3EF] mb-3 font-sans">
                         <div className="flex items-center gap-2">
-                          <span className="px-2.5 py-0.5 rounded-md bg-[#FAF8F5] border border-[#E5E3DD] text-[10px] font-mono font-bold uppercase tracking-wider text-[#666666] flex items-center gap-1">
+                          <span className="px-2.5 py-0.5 rounded-md bg-[#FAF8F5] border border-[#E5E3DD] text-[10px] font-sans font-bold uppercase tracking-wider text-[#666666] flex items-center gap-1">
                             {addr.addressType === "home" ? <Home size={11} /> : <Briefcase size={11} />}
                             <span>{addr.addressType}</span>
                           </span>
 
                           {addr.isDefault && (
-                            <span className="px-2.5 py-0.5 rounded-md bg-[#14110E] text-white text-[10px] font-mono font-bold uppercase tracking-wider">
+                            <span className="px-2.5 py-0.5 rounded-md bg-[#14110E] text-white text-[10px] font-sans font-bold uppercase tracking-wider">
                               Default
                             </span>
                           )}
@@ -1519,31 +1519,31 @@ export default function AccountPage() {
                       </div>
 
                       {/* Recipient Details */}
-                      <h4 className="font-serif-luxury text-base font-bold text-black uppercase tracking-tight">
+                      <h4 className="font-sans text-base font-bold text-black uppercase tracking-tight">
                         {addr.name}
                       </h4>
-                      <p className="text-xs font-mono text-[#666666] mt-0.5">
+                      <p className="text-xs font-sans text-[#666666] mt-0.5">
                         {addr.phone} {addr.alternatePhone ? `• Alt: ${addr.alternatePhone}` : ""}
                       </p>
 
                       {/* Address Lines */}
-                      <p className="text-xs text-[#333333] leading-relaxed mt-3">
+                      <p className="text-xs text-[#333333] leading-relaxed mt-3 font-sans">
                         {addr.address}, {addr.locality}
                       </p>
-                      <p className="text-xs font-medium text-[#14110E]">
-                        {addr.city}, {addr.state} — <span className="font-mono font-bold">{addr.pincode}</span>
+                      <p className="text-xs font-medium text-[#14110E] font-sans">
+                        {addr.city}, {addr.state} — <span className="font-sans font-bold">{addr.pincode}</span>
                       </p>
                       {addr.landmark && (
-                        <p className="text-[11px] text-[#777777] italic mt-1">
+                        <p className="text-[11px] text-[#777777] italic mt-1 font-sans">
                           Landmark: {addr.landmark}
                         </p>
                       )}
                     </div>
 
                     {/* Bottom Status / Set Default Action */}
-                    <div className="pt-4 mt-4 border-t border-[#F5F3EF] flex items-center justify-between text-xs">
+                    <div className="pt-4 mt-4 border-t border-[#F5F3EF] flex items-center justify-between text-xs font-sans">
                       {addr.isDefault ? (
-                        <span className="text-[11px] font-bold text-[#8C7355] flex items-center gap-1 uppercase tracking-wider font-mono">
+                        <span className="text-[11px] font-bold text-[#8C7355] flex items-center gap-1 uppercase tracking-wider font-sans">
                           <Check size={13} />
                           <span>Primary Delivery Destination</span>
                         </span>
@@ -1551,7 +1551,7 @@ export default function AccountPage() {
                         <button
                           type="button"
                           onClick={() => handleSetDefaultAddress(addr.id)}
-                          className="text-[11px] font-bold text-[#666666] hover:text-black uppercase tracking-wider underline cursor-pointer"
+                          className="text-[11px] font-bold text-[#666666] hover:text-black uppercase tracking-wider underline cursor-pointer font-sans"
                         >
                           Set As Default
                         </button>
@@ -1616,7 +1616,7 @@ export default function AccountPage() {
             </div>
 
             {wishlistProducts.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 w-full items-stretch">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start">
                 {wishlistProducts.map((product) => (
                   <div key={product.id} className="relative w-full group">
                     <ModernProductCard product={product} />

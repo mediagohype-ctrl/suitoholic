@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useContent } from "@/context/SiteDataProvider";
+import React, { useState, useEffect, useCallback, useRef } from"react";
+import Link from"next/link";
+import { ChevronLeft, ChevronRight } from"lucide-react";
+import { useContent } from"@/context/SiteDataProvider";
 
 export default function CategoriesRotatingShowcase() {
   const c = useContent("categoriesShowcase");
@@ -49,8 +49,8 @@ export default function CategoriesRotatingShowcase() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isHovered) return;
-      if (e.key === "ArrowRight") rotateClockwise();
-      if (e.key === "ArrowLeft") rotateAntiClockwise();
+      if (e.key ==="ArrowRight") rotateClockwise();
+      if (e.key ==="ArrowLeft") rotateAntiClockwise();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -72,7 +72,7 @@ export default function CategoriesRotatingShowcase() {
 
   return (
     <section 
-      className="w-full py-8 sm:py-12 lg:py-14 px-4 sm:px-8 lg:px-12 max-w-[1720px] mx-auto relative select-none overflow-hidden"
+      className="w-full py-8 sm:py-12 lg:py-14 px-4 sm:px-8 lg:px-12 max-w-[1720px] mx-auto relative overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={handleTouchStart}
@@ -121,30 +121,30 @@ export default function CategoriesRotatingShowcase() {
             const isRight = offset === 1 || (offset > 0 && Math.abs(offset) <= 1);
 
             // Position & 3D Transform Styles
-            let transformStyle = "";
+            let transformStyle ="";
             let zIndex = 10;
             let opacity = 0;
-            let pointerEvents: "auto" | "none" = "none";
+            let pointerEvents:"auto" |"none" ="none";
 
             if (isCenter) {
-              transformStyle = "translate3d(0, 0, 40px) scale(1.05) rotateY(0deg)";
+              transformStyle ="translate3d(0, 0, 40px) scale(1.05) rotateY(0deg)";
               zIndex = 30;
               opacity = 1;
-              pointerEvents = "auto";
+              pointerEvents ="auto";
             } else if (isLeft) {
-              transformStyle = "translate3d(-76%, 0, 0px) scale(0.85) rotateY(0deg)";
+              transformStyle ="translate3d(-76%, 0, 0px) scale(0.85) rotateY(0deg)";
               zIndex = 20;
               opacity = 0.92;
-              pointerEvents = "auto";
+              pointerEvents ="auto";
             } else if (isRight) {
-              transformStyle = "translate3d(76%, 0, 0px) scale(0.85) rotateY(0deg)";
+              transformStyle ="translate3d(76%, 0, 0px) scale(0.85) rotateY(0deg)";
               zIndex = 20;
               opacity = 0.92;
-              pointerEvents = "auto";
+              pointerEvents ="auto";
             } else {
               transformStyle = offset < 0 
-                ? "translate3d(-130%, 0, -100px) scale(0.7) rotateY(0deg)" 
-                : "translate3d(130%, 0, -100px) scale(0.7) rotateY(0deg)";
+                ?"translate3d(-130%, 0, -100px) scale(0.7) rotateY(0deg)" 
+                :"translate3d(130%, 0, -100px) scale(0.7) rotateY(0deg)";
               zIndex = 5;
               opacity = 0;
             }
@@ -163,10 +163,10 @@ export default function CategoriesRotatingShowcase() {
                   pointerEvents,
                 }}
                 className={`absolute w-[280px] sm:w-[380px] md:w-[460px] lg:w-[520px] h-[210px] sm:h-[280px] md:h-[320px] lg:h-[360px] rounded-xl sm:rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ease-out shadow-xl ${
-                  isCenter ? "border border-white/40 shadow-2xl" : "brightness-90 hover:brightness-100"
+                  isCenter ?"border border-white/40 shadow-2xl" :"brightness-90 hover:brightness-100"
                 }`}
               >
-                <Link href={category.href || "/shop"} className="block w-full h-full relative group">
+                <Link href={category.href ||"/shop"} className="block w-full h-full relative group">
                   {/* Background Luxury Category Image */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -182,7 +182,7 @@ export default function CategoriesRotatingShowcase() {
                   {/* Category Title Overlay */}
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 text-center">
                     <h3 className={`text-white tracking-[0.16em] uppercase font-bold drop-shadow-md transition-all ${
-                      isCenter ? "text-xl sm:text-2xl lg:text-3xl" : "text-base sm:text-xl lg:text-2xl opacity-90"
+                      isCenter ?"text-xl sm:text-2xl lg:text-3xl" :"text-base sm:text-xl lg:text-2xl opacity-90"
                     }`}>
                       {category.title}
                     </h3>
@@ -203,11 +203,11 @@ export default function CategoriesRotatingShowcase() {
               key={i}
               onClick={() => setActiveIndex(i)}
               type="button"
-              aria-label={(c.dotAriaLabelTemplate || "Go to category {n}").replace("{n}", String(i + 1))}
+              aria-label={(c.dotAriaLabelTemplate ||"Go to category {n}").replace("{n}", String(i + 1))}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 isActive
-                  ? "w-8 sm:w-10 bg-black shadow-xs"
-                  : "w-6 sm:w-8 bg-[#DCD4CE] hover:bg-black/50"
+                  ?"w-8 sm:w-10 bg-black shadow-xs"
+                  :"w-6 sm:w-8 bg-[#DCD4CE] hover:bg-black/50"
               }`}
             />
           );

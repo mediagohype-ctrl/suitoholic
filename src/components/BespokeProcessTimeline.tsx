@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import { ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect, useCallback } from"react";
+import { ArrowUpRight, X, ChevronLeft, ChevronRight } from"lucide-react";
 
 interface ProcessStep {
   step: string;
@@ -13,52 +13,46 @@ interface ProcessStep {
 
 const PROCESS_STEPS: ProcessStep[] = [
   {
-    step: "01",
-    title: "Fabric Selection",
-    description:
-      "Curated swatches matched to your occasion, season, and the garment's purpose — with our guidance on what works.",
-    image: "/process/01_fabric_selection.jpg",
-    tag: "Egyptian Cotton & Luxury Weaves",
+    step:"01",
+    title:"Fabric Selection",
+    description:"Curated swatches matched to your occasion, season, and the garment's purpose — with our guidance on what works.",
+    image:"/process/01_fabric_selection.jpg",
+    tag:"Egyptian Cotton & Luxury Weaves",
   },
   {
-    step: "02",
-    title: "Style & Design",
-    description:
-      "Every detail decided — collar, lapel, lining, buttons, embroidery, and length. Documented and confirmed before a single cut.",
-    image: "/process/02_style_design.jpg",
-    tag: "Collar, Cuffs & Monogram Spec",
+    step:"02",
+    title:"Style & Design",
+    description:"Every detail decided — collar, lapel, lining, buttons, embroidery, and length. Documented and confirmed before a single cut.",
+    image:"/process/02_style_design.jpg",
+    tag:"Collar, Cuffs & Monogram Spec",
   },
   {
-    step: "03",
-    title: "Measurement",
-    description:
-      "Taken in person, every time. Never from a size chart. Your posture, your proportions, your unique pattern.",
-    image: "/process/03_measurement.jpg",
-    tag: "30+ Precision Measurements",
+    step:"03",
+    title:"Measurement",
+    description:"Taken in person, every time. Never from a size chart. Your posture, your proportions, your unique pattern.",
+    image:"/process/03_measurement.jpg",
+    tag:"30+ Precision Measurements",
   },
   {
-    step: "04",
-    title: "Cut & Stitch",
-    description:
-      "Cut by hand from your pattern. Assembled with the construction — canvas, interlining, embroidery — the garment needs.",
-    image: "/process/04_cut_stitch.jpg",
-    tag: "Master Hand-Shears & Single Needle",
+    step:"04",
+    title:"Cut & Stitch",
+    description:"Cut by hand from your pattern. Assembled with the construction — canvas, interlining, embroidery — the garment needs.",
+    image:"/process/04_cut_stitch.jpg",
+    tag:"Master Hand-Shears & Single Needle",
   },
   {
-    step: "05",
-    title: "Trial Fitting",
-    description:
-      "You wear it. We check every point — shoulder, chest, waist, length. Corrections made before final construction.",
-    image: "/process/05_trial_fitting.jpg",
-    tag: "Basting Silhouette & Mirror Inspection",
+    step:"05",
+    title:"Trial Fitting",
+    description:"You wear it. We check every point — shoulder, chest, waist, length. Corrections made before final construction.",
+    image:"/process/05_trial_fitting.jpg",
+    tag:"Basting Silhouette & Mirror Inspection",
   },
   {
-    step: "06",
-    title: "Final Delivery",
-    description:
-      "Pressed, inspected, handed over. Your pattern stays on file — every future order is faster, every fit more certain.",
-    image: "/process/06_final_delivery.jpg",
-    tag: "Signature Monogrammed Box",
+    step:"06",
+    title:"Final Delivery",
+    description:"Pressed, inspected, handed over. Your pattern stays on file — every future order is faster, every fit more certain.",
+    image:"/process/06_final_delivery.jpg",
+    tag:"Signature Monogrammed Box",
   },
 ];
 
@@ -72,9 +66,9 @@ export default function BespokeProcessTimeline() {
       document.getElementById("curated-looks") ||
       document.getElementById("fabrics");
     if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    } else if (typeof window !== "undefined") {
-      window.location.href = "/custom-shirt#appointment-booking";
+      target.scrollIntoView({ behavior:"smooth" });
+    } else if (typeof window !=="undefined") {
+      window.location.href ="/custom-shirt#appointment-booking";
     }
   };
 
@@ -102,9 +96,9 @@ export default function BespokeProcessTimeline() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (modalIndex === null) return;
-      if (e.key === "Escape") handleCloseModal();
-      if (e.key === "ArrowLeft") handlePrevStep();
-      if (e.key === "ArrowRight") handleNextStep();
+      if (e.key ==="Escape") handleCloseModal();
+      if (e.key ==="ArrowLeft") handlePrevStep();
+      if (e.key ==="ArrowRight") handleNextStep();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -121,14 +115,14 @@ export default function BespokeProcessTimeline() {
           <div
             className="md:col-span-5 sticky top-24 self-start py-2 sm:py-4 z-20"
             style={{
-              position: "sticky",
-              top: "96px",
-              alignSelf: "flex-start",
+              position:"sticky",
+              top:"96px",
+              alignSelf:"flex-start",
             }}
           >
             {/* Headline */}
             <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-bold uppercase tracking-[0.025em] text-black leading-tight mb-6 sm:mb-8">
-              HOW WE TAILOR{" "}
+              HOW WE TAILOR{""}
               <span className="italic font-normal text-neutral-700">
                 PERFECTION
               </span>
@@ -157,11 +151,11 @@ export default function BespokeProcessTimeline() {
                 key={item.step}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onClick={() => handleOpenModal(index)}
-                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E5E3DD] transition-colors duration-300 hover:bg-white/90 rounded-[6px] px-4 sm:px-6 group cursor-pointer select-none"
+                className="relative py-10 sm:py-12 lg:py-14 border-b border-[#E5E3DD] transition-colors duration-300 hover:bg-white/90 rounded-[6px] px-4 sm:px-6 group cursor-pointer"
               >
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6 lg:gap-8">
                   {/* Step Number (01, 02, etc.) */}
-                  <div className="text-xs sm:text-sm font-mono tracking-widest w-10 sm:w-14 flex-shrink-0 text-[#888888] group-hover:text-black group-hover:font-bold transition-colors duration-200">
+                  <div className="text-xs sm:text-sm font-sans font-bold tracking-widest w-10 sm:w-14 flex-shrink-0 text-[#888888] group-hover:text-black transition-colors duration-200">
                     {item.step}
                   </div>
 
@@ -194,8 +188,8 @@ export default function BespokeProcessTimeline() {
       <div
         className={`fixed right-4 sm:right-8 lg:right-12 xl:right-16 top-1/2 -translate-y-1/2 z-40 hidden md:block pointer-events-none transition-all duration-300 ease-out ${
           hoveredIndex !== null
-            ? "opacity-100 scale-100 translate-x-0"
-            : "opacity-0 scale-95 translate-x-6 pointer-events-none"
+            ?"opacity-100 scale-100 translate-x-0"
+            :"opacity-0 scale-95 translate-x-6 pointer-events-none"
         }`}
       >
         {hoveredIndex !== null && (
@@ -218,7 +212,7 @@ export default function BespokeProcessTimeline() {
 
               {/* Top Step Badge */}
               <div
-                className="absolute top-3 left-3 px-3 py-1 bg-black/85 backdrop-blur-md border border-white/20 text-white text-[10px] font-mono tracking-widest uppercase rounded-full"
+                className="absolute top-3 left-3 px-3 py-1 bg-black/85 backdrop-blur-md border border-white/20 text-white text-[10px] font-sans font-bold tracking-widest uppercase rounded-full"
               >
                 Step {PROCESS_STEPS[hoveredIndex].step}
               </div>
@@ -255,7 +249,7 @@ export default function BespokeProcessTimeline() {
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E3DD] bg-[#F5F4F0]">
               <div className="flex items-center gap-3">
                 <span
-                  className="px-3 py-1 bg-black text-white text-xs font-mono font-bold tracking-widest rounded-full"
+                  className="px-3 py-1 bg-black text-white text-xs font-sans font-bold tracking-widest rounded-full"
                 >
                   STEP {PROCESS_STEPS[modalIndex].step}
                 </span>
@@ -312,7 +306,7 @@ export default function BespokeProcessTimeline() {
               </p>
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-[#E5E3DD]">
-                <span className="text-xs font-mono text-[#888888]">
+                <span className="text-xs font-sans text-[#888888]">
                   Step {modalIndex + 1} of {PROCESS_STEPS.length} in Suitoholic Bespoke Craftsmanship
                 </span>
                 <button

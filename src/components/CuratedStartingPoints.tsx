@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
-import { Plus, Heart } from "lucide-react";
-import { ProductItem } from "@/data/products";
-import { useWishlist } from "@/context/WishlistProvider";
-import { useCustomizer } from "@/context/CustomizerModalProvider";
+import React from"react";
+import { Plus, Heart } from"lucide-react";
+import { ProductItem } from"@/data/products";
+import { useWishlist } from"@/context/WishlistProvider";
+import { useCustomizer } from"@/context/CustomizerModalProvider";
 
 export interface CuratedLookItem {
   id: string | number;
@@ -28,206 +28,167 @@ interface CuratedStartingPointsProps {
 
 export const DEFAULT_LOOKS: CuratedLookItem[] = [
   {
-    id: "look-1",
-    slug: "dark-chocolate-brown-satin-twill-shirt",
-    title: "Dark Espresso Brown Twill Shirt",
-    subtitle: "Luxurious Silk-Touch Satin Twill",
-    price: "₹ 2,600",
-    image: "/new_shirts/shirt_19.jpg",
-    hoverImage: "/customizer/full_shirt_19.jpg",
-    tag: "SIGNATURE ESPRESSO",
+    id:"look-1",
+    slug:"dark-chocolate-brown-satin-twill-shirt",
+    title:"Dark Espresso Brown Twill Shirt",
+    subtitle:"Luxurious Silk-Touch Satin Twill",
+    price:"₹ 2,600",
+    image:"/new_shirts/shirt_19.jpg",
+    hoverImage:"/customizer/full_shirt_19.jpg",
+    tag:"SIGNATURE ESPRESSO",
   },
   {
-    id: "look-2",
-    slug: "beige-textured-linen-cotton-shirt",
-    title: "Sand Beige Linen Cotton Shirt",
-    subtitle: "Artisanal Breathable Linen Weave",
-    price: "₹ 2,600",
-    image: "/new_shirts/shirt_13.jpg",
-    hoverImage: "/customizer/full_shirt_13.jpg",
-    tag: "SUMMER LINEN",
+    id:"look-2",
+    slug:"beige-textured-linen-cotton-shirt",
+    title:"Sand Beige Linen Cotton Shirt",
+    subtitle:"Artisanal Breathable Linen Weave",
+    price:"₹ 2,600",
+    image:"/new_shirts/shirt_13.jpg",
+    hoverImage:"/customizer/full_shirt_13.jpg",
+    tag:"SUMMER LINEN",
   },
   {
-    id: "look-3",
-    slug: "royal-blue-classic-bengal-stripe-twill-shirt",
-    title: "Royal Steel Blue Bengal Stripe",
-    subtitle: "Italian 130s Pure Egyptian Cotton",
-    price: "₹ 2,600",
-    image: "/new_shirts/shirt_21.jpg",
-    hoverImage: "/customizer/full_shirt_21.jpg",
-    tag: "BESTSELLER",
+    id:"look-3",
+    slug:"royal-blue-classic-bengal-stripe-twill-shirt",
+    title:"Royal Steel Blue Bengal Stripe",
+    subtitle:"Italian 130s Pure Egyptian Cotton",
+    price:"₹ 2,600",
+    image:"/new_shirts/shirt_21.jpg",
+    hoverImage:"/customizer/full_shirt_21.jpg",
+    tag:"BESTSELLER",
   },
   {
-    id: "look-4",
-    slug: "coral-red-bold-bengal-stripe-twill-shirt",
-    title: "Terracotta Rust Bengal Stripe",
-    subtitle: "Warm Terracotta Brick and Ecru Weave",
-    price: "₹ 2,633",
-    image: "/new_shirts/shirt_14.jpg",
-    hoverImage: "/customizer/full_shirt_14.jpg",
-    tag: "HERITAGE STRIPE",
+    id:"look-4",
+    slug:"coral-red-bold-bengal-stripe-twill-shirt",
+    title:"Terracotta Rust Bengal Stripe",
+    subtitle:"Warm Terracotta Brick and Ecru Weave",
+    price:"₹ 2,633",
+    image:"/new_shirts/shirt_14.jpg",
+    hoverImage:"/customizer/full_shirt_14.jpg",
+    tag:"HERITAGE STRIPE",
   },
 ];
 
-function HeadingFlourish({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 150 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden="true"
-    >
-      {/* 4-Petal Floral Clover Motif on Far Left */}
-      <circle cx="14" cy="24" r="1.5" fill="currentColor" />
-      <ellipse cx="14" cy="17.5" rx="2.2" ry="4.5" stroke="currentColor" strokeWidth="1.3" />
-      <ellipse cx="14" cy="30.5" rx="2.2" ry="4.5" stroke="currentColor" strokeWidth="1.3" />
-      <ellipse cx="7.5" cy="24" rx="4.5" ry="2.2" stroke="currentColor" strokeWidth="1.3" />
-      <ellipse cx="20.5" cy="24" rx="4.5" ry="2.2" stroke="currentColor" strokeWidth="1.3" />
-
-      {/* Central Horizontal Stem */}
-      <path d="M 25 24 L 84 24" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-
-      {/* 3 Pairs of Delicate Leaves */}
-      {/* Leaf Pair 1 */}
-      <path d="M 33 24 C 36 17, 44 16, 48 19 C 44 23, 38 24, 33 24 Z" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M 33 24 C 36 31, 44 32, 48 29 C 44 25, 38 24, 33 24 Z" stroke="currentColor" strokeWidth="1.2" />
-
-      {/* Leaf Pair 2 */}
-      <path d="M 47 24 C 50 17, 58 16, 62 19 C 58 23, 52 24, 47 24 Z" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M 47 24 C 50 31, 58 32, 62 29 C 58 25, 52 24, 47 24 Z" stroke="currentColor" strokeWidth="1.2" />
-
-      {/* Leaf Pair 3 */}
-      <path d="M 61 24 C 64 17, 72 16, 76 19 C 72 23, 66 24, 61 24 Z" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M 61 24 C 64 31, 72 32, 76 29 C 72 25, 66 24, 61 24 Z" stroke="currentColor" strokeWidth="1.2" />
-
-      {/* Right End: Upper Sweeping Arch & Lower Spiral Loop */}
-      <path d="M 84 24 C 95 11, 122 11, 144 22" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M 84 24 C 95 36, 116 41, 130 32 C 140 25, 136 15, 125 17 C 117 19, 116 29, 123 32 C 128 34, 133 31, 132 26" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export default function CuratedStartingPoints({
-  title = "Signature Bespoke Ensembles",
-  description = "Start with a master-tailored bespoke dress shirt where every cloth, drape, and silhouette is engineered to perfection. Select a starting point below to custom tailor it live in our 3D Atelier.",
+  title ="CURATED LOOKS",
+  description,
   items = DEFAULT_LOOKS,
   activeProductSlug,
   onSelectLook,
 }: CuratedStartingPointsProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { openCustomizer } = useCustomizer();
+
   return (
-    <section id="curated-starting-points" className="relative w-full py-12 sm:py-16 lg:py-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden select-none">
-      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header: Ornate Calligraphic Title, Subtitle */}
-        <div className="text-center max-w-4xl mx-auto space-y-3 sm:space-y-4 mb-10 sm:mb-14">
-          {/* Title Row: Left Flourish + Calligraphic Script Title + Right Flourish */}
-          <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 w-full">
-            {/* Left Flourish */}
-            <HeadingFlourish className="text-black/30 shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto" />
-
-            {/* Heading */}
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight whitespace-nowrap">
-              {title}
-            </h2>
-
-            {/* Right Flourish (Mirrored) */}
-            <HeadingFlourish className="text-black/30 shrink-0 w-14 sm:w-24 md:w-32 lg:w-40 xl:w-44 h-auto scale-x-[-1]" />
-          </div>
-
-          {/* Subtitle Description */}
-          <p className="text-xs sm:text-sm text-[#666666] font-sans font-normal leading-relaxed max-w-2xl mx-auto">
+    <section id="curated-starting-points" className="relative w-full pt-14 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 lg:pb-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden px-0">
+      {/* Section Header: Refined Modern Luxury Heading */}
+      <div className="text-center mb-8 sm:mb-10 lg:mb-12 px-4">
+        <h2 className="font-sans text-base sm:text-lg md:text-[20px] tracking-[0.22em] font-bold text-black uppercase">
+          {title}
+        </h2>
+        {description && (
+          <p className="mt-2 text-xs sm:text-sm text-[#666666] font-sans font-normal max-w-xl mx-auto">
             {description}
           </p>
-        </div>
+        )}
+      </div>
 
-        {/* 4-Card Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 lg:gap-3.5">
-          {items.map((item) => (
+      {/* 4-Card Responsive Grid - END TO END (Full-Width Edge-to-Edge) with Exact 2px Gap */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start px-0">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="group flex flex-col w-full"
+          >
+            {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (End-to-End, Zero Radius) */}
             <div
-                key={item.id}
-                onClick={() => onSelectLook(item)}
-                className="group flex flex-col justify-between rounded-[11px] overflow-hidden bg-white border border-[#E5E3DD] hover:border-black/30 transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer"
+              onClick={() => onSelectLook(item)}
+              className="relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300 cursor-pointer block"
+            >
+              {/* Top-Right Floating Outline Heart Wishlist Icon */}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  toggleWishlist(item.id);
+                }}
+                type="button"
+                aria-label={isInWishlist(item.id) ?"Remove from wishlist" :"Save to wishlist"}
+                className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-20 p-1 transition-transform duration-200 hover:scale-115 active:scale-90 cursor-pointer"
               >
-                {/* Upper Image Container: Flush edge-to-edge with card, zero gap */}
-                <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#F5F4F0]">
-                  {/* Top-Right Heart Wishlist Button - Always Visible */}
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(item.id);
-                    }}
-                    type="button"
-                    aria-label={isInWishlist(item.id) ? "Remove from wishlist" : "Save to wishlist"}
-                    className="absolute top-2.5 right-2.5 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/35 hover:bg-black/60 backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 drop-shadow-md cursor-pointer flex items-center justify-center opacity-100"
-                  >
-                    <Heart
-                      size={15}
-                      className={
-                        isInWishlist(item.id)
-                          ? "text-red-500 fill-red-500"
-                          : "text-white fill-white/10 stroke-white stroke-[2]"
-                      }
-                    />
-                  </button>
+                <Heart
+                  size={19}
+                  strokeWidth={1.5}
+                  className={`drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors ${
+                    isInWishlist(item.id)
+                      ?"text-red-500 fill-red-500"
+                      :"text-white fill-transparent stroke-white"
+                  }`}
+                />
+              </button>
 
-                  {/* Default Image: Collar & Fabric Macro View */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:opacity-0 group-hover:scale-105"
-                    loading="lazy"
-                  />
+              {/* Default Image: Collar & Fabric Macro View */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.image}
+                alt={item.title}
+                className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
+                loading="lazy"
+              />
 
-                  {/* Hover Image */}
-                  {item.hoverImage && (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={item.hoverImage}
-                      alt={`${item.title} Full Shirt`}
-                      className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
+              {/* Hover Image */}
+              {item.hoverImage && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={item.hoverImage}
+                  alt={`${item.title} Full Shirt`}
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
+                  loading="lazy"
+                />
+              )}
+            </div>
 
-                {/* Lower Details Strip: Title, Price & Plus Button */}
-                <div className="p-3.5 sm:p-4 flex items-center justify-between gap-2 text-left">
-                  <h3 className="font-bold text-[10.5px] sm:text-xs tracking-[0.18em] text-black uppercase truncate group-hover:text-neutral-700 transition-colors leading-snug min-w-0">
-                    {item.title}
-                  </h3>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="font-bold text-[10.5px] sm:text-xs tracking-[0.08em] text-black">{item.price}</span>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openCustomizer({
-                          id: item.id,
-                          name: item.title,
-                          image: item.image,
-                          slug: item.slug,
-                          price: item.price,
-                          fabric: item.subtitle,
-                        });
-                      }}
-                      title="Customise Shirt (6 Steps)"
-                      aria-label={`Customise ${item.title}`}
-                      className="w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all shadow-2xs hover:scale-110 active:scale-95 cursor-pointer"
-                    >
-                      <Plus size={13} strokeWidth={2.5} />
-                    </button>
-                  </div>
+            {/* Lower Details Strip: Title, Price & Plus Button */}
+            <div className="mt-2 flex items-start justify-between gap-1.5 px-1 pb-1">
+              <div
+                onClick={() => onSelectLook(item)}
+                className="min-w-0 flex-1 space-y-0.5 cursor-pointer"
+              >
+                <h3
+                  title={item.title}
+                  className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
+                >
+                  {item.title}
+                </h3>
+                <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
+                  {item.price}
                 </div>
               </div>
-          ))}
-        </div>
 
+              {/* Right: Plus Button -> Opens Customizer Modal */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openCustomizer({
+                    id: item.id,
+                    name: item.title,
+                    image: item.image,
+                    slug: item.slug,
+                    price: item.price,
+                    fabric: item.subtitle,
+                  });
+                }}
+                title="Customise Shirt (6 Steps)"
+                aria-label={`Customise ${item.title}`}
+                className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
+              >
+                <Plus size={13} strokeWidth={2.5} />
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

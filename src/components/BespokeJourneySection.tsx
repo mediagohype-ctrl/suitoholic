@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import React from"react";
+import Link from"next/link";
+import { ArrowUpRight } from"lucide-react";
 
 interface JourneyStep {
   stepNumber: string;
@@ -15,42 +15,37 @@ interface JourneyStep {
 
 const JOURNEY_STEPS: JourneyStep[] = [
   {
-    stepNumber: "1",
-    romanNumeral: "I",
-    title: "The Consultation",
-    description:
-      "We begin with a conversation — not measurements. Your occasion, your wardrobe, the way you move and the impression you intend to make. From this we shape the brief for your commission.",
-    tag: "BY APPOINTMENT",
-    tagLink: "#appointment-booking",
+    stepNumber:"1",
+    romanNumeral:"I",
+    title:"The Consultation",
+    description:"We begin with a conversation — not measurements. Your occasion, your wardrobe, the way you move and the impression you intend to make. From this we shape the brief for your commission.",
+    tag:"BY APPOINTMENT",
+    tagLink:"#appointment-booking",
   },
   {
-    stepNumber: "2",
-    title: "Cloth Selection",
-    description:
-      "Handle the cloth in daylight. Choose from eighty-five exclusive weaves across Vitale Barberis Canonico, Pronto and GA.ZA.BA — then settle linings, buttons and every private detail.",
-    tag: "THE COLLECTION",
-    tagLink: "/fabrics",
+    stepNumber:"2",
+    title:"Cloth Selection",
+    description:"Handle the cloth in daylight. Choose from eighty-five exclusive weaves across Vitale Barberis Canonico, Pronto and GA.ZA.BA — then settle linings, buttons and every private detail.",
+    tag:"THE COLLECTION",
+    tagLink:"/fabrics",
   },
   {
-    stepNumber: "3",
-    title: "Measurement & Pattern",
-    description:
-      "Over twenty measurements are taken and a paper pattern is cut by hand — unique to you, kept on file, and refined with every garment you commission thereafter.",
-    tag: "DRAFTED BY HAND",
+    stepNumber:"3",
+    title:"Measurement & Pattern",
+    description:"Over twenty measurements are taken and a paper pattern is cut by hand — unique to you, kept on file, and refined with every garment you commission thereafter.",
+    tag:"DRAFTED BY HAND",
   },
   {
-    stepNumber: "4",
-    title: "Cutting & Fittings",
-    description:
-      "The cloth is cut and basted, then shaped across a series of fittings. Full-canvas construction — never fused — allows the jacket to mould to you and improve with age.",
-    tag: "TWO TO FOUR WEEKS",
+    stepNumber:"4",
+    title:"Cutting & Fittings",
+    description:"The cloth is cut and basted, then shaped across a series of fittings. Full-canvas construction — never fused — allows the jacket to mould to you and improve with age.",
+    tag:"TWO TO FOUR WEEKS",
   },
   {
-    stepNumber: "5",
-    title: "Delivery",
-    description:
-      "Your finished garment is pressed, inspected and presented. It remains in our care for life — alterations and pressing offered for as long as you wear it.",
-    tag: "LIFETIME CARE",
+    stepNumber:"5",
+    title:"Delivery",
+    description:"Your finished garment is pressed, inspected and presented. It remains in our care for life — alterations and pressing offered for as long as you wear it.",
+    tag:"LIFETIME CARE",
   },
 ];
 
@@ -59,14 +54,14 @@ export default function BespokeJourneySection() {
     e.preventDefault();
     const target = document.getElementById("appointment-booking");
     if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
+      target.scrollIntoView({ behavior:"smooth" });
     }
   };
 
   return (
     <section
       id="bespoke-journey"
-      className="relative w-full py-16 sm:py-24 lg:py-28 bg-[#ECEAE5] border-b border-[#E5E3DD] overflow-hidden select-none"
+      className="relative w-full py-16 sm:py-24 lg:py-28 bg-[#ECEAE5] border-b border-[#E5E3DD] overflow-hidden"
     >
       <div className="relative z-10 w-full max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header: Luxury Serif Headline */}
@@ -96,7 +91,7 @@ export default function BespokeJourneySection() {
                 <div
                   className="absolute left-0 top-0 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full text-base sm:text-lg font-serif-luxury bg-[#F7F5F0] text-black border border-[#D5D1C8] shadow-2xs group-hover:bg-black group-hover:text-white group-hover:border-black group-hover:scale-105 group-hover:shadow-md transition-all duration-300"
                 >
-                  <span className="select-none font-medium">
+                  <span className="font-medium">
                     {step.romanNumeral || step.stepNumber}
                   </span>
                 </div>
@@ -114,13 +109,13 @@ export default function BespokeJourneySection() {
                   </p>
 
                   {/* Sub-label / Tag */}
-                  <div className="pt-1.5">
+                  <div className="pt-1.5 font-sans">
                     {step.tagLink ? (
                       step.tagLink.startsWith("#") ? (
                         <a
                           href={step.tagLink}
                           onClick={handleScrollToBooking}
-                          className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#8C7355] hover:text-black transition-colors group/link cursor-pointer"
+                          className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-sans font-bold tracking-[0.24em] uppercase text-[#8C7355] hover:text-black transition-colors group/link cursor-pointer"
                         >
                           <span>{step.tag}</span>
                           <ArrowUpRight
@@ -131,7 +126,7 @@ export default function BespokeJourneySection() {
                       ) : (
                         <Link
                           href={step.tagLink}
-                          className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#8C7355] hover:text-black transition-colors group/link cursor-pointer"
+                          className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-sans font-bold tracking-[0.24em] uppercase text-[#8C7355] hover:text-black transition-colors group/link cursor-pointer"
                         >
                           <span>{step.tag}</span>
                           <ArrowUpRight
@@ -141,7 +136,7 @@ export default function BespokeJourneySection() {
                         </Link>
                       )
                     ) : (
-                      <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.24em] uppercase text-[#8C7355]">
+                      <span className="text-[10px] sm:text-[11px] font-sans font-bold tracking-[0.24em] uppercase text-[#8C7355]">
                         {step.tag}
                       </span>
                     )}

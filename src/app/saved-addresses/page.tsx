@@ -212,9 +212,9 @@ export default function SavedAddressesPage() {
   return (
     <PageShell eyebrow="DELIVERY DESTINATIONS" title="SAVED ADDRESSES">
       <div className="max-w-4xl mx-auto space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-sans">
           <div>
-            <h2 className="font-serif-luxury text-xl sm:text-2xl font-bold uppercase tracking-tight text-black flex items-center gap-2">
+            <h2 className="font-sans text-xl sm:text-2xl font-bold uppercase tracking-tight text-black flex items-center gap-2">
               <span>Your Delivery Destinations ({addresses.length})</span>
             </h2>
             <p className="text-xs text-[#666666] mt-0.5">
@@ -244,8 +244,8 @@ export default function SavedAddressesPage() {
         {/* Address Add / Edit Form Card */}
         {showAddressForm && (
           <div className="bg-white border border-black/20 rounded-[20px] p-6 sm:p-8 shadow-sm space-y-5 animate-in fade-in duration-200">
-            <div className="flex items-center justify-between pb-3 border-b border-[#F0ECE1]">
-              <h3 className="font-serif-luxury text-lg font-bold uppercase tracking-tight text-black flex items-center gap-2">
+            <div className="flex items-center justify-between pb-3 border-b border-[#F0ECE1] font-sans">
+              <h3 className="font-sans text-lg font-bold uppercase tracking-tight text-black flex items-center gap-2">
                 <MapPin size={18} className="text-[#8C7355]" />
                 <span>{editingAddressId ? "Edit Saved Address" : "Add A New Delivery Address"}</span>
               </h3>
@@ -293,7 +293,7 @@ export default function SavedAddressesPage() {
                     onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
                     placeholder="e.g. 9876543210"
                     required
-                    className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none font-mono"
+                    className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none"
                   />
                 </div>
               </div>
@@ -309,7 +309,7 @@ export default function SavedAddressesPage() {
                     onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value })}
                     placeholder="e.g. 110021"
                     required
-                    className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none font-mono"
+                    className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none"
                   />
                 </div>
                 <div>
@@ -392,7 +392,7 @@ export default function SavedAddressesPage() {
                     value={addressForm.alternatePhone || ""}
                     onChange={(e) => setAddressForm({ ...addressForm, alternatePhone: e.target.value })}
                     placeholder="Optional backup number"
-                    className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none font-mono"
+                    className="w-full bg-[#FAF9F6] border border-[#D5D5D5] focus:border-black rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-black focus:outline-none"
                   />
                 </div>
               </div>
@@ -481,15 +481,15 @@ export default function SavedAddressesPage() {
               >
                 <div>
                   {/* Top Header: Badge, Default indicator, and Quick Actions */}
-                  <div className="flex items-center justify-between pb-3 border-b border-[#F5F3EF] mb-3">
+                  <div className="flex items-center justify-between pb-3 border-b border-[#F5F3EF] mb-3 font-sans">
                     <div className="flex items-center gap-2">
-                      <span className="px-2.5 py-0.5 rounded-md bg-[#FAF8F5] border border-[#E5E3DD] text-[10px] font-mono font-bold uppercase tracking-wider text-[#666666] flex items-center gap-1">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#FAF8F5] border border-[#E5E3DD] text-[10px] font-sans font-bold uppercase tracking-wider text-[#666666] flex items-center gap-1">
                         {addr.addressType === "home" ? <Home size={11} /> : <Briefcase size={11} />}
                         <span>{addr.addressType}</span>
                       </span>
 
                       {addr.isDefault && (
-                        <span className="px-2.5 py-0.5 rounded-md bg-[#14110E] text-white text-[10px] font-mono font-bold uppercase tracking-wider">
+                        <span className="px-2.5 py-0.5 rounded-md bg-[#14110E] text-white text-[10px] font-sans font-bold uppercase tracking-wider">
                           Default
                         </span>
                       )}
@@ -516,29 +516,29 @@ export default function SavedAddressesPage() {
                   </div>
 
                   {/* Recipient Details */}
-                  <h4 className="font-serif-luxury text-base font-bold text-black uppercase tracking-tight">
+                  <h4 className="font-sans text-base font-bold text-black uppercase tracking-tight">
                     {addr.name}
                   </h4>
-                  <p className="text-xs font-mono text-[#666666] mt-0.5">
+                  <p className="text-xs font-sans text-[#666666] mt-0.5">
                     {addr.phone} {addr.alternatePhone ? `• Alt: ${addr.alternatePhone}` : ""}
                   </p>
 
                   {/* Address Lines */}
-                  <p className="text-xs text-[#333333] leading-relaxed mt-3">
+                  <p className="text-xs text-[#333333] leading-relaxed mt-3 font-sans">
                     {addr.address}, {addr.locality}
                   </p>
-                  <p className="text-xs font-medium text-[#14110E]">
-                    {addr.city}, {addr.state} — <span className="font-mono font-bold">{addr.pincode}</span>
+                  <p className="text-xs font-medium text-[#14110E] font-sans">
+                    {addr.city}, {addr.state} — <span className="font-sans font-bold">{addr.pincode}</span>
                   </p>
                   {addr.landmark && (
-                    <p className="text-[11px] text-[#777777] italic mt-1">Landmark: {addr.landmark}</p>
+                    <p className="text-[11px] text-[#777777] italic mt-1 font-sans">Landmark: {addr.landmark}</p>
                   )}
                 </div>
 
                 {/* Bottom Status / Set Default Action */}
-                <div className="pt-4 mt-4 border-t border-[#F5F3EF] flex items-center justify-between text-xs">
+                <div className="pt-4 mt-4 border-t border-[#F5F3EF] flex items-center justify-between text-xs font-sans">
                   {addr.isDefault ? (
-                    <span className="text-[11px] font-bold text-[#8C7355] flex items-center gap-1 uppercase tracking-wider font-mono">
+                    <span className="text-[11px] font-bold text-[#8C7355] flex items-center gap-1 uppercase tracking-wider font-sans">
                       <Check size={13} />
                       <span>Primary Delivery Destination</span>
                     </span>
@@ -546,7 +546,7 @@ export default function SavedAddressesPage() {
                     <button
                       type="button"
                       onClick={() => handleSetDefaultAddress(addr.id)}
-                      className="text-[11px] font-bold text-[#666666] hover:text-black uppercase tracking-wider underline cursor-pointer"
+                      className="text-[11px] font-bold text-[#666666] hover:text-black uppercase tracking-wider underline cursor-pointer font-sans"
                     >
                       Set As Default
                     </button>

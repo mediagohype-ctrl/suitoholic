@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useRef, useState, useEffect } from"react";
+import Image from"next/image";
 
 export interface TimelineMilestone {
   period: string;
@@ -20,30 +20,27 @@ export interface AtelierStoryTimelineProps {
 }
 
 export default function AtelierStoryTimeline({
-  eyebrow = "OUR STORY",
-  titlePrefix = "Two Decades of Craft in ",
-  titleAccent = "Delhi NCR",
-  description = "Founded in New Delhi by master bespoke cutters dedicated to heritage tailoring. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture, drape, and silhouette.",
-  image = "/master_tailor_story.jpg",
-  imageCaption = "Master Bespoke Cutter • New Delhi Atelier Bench",
+  eyebrow ="OUR STORY",
+  titlePrefix ="Two Decades of Craft in",
+  titleAccent ="Delhi NCR",
+  description ="Founded in New Delhi by master bespoke cutters dedicated to heritage tailoring. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture, drape, and silhouette.",
+  image ="/master_tailor_story.jpg",
+  imageCaption ="Master Bespoke Cutter • New Delhi Atelier Bench",
   milestones = [
     {
-      period: "ESTD. 2003",
-      title: "Founded In New Delhi Atelier",
-      story:
-        "Suitoholic begins with master bespoke cutters committed to pure bespoke tailoring. Every garment drafted from a hand-cut paper pattern, upholding individual craft standards across devoted practice.",
+      period:"ESTD. 2003",
+      title:"Founded In New Delhi Atelier",
+      story:"Suitoholic begins with master bespoke cutters committed to pure bespoke tailoring. Every garment drafted from a hand-cut paper pattern, upholding individual craft standards across devoted practice.",
     },
     {
-      period: "PROVENANCE & CRAFT",
-      title: "Direct Textile Mill Alliances, Biella & Giza",
-      story:
-        "Bypassing industrial middlemen, establishing direct partnerships with heritage looms in Biella, Italy for Super 150s worsted wool and Egypt's Nile Delta for authentic 140s Extra-Long Staple Giza cottons.",
+      period:"PROVENANCE & CRAFT",
+      title:"Direct Textile Mill Alliances, Biella & Giza",
+      story:"Bypassing industrial middlemen, establishing direct partnerships with heritage looms in Biella, Italy for Super 150s worsted wool and Egypt's Nile Delta for authentic 140s Extra-Long Staple Giza cottons.",
     },
     {
-      period: "TODAY & BEYOND",
-      title: "Suitoholic Bespoke Atelier, Delhi NCR",
-      story:
-        "Dressing corporate leaders, dignitaries, and connoisseurs across 42 countries. The same timeless belief: that a garment made well — to your body, for your occasion — is never just clothing.",
+      period:"TODAY & BEYOND",
+      title:"Suitoholic Bespoke Atelier, Delhi NCR",
+      story:"Dressing corporate leaders, dignitaries, and connoisseurs across 42 countries. The same timeless belief: that a garment made well — to your body, for your occasion — is never just clothing.",
     },
   ],
 }: AtelierStoryTimelineProps) {
@@ -83,7 +80,7 @@ export default function AtelierStoryTimeline({
   }, []);
 
   return (
-    <section className="relative w-full bg-white text-black py-16 sm:py-20 lg:py-24 border-b border-[#E5E3DD] overflow-hidden select-none">
+    <section className="relative w-full bg-white text-black py-16 sm:py-20 lg:py-24 border-b border-[#E5E3DD] overflow-hidden">
       {/* Subtle Tailor Cutting Grid Pattern */}
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-[0.06]"
@@ -92,7 +89,7 @@ export default function AtelierStoryTimeline({
             linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px),
             linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)
           `,
-          backgroundSize: "36px 36px",
+          backgroundSize:"36px 36px",
         }}
         aria-hidden="true"
       />
@@ -109,7 +106,7 @@ export default function AtelierStoryTimeline({
           <div className="lg:col-span-5 space-y-5 sm:space-y-6">
             {/* Main Headline */}
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-black tracking-tight leading-[1.16]">
-              {titlePrefix}{" "}
+              {titlePrefix}{""}
               <span className="italic font-serif font-normal text-black">
                 {titleAccent}
               </span>
@@ -122,7 +119,7 @@ export default function AtelierStoryTimeline({
 
             {/* Master Tailor Portrait Media Card */}
             <div
-              style={{ borderRadius: "7px" }}
+              style={{ borderRadius:"7px" }}
               className="relative overflow-hidden border border-[#E5E3DD] bg-white shadow-sm hover:shadow-md transition-all duration-500 group max-w-md"
             >
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F5F4F0]">
@@ -169,21 +166,21 @@ export default function AtelierStoryTimeline({
                     <div
                       className={`w-6 h-6 shrink-0 mt-7 sm:mt-8 rounded-full border-2 bg-white flex items-center justify-center transition-all duration-300 z-10 ${
                         isReached
-                          ? "border-black shadow-xs ring-4 ring-black/10 scale-105"
-                          : "border-[#C8C5BD] scale-95"
+                          ?"border-black shadow-xs ring-4 ring-black/10 scale-105"
+                          :"border-[#C8C5BD] scale-95"
                       } group-hover:scale-110`}
                       aria-hidden="true"
                     >
                       <div
                         className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                          isReached ? "bg-black" : "bg-[#C8C5BD]"
+                          isReached ?"bg-black" :"bg-[#C8C5BD]"
                         } group-hover:bg-neutral-800`}
                       />
                     </div>
 
                     {/* Column 2: Milestone Content Box */}
                     <div
-                      style={{ borderRadius: "7px" }}
+                      style={{ borderRadius:"7px" }}
                       className="bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black hover:bg-white p-7 sm:p-8 lg:p-9 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                     >
                       {/* Milestone Title */}

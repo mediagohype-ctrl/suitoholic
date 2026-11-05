@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useState, useEffect, useSyncExternalStore } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart, Package, MapPin, LogOut, LogIn } from "lucide-react";
-import { useCatalog, useContent } from "@/context/SiteDataProvider";
-import { useCart } from "@/context/CartProvider";
-import { useWishlist } from "@/context/WishlistProvider";
-import CartDrawer from "@/components/CartDrawer";
-import SearchModal from "@/components/SearchModal";
+import React, { useState, useEffect, useSyncExternalStore } from"react";
+import Link from"next/link";
+import Image from"next/image";
+import { usePathname } from"next/navigation";
+import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart, Package, MapPin, LogOut, LogIn } from"lucide-react";
+import { useCatalog, useContent } from"@/context/SiteDataProvider";
+import { useCart } from"@/context/CartProvider";
+import { useWishlist } from"@/context/WishlistProvider";
+import CartDrawer from"@/components/CartDrawer";
+import SearchModal from"@/components/SearchModal";
 
 interface HeaderProps {
-  /** Legacy tab id ("shop", "custom-fit", "fabrics", "about") forcing the highlighted link. */
+  /** Legacy tab id ("shop","custom-fit","fabrics","about") forcing the highlighted link. */
   activeTab?: string;
   /** Overrides the live bag count (normally read from the bag). */
   cartCount?: number;
@@ -21,11 +21,10 @@ interface HeaderProps {
 }
 
 const TAB_PATHS: Record<string, string> = {
-  shop: "/shop",
-  "custom-fit": "/custom-shirt",
-  fabrics: "/fabrics",
-  about: "/about",
-  contact: "/contact",
+  shop:"/shop","custom-fit":"/custom-shirt",
+  fabrics:"/fabrics",
+  about:"/about",
+  contact:"/contact",
 };
 
 const emptySubscribe = () => () => {};
@@ -77,7 +76,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       window.dispatchEvent(new Event("suitoholic_auth_change"));
     } catch {}
     setCurrentUser(null);
-    window.location.href = "/account";
+    window.location.href ="/account";
   };
 
   useEffect(() => {
@@ -104,19 +103,19 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
   }, []);
 
   // Highlight the link for the explicit tab, or the one whose path matches the current route
-  const activePath = activeTab !== undefined ? TAB_PATHS[activeTab] ?? "" : pathname ?? "";
+  const activePath = activeTab !== undefined ? TAB_PATHS[activeTab] ??"" : pathname ??"";
   const isActive = (href: string) =>
-    !href.includes("#") && href !== "/" && (activePath === href || activePath.startsWith(`${href}/`));
+    !href.includes("#") && href !=="/" && (activePath === href || activePath.startsWith(`${href}/`));
 
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-transform duration-300 ease-in-out ${
-          visible ? "translate-y-0" : "-translate-y-full"
+          visible ?"translate-y-0" :"-translate-y-full"
         } ${
           scrolled || forceSolid
-            ? "shadow-sm bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
-            : "bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
+            ?"shadow-sm bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
+            :"bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
         }`}
       >
       {/* Top Announcement Bar */}
@@ -141,8 +140,8 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       {/* Main Navigation Bar */}
       <div className={`transition-all duration-300 ${
         scrolled || forceSolid
-          ? "bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
-          : "bg-transparent border-b border-transparent"
+          ?"bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
+          :"bg-transparent border-b border-transparent"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-between relative">
 
@@ -159,7 +158,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
 
           {/* Brand Logo & Tagline (Centered on Mobile, Left-aligned on Desktop) */}
           <div className="flex items-center justify-center lg:justify-start flex-1 lg:flex-none z-10">
-            <Link href="/" className="flex items-center group py-0.5 select-none">
+            <Link href="/" className="flex items-center group py-0.5">
               <Image
                 src={c.logo}
                 alt={c.logoAlt}
@@ -175,7 +174,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           {/* Desktop Navigation Links (Center) */}
           <nav className="hidden lg:flex items-center space-x-9 text-[11px] font-semibold tracking-[0.2em] uppercase">
             {c.navLinks.map((link, i) => {
-              const isShop = link.href === "/shop" || link.label.toLowerCase() === "shop";
+              const isShop = link.href ==="/shop" || link.label.toLowerCase() ==="shop";
               const active = isActive(link.href);
 
               if (isShop) {
@@ -185,8 +184,8 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                       href={link.href}
                       className={`transition-colors duration-200 pb-1 flex items-center gap-1.5 relative ${
                         active
-                          ? "text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
-                          : "text-[#666666] hover:text-[#000000]"
+                          ?"text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
+                          :"text-[#666666] hover:text-[#000000]"
                       }`}
                     >
                       <span>{link.label}</span>
@@ -247,8 +246,8 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                   href={link.href}
                   className={`transition-colors duration-200 pb-1 relative ${
                     active
-                      ? "text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
-                      : "text-[#666666] hover:text-[#000000]"
+                      ?"text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
+                      :"text-[#666666] hover:text-[#000000]"
                   }`}
                 >
                   {link.label}
@@ -274,9 +273,9 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
               className="relative p-1 hover:text-[#726254] transition-colors cursor-pointer"
               aria-label={`Wishlist, ${wishlistCount} saved items`}
             >
-              <Heart size={18} strokeWidth={1.75} className={wishlistCount > 0 ? "fill-black text-black" : ""} />
+              <Heart size={18} strokeWidth={1.75} className={wishlistCount > 0 ?"fill-black text-black" :""} />
               {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#8C7355] text-white text-[8.5px] font-mono font-bold rounded-full flex items-center justify-center shadow-xs">
+                <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#8C7355] text-white text-[8.5px] font-sans font-bold rounded-full flex items-center justify-center shadow-xs">
                   {wishlistCount}
                 </span>
               )}
@@ -297,22 +296,22 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 <div className="w-[280px] bg-white border border-[#E5E3DD] rounded-[20px] shadow-[0_16px_48px_rgba(0,0,0,0.14)] py-2.5 backdrop-blur-md overflow-hidden text-left animate-in fade-in zoom-in-95 duration-150">
                   {/* Header Title */}
                   <div className="px-5 py-3.5 border-b border-[#F0EFEB]">
-                    <h4 className="text-[15px] font-bold text-black tracking-tight font-serif-luxury">
+                    <h4 className="text-[15px] font-bold text-black tracking-tight font-sans">
                       Your Account
                     </h4>
                     {currentUser ? (
-                      <p className="text-xs text-[#666666] font-mono truncate mt-0.5">
+                      <p className="text-xs text-[#666666] font-sans truncate mt-0.5">
                         {currentUser.name}
                       </p>
                     ) : (
-                      <p className="text-[11px] text-[#888888] mt-0.5 leading-tight">
+                      <p className="text-[11px] text-[#888888] mt-0.5 leading-tight font-sans">
                         Sign in for bespoke atelier access
                       </p>
                     )}
                   </div>
 
                   {/* Marked Sections: My Profile, Orders, Saved Addresses, Wishlist */}
-                  <div className="py-1.5">
+                  <div className="py-1.5 font-sans">
                     <Link
                       href="/account"
                       className="flex items-center gap-3.5 px-5 py-3 text-[14px] font-medium text-[#222222] hover:bg-[#F7F6F3] hover:text-black transition-colors group/item"
@@ -346,7 +345,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                         <span>Wishlist</span>
                       </div>
                       {wishlistCount > 0 && (
-                        <span className="min-w-[20px] h-[20px] px-1.5 text-[11px] font-mono font-bold rounded-full bg-[#8C7355] text-white flex items-center justify-center">
+                        <span className="min-w-[20px] h-[20px] px-1.5 text-[11px] font-sans font-bold rounded-full bg-[#8C7355] text-white flex items-center justify-center">
                           {wishlistCount}
                         </span>
                       )}
@@ -390,7 +389,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 className="absolute -top-1 -right-1.5 min-w-4 h-4 px-0.5 bg-[#000000] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs"
                 suppressHydrationWarning
               >
-                {bagCount > 99 ? "99+" : bagCount}
+                {bagCount > 99 ?"99+" : bagCount}
               </span>
             </Link>
           </div>
@@ -401,7 +400,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 px-6 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
           {c.navLinks.map((link, i) => {
-            const isShop = link.href === "/shop" || link.label.toLowerCase() === "shop";
+            const isShop = link.href ==="/shop" || link.label.toLowerCase() ==="shop";
             if (isShop) {
               return (
                 <div key={`${link.href}-${i}`} className="border-b border-[#DAC2AB]/60 pb-2">
@@ -440,8 +439,8 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block text-xs font-bold tracking-[0.2em] uppercase py-2 ${
-                  i < c.navLinks.length - 1 ? "border-b border-[#DAC2AB]/60" : ""
-                } ${link.highlight ? "text-[#8A6E48]" : "text-[#1F1C18]"}`}
+                  i < c.navLinks.length - 1 ?"border-b border-[#DAC2AB]/60" :""
+                } ${link.highlight ?"text-[#8A6E48]" :"text-[#1F1C18]"}`}
               >
                 {link.mobileLabel || link.label}
               </Link>
@@ -451,7 +450,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           {/* Mobile: Your Account (Flipkart Style Marked Options) */}
           <div className="pt-3 border-t border-[#DAC2AB]/60">
             <div className="text-[10px] font-bold tracking-[0.2em] text-[#8C7355] uppercase mb-2">
-              Your Account {currentUser ? `• ${currentUser.name}` : ""}
+              Your Account {currentUser ? `• ${currentUser.name}` :""}
             </div>
             <div className="grid grid-cols-2 gap-2 text-[11px] font-semibold">
               <Link
@@ -484,7 +483,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 className="flex items-center gap-2 p-2 rounded-lg bg-[#FAF8F5] border border-[#E5E3DD] text-[#1F1C18]"
               >
                 <Heart size={14} className="shrink-0" />
-                <span className="truncate">Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ""}</span>
+                <span className="truncate">Wishlist {wishlistCount > 0 ? `(${wishlistCount})` :""}</span>
               </Link>
             </div>
             {currentUser ? (

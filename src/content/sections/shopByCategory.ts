@@ -9,7 +9,7 @@ export interface ShopByCategoryItem {
 }
 
 export const shopByCategory = {
-  heading: "SHOP BY CATEGORY",
+  heading: "OUR FAVOURITE",
   items: [
     {
       id: 51,

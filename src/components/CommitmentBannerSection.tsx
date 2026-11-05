@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React from"react";
+import Link from"next/link";
 
 interface CommitmentBannerSectionProps {
   eyebrow?: string;
@@ -14,20 +14,17 @@ interface CommitmentBannerSectionProps {
 }
 
 export default function CommitmentBannerSection({
-  eyebrow = "OUR COMMITMENT",
-  title = "A Standard We Hold Ourselves To",
-  description = "Every client who walks through our door receives the same level of attention — whether commissioning a single shirt or a full wardrobe. Precision, honesty, and craft are not reserved for special occasions. They are the baseline.",
-  ctaLabel = "BEGIN YOUR CONSULTATION",
-  ctaHref = "/custom-shirt#appointment-booking",
-  features = [
-    "Expert guidance on fabric selection",
-    "Precise measurements and pattern creation",
-    "Hand-finished details & custom touches",
+  eyebrow ="OUR COMMITMENT",
+  title ="A Standard We Hold Ourselves To",
+  description ="Every client who walks through our door receives the same level of attention — whether commissioning a single shirt or a full wardrobe. Precision, honesty, and craft are not reserved for special occasions. They are the baseline.",
+  ctaLabel ="BEGIN YOUR CONSULTATION",
+  ctaHref ="/custom-shirt#appointment-booking",
+  features = ["Expert guidance on fabric selection","Precise measurements and pattern creation","Hand-finished details & custom touches",
   ],
-  image = "/about_commitment_light_banner.jpg",
+  image ="/about_commitment_light_banner.jpg",
 }: CommitmentBannerSectionProps) {
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden select-none bg-[#0D0B09]">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#0D0B09]">
       {/* Background Image: Master Bespoke Tailor Fitting - Full Clarity & Edge-to-Edge */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

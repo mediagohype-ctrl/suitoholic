@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import AtelierStoryTimeline from "@/components/AtelierStoryTimeline";
-import PrinciplesSection from "@/components/PrinciplesSection";
-import CommitmentBannerSection from "@/components/CommitmentBannerSection";
+import React from"react";
+import Header from"@/components/Header";
+import Footer from"@/components/Footer";
+import AtelierStoryTimeline from"@/components/AtelierStoryTimeline";
+import PrinciplesSection from"@/components/PrinciplesSection";
+import CommitmentBannerSection from"@/components/CommitmentBannerSection";
 export default function AboutPage() {
 
   return (
@@ -14,15 +14,15 @@ export default function AboutPage() {
       <Header activeTab="about" />
 
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION: "Tailoring with Care and Precision" (Light Atelier Aesthetic) */}
+      {/* 1. HERO SECTION:"Tailoring with Care and Precision" (Light Atelier Aesthetic) */}
       {/* ========================================================================= */}
-      <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center text-center overflow-hidden border-b border-[#E5E3DD] select-none bg-[#ECEAE5] pt-32 sm:pt-36 pb-20 sm:pb-24">
+      <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center text-center overflow-hidden border-b border-[#E5E3DD] bg-[#ECEAE5] pt-32 sm:pt-36 pb-20 sm:pb-24">
         {/* Background Tailoring Atelier Photo (Light & Sunlit with Fabric Shelves & Tailor) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/about_hero_light.jpg"
           alt="Suitoholic Master Bespoke Tailoring Atelier"
-          className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
           loading="eager"
         />
 

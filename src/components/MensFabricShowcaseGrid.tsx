@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { useContent } from "@/context/SiteDataProvider";
+import React from"react";
+import Link from"next/link";
+import { ArrowRight } from"lucide-react";
+import { useContent } from"@/context/SiteDataProvider";
 
 interface MensFabricShowcaseGridProps {
   onSelectCollection?: (collectionId: string) => void;
@@ -17,7 +17,7 @@ export default function MensFabricShowcaseGrid({
   const collections = grid?.collections ?? [];
 
   return (
-    <section className="w-full pt-8 sm:pt-12 pb-6 sm:pb-10 space-y-6 sm:space-y-8 select-none">
+    <section className="w-full pt-8 sm:pt-12 pb-6 sm:pb-10 space-y-6 sm:space-y-8">
       
       {/* Top Header Row with Accent Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5E3DD] pb-5">
@@ -37,7 +37,7 @@ export default function MensFabricShowcaseGrid({
 
         {/* Right Action: Customize Button */}
         <Link
-          href={grid?.ctaLink || "/custom-shirt"}
+          href={grid?.ctaLink ||"/custom-shirt"}
           className="bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-[0.18em] px-8 py-3.5 rounded-full transition-all duration-300 uppercase shadow-sm hover:shadow flex items-center gap-2 group shrink-0 self-start sm:self-auto cursor-pointer"
         >
           <span>{grid?.ctaLabel}</span>

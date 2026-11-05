@@ -1,41 +1,40 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo, Suspense } from "react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import FeatureHighlightsBar from "@/components/FeatureHighlightsBar";
-import AtelierEditorialBanner from "@/components/AtelierEditorialBanner";
-import ShopByFabricsSection from "@/components/ShopByFabricsSection";
-import CuratedStartingPoints, { CuratedLookItem } from "@/components/CuratedStartingPoints";
-import BespokeJourneySection from "@/components/BespokeJourneySection";
-import BespokePillarsBanner from "@/components/BespokePillarsBanner";
-import SeeBeforeYouStitchSection from "@/components/SeeBeforeYouStitchSection";
-import CustomOutfitHero from "@/components/CustomOutfitHero";
-import GlowingReviewsSection from "@/components/GlowingReviewsSection";
+import React, { useState, useEffect, useRef, useMemo, Suspense } from"react";
+import Link from"next/link";
+import { useSearchParams } from"next/navigation";
+import Header from"@/components/Header";
+import Footer from"@/components/Footer";
+import AtelierEditorialBanner from"@/components/AtelierEditorialBanner";
+import ShopByFabricsSection from"@/components/ShopByFabricsSection";
+import CuratedStartingPoints, { CuratedLookItem } from"@/components/CuratedStartingPoints";
+import BespokeJourneySection from"@/components/BespokeJourneySection";
+import BespokePillarsBanner from"@/components/BespokePillarsBanner";
+import SeeBeforeYouStitchSection from"@/components/SeeBeforeYouStitchSection";
+import CustomOutfitHero from"@/components/CustomOutfitHero";
+import GlowingReviewsSection from"@/components/GlowingReviewsSection";
 
 const ShowcaseDivider = () => (
   <div className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8 my-6 sm:my-8 lg:my-10">
     <div className="w-full h-[1px] bg-[#E5E3DD]" />
   </div>
 );
-import MannequinShirtViewer from "@/components/MannequinShirtViewer";
-import CustomizationModal from "@/components/CustomizationModal";
-import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
-import { ArrowLeft, Check, Scissors, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
-import confetti from "canvas-confetti";
-import { apiFetch } from "@/lib/api";
-import { useCatalog, useContent } from "@/context/SiteDataProvider";
-import { useCart } from "@/context/CartProvider";
-import { fillTemplate } from "@/content/merge";
-import type { CustomFit, ProductItem } from "@/lib/types";
+import MannequinShirtViewer from"@/components/MannequinShirtViewer";
+import CustomizationModal from"@/components/CustomizationModal";
+import { CollarIllustration, CuffIllustration } from"@/components/customizer/StyleIllustrations";
+import { ArrowLeft, Check, Scissors, MapPin, ChevronLeft, ChevronRight } from"lucide-react";
+import confetti from"canvas-confetti";
+import { apiFetch } from"@/lib/api";
+import { useCatalog, useContent } from"@/context/SiteDataProvider";
+import { useCart } from"@/context/CartProvider";
+import { fillTemplate } from"@/content/merge";
+import type { CustomFit, ProductItem } from"@/lib/types";
 
 export type CustomFitState = CustomFit;
 
-type ViewerBodyFit = "lean" | "regular" | "tummy";
-type ViewerSleeve = "full" | "half";
-const VIEWER_BODY_FITS: string[] = ["lean", "regular", "tummy"];
+type ViewerBodyFit ="lean" |"regular" |"tummy";
+type ViewerSleeve ="full" |"half";
+const VIEWER_BODY_FITS: string[] = ["lean","regular","tummy"];
 
 // Renders `text`, wrapping the first occurrence of `phrase` in a lighter span.
 function withHighlight(text: string, phrase: string) {
@@ -78,8 +77,8 @@ function CustomShirtConfiguratorContent() {
     if (fabricParam) {
       const found = products.find(
         (p) =>
-          p.category === "formal_bespoke" ||
-          p.category === "fabrics" ||
+          p.category ==="formal_bespoke" ||
+          p.category ==="fabrics" ||
           (p.slug && p.slug.toLowerCase().includes(fabricParam.toLowerCase())),
       );
       if (found) return found;
@@ -94,8 +93,8 @@ function CustomShirtConfiguratorContent() {
     } else if (fabricParam) {
       const found = products.find(
         (p) =>
-          p.category === "formal_bespoke" ||
-          p.category === "fabrics" ||
+          p.category ==="formal_bespoke" ||
+          p.category ==="fabrics" ||
           (p.slug && p.slug.toLowerCase().includes(fabricParam.toLowerCase())),
       );
       if (found) setActiveProduct(found);
@@ -104,10 +103,10 @@ function CustomShirtConfiguratorContent() {
 
   const productScrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollProducts = (dir: "left" | "right") => {
+  const scrollProducts = (dir:"left" |"right") => {
     if (productScrollRef.current) {
-      const amount = dir === "left" ? -440 : 440;
-      productScrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
+      const amount = dir ==="left" ? -440 : 440;
+      productScrollRef.current.scrollBy({ left: amount, behavior:"smooth" });
     }
   };
 
@@ -116,7 +115,7 @@ function CustomShirtConfiguratorContent() {
       (p) =>
         p.category?.includes("shirt") ||
         p.slug?.includes("shirt") ||
-        p.category === "formal_bespoke" ||
+        p.category ==="formal_bespoke" ||
         p.customizable !== false
     );
     return list.length > 0 ? list : products;
@@ -130,16 +129,16 @@ function CustomShirtConfiguratorContent() {
       setActiveProduct(found);
     } else {
       setActiveProduct({
-        id: typeof item.id === "number" ? item.id : 9001,
+        id: typeof item.id ==="number" ? item.id : 9001,
         slug: item.slug,
         name: item.title,
         price: item.price,
-        rawPrice: parseInt(item.price.replace(/[^\d]/g, "") || "2499", 10),
+        rawPrice: parseInt(item.price.replace(/[^\d]/g,"") ||"2499", 10),
         subtitle: item.subtitle,
         description: item.subtitle,
         fabric: item.subtitle,
-        category: "formal_shirts",
-        threadCount: "140s",
+        category:"formal_shirts",
+        threadCount:"140s",
         image: item.image,
         gallery: [item.image, item.hoverImage || item.image],
         rating: 5,
@@ -186,39 +185,36 @@ function CustomShirtConfiguratorContent() {
   const [bookingReference, setBookingReference] = useState<string | null>(null);
 
   const heroCopy = (c as any).hero || {
-    badge: "SUITOHOLIC BESPOKE ATELIER • DELHI NCR",
-    title: "The Art of Bespoke Tailoring in Delhi NCR",
-    description: "Founded in New Delhi by master bespoke cutters dedicated to heritage craftsmanship. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture. Tailored from 140s Egyptian Giza cottons and Italian worsted wools, fitted in person, and made to last a lifetime.",
-    nameLabel: "Name",
-    namePlaceholder: "Enter your full name",
-    phoneLabel: "Phone",
-    phonePlaceholder: "Enter your phone number",
-    emailLabel: "Email",
-    emailPlaceholder: "Enter your email address",
-    dateLabel: "Preferred Fitting Date",
-    buttonLabel: "Book Atelier Appointment",
-    successTitle: "Fitting Session Requested!",
-    successMessage: "Thank you! A Suitoholic master bespoke consultant will reach out shortly to confirm your private fitting in Delhi NCR.",
-    jumpToConfiguratorLabel: "Or Design Your Shirt with 3D Mannequin Online",
-    pillars: [
-      "Hand-Drafted Paper Pattern",
-      "1-on-1 Master Fitting",
-      "100% Fit Guarantee",
+    badge:"SUITOHOLIC BESPOKE ATELIER • DELHI NCR",
+    title:"The Art of Bespoke Tailoring in Delhi NCR",
+    description:"Founded in New Delhi by master bespoke cutters dedicated to heritage craftsmanship. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture. Tailored from 140s Egyptian Giza cottons and Italian worsted wools, fitted in person, and made to last a lifetime.",
+    nameLabel:"Name",
+    namePlaceholder:"Enter your full name",
+    phoneLabel:"Phone",
+    phonePlaceholder:"Enter your phone number",
+    emailLabel:"Email",
+    emailPlaceholder:"Enter your email address",
+    dateLabel:"Preferred Fitting Date",
+    buttonLabel:"Book Atelier Appointment",
+    successTitle:"Fitting Session Requested!",
+    successMessage:"Thank you! A Suitoholic master bespoke consultant will reach out shortly to confirm your private fitting in Delhi NCR.",
+    jumpToConfiguratorLabel:"Or Design Your Shirt with 3D Mannequin Online",
+    pillars: ["Hand-Drafted Paper Pattern","1-on-1 Master Fitting","100% Fit Guarantee",
     ],
   };
 
   const customOfferingsList: { title: string; detail?: string }[] = (c as any).customOfferings || [
-    { title: "Bespoke Shirts", detail: "Formal, Casual & Tuxedo" },
-    { title: "Handcrafted Suits", detail: "Two-Piece & Three-Piece" },
-    { title: "Luxury Overcoats", detail: "Cashmere & Merino Wool" },
-    { title: "Tailored Blazers", detail: "Italian Poplins & Twills" },
-    { title: "Royal Bandhgalas", detail: "Heritage Silhouette" },
-    { title: "Tuxedos & Dinner Jackets", detail: "Silk Satin Lapels" },
-    { title: "Custom Trousers", detail: "Pleated & Gurkha Waist" },
-    { title: "Bespoke Waistcoats", detail: "Double & Single Breasted" },
-    { title: "Nehru Jackets", detail: "Raw Silk & Linen" },
-    { title: "Jodhpuri Suits", detail: "Royal Ceremonial Edit" },
-    { title: "Monogrammed Accents", detail: "Custom Embroidery on Cuffs" },
+    { title:"Bespoke Shirts", detail:"Formal, Casual & Tuxedo" },
+    { title:"Handcrafted Suits", detail:"Two-Piece & Three-Piece" },
+    { title:"Luxury Overcoats", detail:"Cashmere & Merino Wool" },
+    { title:"Tailored Blazers", detail:"Italian Poplins & Twills" },
+    { title:"Royal Bandhgalas", detail:"Heritage Silhouette" },
+    { title:"Tuxedos & Dinner Jackets", detail:"Silk Satin Lapels" },
+    { title:"Custom Trousers", detail:"Pleated & Gurkha Waist" },
+    { title:"Bespoke Waistcoats", detail:"Double & Single Breasted" },
+    { title:"Nehru Jackets", detail:"Raw Silk & Linen" },
+    { title:"Jodhpuri Suits", detail:"Royal Ceremonial Edit" },
+    { title:"Monogrammed Accents", detail:"Custom Embroidery on Cuffs" },
   ];
 
   const handleAppointmentSubmit = async (e: React.FormEvent) => {
@@ -228,17 +224,17 @@ function CustomShirtConfiguratorContent() {
     setApptError(null);
     try {
       const res = await apiFetch<{ ok: boolean; id: number }>("/inquiries", {
-        method: "POST",
+        method:"POST",
         body: {
-          type: "appointment",
+          type:"appointment",
           name: apptName.trim(),
           email: apptEmail.trim(),
           phone: apptPhone.trim(),
-          subject: "Suitoholic Bespoke Fitting Appointment - Delhi NCR",
+          subject:"Suitoholic Bespoke Fitting Appointment - Delhi NCR",
           message: `Preferred Date: ${apptDate}\nService: Custom Fit Consultation\nAtelier: Suitoholic Bespoke Wing, Delhi NCR`,
         },
       });
-      setBookingReference(res?.id ? `SUI-FIT-${String(res.id).padStart(5, "0")}` : `SUI-FIT-${Math.floor(10000 + Math.random() * 90000)}`);
+      setBookingReference(res?.id ? `SUI-FIT-${String(res.id).padStart(5,"0")}` : `SUI-FIT-${Math.floor(10000 + Math.random() * 90000)}`);
       setAppointmentSuccess(true);
     } catch {
       // Graceful local success if API server is offline
@@ -259,15 +255,15 @@ function CustomShirtConfiguratorContent() {
     }));
   };
 
-  const isFullSleeve = customFit.sleeveType === "full";
+  const isFullSleeve = customFit.sleeveType ==="full";
   const totalSteps = 6;
   const stepCopy = c.steps[currentStep - 1] as (typeof c.steps)[number] | undefined;
-  const stepVars = { step: currentStep, total: totalSteps, breadcrumb: stepCopy?.breadcrumb ?? "" };
+  const stepVars = { step: currentStep, total: totalSteps, breadcrumb: stepCopy?.breadcrumb ??"" };
 
   const handleNextStep = () => {
     if (currentStep < totalSteps) {
       setCurrentStep((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior:"smooth" });
     } else {
       void handleAddToBag();
     }
@@ -279,7 +275,7 @@ function CustomShirtConfiguratorContent() {
       // Going back to change the configuration allows adding a new shirt afterwards.
       setOrderSubmitted(false);
       setAddError(null);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior:"smooth" });
     }
   };
 
@@ -318,8 +314,8 @@ function CustomShirtConfiguratorContent() {
   const getHeightCleanTitle = (h: string) => opts.heights.find((opt) => opt.id === h)?.shortTitle ?? h;
 
   // The 3D mannequin only knows these shapes; fall back if the CMS holds something else.
-  const viewerBodyFit = (VIEWER_BODY_FITS.includes(customFit.bodyFit) ? customFit.bodyFit : "lean") as ViewerBodyFit;
-  const viewerSleeve: ViewerSleeve = customFit.sleeveType === "half" ? "half" : "full";
+  const viewerBodyFit = (VIEWER_BODY_FITS.includes(customFit.bodyFit) ? customFit.bodyFit :"lean") as ViewerBodyFit;
+  const viewerSleeve: ViewerSleeve = customFit.sleeveType ==="half" ?"half" :"full";
 
   return (
     <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-clip">
@@ -330,7 +326,7 @@ function CustomShirtConfiguratorContent() {
       <CustomOutfitHero />
 
       {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize */}
-      <section className="relative w-full bg-[#F5F4F0] border-b border-[#E5E3DD] py-3.5 sm:py-4 overflow-hidden select-none">
+      <section className="relative w-full bg-[#F5F4F0] border-b border-[#E5E3DD] py-3.5 sm:py-4 overflow-hidden">
         {/* Left and Right Edge Gradient Masks */}
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#F5F4F0] to-transparent z-10" />
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#F5F4F0] to-transparent z-10" />
@@ -416,7 +412,7 @@ function CustomShirtConfiguratorContent() {
                     {bookingReference && (
                       <div className="pt-1">
                         <span
-                          className="text-[11px] font-mono text-black bg-[#F5F4F0] border border-[#E5E3DD] py-2 px-4 inline-block font-bold rounded-full"
+                          className="text-[11px] font-sans text-black bg-[#F5F4F0] border border-[#E5E3DD] py-2 px-4 inline-block font-bold rounded-full tracking-wider"
                         >
                           Ref: {bookingReference}
                         </span>
@@ -508,7 +504,7 @@ function CustomShirtConfiguratorContent() {
                       disabled={isBooking}
                       className="w-full mt-3 bg-black hover:bg-neutral-800 active:scale-[0.99] text-white font-bold text-xs sm:text-sm py-4 px-6 rounded-full transition-all shadow-sm hover:shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait text-center uppercase tracking-[0.14em]"
                     >
-                      {isBooking ? "Booking..." : heroCopy.buttonLabel}
+                      {isBooking ?"Booking..." : heroCopy.buttonLabel}
                     </button>
                   </form>
                 )}
@@ -521,9 +517,6 @@ function CustomShirtConfiguratorContent() {
 
       {/* 4. Customer Testimonials Reviews matching reference design */}
       <GlowingReviewsSection />
-
-      {/* Bottom Feature Highlights Bar */}
-      <FeatureHighlightsBar />
 
       {/* Comprehensive Luxury E-Commerce Footer */}
       <Footer />
