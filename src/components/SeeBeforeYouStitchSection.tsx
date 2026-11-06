@@ -159,14 +159,14 @@ export default function SeeBeforeYouStitchSection() {
                 </div>
               </div>
 
-              {/* Right Sub-Card: Finished Look on Model (Original Edge-to-Edge Column Pattern) */}
-              <div className="md:col-span-8 flex justify-center items-center h-full">
-                <div className="relative aspect-[4/4.8] sm:aspect-[4/4.5] w-full max-h-[58vh] lg:max-h-[62vh] rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-sm group">
+              {/* Right Sub-Card: Finished Look on Model (Full Shirt View - Never Cut Off) */}
+              <div className="md:col-span-8 flex justify-center items-center h-full w-full py-1">
+                <div className="relative aspect-[896/1200] h-full max-h-[58vh] lg:max-h-[62vh] w-auto max-w-full rounded-[14px] sm:rounded-[18px] overflow-hidden bg-[#D8D6D2] border border-[#E5E3DD] shadow-sm group flex items-center justify-center">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeSlide.lookImage}
                     alt={activeSlide.title}
-                    className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-103"
+                    className="w-full h-full object-contain object-center transition-all duration-700 ease-out group-hover:scale-102"
                   />
 
                   {/* "PREVIEW" Badge */}
