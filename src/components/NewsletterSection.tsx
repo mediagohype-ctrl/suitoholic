@@ -49,7 +49,7 @@ export default function NewsletterSection() {
 
           {/* Left Column: Title & Subtitle Information */}
           <div className="w-full lg:w-5/12 space-y-3.5 text-left">
-            <h3 className="text-2xl sm:text-3xl lg:text-[38px] xl:text-[42px] font-bold text-black tracking-tight leading-tight">
+            <h3 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
               {c.heading}
             </h3>
             <p className="text-sm sm:text-base lg:text-[17px] text-[#666666] leading-relaxed font-normal">

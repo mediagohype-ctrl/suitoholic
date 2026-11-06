@@ -112,7 +112,7 @@ export default function WishlistPage() {
             <Heart size={28} strokeWidth={1.5} />
           </div>
           <div className="space-y-2">
-            <h2 className="font-serif-luxury text-2xl sm:text-3xl uppercase text-black font-bold">
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
               YOUR WISHLIST IS EMPTY
             </h2>
             <p className="text-sm text-[#666666] leading-relaxed">

@@ -74,7 +74,7 @@ export default function ShopByCategoryGrid() {
     <section className="w-full my-12 sm:my-16 lg:my-20 relative">
       {/* Title: OUR FAVOURITE */}
       <div className="text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-        <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           {c.heading ==="SHOP BY CATEGORY" ?"OUR FAVOURITE" : (c.heading ||"OUR FAVOURITE")}
         </h2>
       </div>

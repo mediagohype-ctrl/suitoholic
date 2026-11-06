@@ -127,10 +127,15 @@ export default function HeroVideoBanner() {
         {/* Left Column: Main Heading + Action Buttons (+ Mobile Range Tracker) */}
         <div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl flex flex-col items-start pt-4 sm:pt-10 md:pt-0">
 
-          {/* Main Luxury High-Contrast Heading */}
-          <h1 className="font-serif-luxury font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[50px] leading-[1.08] text-black tracking-[0.02em] uppercase mb-4 sm:mb-6">
-            {c.headingLine1} <br />
-            {c.headingLine2 ? c.headingLine2.replace(/\.+$/,"") : c.headingLine2}
+          {/* Main Luxury High-Contrast Heading (2 Lines) */}
+          <h1 className="font-serif-luxury font-bold text-2xl sm:text-3xl lg:text-[38px] leading-tight text-black tracking-[0.14em] uppercase mb-4 sm:mb-6">
+            {c.headingLine1}
+            {c.headingLine2 && (
+              <>
+                <br />
+                {c.headingLine2.replace(/\.+$/, "")}
+              </>
+            )}
           </h1>
 
           {/* Action Buttons: Stacked on Mobile, Side-by-Side on Desktop */}

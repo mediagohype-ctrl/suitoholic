@@ -58,7 +58,7 @@ export default function PrinciplesSection({
             {/* Header Block */}
             <div className="space-y-3">
               {/* Main Headline */}
-              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] font-bold text-black tracking-tight leading-[1.15]">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                 {titleLine}
                 <span className="italic font-serif font-normal text-black">
                   {titleAccent}

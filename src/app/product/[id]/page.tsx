@@ -5,7 +5,7 @@ import Link from"next/link";
 import { useParams, useRouter } from"next/navigation";
 import Header from"@/components/Header";
 import Footer from"@/components/Footer";
-import ShopByCategoryGrid from"@/components/ShopByCategoryGrid";
+import YouMayAlsoLikeSection from "@/components/YouMayAlsoLikeSection";
 import ModernProductCard from"@/components/ModernProductCard";
 import { useCart } from"@/context/CartProvider";
 import { useCatalog, useContent } from"@/context/SiteDataProvider";
@@ -268,9 +268,6 @@ export default function ProductDetailPage() {
 
               {/* Brand Title & Price */}
               <div>
-                <span className="text-[10.5px] font-bold tracking-[0.26em] uppercase text-[#666666] block mb-1">
-                  {c.brandEyebrow}
-                </span>
                 <h1 className="text-xl sm:text-2xl lg:text-[28px] font-normal font-serif-luxury text-black tracking-tight uppercase leading-tight">
                   {activeProduct.name}
                 </h1>
@@ -436,95 +433,75 @@ export default function ProductDetailPage() {
 
           </div>
 
-          {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES (SHOP PAGE STYLING) */}
-          {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES */}
-          <div className="w-full space-y-6 pt-6 sm:pt-8">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <div className="inline-flex items-center justify-center space-x-2 text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-[#666666] uppercase">
-                <span>EXECUTIVE ATELIER</span>
-                <span>•</span>
-                <span>SIGNATURE EDIT</span>
+        </main>
+
+        {/* SECTION 2: BEST SELLERS / EXECUTIVE STRIPES (END TO END FULL WIDTH) */}
+        <div className="w-full py-8 sm:py-12 border-t border-[#E5E3DD]">
+          <div className="text-center max-w-4xl mx-auto px-4 mb-6 sm:mb-8">
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+              {c.macroTitle || "BEST SELLERS"}
+            </h2>
+          </div>
+
+          {/* 4-Column Product Cards Grid - END TO END (5px gap from screen) with Exact 2px Gap between cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start px-[5px]">
+            {(macroProducts.length >= 4 ? macroProducts : products.slice(0, 4)).map((item) => (
+              <div key={item.id} className="w-full">
+                <ModernProductCard product={item} />
               </div>
+            ))}
+          </div>
+        </div>
 
-              <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                {c.macroTitle ||"BEST SELLERS"}
+        {/* SECTION 3: "COMPLETE THE LOOK" E-COMMERCE OUTFIT GRID (END TO END FULL WIDTH) */}
+        {completeLookItems.length > 0 && (
+          <div className="w-full py-8 sm:py-12 border-t border-[#E5E3DD]">
+            <div className="text-center max-w-4xl mx-auto px-4 mb-6 sm:mb-8">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+                {c.completeLookTitle}
               </h2>
-
-              {c.macroSubtitle && (
-                <p className="text-[11px] sm:text-xs text-[#666666] tracking-wider uppercase font-medium pt-0.5">
-                  {c.macroSubtitle}
-                </p>
-              )}
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start pt-2">
-              {(macroProducts.length >= 4 ? macroProducts : products.slice(0, 4)).map((item) => (
+            {/* 4-Column Product Cards Grid - END TO END (5px gap from screen) */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start px-[5px]">
+              {completeLookItems.map((item) => (
                 <div key={item.id} className="w-full">
                   <ModernProductCard product={item} />
                 </div>
               ))}
             </div>
           </div>
+        )}
 
-          {/* SECTION 3:"COMPLETE THE LOOK" E-COMMERCE OUTFIT GRID */}
-          {completeLookItems.length > 0 && (
-            <div className="w-full space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-                <div>
-                  <span className="text-[10.5px] font-bold tracking-[0.28em] text-[#666666] uppercase block mb-1">
-                    {c.completeLookEyebrow}
-                  </span>
-                  <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                    {c.completeLookTitle}
-                  </h2>
-                </div>
-                <span className="text-xs font-bold text-[#666666] uppercase tracking-wider">
-                  {c.completeLookSubtitle} {activeProduct.name}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start pt-2">
-                {completeLookItems.map((item) => (
-                  <div key={item.id} className="w-full">
-                    <ModernProductCard product={item} />
-                  </div>
-                ))}
-              </div>
+        {/* SECTION 4: DISCOVER OTHER BESPOKE COLORWAYS (END TO END FULL WIDTH) */}
+        {moreColorways.length > 0 && (
+          <div className="w-full py-8 sm:py-12 border-t border-[#E5E3DD]">
+            <div className="w-full px-[5px] sm:px-3 mb-6 sm:mb-8 flex justify-between items-end gap-3">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+                {c.moreTitle || "MORE BESPOKE SHIRT COLORWAYS"}
+              </h2>
+              <Link href="/shop" className="text-xs font-bold tracking-widest text-black hover:text-[#666666] uppercase flex items-center gap-1 shrink-0 transition-colors">
+                <span>{c.viewAllLabel}</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
-          )}
 
-          {/* SECTION 4: DISCOVER OTHER BESPOKE COLORWAYS */}
-          {moreColorways.length > 0 && (
-            <div className="w-full space-y-4 pt-2">
-              <div className="flex justify-between items-end gap-3">
-                <div>
-                  <span className="text-[10.5px] font-bold tracking-[0.28em] text-[#666666] uppercase block mb-1">
-                    {c.moreEyebrow}
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-normal font-serif-luxury text-black uppercase tracking-wider">
-                    {c.moreTitle}
-                  </h3>
+            {/* 4-Column Product Cards Grid - END TO END (5px gap from screen) */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start px-[5px]">
+              {moreColorways.map((p) => (
+                <div key={p.id} className="w-full">
+                  <ModernProductCard product={p} />
                 </div>
-                <Link href="/shop" className="text-xs font-bold tracking-widest text-black hover:text-[#666666] uppercase flex items-center gap-1 shrink-0 transition-colors">
-                  <span>{c.viewAllLabel}</span>
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start pt-2">
-                {moreColorways.map((p) => (
-                  <div key={p.id} className="w-full">
-                    <ModernProductCard product={p} />
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
-          {/* SECTION 5: SHOP BY CATEGORY GRID */}
-          <ShopByCategoryGrid />
-
-        </main>
+        {/* SECTION 5: YOU MAY ALSO LIKE (FULL SCREEN WIDTH CONTINUOUS SLOW AUTOPLAY CAROUSEL) */}
+        <YouMayAlsoLikeSection
+          products={products}
+          currentProductId={activeProduct.id}
+        />
       </div>
 
       {/* Common Atelier Showcase: Video Banner, Shop By Fabrics & Customer Testimonials */}

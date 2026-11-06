@@ -25,7 +25,7 @@ export default function AtelierConsultationBanner({
       <div className="max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] py-16 sm:py-24 px-6 sm:px-12 text-center flex flex-col items-center shadow-sm">
           {/* Main Headline */}
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-bold leading-[1.12] tracking-tight text-black mb-5 sm:mb-6">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight mb-5 sm:mb-6">
             {headingPrefix}
             <span className="text-black italic font-normal font-serif-luxury">
               {headingHighlight}

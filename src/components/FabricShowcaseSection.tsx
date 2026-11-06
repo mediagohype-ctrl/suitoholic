@@ -121,13 +121,10 @@ export default function FabricShowcaseSection() {
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 border-b border-[#E5E3DD] pb-6">
-          <div className="space-y-2.5">
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+          <div>
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
               THE ATELIER FABRIC ARCHIVE
             </h2>
-            <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-sans max-w-2xl leading-relaxed">
-              Every Suitoholic garment begins at the loom. Explore our authentic hand-curated textile collection of pure Egyptian Giza 140s cottons, Superviola artisanal linens, and lustrous ceremonial weaves.
-            </p>
           </div>
 
           {/* Filter Tabs */}

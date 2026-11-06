@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from"react";
-import { ArrowUpRight, X, ChevronLeft, ChevronRight } from"lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProcessStep {
   step: string;
@@ -13,46 +13,46 @@ interface ProcessStep {
 
 const PROCESS_STEPS: ProcessStep[] = [
   {
-    step:"01",
-    title:"Fabric Selection",
-    description:"Curated swatches matched to your occasion, season, and the garment's purpose — with our guidance on what works.",
-    image:"/process/01_fabric_selection.jpg",
-    tag:"Egyptian Cotton & Luxury Weaves",
+    step: "01",
+    title: "Fabric Selection",
+    description: "Curated swatches matched to your occasion, season, and the garment's purpose — with our guidance on what works.",
+    image: "/process/01_fabric_selection.jpg",
+    tag: "Egyptian Cotton & Luxury Weaves",
   },
   {
-    step:"02",
-    title:"Style & Design",
-    description:"Every detail decided — collar, lapel, lining, buttons, embroidery, and length. Documented and confirmed before a single cut.",
-    image:"/process/02_style_design.jpg",
-    tag:"Collar, Cuffs & Monogram Spec",
+    step: "02",
+    title: "Style & Design",
+    description: "Every detail decided — collar, lapel, lining, buttons, embroidery, and length. Documented and confirmed before a single cut.",
+    image: "/process/02_style_design.jpg",
+    tag: "Collar, Cuffs & Monogram Spec",
   },
   {
-    step:"03",
-    title:"Measurement",
-    description:"Taken in person, every time. Never from a size chart. Your posture, your proportions, your unique pattern.",
-    image:"/process/03_measurement.jpg",
-    tag:"30+ Precision Measurements",
+    step: "03",
+    title: "Measurement",
+    description: "Taken in person, every time. Never from a size chart. Your posture, your proportions, your unique pattern.",
+    image: "/process/03_measurement.jpg",
+    tag: "30+ Precision Measurements",
   },
   {
-    step:"04",
-    title:"Cut & Stitch",
-    description:"Cut by hand from your pattern. Assembled with the construction — canvas, interlining, embroidery — the garment needs.",
-    image:"/process/04_cut_stitch.jpg",
-    tag:"Master Hand-Shears & Single Needle",
+    step: "04",
+    title: "Cut & Stitch",
+    description: "Cut by hand from your pattern. Assembled with the construction — canvas, interlining, embroidery — the garment needs.",
+    image: "/process/04_cut_stitch.jpg",
+    tag: "Master Hand-Shears & Single Needle",
   },
   {
-    step:"05",
-    title:"Trial Fitting",
-    description:"You wear it. We check every point — shoulder, chest, waist, length. Corrections made before final construction.",
-    image:"/process/05_trial_fitting.jpg",
-    tag:"Basting Silhouette & Mirror Inspection",
+    step: "05",
+    title: "Trial Fitting",
+    description: "You wear it. We check every point — shoulder, chest, waist, length. Corrections made before final construction.",
+    image: "/process/05_trial_fitting.jpg",
+    tag: "Basting Silhouette & Mirror Inspection",
   },
   {
-    step:"06",
-    title:"Final Delivery",
-    description:"Pressed, inspected, handed over. Your pattern stays on file — every future order is faster, every fit more certain.",
-    image:"/process/06_final_delivery.jpg",
-    tag:"Signature Monogrammed Box",
+    step: "06",
+    title: "Final Delivery",
+    description: "Pressed, inspected, handed over. Your pattern stays on file — every future order is faster, every fit more certain.",
+    image: "/process/06_final_delivery.jpg",
+    tag: "Signature Monogrammed Box",
   },
 ];
 
@@ -66,9 +66,9 @@ export default function BespokeProcessTimeline() {
       document.getElementById("curated-looks") ||
       document.getElementById("fabrics");
     if (target) {
-      target.scrollIntoView({ behavior:"smooth" });
-    } else if (typeof window !=="undefined") {
-      window.location.href ="/custom-shirt#appointment-booking";
+      target.scrollIntoView({ behavior: "smooth" });
+    } else if (typeof window !== "undefined") {
+      window.location.href = "/custom-shirt#appointment-booking";
     }
   };
 
@@ -96,9 +96,9 @@ export default function BespokeProcessTimeline() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (modalIndex === null) return;
-      if (e.key ==="Escape") handleCloseModal();
-      if (e.key ==="ArrowLeft") handlePrevStep();
-      if (e.key ==="ArrowRight") handleNextStep();
+      if (e.key === "Escape") handleCloseModal();
+      if (e.key === "ArrowLeft") handlePrevStep();
+      if (e.key === "ArrowRight") handleNextStep();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -115,28 +115,18 @@ export default function BespokeProcessTimeline() {
           <div
             className="md:col-span-5 sticky top-24 self-start py-2 sm:py-4 z-20"
             style={{
-              position:"sticky",
-              top:"96px",
-              alignSelf:"flex-start",
+              position: "sticky",
+              top: "96px",
+              alignSelf: "flex-start",
             }}
           >
             {/* Headline */}
-            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[36px] xl:text-[40px] font-bold uppercase tracking-[0.025em] text-black leading-tight mb-6 sm:mb-8">
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold uppercase tracking-[0.14em] text-black leading-tight mb-6 sm:mb-8">
               HOW WE TAILOR{""}
               <span className="italic font-normal text-neutral-700">
                 PERFECTION
               </span>
             </h2>
-
-            {/* Tagline / Subtitle */}
-            <div className="py-1 space-y-1.5">
-              <p className="text-sm sm:text-base font-semibold text-black">
-                From First Measure to Final Delivery.
-              </p>
-              <p className="text-xs sm:text-sm text-[#666666] leading-relaxed max-w-sm">
-                Clear enough to trust. Exacting enough for timeless bespoke elegance.
-              </p>
-            </div>
           </div>
 
           {/* ========================================================================= */}
@@ -186,11 +176,10 @@ export default function BespokeProcessTimeline() {
       {/* RIGHT-SIDE FIXED HOVER IMAGE PREVIEW                                      */}
       {/* ========================================================================= */}
       <div
-        className={`fixed right-4 sm:right-8 lg:right-12 xl:right-16 top-1/2 -translate-y-1/2 z-40 hidden md:block pointer-events-none transition-all duration-300 ease-out ${
-          hoveredIndex !== null
-            ?"opacity-100 scale-100 translate-x-0"
-            :"opacity-0 scale-95 translate-x-6 pointer-events-none"
-        }`}
+        className={`fixed right-4 sm:right-8 lg:right-12 xl:right-16 top-1/2 -translate-y-1/2 z-40 hidden md:block pointer-events-none transition-all duration-300 ease-out ${hoveredIndex !== null
+            ? "opacity-100 scale-100 translate-x-0"
+            : "opacity-0 scale-95 translate-x-6 pointer-events-none"
+          }`}
       >
         {hoveredIndex !== null && (
           <div

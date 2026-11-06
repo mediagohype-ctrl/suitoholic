@@ -25,12 +25,9 @@ export default function MensFabricShowcaseGrid({
         {/* Title */}
         <div className="flex items-center">
           <div>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
               {grid?.heading}
             </h2>
-            <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-sans mt-1">
-              {grid?.subheading}
-            </p>
           </div>
         </div>
 

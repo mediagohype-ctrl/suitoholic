@@ -21,9 +21,7 @@ export default function PageShell({
       <Header />
       <main className="relative z-10 flex-1 w-full max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-12 pt-36 sm:pt-44 lg:pt-48 pb-16">
         <div className="text-center mb-8 sm:mb-10">
-          <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.28em] text-[#666666] uppercase">{eyebrow}</span>
-          <h1 className="font-serif-luxury text-3xl sm:text-4xl font-normal uppercase tracking-tight mt-1 text-black">{title}</h1>
-
+          <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold uppercase tracking-[0.14em] mt-1 text-black leading-tight">{title}</h1>
         </div>
         {children}
       </main>

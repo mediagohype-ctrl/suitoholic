@@ -81,16 +81,11 @@ export default function CuratedStartingPoints({
 
   return (
     <section id="curated-starting-points" className="relative w-full pt-14 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 lg:pb-20 border-b border-[#E5E3DD] bg-[#ECEAE5] overflow-hidden px-0">
-      {/* Section Header: Refined Modern Luxury Heading */}
-      <div className="text-center mb-8 sm:mb-10 lg:mb-12 px-4">
-        <h2 className="font-sans text-base sm:text-lg md:text-[20px] tracking-[0.22em] font-bold text-black uppercase">
+      {/* Section Header: Refined Modern Luxury Heading (Aligned Left) */}
+      <div className="text-left mb-6 sm:mb-8 lg:mb-10 px-4 sm:px-6 lg:px-8">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           {title}
         </h2>
-        {description && (
-          <p className="mt-2 text-xs sm:text-sm text-[#666666] font-sans font-normal max-w-xl mx-auto">
-            {description}
-          </p>
-        )}
       </div>
 
       {/* 4-Card Responsive Grid - END TO END (Full-Width Edge-to-Edge) with Exact 2px Gap */}

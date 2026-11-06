@@ -105,7 +105,7 @@ export default function AtelierStoryTimeline({
           {/* LEFT COLUMN: Title, Narrative & Master Tailor Media Card */}
           <div className="lg:col-span-5 space-y-5 sm:space-y-6">
             {/* Main Headline */}
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-bold text-black tracking-tight leading-[1.16]">
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
               {titlePrefix}{""}
               <span className="italic font-serif font-normal text-black">
                 {titleAccent}

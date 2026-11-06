@@ -1,266 +1,136 @@
 "use client";
 
-import React, { useState, useRef } from"react";
-import Link from"next/link";
-import { ChevronLeft, ChevronRight, Plus } from"lucide-react";
-import { useCustomizer } from"@/context/CustomizerModalProvider";
-import { useCatalog } from"@/context/SiteDataProvider";
+import React, { useRef } from "react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Heart, Plus } from "lucide-react";
+import { useCustomizer } from "@/context/CustomizerModalProvider";
+import { useWishlist } from "@/context/WishlistProvider";
+import { useCatalog } from "@/context/SiteDataProvider";
 
-export interface NewArrivalFabric {
+export interface NewArrivalShirt {
   id: string;
   code: string;
   title: string;
-  category:"EMBROIDERED" |"JACQUARD" |"PRINTED";
-  image: string;
-  originalPrice: string;
   price: string;
-  discount: string;
-  unit: string;
+  rawPrice: number;
+  image: string;
+  slug?: string;
+  category?: string;
 }
 
-export const NEW_ARRIVALS_FABRICS: NewArrivalFabric[] = [
-  // --- EMBROIDERED (6 Items) ---
+export const NEW_ARRIVALS_ITEMS: NewArrivalShirt[] = [
   {
-    id:"arr-emb-1",
-    code:"EMB-27069",
-    title:"White Dyeable Velvet Fabric With All Over Zari And Sequins Work 27069",
-    category:"EMBROIDERED",
-    image:"/fabric_cat_embroidery.jpg",
-    originalPrice:"₹1,460",
-    price:"₹1,170",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-sage-green",
+    code: "SH-57",
+    title: "SUITOHOLIC SAGE GREEN BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 2,800",
+    rawPrice: 2800,
+    image: "/api/media/23/whatsapp-image-2026-10-31-at-8-50-12-pm.jpeg",
+    slug: "sage-green-bengal-striped-twill-shirt",
   },
   {
-    id:"arr-emb-2",
-    code:"EMB-27087",
-    title:"White Dyeable Georgette Fabric With All Over Thread And Sequins Work 27087",
-    category:"EMBROIDERED",
-    image:"/mens_fabric_embroidered.jpg",
-    originalPrice:"₹1,460",
-    price:"₹1,170",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-french-blue",
+    code: "SH-77",
+    title: "FRENCH BLUE BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 3,000",
+    rawPrice: 3000,
+    image: "/api/media/43/suitoholic-26-done-jpg.jpeg",
+    slug: "french-blue-bengal-striped-twill-shirt",
   },
   {
-    id:"arr-emb-3",
-    code:"EMB-28014",
-    title:"Imperial Gold Weave Embroidered Ceremony Suiting Fabric 28014",
-    category:"EMBROIDERED",
-    image:"/fabric_cat_season_special.jpg",
-    originalPrice:"₹1,650",
-    price:"₹1,320",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-mustard-ochre",
+    code: "SH-78",
+    title: "MUSTARD OCHRE BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 2,800",
+    rawPrice: 2800,
+    image: "/api/media/49/suitoholic-mustard-ochre-bengal-stripe.jpg",
+    slug: "mustard-ochre-bengal-striped-twill-shirt",
   },
   {
-    id:"arr-emb-4",
-    code:"EMB-29033",
-    title:"Plush Emerald Velvet Embroidered Bandhgala Cloth 29033",
-    category:"EMBROIDERED",
-    image:"/fabric_cat_suits_sets.jpg",
-    originalPrice:"₹1,950",
-    price:"₹1,560",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-berry-pink",
+    code: "SH-59",
+    title: "SUITOHOLIC BERRY PINK BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 2,800",
+    rawPrice: 2800,
+    image: "/api/media/25/whatsapp-image-2026-10-31-at-10-25-46-pm.jpeg",
+    slug: "suitoholic-berry-pink-bengal-striped-twill-shirt",
   },
   {
-    id:"arr-emb-5",
-    code:"EMB-29045",
-    title:"Royal Sherwani Zari Embroidered Silk Cloth 29045",
-    category:"EMBROIDERED",
-    image:"/fabric_cat_sherwani_fabric.jpg",
-    originalPrice:"₹2,100",
-    price:"₹1,680",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-navy-blue",
+    code: "SH-65",
+    title: "NAVY BLUE BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 3,000",
+    rawPrice: 3000,
+    image: "/api/media/31/whatsapp-image-2026-10-31-at-10-40-00-pm-1.jpeg",
+    slug: "navy-blue-bengal-striped-twill-shirt",
   },
   {
-    id:"arr-emb-6",
-    code:"EMB-27110",
-    title:"Bordeaux Mulberry Silk Flora Embroidered Fabric 27110",
-    category:"EMBROIDERED",
-    image:"/fabric_cat_coord_sets.jpg",
-    originalPrice:"₹1,580",
-    price:"₹1,260",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-
-  // --- JACQUARD (6 Items) ---
-  {
-    id:"arr-jac-1",
-    code:"JAC-18042",
-    title:"Diamond Twill Luminous Jacquard Suiting Cloth 18042",
-    category:"JACQUARD",
-    image:"/fabric_cat_new_arrivals.jpg",
-    originalPrice:"₹1,750",
-    price:"₹1,399",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-charcoal-grey",
+    code: "SH-66",
+    title: "CHARCOAL GREY BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 3,000",
+    rawPrice: 3000,
+    image: "/api/media/32/whatsapp-image-2026-10-31-at-10-40-00-pm-2.jpeg",
+    slug: "charcoal-grey-bengal-striped-twill-shirt",
   },
   {
-    id:"arr-jac-2",
-    code:"JAC-18055",
-    title:"Herringbone Master Weave Jacquard Pure Giza Cotton 18055",
-    category:"JACQUARD",
-    image:"/mens_fabric_unstitched_suit.jpg",
-    originalPrice:"₹1,380",
-    price:"₹1,100",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-black-white",
+    code: "SH-60",
+    title: "SUITOHOLIC CLASSIC BLACK & WHITE BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 2,800",
+    rawPrice: 2800,
+    image: "/api/media/26/whatsapp-image-2026-10-31-at-10-25-47-pm.jpeg",
+    slug: "classic-black-white-bengal-striped-twill-shirt",
   },
   {
-    id:"arr-jac-3",
-    code:"JAC-19020",
-    title:"Micro Houndstooth Dobby Jacquard Suiting 19020",
-    category:"JACQUARD",
-    image:"/mens_fabric_imported_plain.jpg",
-    originalPrice:"₹1,620",
-    price:"₹1,295",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-jac-4",
-    code:"JAC-18077",
-    title:"Ivory Classic Herringbone Textured Jacquard 18077",
-    category:"JACQUARD",
-    image:"/fabric_roll_herringbone_ivory.jpg",
-    originalPrice:"₹1,450",
-    price:"₹1,160",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-jac-5",
-    code:"JAC-18090",
-    title:"Sapphire Twill Luminous Jacquard Suiting 18090",
-    category:"JACQUARD",
-    image:"/fabric_roll_sapphire_twill.jpg",
-    originalPrice:"₹1,680",
-    price:"₹1,340",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-jac-6",
-    code:"JAC-18105",
-    title:"Emerald Forest Twill Master Jacquard 18105",
-    category:"JACQUARD",
-    image:"/fabric_roll_emerald_twill.jpg",
-    originalPrice:"₹1,850",
-    price:"₹1,480",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-
-  // --- PRINTED (6 Items) ---
-  {
-    id:"arr-prt-1",
-    code:"PRT-31012",
-    title:"Aegean Blue Striped Hand-Crafted Print Linen 31012",
-    category:"PRINTED",
-    image:"/fabric_cat_prints.jpg",
-    originalPrice:"₹1,420",
-    price:"₹1,135",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-prt-2",
-    code:"PRT-31045",
-    title:"Heritage Indigo Botanical Block Print Fabric 31045",
-    category:"PRINTED",
-    image:"/fabric_cat_indigo_prints.jpg",
-    originalPrice:"₹1,250",
-    price:"₹999",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-prt-3",
-    code:"PRT-32018",
-    title:"Modern Abstract Geometric Print Menswear Cloth 32018",
-    category:"PRINTED",
-    image:"/mens_fabric_printed.jpg",
-    originalPrice:"₹1,390",
-    price:"₹1,110",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-prt-4",
-    code:"PRT-32066",
-    title:"Terracotta Fine Pinstripe Printed Cotton 32066",
-    category:"PRINTED",
-    image:"/fabric_st16974_terracotta_stripe.jpg",
-    originalPrice:"₹1,480",
-    price:"₹1,180",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-prt-5",
-    code:"PRT-31088",
-    title:"Royal Bengal Sky Blue Printed Cotton 31088",
-    category:"PRINTED",
-    image:"/fabric_sh403_royal_stripe.jpg",
-    originalPrice:"₹1,350",
-    price:"₹1,080",
-    discount:"SAVE 20%",
-    unit:"/meter",
-  },
-  {
-    id:"arr-prt-6",
-    code:"PRT-31092",
-    title:"Rose Mist Luxury Printed Shirting 31092",
-    category:"PRINTED",
-    image:"/fabric_sh403_rose_stripe.jpg",
-    originalPrice:"₹1,420",
-    price:"₹1,135",
-    discount:"SAVE 20%",
-    unit:"/meter",
+    id: "na-sky-blue",
+    code: "SH-73",
+    title: "SKY BLUE BENGAL STRIPED TWILL SHIRT",
+    price: "RS. 2,800",
+    rawPrice: 2800,
+    image: "/api/media/36/whatsapp-image-2026-11-01-at-12-49-05-am.jpeg",
+    slug: "sky-blue-bengal-striped-twill-shirt",
   },
 ];
 
-const CATEGORIES: Array<"EMBROIDERED" |"JACQUARD" |"PRINTED"> = ["EMBROIDERED","JACQUARD","PRINTED",
-];
+// Compatibility alias for existing references
+export const NEW_ARRIVALS_FABRICS = NEW_ARRIVALS_ITEMS;
 
 interface FabricNewArrivalsSectionProps {
   onSelectFabric?: (code: string) => void;
-  onOpenCustomizer?: (fabric: NewArrivalFabric) => void;
+  onOpenCustomizer?: (item: any) => void;
 }
 
 export default function FabricNewArrivalsSection({
   onSelectFabric,
   onOpenCustomizer,
 }: FabricNewArrivalsSectionProps) {
-  const [activeTab, setActiveTab] = useState<"EMBROIDERED" |"JACQUARD" |"PRINTED">("EMBROIDERED");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { openCustomizer } = useCustomizer();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const { products } = useCatalog();
 
-  const filteredFabrics = NEW_ARRIVALS_FABRICS.filter(
-    (item) => item.category === activeTab
-  );
-
-  const handleScroll = (direction:"left" |"right") => {
+  const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
-      const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || 280;
-      const scrollDistance = (cardWidth + 24) * (typeof window !=="undefined" && window.innerWidth < 640 ? 1 : 2);
+      const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || 320;
+      const scrollDistance = (cardWidth + 2) * (typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4);
       scrollContainerRef.current.scrollBy({
-        left: direction ==="left" ? -scrollDistance : scrollDistance,
-        behavior:"smooth",
+        left: direction === "left" ? -scrollDistance : scrollDistance,
+        behavior: "smooth",
       });
     }
   };
 
-  const handleOpenCustomizer = (e: React.MouseEvent, item: NewArrivalFabric) => {
+  const handleToggleSave = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(id);
+  };
+
+  const handleOpenCustomizer = (e: React.MouseEvent, item: NewArrivalShirt) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Trigger parent callback if provided
     if (onOpenCustomizer) {
       onOpenCustomizer(item);
       return;
@@ -268,166 +138,149 @@ export default function FabricNewArrivalsSection({
 
     onSelectFabric?.(item.code);
 
-    // Find a matching base shirt product from catalog or fallback
     const baseProduct =
-      products.find((p) => p.category ==="formal_bespoke" || p.category ==="fabrics") ||
+      products.find((p) => p.category === "formal_bespoke" || p.category === "fabrics") ||
       products[0];
 
-    // Open canonical 6-Step Bespoke Customization Modal
     openCustomizer({
       id: baseProduct?.id || 1,
       name: item.title,
       image: item.image,
       gallery: [item.image],
       price: item.price,
-      rawPrice: parseInt(item.price.replace(/[^\d]/g,""), 10) || 1170,
+      rawPrice: item.rawPrice,
       fabric: item.title,
-      category:"fabrics",
-      slug: baseProduct?.slug || `fabric-${item.code.toLowerCase()}`,
+      category: "fabrics",
+      slug: item.slug || `fabric-${item.code.toLowerCase()}`,
     });
   };
 
   return (
-    <section className="relative w-full bg-[#ECEAE5] py-14 sm:py-20 border-b border-[#E5E3DD] overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        
-        {/* Section Header: Matching Website Luxury Typography */}
-        <div className="text-center mb-8 sm:mb-10">
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-            NEW ARRIVALS
-          </h2>
+    <section className="relative w-full bg-[#ECEAE5] py-12 sm:py-16 lg:py-20 border-b border-[#E5E3DD] overflow-hidden">
+      {/* Section Header */}
+      <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+          NEW ARRIVALS
+        </h2>
+      </div>
 
-          {/* Interactive Category Tabs Matching Website Font */}
-          <div className="flex items-center justify-center gap-6 sm:gap-10 mt-5 border-b border-[#D8D4CA] pb-2 max-w-md mx-auto">
-            {CATEGORIES.map((cat) => {
-              const isActive = activeTab === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setActiveTab(cat);
-                    if (scrollContainerRef.current) {
-                      scrollContainerRef.current.scrollTo({ left: 0, behavior:"smooth" });
-                    }
-                  }}
-                  className={`font-sans text-xs sm:text-[13px] font-semibold uppercase tracking-[0.18em] transition-all relative pb-2 cursor-pointer ${
-                    isActive
-                      ?"text-black font-bold"
-                      :"text-[#666666] hover:text-black"
-                  }`}
-                >
-                  {cat}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#8C7355]" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+      {/* Cards Track with Left & Right Navigation Buttons */}
+      <div className="relative group/carousel w-full">
+        {/* Left Arrow Button */}
+        <button
+          type="button"
+          onClick={() => handleScroll("left")}
+          aria-label="Previous Items"
+          className="absolute left-2 sm:left-4 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/85 hover:bg-black text-white shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+        >
+          <ChevronLeft size={22} strokeWidth={2.5} />
+        </button>
 
-        {/* Carousel Container with Left/Right Buttons */}
-        <div className="relative group/carousel px-1 sm:px-2">
-          
-          {/* Left Arrow Button */}
-          <button
-            type="button"
-            onClick={() => handleScroll("left")}
-            aria-label="Previous Fabrics"
-            className="absolute -left-2 sm:-left-5 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/90 hover:bg-black text-white shadow-xl border border-white/20 flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
-          >
-            <ChevronLeft size={22} strokeWidth={2.5} />
-          </button>
-
-          {/* Cards Track (Horizontally scrollable with smooth snap, showing 4 cards on desktop) */}
-          <div
-            ref={scrollContainerRef}
-            className="flex items-stretch gap-4 sm:gap-6 overflow-x-auto scroll-smooth py-2 px-1"
-            style={{ scrollbarWidth:"none", msOverflowStyle:"none" }}
-          >
-            {filteredFabrics.map((item) => (
+        {/* 4-Cards Track - END TO END with Exact 2px Gap */}
+        <div
+          ref={scrollContainerRef}
+          className="flex items-stretch gap-[2px] overflow-x-auto scroll-smooth w-full px-0"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {NEW_ARRIVALS_ITEMS.map((item) => {
+            const isSaved = isInWishlist(item.id);
+            return (
               <div
                 key={item.id}
-                className="shrink-0 w-[calc(50%-8px)] sm:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] flex flex-col"
+                className="shrink-0 w-[calc(50%-1px)] md:w-[calc(25%-1.5px)] flex flex-col group font-sans"
               >
-                <div className="h-full bg-white border border-[#E5E3DD] rounded-2xl overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col group font-sans">
-                  
-                  {/* Upper Image Container with Red SAVE Badge */}
+                {/* Upper Rectangular Image Container - 254:350 Aspect Ratio */}
+                <div className="relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300">
                   <Link
                     href={`/custom-shirt?fabric=${encodeURIComponent(item.code)}`}
                     onClick={() => onSelectFabric?.(item.code)}
-                    className="relative aspect-[4/5] overflow-hidden bg-[#FAF8F5] block cursor-pointer"
+                    className="block relative w-full h-full overflow-hidden"
                   >
-                    {/* Red SAVE Discount Badge */}
-                    <span className="absolute top-3 left-3 z-10 bg-[#E53935] text-white text-[10px] font-bold font-sans tracking-wider px-2 py-0.5 rounded-[2px] uppercase shadow-xs">
-                      {item.discount}
-                    </span>
-
-                    {/* Fabric Swatch Photo */}
+                    {/* Main Shirt Swatch Photo with Collar & Circular Weave Lens */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
+                      loading="lazy"
                     />
                   </Link>
 
-                  {/* Lower Details Strip (Image ke niche details + Plus Icon for 6-Step Customizer) */}
-                  <div className="p-4 flex flex-col justify-between flex-1 bg-white font-sans">
+                  {/* Top Right: Floating Outline Heart Wishlist Icon */}
+                  <button
+                    onClick={(e) => handleToggleSave(e, item.id)}
+                    type="button"
+                    aria-label={isSaved ? "Remove from wishlist" : "Save to wishlist"}
+                    className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-20 p-1 transition-transform duration-200 hover:scale-115 active:scale-90 cursor-pointer"
+                  >
+                    <Heart
+                      size={19}
+                      strokeWidth={1.5}
+                      className={`drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors ${
+                        isSaved
+                          ? "text-red-500 fill-red-500"
+                          : "text-white fill-transparent stroke-white"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
+                <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-1 pb-2">
+                  {/* Left: Product Name & Price */}
+                  <div className="min-w-0 flex-1 space-y-1">
                     <Link
                       href={`/custom-shirt?fabric=${encodeURIComponent(item.code)}`}
                       onClick={() => onSelectFabric?.(item.code)}
-                      className="block group-hover:text-[#8C7355] transition-colors"
+                      className="block"
                     >
-                      <h3 className="text-xs sm:text-[13px] font-medium text-[#14110E] line-clamp-2 leading-snug min-h-[38px] font-sans">
+                      <h3
+                        title={item.title}
+                        className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
+                      >
                         {item.title}
                       </h3>
                     </Link>
-
-                    {/* Pricing Row + Plus Button (6-Step Customizer Trigger) */}
-                    <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-[#F2EFE9] font-sans">
-                      <div className="flex items-baseline gap-1.5 sm:gap-2 min-w-0">
-                        <span className="text-xs text-[#888888] line-through font-normal whitespace-nowrap">
-                          {item.originalPrice}
-                        </span>
-                        <span className="text-sm sm:text-base font-bold text-black whitespace-nowrap">
-                          {item.price}
-                        </span>
-                        <span className="text-[11px] text-[#666666] font-normal whitespace-nowrap">
-                          {item.unit}
-                        </span>
-                      </div>
-
-                      {/* Right Plus Button -> Opens 6-Step Customizer */}
-                      <button
-                        type="button"
-                        onClick={(e) => handleOpenCustomizer(e, item)}
-                        title="Customise Shirt (6 Steps)"
-                        aria-label={`Customise ${item.title}`}
-                        className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-black/25 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer ml-2"
-                      >
-                        <Plus size={16} strokeWidth={2.5} />
-                      </button>
+                    <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
+                      {item.price}
                     </div>
-
                   </div>
+
+                  {/* Right: Plus Button -> Opens Customizer Modal */}
+                  <button
+                    type="button"
+                    onClick={(e) => handleOpenCustomizer(e, item)}
+                    aria-label={`Customise ${item.title}`}
+                    title="Customise Shirt (6 Steps)"
+                    className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
+                  >
+                    <Plus size={13} strokeWidth={2.5} />
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Right Arrow Button */}
-          <button
-            type="button"
-            onClick={() => handleScroll("right")}
-            aria-label="Next Fabrics"
-            className="absolute -right-2 sm:-right-5 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/90 hover:bg-black text-white shadow-xl border border-white/20 flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
-          >
-            <ChevronRight size={22} strokeWidth={2.5} />
-          </button>
-
+            );
+          })}
         </div>
 
+        {/* Right Arrow Button */}
+        <button
+          type="button"
+          onClick={() => handleScroll("right")}
+          aria-label="Next Items"
+          className="absolute right-2 sm:right-4 top-[38%] -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/85 hover:bg-black text-white shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+        >
+          <ChevronRight size={22} strokeWidth={2.5} />
+        </button>
+      </div>
+
+      {/* Centered VIEW ALL Button */}
+      <div className="flex items-center justify-center mt-8 sm:mt-10 lg:mt-12 px-4">
+        <Link
+          href="/custom-outfit"
+          className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white text-xs sm:text-[13px] font-bold tracking-[0.22em] px-10 sm:px-14 py-3 sm:py-3.5 rounded-full transition-all duration-300 uppercase shadow-sm hover:shadow-md active:scale-98"
+        >
+          VIEW ALL
+        </Link>
       </div>
     </section>
   );

@@ -248,7 +248,7 @@ export default function TestimonialsSection() {
       <div className="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header: Clean Minimalist Title */}
         <div className="flex flex-col items-center justify-center max-w-3xl mx-auto mb-10 sm:mb-14 text-center">
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[44px] font-normal text-[#1A1A1A] tracking-[-0.01em] leading-tight m-0">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight m-0">
             The Trust We Have Earned
           </h2>
         </div>

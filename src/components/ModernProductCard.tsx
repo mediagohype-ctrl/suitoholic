@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useState, useMemo } from"react";
-import Link from"next/link";
-import { Heart, Plus } from"lucide-react";
-import { ProductItem } from"@/data/products";
-import { useWishlist } from"@/context/WishlistProvider";
-import { useCustomizer } from"@/context/CustomizerModalProvider";
-import { getMatchingFullShirtImage } from"@/lib/matchingFullShirt";
+import React, { useState, useMemo } from "react";
+import Link from "next/link";
+import { Heart, Plus } from "lucide-react";
+import { ProductItem } from "@/data/products";
+import { useWishlist } from "@/context/WishlistProvider";
+import { useCustomizer } from "@/context/CustomizerModalProvider";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 interface ModernProductCardProps {
   product: ProductItem;
+  isWideSpan?: boolean;
 }
 
-export default function ModernProductCard({ product }: ModernProductCardProps) {
+export default function ModernProductCard({ product, isWideSpan }: ModernProductCardProps) {
   const { openCustomizer } = useCustomizer();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSaved = isInWishlist(product.id);
@@ -24,10 +25,15 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
   const rawImages = product.gallery && product.gallery.length > 0 
     ? product.gallery 
     : [product.image];
-  const cleanImages = rawImages.map(img => img ? img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i,"/") :"");
+  const cleanImages = rawImages.map(img => img ? img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : "");
 
   // Hover image: Full shirt ghost mannequin view or secondary gallery angle
   const hoverImage = hoverFullShirt || (cleanImages.length > 1 ? cleanImages[1] : null);
+
+  // When isWideSpan is true, prefer the secondary lookbook image if available for dramatic editorial width
+  const wideMainImage = isWideSpan && (hoverImage || (cleanImages.length > 1 ? cleanImages[1] : null));
+  const activeMainImage = wideMainImage || cleanImages[0];
+  const activeHoverImage = wideMainImage ? cleanImages[0] : hoverImage;
 
   const handleToggleSave = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,36 +43,38 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
 
   return (
     <div className="group flex flex-col w-full">
-      {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (End-to-End, Zero Radius) */}
-      <div className="relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300">
+      {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (or 508:350 for Wide Span) */}
+      <div className={`relative w-full ${isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]"} rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
         {/* Main Product Image Container */}
         <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden">
-          {/* Default Image: Collar & Fabric Close-up */}
+          {/* Default Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={cleanImages[0]}
+            src={activeMainImage}
             alt={product.name}
             className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
             loading="lazy"
           />
 
-          {/* Hover Image: Full Shirt View (Fades in smoothly on hover, exact match to Curated Looks) */}
-          {hoverImage && (
+          {/* Hover Image */}
+          {activeHoverImage && (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
-              src={hoverImage}
+              src={activeHoverImage}
               alt={`${product.name} Full Look`}
               className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
               loading="lazy"
             />
           )}
+
+
         </Link>
 
         {/* Top Right: Floating Outline Heart Wishlist Icon */}
         <button
           onClick={handleToggleSave}
           type="button"
-          aria-label={isSaved ?"Remove from wishlist" :"Save to wishlist"}
+          aria-label={isSaved ? "Remove from wishlist" : "Save to wishlist"}
           className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-20 p-1 transition-transform duration-200 hover:scale-115 active:scale-90 cursor-pointer"
         >
           <Heart
@@ -74,17 +82,17 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
             strokeWidth={1.5}
             className={`drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors ${
               isSaved
-                ?"text-red-500 fill-red-500"
-                :"text-white fill-transparent stroke-white"
+                ? "text-red-500 fill-red-500"
+                : "text-white fill-transparent stroke-white"
             }`}
           />
         </button>
       </div>
 
       {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
-      <div className="mt-2 flex items-start justify-between gap-1.5 px-1 pb-1">
+      <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-1 pb-2">
         {/* Left: Product Name & Price */}
-        <div className="min-w-0 flex-1 space-y-0.5">
+        <div className="min-w-0 flex-1 space-y-1">
           <Link href={`/product/${product.slug}`} className="block">
             <h3 
               title={product.name}
@@ -94,7 +102,7 @@ export default function ModernProductCard({ product }: ModernProductCardProps) {
             </h3>
           </Link>
           <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
-            RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : product.price.replace("₹","").trim()}
+            RS. {product.rawPrice ? product.rawPrice.toLocaleString("en-IN") : product.price.replace("₹", "").trim()}
           </div>
         </div>
 

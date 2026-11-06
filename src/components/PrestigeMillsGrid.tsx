@@ -433,18 +433,14 @@ export default function PrestigeMillsGrid() {
         
         {/* Section Header */}
         <div 
-          className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3 px-4 transition-transform duration-500 ease-out"
+          className="text-center max-w-3xl mx-auto px-4 transition-transform duration-500 ease-out"
           style={{
             transform: `translate3d(0, ${scrollYProgress * -10}px, 0)`,
           }}
         >
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             OUR ESTEEMED TEXTILE PARTNERS
           </h2>
-
-          <p className="text-sm sm:text-base md:text-[17px] text-[#666666] font-normal leading-relaxed tracking-normal max-w-2xl mx-auto">
-            Woven across historic centuries-old looms in Biella, Como, Lancashire, Naples &amp; Alexandria. Each mill represents the pinnacle of craftsmanship, yarn density, and timeless sartorial prestige.
-          </p>
         </div>
 
         {/* 4-Column x 3-Row Grid with Column-Staggered Parallax & 3D Interactive Card Tilt */}

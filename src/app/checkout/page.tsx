@@ -91,7 +91,7 @@ export default function CheckoutPage() {
           phone: prev.phone || uPhone,
         }));
       }
-    } catch {}
+    } catch { }
   }, []);
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -143,7 +143,7 @@ export default function CheckoutPage() {
     return (
       <PageShell eyebrow={c.eyebrow} title={c.checkout.title}>
         <div className="max-w-md mx-auto text-center bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-10 space-y-4 shadow-sm">
-          <h2 className="font-serif-luxury text-2xl uppercase text-black">{c.emptyTitle}</h2>
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">{c.emptyTitle}</h2>
           <Link href="/shop" className="inline-flex items-center gap-2 bg-black hover:bg-neutral-800 text-white px-8 py-3.5 rounded-full text-[11px] font-bold uppercase tracking-[0.16em] shadow-sm">
             {c.continueShoppingLabel}
           </Link>

@@ -40,7 +40,7 @@ export default function CommitmentBannerSection({
       {/* Central Editorial Content */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-8 py-20 sm:py-28 text-center flex flex-col items-center">
         {/* Main Headline: A Standard We Hold Ourselves To. */}
-        <h2 className="font-serif-luxury text-3xl sm:text-5xl md:text-6xl lg:text-[64px] font-normal text-white tracking-tight leading-[1.08] mb-5 sm:mb-6 drop-shadow-[0_2px_16px_rgba(0,0,0,0.8)]">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-white tracking-[0.14em] uppercase leading-tight mb-5 sm:mb-6 drop-shadow-[0_2px_16px_rgba(0,0,0,0.8)]">
           {title}
         </h2>
 

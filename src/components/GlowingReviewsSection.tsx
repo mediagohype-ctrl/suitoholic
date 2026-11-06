@@ -115,23 +115,9 @@ export default function GlowingReviewsSection() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-10 sm:mb-14">
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             They came unsure, left glowing
           </h2>
-          <div className="flex items-center justify-center gap-2 mt-2.5">
-            <div className="flex items-center gap-0.5 text-[#D4AF37]" aria-hidden="true">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={14}
-                  className="fill-[#D4AF37] text-[#D4AF37]"
-                />
-              ))}
-            </div>
-            <span className="text-xs sm:text-[13px] text-[#4A4238] font-normal tracking-wide">
-              Loved by patrons across India
-            </span>
-          </div>
         </div>
 
         {/* 4-Column Aligned Grid: Each image paired with its individual review directly underneath */}

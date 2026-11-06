@@ -569,7 +569,7 @@ export default function SavedAddressesPage() {
               <MapPin size={30} strokeWidth={1.5} />
             </div>
             <div className="space-y-2">
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold uppercase tracking-tight text-black">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                 No Saved Addresses
               </h2>
               <p className="text-xs sm:text-sm text-[#666666] leading-relaxed max-w-md mx-auto">

@@ -388,7 +388,7 @@ function CustomShirtConfiguratorContent() {
               {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}
               <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
                 {/* Main Headline */}
-                <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-bold text-black tracking-tight leading-[1.14]">
+                <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                   {heroCopy.title}
                 </h2>
 

@@ -27,18 +27,18 @@ export default function FreedomCollectionSection() {
       {/* Section Header */}
       <h2
         id="collection-freedom"
-        className="px-4 pb-4 pt-10 text-[14px] font-bold uppercase leading-[1.15] tracking-[0.16em] text-black sm:px-6 sm:pb-5 sm:pt-14 sm:text-[16px] lg:px-8 font-sans"
+        className="px-4 pb-4 pt-10 sm:px-6 sm:pb-5 sm:pt-14 lg:px-8 font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight"
       >
-        FREEDOM
+        FORMAL SHIRTS
       </h2>
 
-      {/* Signature 5-Card Editorial Collage Grid (Matching suosindia.com/collections FREEDOM format) */}
+      {/* Signature 5-Card Editorial Collage Grid (Matching suosindia.com/collections FORMAL SHIRTS format) */}
       <div className="grid grid-cols-2 gap-0.5 sm:gap-[2px] lg:grid-cols-6 w-full bg-[#E5E3DD]">
         
         {/* Item 1: Large Featured Landscape Card (4 cols on lg, aspect 16/11) */}
         <Link
           href="/shop"
-          aria-label="Shop the FREEDOM collection"
+          aria-label="Shop the FORMAL SHIRTS collection"
           className="group relative block overflow-hidden bg-[#E7E7E4] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-black col-span-2 aspect-[4/5] lg:col-span-4 lg:aspect-[16/11]"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -147,7 +147,7 @@ export default function FreedomCollectionSection() {
       {/* Bottom Editorial Callout Strip */}
       <div className="flex flex-col items-center bg-[#F7F5F0] px-4 py-12 text-center sm:px-6 sm:py-16 border-t border-[#E5E3DD]">
         <p className="font-serif-luxury text-[20px] font-bold uppercase leading-[1.15] tracking-[0.08em] text-black sm:text-[24px]">
-          Shop FREEDOM Collection
+          Shop FORMAL SHIRTS Collection
         </p>
         <p className="mt-3 max-w-[560px] text-[13px] font-normal leading-relaxed text-black/75 sm:text-[14px] font-sans">
           This bespoke series is tailored using pure Egyptian Giza cotton, artisanal French seams, and master hand-drafted patterns — crafted to be worn with poise and cherished for years.
@@ -155,7 +155,7 @@ export default function FreedomCollectionSection() {
         <Link
           href="/shop"
           className="mt-6 inline-flex h-9 min-w-[136px] items-center justify-center border border-black bg-transparent px-6 text-[12px] font-semibold uppercase leading-none tracking-[0.08em] text-black transition-all hover:bg-black hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black sm:h-10 sm:text-[13px]"
-          aria-label="Shop the FREEDOM collection"
+          aria-label="Shop the FORMAL SHIRTS collection"
         >
           Shop now
         </Link>

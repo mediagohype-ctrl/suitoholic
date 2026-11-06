@@ -778,7 +778,7 @@ export default function AccountPage() {
               {/* White Floating Card */}
               <div className="bg-white border border-[#EDE8E1] rounded-2xl sm:rounded-3xl p-7 sm:p-10 shadow-sm transition-all">
                 <div className="text-center mb-6">
-                  <h1 className="font-serif-luxury text-2xl sm:text-3xl font-bold uppercase tracking-tight text-[#14110E]">
+                  <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold uppercase tracking-[0.14em] text-[#14110E] leading-tight">
                     {isSignUp ? "Create Your Account" : "Welcome Back"}
                   </h1>
                   <p className="text-xs sm:text-[13px] text-[#555555] mt-1.5 font-normal leading-relaxed">
@@ -1019,7 +1019,7 @@ export default function AccountPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-serif-luxury text-2xl sm:text-3xl font-bold uppercase tracking-tight text-black">
+                <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold uppercase tracking-[0.14em] text-black leading-tight">
                   {user.name}
                 </h1>
                 <span className="px-2.5 py-0.5 rounded-full bg-[#FAF8F5] border border-[#E5E3DD] text-[10px] font-sans font-bold text-[#8C7355] uppercase tracking-wider">

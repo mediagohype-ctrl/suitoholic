@@ -461,7 +461,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                         onClick={() => setIsShopMenuOpen(false)}
                         className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
                       >
-                        FREEDOM
+                        FORMAL SHIRTS
                       </Link>
                     </li>
                     <li>

@@ -25,7 +25,7 @@ export default function OurPromiseSection({
       {/* Central Editorial Content */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-8 text-center flex flex-col items-center">
         {/* Main Headline: Two-tone luxury typography matching website color palette */}
-        <h2 className="font-serif-luxury text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal tracking-tight leading-[1.16] mb-5 sm:mb-6 max-w-3xl">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight mb-5 sm:mb-6 max-w-3xl">
           <span className="text-black">{headingPrefix}</span>
           <span className="text-[#8C6D47] font-serif">{headingHighlight}</span>
         </h2>

@@ -120,48 +120,48 @@ export default function SeeBeforeYouStitchSection() {
   return (
     <section 
       aria-label="See Before You Stitch"
-      className="relative w-full bg-[#ECEAE5] py-16 sm:py-24 border-b border-[#E5E3DD] overflow-hidden font-sans"
+      className="relative w-full bg-[#ECEAE5] min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] flex flex-col justify-between py-2 sm:py-3 md:py-4 px-4 sm:px-6 lg:px-8 border-b border-[#E5E3DD] overflow-hidden font-sans"
     >
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1280px] mx-auto flex flex-col justify-between h-full my-auto">
         
         {/* Section Header: Main Title */}
-        <div className="text-center mb-10 sm:mb-14">
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-            {content?.sectionTitle ||"Your fabric, as a finished look"}
+        <div className="text-center shrink-0 pt-1 mb-1 sm:mb-2">
+          <h2 className="font-serif-luxury text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+            {content?.sectionTitle || "Your fabric, as a finished look"}
           </h2>
         </div>
 
-        {/* Carousel Container - Slightly Wider with Refined Border Radius */}
+        {/* Carousel Container */}
         <div
-          className="relative max-w-5xl lg:max-w-5xl xl:max-w-[1080px] mx-auto"
+          className="relative max-w-5xl lg:max-w-5xl xl:max-w-[1080px] w-full mx-auto my-auto flex-1 flex flex-col justify-center"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Main White Card with Reduced, Elegant Border Radius */}
-          <div className="bg-white border border-[#E5E3DD] rounded-[14px] sm:rounded-[18px] p-5 sm:p-7 lg:p-8 shadow-lg transition-all duration-500">
+          {/* Main White Card with Full Screen Proportions */}
+          <div className="bg-white border border-[#E5E3DD] rounded-[14px] sm:rounded-[18px] p-4 sm:p-6 lg:p-7 shadow-lg transition-all duration-500 flex flex-col justify-between h-[calc(100dvh-6.5rem)] min-h-[520px]">
             
-            {/* Visuals Split: Left Fabric Swatch + Right Finished Look on Model */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-7 items-center">
+            {/* Visuals Split: Left Fabric Swatch (col-span-4) + Right Finished Look on Model (col-span-8) */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-7 items-center flex-1 my-auto">
               
               {/* Left Sub-Card: Fabric Swatch */}
               <div className="md:col-span-4 flex flex-col justify-center">
-                <div className="relative aspect-square w-full rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-xs group">
+                <div className="relative aspect-square w-full max-w-[260px] sm:max-w-[300px] md:max-w-none mx-auto rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-xs group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeSlide.fabricImage}
                     alt={activeSlide.title}
                     className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-105"
                   />
-                  {/*"Your fabric" Badge */}
+                  {/* "Your fabric" Badge */}
                   <span className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-xs text-white text-[11px] font-medium px-3 py-1 rounded-full shadow-md">
                     Your fabric
                   </span>
                 </div>
               </div>
 
-              {/* Right Sub-Card: Finished Look on Model */}
-              <div className="md:col-span-8">
-                <div className="relative aspect-[4/4.8] sm:aspect-[4/4.5] w-full rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-sm group">
+              {/* Right Sub-Card: Finished Look on Model (Original Edge-to-Edge Column Pattern) */}
+              <div className="md:col-span-8 flex justify-center items-center h-full">
+                <div className="relative aspect-[4/4.8] sm:aspect-[4/4.5] w-full max-h-[58vh] lg:max-h-[62vh] rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#FAF8F5] border border-[#E5E3DD] shadow-sm group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeSlide.lookImage}
@@ -169,13 +169,13 @@ export default function SeeBeforeYouStitchSection() {
                     className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-103"
                   />
 
-                  {/*"PREVIEW" Badge */}
-                  <span className="absolute top-3.5 right-3.5 bg-black/85 backdrop-blur-xs text-white text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-[6px] shadow-md">
+                  {/* "PREVIEW" Badge */}
+                  <span className="absolute top-3.5 right-3.5 bg-black/85 backdrop-blur-xs text-white text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-[6px] shadow-md z-10">
                     PREVIEW
                   </span>
 
                   {/* Subtle Brand Watermark Emblem in bottom right */}
-                  <div className="absolute bottom-3 right-3 opacity-30 pointer-events-none">
+                  <div className="absolute bottom-3 right-3 opacity-30 pointer-events-none z-10">
                     <span className="text-[10px] font-serif tracking-[0.2em] text-white uppercase drop-shadow-md">
                       SUITOHOLIC
                     </span>
@@ -186,7 +186,7 @@ export default function SeeBeforeYouStitchSection() {
             </div>
 
             {/* Bottom Card Footer: Title & Description */}
-            <div className="mt-6 sm:mt-7 pt-5 border-t border-[#F2EFE9]">
+            <div className="mt-3 sm:mt-4 pt-3 sm:pt-3.5 border-t border-[#F2EFE9] shrink-0">
               <h3 className="text-base sm:text-lg font-bold text-[#14110E] leading-snug">
                 {activeSlide.title}
               </h3>
@@ -217,26 +217,26 @@ export default function SeeBeforeYouStitchSection() {
             <ChevronRight size={22} strokeWidth={2.5} />
           </button>
 
-          {/* Pagination Indicators matching reference (• • • • •) */}
-          <div className="flex items-center justify-center gap-2 mt-6 sm:mt-7">
-            {slides.map((slide, i) => {
-              const isActive = i === currentIndex;
-              return (
-                <button
-                  key={slide.id}
-                  type="button"
-                  onClick={() => setCurrentIndex(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className={`transition-all duration-300 rounded-full h-2 cursor-pointer ${
-                    isActive
-                      ?"w-7 bg-black shadow-xs"
-                      :"w-2 bg-black/25 hover:bg-black/50"
-                  }`}
-                />
-              );
-            })}
-          </div>
+        </div>
 
+        {/* Pagination Indicators matching reference (• • • • •) */}
+        <div className="flex items-center justify-center gap-2 shrink-0 pb-1">
+          {slides.map((slide, i) => {
+            const isActive = i === currentIndex;
+            return (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={() => setCurrentIndex(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`transition-all duration-300 rounded-full h-2 cursor-pointer ${
+                  isActive
+                    ? "w-7 bg-black shadow-xs"
+                    : "w-2 bg-black/25 hover:bg-black/50"
+                }`}
+              />
+            );
+          })}
         </div>
 
       </div>

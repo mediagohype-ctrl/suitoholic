@@ -117,9 +117,8 @@ export default function ContactPage() {
               <div className="lg:col-span-6 space-y-5 sm:space-y-6">
                 
                 {/* Main Luxury Heading */}
-                <h1 className="font-serif-luxury text-4xl sm:text-5xl lg:text-[54px] xl:text-[60px] font-normal leading-[1.08] tracking-tight text-black">
-                  Let&apos;s Create Your <br className="hidden sm:inline" />
-                  <span className="italic font-serif">Perfect Fit</span>
+                <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+                  Let&apos;s Create Your <span className="italic font-serif">Perfect Fit</span>
                 </h1>
               </div>
 
@@ -186,7 +185,7 @@ export default function ContactPage() {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="mb-4">
-                      <h2 className="font-serif-luxury text-2xl sm:text-3xl text-black font-normal">
+                      <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                         Bespoke Consultation
                       </h2>
                     </div>
@@ -317,7 +316,7 @@ export default function ContactPage() {
                 >
                   
                   {/* Card Title */}
-                  <h2 className="font-serif-luxury text-3xl sm:text-4xl text-black tracking-tight font-normal">
+                  <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                     Get in Touch
                   </h2>
 

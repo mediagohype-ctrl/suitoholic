@@ -19,7 +19,7 @@ function RichText({ text }: { text: string }) {
             {lines.map((line, j) => {
               if (line.startsWith("## "))
                 return (
-                  <h2 key={j} className="font-serif-luxury text-xl text-black uppercase tracking-wide pt-2 font-bold">
+                  <h2 key={j} className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight pt-2">
                     {line.slice(3)}
                   </h2>
                 );

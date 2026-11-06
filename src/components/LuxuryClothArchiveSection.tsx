@@ -902,182 +902,31 @@ export default function LuxuryClothArchiveSection({
         </div>
 
         {/* =================================================================== */}
-        {/* VERTICAL LEFT FILTERS SIDEBAR + RIGHT CLOTH ARCHIVE GRID            */}
+        {/* FULL-WIDTH CLOTH ARCHIVE GRID                                       */}
         {/* =================================================================== */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-10 items-start">
+        <div className="w-full space-y-6">
           
-          {/* Mobile Filter Toggle Button */}
-          <div className="w-full lg:hidden">
-            <button
-              type="button"
-              onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-              className="w-full py-3 px-4 rounded-2xl bg-white border border-[#E5E3DD] flex items-center justify-between font-sans text-xs font-bold tracking-wider shadow-2xs cursor-pointer"
-            >
-              <span className="flex items-center gap-2">
-                <SlidersHorizontal size={14} className="text-black" />
-                <span>FILTERS</span>
-                {activeFiltersList.length > 0 && (
-                  <span className="w-5 h-5 rounded-full bg-black text-white text-[10px] flex items-center justify-center font-bold">
-                    {activeFiltersList.length}
-                  </span>
-                )}
-              </span>
-              <ChevronDown size={14} className={`transition-transform duration-200 ${mobileFiltersOpen ? "rotate-180" : ""}`} />
-            </button>
+          {/* Section Header: Popular Categories */}
+          <div className="pb-3 border-b border-[#E5E3DD]">
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+              POPULAR CATEGORIES
+            </h2>
           </div>
 
-          {/* LEFT SIDEBAR: Vertical Filters */}
-          <aside className={`w-full lg:w-64 xl:w-72 shrink-0 lg:sticky lg:top-24 ${mobileFiltersOpen ? "block" : "hidden lg:block"} transition-all duration-200`}>
-            <div className="bg-white border border-[#E5E3DD] rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
-              
-              {/* Sidebar Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#E5E3DD]">
-                <div className="flex items-center gap-2">
-                  <SlidersHorizontal size={14} className="text-black" />
-                  <span className="text-xs font-bold uppercase tracking-[0.16em] text-black">Filter By</span>
-                </div>
-                {hasActiveFilters && (
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="text-[10px] text-[#666666] hover:text-black font-bold uppercase tracking-wider underline flex items-center gap-1 cursor-pointer"
-                  >
-                    <RotateCcw size={10} />
-                    Reset All
-                  </button>
-                )}
-              </div>
-
-              {/* Vertical Accordion Sections */}
-              <div className="divide-y divide-[#F0EEE9]">
-                {FILTER_CONFIG.map(({ key, label, allLabel, options }) => {
-                  const currentVal = filters[key as keyof FilterState];
-                  const isSelected = currentVal !== allLabel;
-                  const isOpen = openSections[key] ?? false;
-
-                  return (
-                    <div key={key} className="py-2.5">
-                      <button
-                        type="button"
-                        onClick={() => toggleSection(key)}
-                        className="w-full flex items-center justify-between text-left py-1 font-sans cursor-pointer group"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-black">
-                            {label}
-                          </span>
-                          {isSelected && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0" />
-                          )}
-                        </div>
-                        <div className="flex items-center gap-1.5 shrink-0 text-[#888888] group-hover:text-black">
-                          {isSelected && (
-                            <span className="text-[9.5px] font-semibold text-black uppercase max-w-[90px] truncate">
-                              {currentVal.split(" ")[0]}
-                            </span>
-                          )}
-                          <ChevronDown size={13} className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
-                        </div>
-                      </button>
-
-                      {isOpen && (
-                        <div className="pt-2 pb-1 space-y-0.5 max-h-56 overflow-y-auto pr-1">
-                          {options.map((opt) => {
-                            const active = currentVal === opt;
-                            return (
-                              <button
-                                key={opt}
-                                type="button"
-                                onClick={() => handleFilterChange(key as keyof FilterState, opt)}
-                                className={`w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] font-sans tracking-wide flex items-center justify-between transition-colors cursor-pointer ${
-                                  active
-                                    ? "bg-black text-white font-semibold shadow-2xs"
-                                    : "text-[#555555] hover:text-black hover:bg-neutral-100 font-normal"
-                                }`}
-                              >
-                                <span className="truncate pr-2">{opt}</span>
-                                {active && <Check size={11} className="text-white shrink-0" />}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
+          {/* Grid or Empty State */}
+          {filteredCloths.length === 0 ? (
+            <div className="py-20 text-center space-y-4 font-sans bg-white rounded-2xl border border-[#E5E3DD]">
+              <p className="font-serif-luxury text-xl text-[#666666]">No cloth swatches match your search.</p>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="px-8 py-3 bg-black hover:bg-neutral-800 text-white rounded-full font-sans font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer shadow-sm"
+              >
+                Reset Search
+              </button>
             </div>
-          </aside>
-
-          {/* RIGHT MAIN AREA: Results Bar + Swatches Grid */}
-          <div className="flex-1 min-w-0 w-full space-y-5">
-            
-            {/* Top Results Count & Active Filter Tags Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E5E3DD]">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-bold text-black uppercase tracking-[0.14em]">
-                  {filteredCloths.length} {filteredCloths.length === 1 ? "Swatch" : "Swatches"}
-                </span>
-                {activeFiltersList.map((f) => (
-                  <span
-                    key={f.key}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-[#E5E3DD] text-[10px] font-semibold text-black font-sans shadow-2xs"
-                  >
-                    <span className="text-[#888888] uppercase">{f.label}:</span>
-                    <span className="truncate max-w-[130px]">{f.value}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleFilterChange(f.key, f.allLabel)}
-                      className="text-[#888888] hover:text-black cursor-pointer"
-                      aria-label={`Remove ${f.label} filter`}
-                    >
-                      <X size={11} />
-                    </button>
-                  </span>
-                ))}
-                {activeFiltersList.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="text-[10px] font-bold text-[#888888] hover:text-black uppercase tracking-wider underline cursor-pointer ml-1"
-                  >
-                    Clear all
-                  </button>
-                )}
-              </div>
-
-              {/* Sort Dropdown */}
-              <div className="flex items-center gap-2 text-[11px] font-sans">
-                <span className="text-[#888888] uppercase tracking-wider hidden sm:inline">Sort:</span>
-                <select
-                  value={filters.sort}
-                  onChange={(e) => handleFilterChange("sort", e.target.value)}
-                  className="bg-white border border-[#E5E3DD] rounded-full px-3 py-1.5 text-[10.5px] font-bold text-black uppercase tracking-wider outline-none cursor-pointer hover:border-black/40 transition-colors shadow-2xs"
-                >
-                  {sortOptions.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Grid or Empty State */}
-            {filteredCloths.length === 0 ? (
-              <div className="py-20 text-center space-y-4 font-sans bg-white rounded-2xl border border-[#E5E3DD]">
-                <p className="font-serif-luxury text-xl text-[#666666]">No cloth swatches match your selected filter criteria.</p>
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="px-8 py-3 bg-black hover:bg-neutral-800 text-white rounded-full font-sans font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer shadow-sm"
-                >
-                  Reset All Filters
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-7 z-10 relative">
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-7 z-10 relative">
                 {filteredCloths.map((cloth) => (
                   <div
                     key={cloth.id}
@@ -1161,8 +1010,6 @@ export default function LuxuryClothArchiveSection({
           </div>
 
         </div>
-
-      </div>
 
       {/* =================================================================== */}
       {/* HIGH-MAGNIFICATION INTERACTIVE WEAVE INSPECTOR MODAL               */}

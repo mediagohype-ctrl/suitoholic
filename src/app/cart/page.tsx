@@ -242,7 +242,7 @@ export default function CartPage() {
         <div className="space-y-10">
           <div className="max-w-md mx-auto text-center bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-10 space-y-4 shadow-sm">
             <ShoppingBag size={36} className="mx-auto text-black" strokeWidth={1.5} />
-            <h2 className="font-serif-luxury text-2xl uppercase text-black">{c.emptyTitle}</h2>
+            <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">{c.emptyTitle}</h2>
             <p className="text-sm text-[#666666]">{c.emptyText}</p>
             <Link
               href="/shop"

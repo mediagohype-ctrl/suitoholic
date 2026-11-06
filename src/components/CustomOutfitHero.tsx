@@ -9,7 +9,7 @@ export default function CustomOutfitHero() {
       <div className="relative w-full h-full overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/banners/bespoke_shirting_hero_light.jpg"
+          src="/banners/custom_fit_atelier_hero.jpg"
           alt="Suitoholic Bespoke Handcrafted Shirting"
           className="w-full h-full object-cover object-center"
           loading="eager"

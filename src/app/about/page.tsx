@@ -33,7 +33,7 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
           
           {/* Main Headline: Tailoring with Care and Precision */}
-          <h1 className="font-serif-luxury text-4xl sm:text-5xl md:text-6xl lg:text-[70px] xl:text-[76px] font-normal leading-[1.08] tracking-tight text-black drop-shadow-[0_2px_14px_rgba(255,255,255,0.85)] max-w-4xl">
+          <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight max-w-4xl text-center">
             Tailoring with Care and <span className="text-black italic font-serif">Precision</span>
           </h1>
 

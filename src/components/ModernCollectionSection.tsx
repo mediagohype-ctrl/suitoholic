@@ -170,16 +170,11 @@ export default function ModernCollectionSection({
       id={collection.id}
       className="py-10 sm:py-14 lg:py-18 w-full relative z-10 flex flex-col justify-center px-0"
     >
-      {/* Centered Heading & Subtitle matching luxury scale */}
+      {/* Centered Heading matching luxury scale */}
       <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-        <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold tracking-[0.14em] text-black uppercase leading-tight">
+        <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
           {headerTitle || collection.title}
         </h2>
-        {(collection.subtitle || (collection as unknown as { description?: string })?.description) && (
-          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-[17px] text-[#666666] font-normal leading-relaxed tracking-normal max-w-2xl">
-            {collection.subtitle || (collection as unknown as { description?: string })?.description}
-          </p>
-        )}
       </div>
 
       {/* 4-Column Product Cards Grid - END TO END (Full-Width Edge-to-Edge) with Exact 2px Gap */}

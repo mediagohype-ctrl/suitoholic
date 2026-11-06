@@ -144,14 +144,9 @@ export default function TrustedByDesignersSection() {
         {/* Section Header: Main Title + Subtitle */}
         <div className="text-center mb-8 sm:mb-12 px-4 max-w-4xl mx-auto">
           {/* Main Title */}
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black tracking-[0.14em] uppercase leading-tight mb-3">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
             TRUSTED BY TOP DESIGNERS
           </h2>
-
-          {/* Subtitle */}
-          <p className="text-xs sm:text-sm lg:text-[15px] text-[#666666] font-sans font-normal max-w-2xl mx-auto tracking-normal">
-            Top India&apos;s Boutique Owners, Designers and Exporters source fabric from us.
-          </p>
         </div>
 
         {/* Continuous Slow-Motion Infinite Marquee */}
