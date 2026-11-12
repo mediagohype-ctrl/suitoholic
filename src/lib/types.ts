@@ -63,6 +63,7 @@ export interface CustomFit {
   initials: string;
   threadColor: string;
   shirtColor: string;
+  specialInstructions?: string;
 }
 
 export interface CartItem {

@@ -264,7 +264,7 @@ export default function CartPage() {
                 Select any shirt to start bespoke tailoring with interactive 3D mannequin preview.
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-1">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-6 pt-1">
               {sisterProducts.slice(0, 4).map((shirt) => {
                 const hoverFullShirt = getMatchingFullShirtImage(shirt);
                 const isSaved = isInWishlist(shirt.id);
@@ -283,8 +283,8 @@ export default function CartPage() {
                     onClick={() => setChoiceModalProduct(shirt)}
                   >
                     {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
-                    <div className="relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300">
-                      <div className="block relative w-full h-full overflow-hidden">
+                    <div className="relative w-full aspect-[254/350] rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
+                      <div className="block relative w-full h-full overflow-hidden rounded-[8px]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={activeMainImage}
@@ -554,7 +554,7 @@ export default function CartPage() {
             </div>
 
             {/* 4 Cards in a Responsive Row matching Home Page (ModernProductCard) Pattern */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-1">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-6 pt-1">
               {sisterProducts.slice(0, 4).map((shirt) => {
                 const inBagCount = items
                   .filter((item) => item.productId === shirt.id || item.slug === shirt.slug)
@@ -576,8 +576,8 @@ export default function CartPage() {
                     onClick={() => setChoiceModalProduct(shirt)}
                   >
                     {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
-                    <div className="relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300">
-                      <div className="block relative w-full h-full overflow-hidden">
+                    <div className="relative w-full aspect-[254/350] rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
+                      <div className="block relative w-full h-full overflow-hidden rounded-[8px]">
                         {/* Default Image */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img

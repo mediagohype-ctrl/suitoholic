@@ -88,17 +88,17 @@ export default function CuratedStartingPoints({
         </h2>
       </div>
 
-      {/* 4-Card Responsive Grid - END TO END (Full-Width Edge-to-Edge) with Exact 2px Gap */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] w-full items-start px-0">
+      {/* 4-Card Responsive Grid - END TO END (Full-Width Edge-to-Edge) with Exact 10px Gap */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-10 sm:gap-y-14 w-full items-start px-[5px]">
         {items.map((item) => (
           <div
             key={item.id}
             className="group flex flex-col w-full"
           >
-            {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (End-to-End, Zero Radius) */}
+            {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (8px Radius) */}
             <div
               onClick={() => onSelectLook(item)}
-              className="relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300 cursor-pointer block"
+              className="relative w-full aspect-[254/350] rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300 cursor-pointer block"
             >
               {/* Top-Right Floating Outline Heart Wishlist Icon */}
               <button
@@ -127,19 +127,23 @@ export default function CuratedStartingPoints({
               <img
                 src={item.image}
                 alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
+                className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102 ${
+                  item.hoverImage ? "group-hover:opacity-0" : ""
+                }`}
                 loading="lazy"
               />
 
               {/* Hover Image */}
               {item.hoverImage && (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={item.hoverImage}
-                  alt={`${item.title} Full Shirt`}
-                  className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
-                  loading="lazy"
-                />
+                <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-10 overflow-hidden pointer-events-none">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.hoverImage}
+                    alt={`${item.title} Full Shirt`}
+                    className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
+                    loading="lazy"
+                  />
+                </div>
               )}
             </div>
 

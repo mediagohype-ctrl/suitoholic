@@ -192,7 +192,7 @@ function ShopContent() {
                       return (
                         <div
                           key={`row-4-${rIdx}`}
-                          className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] w-full items-start px-0"
+                          className="grid grid-cols-2 lg:grid-cols-4 gap-x-[10px] w-full items-start px-[5px]"
                         >
                           {row.items.map((p) => (
                             <div key={p.id} className="w-full col-span-1">
@@ -205,7 +205,7 @@ function ShopContent() {
                       return (
                         <div
                           key={`row-3-${rIdx}`}
-                          className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] w-full items-start px-0"
+                          className="grid grid-cols-2 lg:grid-cols-4 gap-x-[10px] w-full items-start px-[5px]"
                         >
                           {/* Card 1: 1 column (same size as row 1) */}
                           {row.items[0] && (

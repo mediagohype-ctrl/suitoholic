@@ -17,6 +17,7 @@ export interface CustomFitState {
   shirtColor: string;
   shirtPattern: string;
   humanModelView?: boolean;
+  specialInstructions?: string;
 }
 
 interface InteractiveMannequinProps {

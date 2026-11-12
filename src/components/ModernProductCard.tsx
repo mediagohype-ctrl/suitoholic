@@ -44,30 +44,32 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
   return (
     <div className="group flex flex-col w-full">
       {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (or 508:350 for Wide Span) */}
-      <div className={`relative w-full ${isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]"} rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
+      <div className={`relative w-full ${isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]"} rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
         {/* Main Product Image Container */}
-        <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden">
+        <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden rounded-[8px] bg-[#ECEAE5]">
           {/* Default Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={activeMainImage}
             alt={product.name}
-            className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102 ${
+              activeHoverImage ? "group-hover:opacity-0" : ""
+            }`}
             loading="lazy"
           />
 
-          {/* Hover Image */}
+          {/* Hover Image: Full Shirt View (Only Full Shirt shown on hover, clean background) */}
           {activeHoverImage && (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src={activeHoverImage}
-              alt={`${product.name} Full Look`}
-              className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
-              loading="lazy"
-            />
+            <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-10 overflow-hidden pointer-events-none">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={activeHoverImage}
+                alt={`${product.name} Full Look`}
+                className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
+                loading="lazy"
+              />
+            </div>
           )}
-
-
         </Link>
 
         {/* Top Right: Floating Outline Heart Wishlist Icon */}

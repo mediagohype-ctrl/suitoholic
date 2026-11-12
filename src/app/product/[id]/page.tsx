@@ -28,8 +28,9 @@ import {
   type LucideIcon,
 } from"lucide-react";
 import confetti from"canvas-confetti";
-import CustomizationModal from"@/components/CustomizationModal";
-import CommonAtelierShowcase from"@/components/CommonAtelierShowcase";
+import CustomizationModal from "@/components/CustomizationModal";
+import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 // Icon keys usable in the productPage.badges content
 const BADGE_ICONS: Record<string, LucideIcon> = {
@@ -109,7 +110,11 @@ export default function ProductDetailPage() {
   }
 
   const colorways = activeProduct.colorways ?? [];
-  const rawGallery = activeProduct.gallery?.length ? activeProduct.gallery : [activeProduct.image];
+  const matchingFull = getMatchingFullShirtImage(activeProduct);
+  const rawGallery = activeProduct.gallery?.length ? [...activeProduct.gallery] : [activeProduct.image];
+  if (matchingFull && !rawGallery.some((g) => g && g.includes(matchingFull))) {
+    rawGallery.push(matchingFull);
+  }
   const gallery = rawGallery.map((g) => (g ? g.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i,"/") :""));
   const outOfStock = activeProduct.stock === 0;
   const lowStock = typeof activeProduct.stock ==="number" && activeProduct.stock > 0 && activeProduct.stock <= 5;

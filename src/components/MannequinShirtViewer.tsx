@@ -1,7 +1,8 @@
 "use client";
 
-import React from"react";
-import { useContent } from"@/context/SiteDataProvider";
+import React from "react";
+import { useContent } from "@/context/SiteDataProvider";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 export interface MannequinShirtViewerProps {
   chestSize: number;
@@ -40,6 +41,15 @@ export function getShirtColorFamily(
   const img = (product.image || (product.gallery && product.gallery[0]) ||"").toLowerCase();
   const slug = (product.slug ||"").toLowerCase();
   const name = (product.name ||"").toLowerCase();
+
+  // 0. White Shirts
+  if (
+    (name.includes("white") || slug.includes("white") || img.includes("white")) &&
+    !name.includes("black") &&
+    !slug.includes("black")
+  ) {
+    return "white";
+  }
 
   // 1. Direct matching by user uploaded shirt images (13 to 25)
   if (img.includes("shirt_13") || img.includes("sandstone") || img.includes("linen")) return"sandstone_linen";
@@ -176,6 +186,23 @@ function getMatchingShirtModel(
     // Exact bespoke made-shirt with authentic rounded tummy profile, belly curvature and waist drape creases
     return "/customizer/tummy_fit_shirt.png";
   }
+
+  // 1. Central 100% color-consistent resolver
+  const matchedFull = getMatchingFullShirtImage(product);
+  if (matchedFull) {
+    if (isHalfSleeve) {
+      if (matchedFull.includes("shirt_model_white")) return "/customizer/shirt_model_white_half.png";
+      if (matchedFull.includes("shirt_model_skyblue")) return "/customizer/shirt_model_skyblue_half.png";
+      if (matchedFull.includes("shirt_model_charcoal")) return "/customizer/shirt_model_charcoal_half.png";
+      if (matchedFull.includes("shirt_model_espresso")) return "/customizer/shirt_model_espresso_half.png";
+      if (matchedFull.includes("shirt_model_ivory")) return "/customizer/shirt_model_ivory_half.png";
+      if (matchedFull.includes("shirt_model_sandstone_linen")) return "/customizer/shirt_model_sandstone_linen_half.png";
+      if (matchedFull.includes("shirt_model_coral_stripe")) return "/customizer/shirt_model_coral_stripe_half.png";
+      if (matchedFull.includes("shirt_model_navy_solid")) return "/customizer/shirt_model_navy_solid_half.png";
+    }
+    return matchedFull.replace(/\.jpe?g$/i, ".png");
+  }
+
   const shirtId = getShirtId(product);
   return `/customizer/full_shirt_${shirtId}.png`;
 }
@@ -281,8 +308,8 @@ export default function MannequinShirtViewer({
   const chestLeftLineEnd = chestBadgeX - 4; // 152
   const chestRightLineStart = chestBadgeX + chestBadgeWidth + 4; // 248
 
-  // Completely uniform drop-shadow so the chest and shirt tone never change between fits
-  const shirtFilter ="contrast(1.0) drop-shadow(0 16px 28px rgba(20,17,14,0.25))";
+  // Completely uniform organic drop-shadow hugging only the garment silhouette
+  const shirtFilter = "contrast(1.0) drop-shadow(0 14px 22px rgba(20,17,14,0.18))";
 
   return (
     <div className={`relative w-full ${currentStep === 5 ? "max-w-none" : "max-w-[440px]"} mx-auto flex flex-col items-center justify-start py-0`}>
@@ -377,7 +404,7 @@ export default function MannequinShirtViewer({
                 loading="eager"
                 onError={(e) => {
                   if (bodyFit === "tummy") {
-                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.jpg";
+                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.png";
                   }
                 }}
               />
@@ -395,7 +422,7 @@ export default function MannequinShirtViewer({
                 loading="eager"
                 onError={(e) => {
                   if (bodyFit === "tummy") {
-                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.jpg";
+                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.png";
                   }
                 }}
               />

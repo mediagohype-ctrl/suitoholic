@@ -17,14 +17,14 @@ export const customizer = {
   steps: [
     { breadcrumb: "CHEST SIZE", title: "SELECT YOUR CHEST SIZE", subtitle: "Choose your chest size for the perfect fit." },
     { breadcrumb: "BODY TYPE", title: "CHOOSE YOUR BODY TYPE", subtitle: "Find the fit that matches your body shape and comfort preference." },
-    { breadcrumb: "HEIGHT", title: "SELECT YOUR HEIGHT", subtitle: "Choose the height option that fits you." },
-    { breadcrumb: "SLEEVES", title: "SELECT YOUR SLEEVES", subtitle: "Choose the sleeve type that you prefer." },
+    { breadcrumb: "HEIGHT", title: "SELECT YOUR HEIGHT CATEGORY", subtitle: "Choose the height range that best matches your build." },
+    { breadcrumb: "SLEEVES & POCKETS", title: "SELECT YOUR SLEEVES & POCKETS", subtitle: "Choose your preferred sleeve style and pocket option for your shirt." },
     {
-      breadcrumb: "COLLAR & DETAILS",
-      title: "COLLAR, CUFFS & DETAILS",
-      subtitle: "Customize collar style, wrist cuffs, and personalized monogram initials.",
+      breadcrumb: "COLLAR & CUFFS",
+      title: "SELECT YOUR COLLAR & CUFF STYLE",
+      subtitle: "Choose your preferred collar style and cuff style for your shirt.",
     },
-    { breadcrumb: "REVIEW & ADD TO BAG", title: "REVIEW & CONFIRM BESPOKE FIT", subtitle: "Verify your bespoke specifications before adding to bag." },
+    { breadcrumb: "REVIEW & CONFIRM", title: "REVIEW YOUR SELECTION", subtitle: "Your custom shirt summary. Review and confirm your perfect fit." },
   ],
   chestLabel: "CHEST SIZE (IN INCHES)",
   chestSizes: [

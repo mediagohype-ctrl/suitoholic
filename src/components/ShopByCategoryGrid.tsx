@@ -126,19 +126,23 @@ export default function ShopByCategoryGrid() {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover object-center group-hover/card:scale-103 transition-transform duration-700 ease-out"
+                  className={`w-full h-full object-cover object-center group-hover/card:scale-103 transition-all duration-700 ease-out ${
+                    hoverImage ? "group-hover/card:opacity-0" : ""
+                  }`}
                   loading="lazy"
                 />
 
                 {/* Hover Image: Full Tailored Shirt View */}
                 {hoverImage && (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={hoverImage}
-                    alt={`${item.title} Full Look`}
-                    className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover/card:opacity-100 group-hover/card:scale-103"
-                    loading="lazy"
-                  />
+                  <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 ease-out z-10 overflow-hidden pointer-events-none">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={hoverImage}
+                      alt={`${item.title} Full Look`}
+                      className="w-full h-full object-cover object-center group-hover/card:scale-103 transition-transform duration-700 ease-out"
+                      loading="lazy"
+                    />
+                  </div>
                 )}
 
                 {/* Bottom Subtle Dark Gradient for Contrast */}

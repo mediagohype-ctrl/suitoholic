@@ -63,6 +63,160 @@ function getShortShirtTitle(name: string): string {
   return name.replace(/FORMAL|SAVILE ROW/gi,"").trim();
 }
 
+function MeasuringTapeIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      className={`${className} text-[#A35D27] shrink-0 inline-block`}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Tape Measure Roll */}
+      <circle cx="7" cy="12" r="5" stroke="#A35D27" strokeWidth="1.5" fill="#FAF5EE" />
+      <circle cx="7" cy="12" r="2.2" stroke="#A35D27" strokeWidth="1.2" fill="#9E5D2A" />
+      {/* Tape Ribbon Body extending outward */}
+      <path
+        d="M7 17H19C20.1 17 21 16.1 21 15V13C21 11.9 20.1 11 19 11H10.5"
+        stroke="#A35D27"
+        strokeWidth="1.4"
+        fill="#FAF5EE"
+      />
+      {/* Measurement hash marks along the tape strip */}
+      <line x1="12" y1="11" x2="12" y2="13.5" stroke="#A35D27" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="14.5" y1="11" x2="14.5" y2="15" stroke="#A35D27" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="17" y1="11" x2="17" y2="13.5" stroke="#A35D27" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="19.5" y1="11" x2="19.5" y2="14.5" stroke="#A35D27" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+const STEP_HEADERS: Record<number, { prefix: string; accent: string }> = {
+  1: { prefix: "Select Your", accent: "Chest Size" },
+  2: { prefix: "Choose Your", accent: "Body Type" },
+  3: { prefix: "Select Your", accent: "Height Category" },
+  4: { prefix: "Select Your", accent: "Sleeves & Pockets" },
+  5: { prefix: "Select Your", accent: "Collar & Cuff Style" },
+  6: { prefix: "Review Your", accent: "Selection" },
+};
+
+const COLLAR_OPTIONS = [
+  {
+    id: "cutaway",
+    title: "CUTAWAY COLLAR",
+    matchKey: "CUTAWAY",
+    image: "/customizer/collar_style_cutaway.png",
+  },
+  {
+    id: "mandarin",
+    title: "MANDARIN COLLAR",
+    matchKey: "MANDARIN",
+    image: "/customizer/collar_style_mandarin.png",
+  },
+  {
+    id: "buttondown",
+    title: "BUTTON-DOWN COLLAR",
+    matchKey: "BUTTON",
+    image: "/customizer/collar_style_buttondown.png",
+  },
+];
+
+const CUFF_OPTIONS = [
+  {
+    id: "classic",
+    title: "CLASSIC CUFF",
+    badge: "CLASSIC CUFF",
+    matchKeys: ["CLASSIC", "BARREL"],
+    image: "/customizer/cuff_style_classic.png",
+  },
+  {
+    id: "cufflink",
+    title: "CUFFLINK CUFF (DOUBLE FOLD)",
+    badge: "CUFFLINK CUFF (DOUBLE FOLD)",
+    matchKeys: ["CUFFLINK", "FRENCH", "DOUBLE"],
+    image: "/customizer/cuff_style_cufflink.png",
+  },
+];
+
+function HeightSilhouetteIcon({ active = false, className = "w-6 h-10" }: { active?: boolean; className?: string }) {
+  const strokeColor = active ? "#8A4418" : "#A89585";
+  return (
+    <svg
+      className={`${className} shrink-0 inline-block`}
+      viewBox="0 0 28 44"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Head */}
+      <circle cx="10" cy="6" r="3.2" stroke={strokeColor} strokeWidth="1.4" fill="none" />
+      {/* Torso & Legs */}
+      <path
+        d="M6.5 12.5C6.5 11.4 7.4 10.5 8.5 10.5H11.5C12.6 10.5 13.5 11.4 13.5 12.5V23H12V38.5H10.5V25H9.5V38.5H8V23H6.5V12.5Z"
+        stroke={strokeColor}
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+        fill="none"
+      />
+      {/* Arms */}
+      <path
+        d="M5 13.5V23.5M15 13.5V23.5"
+        stroke={strokeColor}
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+      {/* Height Dimension Vertical Arrow Line */}
+      <line x1="22.5" y1="3" x2="22.5" y2="41" stroke={strokeColor} strokeWidth="1.3" />
+      {/* Top arrow */}
+      <path d="M19.5 6L22.5 3L25.5 6" stroke={strokeColor} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Bottom arrow */}
+      <path d="M19.5 38L22.5 41L25.5 38" stroke={strokeColor} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function getHeightMeta(id: string) {
+  const lower = (id || "").toLowerCase();
+  if (lower.includes("extra")) {
+    return {
+      title: "EXTRA TALL HEIGHT",
+      heightRangeFormatted: "5.11' to 6.2\"",
+      frontLength: "30.5\"",
+      sleeveLength: "26\"",
+    };
+  }
+  if (lower.includes("tall") && !lower.includes("extra")) {
+    return {
+      title: "TALL HEIGHT",
+      heightRangeFormatted: "5.8' to 5.10\"",
+      frontLength: "29\"",
+      sleeveLength: "24.5\"",
+    };
+  }
+  return {
+    title: "REGULAR HEIGHT",
+    heightRangeFormatted: "5.5' to 5.7\"",
+    frontLength: "27.5\"",
+    sleeveLength: "23.75\"",
+  };
+}
+
+const FIT_METADATA: Record<string, { desc: string; stomachLabel: string; getStomach: (chest: number) => string }> = {
+  lean: {
+    desc: "For a slimmer, more tailored look that follows your natural shape.",
+    stomachLabel: "Stomach is",
+    getStomach: (chest) => `${chest - 4}"`,
+  },
+  regular: {
+    desc: "A balanced fit with extra comfort for everyday wear.",
+    stomachLabel: "Stomach is",
+    getStomach: (chest) => `${chest - 2}"`,
+  },
+  tummy: {
+    desc: "Extra room around the stomach for maximum comfort.",
+    stomachLabel: "Stomach size is",
+    getStomach: (chest) => `${chest + 1}" – ${chest + 2}"`,
+  },
+};
+
 export default function CustomizationModal({
   isOpen,
   onClose,
@@ -115,6 +269,8 @@ export default function CustomizationModal({
       shirtColor:"white",
     };
   });
+
+  const [specialInstructions, setSpecialInstructions] = useState<string>("");
 
   const handleChestSelect = (size: number) => {
     const match = c.chestSizes.find((x) => x.size === size);
@@ -254,7 +410,7 @@ export default function CustomizationModal({
     } else if (!submitting) {
       // Step 6: Complete — the parent adds the configured shirt to the bag
       triggerCelebration();
-      void onConfirmCustomization(customFit, activeItem);
+      void onConfirmCustomization({ ...customFit, specialInstructions: specialInstructions || undefined }, activeItem);
     }
   };
 
@@ -323,7 +479,7 @@ export default function CustomizationModal({
           className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-5 lg:p-6 lg:pt-4 space-y-4 sm:space-y-6 pb-12 sm:pb-16"
           data-lenis-prevent
         >
-          <div className={`w-full ${currentStep >= 5 ?"max-w-[1360px]" :"max-w-[1184px]"} mx-auto space-y-4 sm:space-y-6 transition-all duration-300`}>
+          <div className="w-full max-w-[1184px] mx-auto space-y-4 sm:space-y-6 transition-all duration-300">
             
             {/* Breadcrumb Steps Header */}
             <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
@@ -338,7 +494,7 @@ export default function CustomizationModal({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
             
             {/* LEFT COLUMN: 3D Interactive Mannequin Shirt Viewer & Selection Panel */}
-            <div className={`${currentStep === 5 ? "lg:col-span-7" : "lg:col-span-6"} flex flex-col justify-start relative transition-all duration-300`}>
+            <div className="lg:col-span-6 flex flex-col justify-start relative transition-all duration-300">
               
               {/* Top Row: Inscription & Selection Summary (Shown from Step 1 onwards) */}
               <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
@@ -445,68 +601,95 @@ export default function CustomizationModal({
             </div>
 
             {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
-            <div className={`${currentStep === 5 ? "lg:col-span-5" : "lg:col-span-6"} relative flex flex-col transition-all duration-300`}>
+            <div className="lg:col-span-6 relative flex flex-col transition-all duration-300">
               
-              <div className="bg-white border border-[#E5E3DD] rounded-[24px] p-5 sm:p-7 shadow-sm relative z-10 flex flex-col justify-start gap-4 sm:gap-5">
+              <div className="bg-[#FAF6F0] border border-[#EADBCE] rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 shadow-[0_12px_36px_rgba(40,25,15,0.06)] relative z-10 flex flex-col justify-start gap-4 sm:gap-5">
                 
-                {/* Stepper Header */}
+                {/* Stepper Header with Brand Accent */}
                 <div className="mb-0.5 sm:mb-1">
-                  <div className="flex items-center justify-center space-x-3 text-[11px] font-bold tracking-[0.24em] text-black uppercase mb-2">
-                    <span>STEP {currentStep} OF {totalSteps}</span>
+                  {/* SUITOHOLIC Brand Strip matching Reference Design */}
+                  <div className="flex items-center justify-center gap-3 w-full mb-2">
+                    <div className="h-[1px] w-10 sm:w-16 bg-[#D8C7B5]" />
+                    <span className="font-serif-luxury text-[10.5px] sm:text-[11.5px] tracking-[0.28em] uppercase text-[#3C2F27] font-semibold">
+                      SUITOHOLIC™
+                    </span>
+                    <div className="h-[1px] w-10 sm:w-16 bg-[#D8C7B5]" />
                   </div>
 
-                  <h3 className="font-serif-luxury text-xl sm:text-2xl lg:text-3xl font-bold text-black tracking-tight uppercase leading-tight text-center sm:text-left">
-                    {stepCopy(currentStep).title}
-                  </h3>
+                  <div className="text-center">
+                    <h3 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#1F1A17] tracking-tight leading-tight">
+                      {STEP_HEADERS[currentStep]?.prefix || "Select Your"}{" "}
+                      <span className="relative inline-block text-[#A35D27] italic font-serif">
+                        {STEP_HEADERS[currentStep]?.accent || "Style"}
+                        <svg
+                          className="absolute -bottom-1 left-0 w-full h-2.5 overflow-visible pointer-events-none"
+                          viewBox="0 0 120 10"
+                          fill="none"
+                          preserveAspectRatio="none"
+                        >
+                          <path d="M2 8C35 2 85 2 118 7" stroke="#A35D27" strokeWidth="1.75" strokeLinecap="round" />
+                        </svg>
+                      </span>
+                    </h3>
 
-                  <p className="text-[12px] sm:text-[13px] text-[#666666] font-normal mt-1 leading-relaxed text-center sm:text-left">
-                    {stepCopy(currentStep).subtitle}
-                  </p>
+                    <p className="font-serif italic text-xs sm:text-[13px] text-[#5C4A3E] text-center mt-2 leading-relaxed">
+                      {stepCopy(currentStep).subtitle}
+                    </p>
+                  </div>
                 </div>
 
                 {/* STEP 1: CHEST SIZE */}
                 {currentStep === 1 && (
                   <div className="space-y-4 animate-in fade-in duration-200">
                     <div>
-                      <label className="text-[10.5px] font-bold tracking-[0.16em] uppercase text-black block mb-2">
-                        {c.chestLabel}
-                      </label>
-                      <div className="grid grid-cols-4 gap-2 sm:gap-2.5">
+                      {/* Divider Badge with Center Pill */}
+                      <div className="flex items-center gap-3 w-full my-2">
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                        <span className="px-4 py-1 rounded-full bg-[#A35D27] text-white text-[9px] sm:text-[10px] font-bold tracking-[0.16em] uppercase shadow-2xs">
+                          {c.chestLabel || "CHEST SIZE (IN INCHES)"}
+                        </span>
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                      </div>
+
+                      {/* 8 Buttons in 2 Rows of 4 */}
+                      <div className="grid grid-cols-4 gap-2.5 sm:gap-3 mt-3">
                         {c.chestSizes.map(({ size }) => {
                           const isSelected = customFit.chestSize === size;
                           return (
                             <button
                               key={size}
+                              type="button"
                               onClick={() => handleChestSelect(size)}
-                              className={`py-2.5 sm:py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              className={`py-3 sm:py-3.5 px-1 rounded-[14px] text-sm sm:text-base font-serif-luxury font-bold transition-all duration-200 cursor-pointer ${
                                 isSelected
-                                  ?"bg-black text-white shadow-sm ring-1 ring-black"
-                                  :"bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
+                                  ? "bg-gradient-to-b from-[#7A1320] via-[#680C17] to-[#4E070F] text-white border border-[#8E1B29] shadow-[0_6px_16px_rgba(110,12,23,0.36)] scale-[1.02]"
+                                  : "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] hover:from-[#FFFDF9] hover:to-[#EAE0D1] text-[#1F1A17] border border-[#DFCDBA] shadow-[0_1px_3px_rgba(60,40,20,0.06)] hover:shadow-xs active:scale-[0.98]"
                               }`}
                             >
-                              {size}
+                              {size}&quot;
                             </button>
                           );
                         })}
                       </div>
                     </div>
 
-                    <div className="bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-3.5 grid grid-cols-3 divide-x divide-[#E5E3DD] text-center shadow-xs">
+                    {/* 3-Column Measurement Summary Box */}
+                    <div className="bg-[#F4ECE2] border border-[#E2D4C3] rounded-[16px] p-3 sm:p-3.5 grid grid-cols-3 divide-x divide-[#DFCDBA] text-center shadow-2xs mt-2">
                       <div className="px-1">
-                        <span className="text-[10px] font-semibold text-[#666666] tracking-wider block">Chest Size</span>
-                        <strong className="font-serif-luxury text-sm sm:text-base font-bold text-black block mt-0.5">
+                        <span className="font-serif italic text-[11px] sm:text-xs text-[#5C4A3E] block">Chest Size</span>
+                        <strong className="font-serif-luxury font-bold text-sm sm:text-base lg:text-lg text-[#1F1A17] block mt-0.5">
                           {customFit.chestSize}&quot;
                         </strong>
                       </div>
                       <div className="px-1">
-                        <span className="text-[10px] font-semibold text-[#666666] tracking-wider block">Collar Size</span>
-                        <strong className="font-serif-luxury text-sm sm:text-base font-bold text-black block mt-0.5">
+                        <span className="font-serif italic text-[11px] sm:text-xs text-[#5C4A3E] block">Collar Size</span>
+                        <strong className="font-serif-luxury font-bold text-sm sm:text-base lg:text-lg text-[#1F1A17] block mt-0.5">
                           {customFit.collarSize}&quot;
                         </strong>
                       </div>
                       <div className="px-1">
-                        <span className="text-[10px] font-semibold text-[#666666] tracking-wider block">Shoulder</span>
-                        <strong className="font-serif-luxury text-sm sm:text-base font-bold text-black block mt-0.5">
+                        <span className="font-serif italic text-[11px] sm:text-xs text-[#5C4A3E] block">Shoulder</span>
+                        <strong className="font-serif-luxury font-bold text-sm sm:text-base lg:text-lg text-[#1F1A17] block mt-0.5">
                           {customFit.shoulderSize}&quot;
                         </strong>
                       </div>
@@ -516,212 +699,480 @@ export default function CustomizationModal({
 
                 {/* STEP 2: BODY TYPE */}
                 {currentStep === 2 && (
-                  <div className="space-y-2.5 pt-1 animate-in fade-in duration-200">
-                    {c.bodyFits.map((fit) => (
-                      <button
-                        key={fit.id}
-                        onClick={() => setCustomFit((prev) => ({ ...prev, bodyFit: fit.id }))}
-                        className={`w-full p-3.5 rounded-2xl text-left transition-all flex items-center space-x-3 border cursor-pointer ${
-                          customFit.bodyFit === fit.id
-                            ?"bg-white border-black shadow-sm ring-1 ring-black"
-                            :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
-                        }`}
-                      >
-                        <div className="w-4 h-4 rounded-full border-2 border-black flex items-center justify-center shrink-0">
-                          {customFit.bodyFit === fit.id && <div className="w-2 h-2 rounded-full bg-black" />}
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-xs tracking-wider uppercase text-black">{fit.title}</h4>
-                          <p className="text-[11px] text-[#666666] mt-0.5">
-                            {fillTemplate(fit.description, { chest: customFit.chestSize })}
-                          </p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                )}
+                  <div className="space-y-3 pt-1 animate-in fade-in duration-200">
+                    {c.bodyFits.map((fit) => {
+                      const isSelected = customFit.bodyFit === fit.id;
+                      const meta = FIT_METADATA[fit.id] || {
+                        desc: fit.description,
+                        stomachLabel: "Stomach is",
+                        getStomach: (chest: number) => `${chest - 4}"`,
+                      };
 
-                {/* STEP 3: HEIGHT */}
-                {currentStep === 3 && (
-                  <div className="space-y-2.5 pt-1 animate-in fade-in duration-200">
-                    {c.heights.map((opt) => {
-                      const isSelected = customFit.height === opt.id;
                       return (
-                        <button
-                          key={opt.id}
-                          onClick={() => setCustomFit((prev) => ({ ...prev, height: opt.id }))}
-                          className={`w-full p-3.5 rounded-2xl text-left transition-all flex items-center space-x-3 border cursor-pointer ${
+                        <div
+                          key={fit.id}
+                          onClick={() => setCustomFit((prev) => ({ ...prev, bodyFit: fit.id }))}
+                          className={`w-full rounded-[16px] sm:rounded-[18px] p-3.5 sm:p-4 text-left transition-all duration-200 cursor-pointer ${
                             isSelected
-                              ?"bg-white border-black shadow-sm ring-1 ring-black"
-                              :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
+                              ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#A35D27] shadow-[0_4px_14px_rgba(163,93,39,0.12)] scale-[1.01]"
+                              : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
                           }`}
                         >
-                          <div className="w-4 h-4 rounded-full border-2 border-black flex items-center justify-center shrink-0">
-                            {isSelected && <div className="w-2 h-2 rounded-full bg-black" />}
+                          <div className="flex items-start gap-3.5">
+                            {/* Radio Circle */}
+                            <div className="pt-0.5 shrink-0">
+                              <div
+                                className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                                  isSelected
+                                    ? "border-2 border-[#A35D27] bg-[#FDFBF7]"
+                                    : "border-2 border-[#B8A392] bg-transparent"
+                                }`}
+                              >
+                                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#A35D27]" />}
+                              </div>
+                            </div>
+
+                            {/* Card Content */}
+                            <div className="flex-1 min-w-0">
+                              {/* Title Badge */}
+                              <span
+                                className={`px-3 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase inline-block transition-colors ${
+                                  isSelected
+                                    ? "bg-[#9E5D2A] text-white shadow-2xs"
+                                    : "bg-[#DECDBB] text-[#5C4A3E]"
+                                }`}
+                              >
+                                {fit.title}
+                              </span>
+
+                              {/* Description */}
+                              <p className="text-[11px] sm:text-[11.5px] text-[#3C2F27] font-medium leading-relaxed mt-1">
+                                {meta.desc}
+                              </p>
+
+                              {/* Thin Horizontal Divider */}
+                              <div className="h-[1px] w-full bg-[#E5D7C7] my-2" />
+
+                              {/* Measurements Strip with Tape Measure Icons */}
+                              <div className="flex items-center gap-3 text-[10.5px] sm:text-[11.5px] text-[#5C4A3E]">
+                                <div className="flex items-center gap-1.5">
+                                  <MeasuringTapeIcon />
+                                  <span>
+                                    Chest is{" "}
+                                    <strong className="font-serif-luxury font-bold text-[#1F1A17]">
+                                      {customFit.chestSize}&quot;
+                                    </strong>
+                                  </span>
+                                </div>
+                                <span className="h-3 w-[1px] bg-[#D8C7B5]" />
+                                <div className="flex items-center gap-1.5">
+                                  <MeasuringTapeIcon />
+                                  <span>
+                                    {meta.stomachLabel}{" "}
+                                    <strong className="font-serif-luxury font-bold text-[#1F1A17]">
+                                      {meta.getStomach(customFit.chestSize)}
+                                    </strong>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-xs tracking-wider uppercase text-black">{opt.title}</h4>
-                            <p className="text-[11px] text-[#444444] font-medium mt-0.5">{opt.heightRange}</p>
-                            <p className="text-[10px] text-[#888888]">{opt.details}</p>
-                          </div>
-                        </button>
+                        </div>
                       );
                     })}
                   </div>
                 )}
 
-                {/* STEP 4: SLEEVES */}
-                {currentStep === 4 && (
+                {/* STEP 3: HEIGHT */}
+                {currentStep === 3 && (
                   <div className="space-y-3 pt-1 animate-in fade-in duration-200">
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType:"half" }))}
-                        className={`p-4 rounded-2xl text-center transition-all border flex flex-col justify-between items-center relative cursor-pointer ${
-                          customFit.sleeveType ==="half"
-                            ?"bg-white border-black shadow-sm ring-1 ring-black"
-                            :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
-                        }`}
-                      >
-                        <div className="absolute top-3 left-3 w-4 h-4 rounded-full border-2 border-black flex items-center justify-center">
-                          {customFit.sleeveType ==="half" && <div className="w-2 h-2 rounded-full bg-black" />}
-                        </div>
-                        <div className="my-2 w-16 h-18 text-black">
-                          <svg viewBox="0 0 100 110" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M 40 18 L 50 26 L 60 18 L 54 12 L 46 12 Z" />
-                            <path d="M 33 28 L 16 42 L 26 48 L 33 46 L 33 92 L 67 92 L 67 46 L 74 48 L 84 42 L 67 28" />
-                          </svg>
-                        </div>
-                        <h4 className="font-bold text-xs tracking-wider uppercase text-black">{c.halfSleeveLabel}</h4>
-                      </button>
+                    {c.heights.map((opt) => {
+                      const isSelected = customFit.height === opt.id;
+                      const meta = getHeightMeta(opt.id);
+                      return (
+                        <div
+                          key={opt.id}
+                          onClick={() => setCustomFit((prev) => ({ ...prev, height: opt.id }))}
+                          className={`w-full rounded-[16px] sm:rounded-[18px] p-3.5 sm:p-4 text-left transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#8A4418] shadow-[0_4px_14px_rgba(138,68,24,0.12)] scale-[1.01]"
+                              : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3.5 sm:gap-4">
+                            {/* Radio Circle */}
+                            <div className="shrink-0">
+                              <div
+                                className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                                  isSelected
+                                    ? "border-2 border-[#8A4418] bg-[#FDFBF7]"
+                                    : "border-2 border-[#B8A392] bg-transparent"
+                                }`}
+                              >
+                                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
+                              </div>
+                            </div>
 
-                      <button
-                        onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType:"full" }))}
-                        className={`p-4 rounded-2xl text-center transition-all border flex flex-col justify-between items-center relative cursor-pointer ${
-                          customFit.sleeveType ==="full"
-                            ?"bg-white border-black shadow-sm ring-1 ring-black"
-                            :"bg-[#F5F4F0] hover:bg-neutral-100 border-[#E5E3DD] text-black"
-                        }`}
-                      >
-                        <div className="absolute top-3 left-3 w-4 h-4 rounded-full border-2 border-black flex items-center justify-center">
-                          {customFit.sleeveType ==="full" && <div className="w-2 h-2 rounded-full bg-black" />}
+                            {/* Person Silhouette Height Measurement Icon */}
+                            <div className="shrink-0 flex items-center justify-center">
+                              <HeightSilhouetteIcon active={isSelected} className="w-6 sm:w-7 h-10 sm:h-11" />
+                            </div>
+
+                            {/* Card Content */}
+                            <div className="flex-1 min-w-0">
+                              {/* Pill Badge */}
+                              <span
+                                className={`px-3 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase inline-block transition-colors ${
+                                  isSelected
+                                    ? "bg-[#8A4418] text-white shadow-2xs"
+                                    : "bg-[#E6D8CA] text-[#5C4A3E]"
+                                }`}
+                              >
+                                {meta.title}
+                              </span>
+
+                              {/* Height Range */}
+                              <div className="text-[11.5px] sm:text-xs text-[#3C2F27] mt-1">
+                                <span>Height: </span>
+                                <strong className="font-semibold text-[#1F1A17]">
+                                  {meta.heightRangeFormatted}
+                                </strong>
+                              </div>
+
+                              {/* Shirt Front Length & Sleeves Length */}
+                              <div className="flex items-center gap-2 text-[10.5px] sm:text-[11.5px] text-[#5C4A3E] mt-0.5">
+                                <span>
+                                  Shirt Front Length:{" "}
+                                  <strong className="font-medium text-[#1F1A17]">{meta.frontLength}</strong>
+                                </span>
+                                <span className="text-[#D8C7B5]">|</span>
+                                <span>
+                                  Sleeves Length:{" "}
+                                  <strong className="font-medium text-[#1F1A17]">{meta.sleeveLength}</strong>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="my-2 w-16 h-18 text-black">
-                          <svg viewBox="0 0 100 110" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M 40 18 L 50 26 L 60 18 L 54 12 L 46 12 Z" />
-                            <path d="M 33 28 L 18 38 L 14 78 L 22 78 L 26 50 L 33 50 L 33 92 L 67 92 L 67 50 L 74 50 L 78 78 L 86 78 L 82 38 L 67 28" />
-                          </svg>
-                        </div>
-                        <h4 className="font-bold text-xs tracking-wider uppercase text-black">{c.fullSleeveLabel}</h4>
-                      </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* STEP 4: SLEEVES & POCKETS */}
+                {currentStep === 4 && (
+                  <div className="space-y-4 pt-1 animate-in fade-in duration-200">
+                    {/* HALF SLEEVE SECTION */}
+                    <div>
+                      {/* Divider Badge with Center Pill */}
+                      <div className="flex items-center gap-3 w-full mb-3">
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                        <span className="px-3.5 py-0.5 rounded-full bg-[#8A4418] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase shadow-2xs">
+                          HALF SLEEVE
+                        </span>
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
+                        {/* Half Sleeve WITH Pocket */}
+                        {(() => {
+                          const isSelected = customFit.sleeveType === "half" && customFit.pocket !== "no-pocket";
+                          return (
+                            <div
+                              onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half", pocket: "pocket" }))}
+                              className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                                isSelected
+                                  ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#8A4418] shadow-[0_4px_14px_rgba(138,68,24,0.12)] scale-[1.01]"
+                                  : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
+                              }`}
+                            >
+                              <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 w-5 h-5 rounded-full flex items-center justify-center transition-all">
+                                <div
+                                  className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                  }`}
+                                >
+                                  {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
+                                </div>
+                              </div>
+
+                              <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
+                                <img
+                                  src="/customizer/sleeves_half_pocket.png"
+                                  alt="Half Sleeve With Pocket"
+                                  className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
+                                />
+                              </div>
+
+                              <span
+                                className={`w-full py-1 px-2 rounded-full text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase transition-colors text-center mt-1 ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D8CA] text-[#5C4A3E]"
+                                }`}
+                              >
+                                WITH POCKET
+                              </span>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Half Sleeve WITHOUT Pocket */}
+                        {(() => {
+                          const isSelected = customFit.sleeveType === "half" && customFit.pocket === "no-pocket";
+                          return (
+                            <div
+                              onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half", pocket: "no-pocket" }))}
+                              className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                                isSelected
+                                  ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#8A4418] shadow-[0_4px_14px_rgba(138,68,24,0.12)] scale-[1.01]"
+                                  : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
+                              }`}
+                            >
+                              <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 w-5 h-5 rounded-full flex items-center justify-center transition-all">
+                                <div
+                                  className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                  }`}
+                                >
+                                  {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
+                                </div>
+                              </div>
+
+                              <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
+                                <img
+                                  src="/customizer/sleeves_half_nopocket.png"
+                                  alt="Half Sleeve Without Pocket"
+                                  className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
+                                />
+                              </div>
+
+                              <span
+                                className={`w-full py-1 px-2 rounded-full text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase transition-colors text-center mt-1 ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D8CA] text-[#5C4A3E]"
+                                }`}
+                              >
+                                WITHOUT POCKET
+                              </span>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* FULL SLEEVE SECTION */}
+                    <div>
+                      {/* Divider Badge with Center Pill */}
+                      <div className="flex items-center gap-3 w-full mb-3 mt-1 sm:mt-2">
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                        <span className="px-3.5 py-0.5 rounded-full bg-[#8A4418] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase shadow-2xs">
+                          FULL SLEEVE
+                        </span>
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
+                        {/* Full Sleeve WITH Pocket */}
+                        {(() => {
+                          const isSelected = customFit.sleeveType === "full" && customFit.pocket !== "no-pocket";
+                          return (
+                            <div
+                              onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "full", pocket: "pocket" }))}
+                              className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                                isSelected
+                                  ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#8A4418] shadow-[0_4px_14px_rgba(138,68,24,0.12)] scale-[1.01]"
+                                  : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
+                              }`}
+                            >
+                              <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 w-5 h-5 rounded-full flex items-center justify-center transition-all">
+                                <div
+                                  className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                  }`}
+                                >
+                                  {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
+                                </div>
+                              </div>
+
+                              <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
+                                <img
+                                  src="/customizer/sleeves_full_pocket.png"
+                                  alt="Full Sleeve With Pocket"
+                                  className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
+                                />
+                              </div>
+
+                              <span
+                                className={`w-full py-1 px-2 rounded-full text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase transition-colors text-center mt-1 ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D8CA] text-[#5C4A3E]"
+                                }`}
+                              >
+                                WITH POCKET
+                              </span>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Full Sleeve WITHOUT Pocket */}
+                        {(() => {
+                          const isSelected = customFit.sleeveType === "full" && customFit.pocket === "no-pocket";
+                          return (
+                            <div
+                              onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "full", pocket: "no-pocket" }))}
+                              className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                                isSelected
+                                  ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#8A4418] shadow-[0_4px_14px_rgba(138,68,24,0.12)] scale-[1.01]"
+                                  : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
+                              }`}
+                            >
+                              <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 w-5 h-5 rounded-full flex items-center justify-center transition-all">
+                                <div
+                                  className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                  }`}
+                                >
+                                  {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
+                                </div>
+                              </div>
+
+                              <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
+                                <img
+                                  src="/customizer/sleeves_full_nopocket.png"
+                                  alt="Full Sleeve Without Pocket"
+                                  className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
+                                />
+                              </div>
+
+                              <span
+                                className={`w-full py-1 px-2 rounded-full text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase transition-colors text-center mt-1 ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D8CA] text-[#5C4A3E]"
+                                }`}
+                              >
+                                WITHOUT POCKET
+                              </span>
+                            </div>
+                          );
+                        })()}
+                      </div>
                     </div>
                   </div>
                 )}
 
-                {/* STEP 5: COLLAR, CUFFS & MONOGRAM */}
+                {/* STEP 5: COLLAR & CUFF STYLE */}
                 {currentStep === 5 && (
-                  <div className="space-y-3.5 animate-in fade-in duration-200">
+                  <div className="space-y-4 pt-1 animate-in fade-in duration-200">
+                    {/* SECTION 1: COLLAR STYLE */}
                     <div>
-                      <label className="text-[10.5px] font-bold tracking-[0.16em] uppercase text-black block mb-1.5">
-                        {c.collarLabel}
-                      </label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {c.collarStyles.map((collar) => {
-                          const selected = customFit.collarStyle === collar.name;
+                      {/* Divider Badge with Center Pill */}
+                      <div className="flex items-center gap-3 w-full mb-3">
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                        <span className="px-3.5 py-0.5 rounded-full bg-[#8A4418] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase shadow-2xs">
+                          COLLAR STYLE
+                        </span>
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+                        {COLLAR_OPTIONS.map((col) => {
+                          const isSelected = customFit.collarStyle.toUpperCase().includes(col.matchKey);
                           return (
-                            <button
-                              key={collar.name}
-                              onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: collar.name }))}
-                              className={`p-2.5 rounded-xl text-left transition-all flex items-center gap-2.5 cursor-pointer group ${
-                                selected
-                                  ?"bg-black text-white shadow-sm ring-1 ring-black"
-                                  :"bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
+                            <div
+                              key={col.id}
+                              onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: col.title }))}
+                              className={`p-2.5 sm:p-3 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                                isSelected
+                                  ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#8A4418] shadow-[0_4px_14px_rgba(138,68,24,0.12)] scale-[1.01]"
+                                  : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
                               }`}
                             >
-                              <span className="w-10 h-8 shrink-0 flex items-center justify-center">
-                                {collar.image ? (
-                                  // eslint-disable-next-line @next/next/no-img-element
-                                  <img src={collar.image} alt="" className="w-full h-full object-contain rounded" />
-                                ) : (
-                                  <CollarIllustration name={collar.name} className="w-full h-full" />
-                                )}
+                              {/* Radio Circle Top-Left */}
+                              <div className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 w-4.5 h-4.5 rounded-full flex items-center justify-center transition-all">
+                                <div
+                                  className={`w-4.5 h-4.5 rounded-full flex items-center justify-center transition-all ${
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                  }`}
+                                >
+                                  {isSelected && <div className="w-2 h-2 rounded-full bg-[#8A4418]" />}
+                                </div>
+                              </div>
+
+                              {/* Collar Photo */}
+                              <div className="w-full flex items-center justify-center pt-2 pb-1.5 h-16 sm:h-20">
+                                <img
+                                  src={col.image}
+                                  alt={col.title}
+                                  className="max-h-full max-w-full object-contain rounded-md drop-shadow-2xs"
+                                />
+                              </div>
+
+                              {/* Pill Badge */}
+                              <span
+                                className={`w-full py-1 px-1 rounded-full text-[8px] sm:text-[9px] font-bold tracking-[0.12em] uppercase transition-colors text-center mt-1 truncate ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D8CA] text-[#5C4A3E]"
+                                }`}
+                                title={col.title}
+                              >
+                                {col.title}
                               </span>
-                              <span className="min-w-0 flex-1">
-                                <span className="block text-xs font-bold leading-tight">{collar.name}</span>
-                                {collar.description && (
-                                  <span className={`block text-[9.5px] leading-tight mt-0.5 ${selected ?"text-white/70" :"text-[#666666] group-hover:text-black"}`}>
-                                    {collar.description}
-                                  </span>
-                                )}
-                              </span>
-                              {selected && <Check size={13} className="shrink-0" />}
-                            </button>
+                            </div>
                           );
                         })}
                       </div>
                     </div>
 
-                    {isFullSleeve && (
-                      <div>
-                        <label className="text-[10.5px] font-bold tracking-[0.16em] uppercase text-black block mb-1.5">
-                          {c.cuffLabel}
-                        </label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {c.cuffStyles.map((cuff) => {
-                            const selected = customFit.cuffStyle === cuff.name;
-                            return (
-                              <button
-                                key={cuff.name}
-                                onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.name }))}
-                                className={`p-2 rounded-xl text-center text-[11px] font-bold transition-all cursor-pointer flex flex-col items-center gap-1 ${
-                                  selected
-                                    ?"bg-black text-white shadow-sm ring-1 ring-black"
-                                    :"bg-[#F5F4F0] hover:bg-neutral-200 text-black border border-[#E5E3DD]"
+                    {/* SECTION 2: CUFF STYLE */}
+                    <div>
+                      {/* Divider Badge with Center Pill */}
+                      <div className="flex items-center gap-3 w-full mb-3 mt-1 sm:mt-2">
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                        <span className="px-3.5 py-0.5 rounded-full bg-[#8A4418] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase shadow-2xs">
+                          CUFF STYLE
+                        </span>
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
+                        {CUFF_OPTIONS.map((cuff) => {
+                          const isSelected = cuff.matchKeys.some((k) => customFit.cuffStyle.toUpperCase().includes(k));
+                          return (
+                            <div
+                              key={cuff.id}
+                              onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.title }))}
+                              className={`p-2.5 sm:p-3 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                                isSelected
+                                  ? "bg-gradient-to-b from-[#FAF5EE] to-[#F1E6D8] border-2 border-[#8A4418] shadow-[0_4px_14px_rgba(138,68,24,0.12)] scale-[1.01]"
+                                  : "bg-[#FAF5EE]/60 hover:bg-[#FAF5EE] border border-[#DECDBB] shadow-2xs hover:shadow-xs"
+                              }`}
+                            >
+                              {/* Radio Circle Top-Left */}
+                              <div className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 w-4.5 h-4.5 rounded-full flex items-center justify-center transition-all">
+                                <div
+                                  className={`w-4.5 h-4.5 rounded-full flex items-center justify-center transition-all ${
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                  }`}
+                                >
+                                  {isSelected && <div className="w-2 h-2 rounded-full bg-[#8A4418]" />}
+                                </div>
+                              </div>
+
+                              {/* Cuff Photo */}
+                              <div className="w-full flex items-center justify-center pt-2 pb-1.5 h-16 sm:h-20">
+                                <img
+                                  src={cuff.image}
+                                  alt={cuff.title}
+                                  className="max-h-full max-w-full object-contain rounded-md drop-shadow-2xs"
+                                />
+                              </div>
+
+                              {/* Pill Badge */}
+                              <span
+                                className={`w-full py-1 px-1.5 rounded-full text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.14em] uppercase transition-colors text-center mt-1 leading-tight ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D8CA] text-[#5C4A3E]"
                                 }`}
                               >
-                                <span className="w-12 h-9 flex items-center justify-center">
-                                  {cuff.image ? (
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <img src={cuff.image} alt="" className="w-full h-full object-contain rounded" />
-                                  ) : (
-                                    <CuffIllustration name={cuff.name} className="w-full h-full" />
-                                  )}
-                                </span>
-                                <span className="leading-tight">{cuff.name}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="text-[10.5px] font-bold tracking-[0.16em] uppercase text-black block mb-1">
-                          {c.monogramLabel}
-                        </label>
-                        <input
-                          type="text"
-                          maxLength={3}
-                          value={customFit.initials}
-                          onChange={(e) => setCustomFit((prev) => ({ ...prev, initials: e.target.value.toUpperCase() }))}
-                          className="w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-3 py-2 text-sm font-bold tracking-widest uppercase text-black focus:outline-none focus:border-black"
-                          placeholder={c.monogramPlaceholder}
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-[10.5px] font-bold tracking-[0.16em] uppercase text-black block mb-1">
-                          {c.threadLabel}
-                        </label>
-                        <select
-                          value={customFit.threadColor}
-                          onChange={(e) => setCustomFit((prev) => ({ ...prev, threadColor: e.target.value }))}
-                          className="w-full bg-[#F5F4F0] border border-[#E5E3DD] rounded-xl px-3 py-2 text-xs font-bold uppercase text-black focus:outline-none focus:border-black"
-                        >
-                          {c.threadColors.map((t) => (
-                            <option key={t.value} value={t.value}>{t.label}</option>
-                          ))}
-                        </select>
+                                {cuff.badge}
+                              </span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -729,90 +1180,263 @@ export default function CustomizationModal({
 
                 {/* STEP 6: REVIEW */}
                 {currentStep === 6 && (
-                  <div className="space-y-3 animate-in fade-in duration-200">
-                    {/* Selected Garment Summary Strip */}
-                    <div className="flex items-center gap-3 bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-2.5">
-                      {(activeItem?.image || product?.image) && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={activeItem?.image || product?.image}
-                          alt={activeItemName || productName}
-                          className="w-11 h-11 rounded-xl object-cover border border-[#E5E3DD] shrink-0"
-                        />
-                      )}
-                      <div className="min-w-0 flex-1">
-                        <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#666666] block">
-                          Tailoring Garment
+                  <div className="space-y-3.5 pt-1 animate-in fade-in duration-200">
+                    {/* 6-Step Stepper Pills Bar */}
+                    <div className="flex items-center justify-between gap-1 w-full pb-1 border-b border-[#EADBCE]">
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(1)}
+                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[10px] font-bold flex items-center justify-center shadow-2xs">
+                          1
+                        </div>
+                        <span className="text-[9px] sm:text-[9.5px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5">
+                          Chest <span className="text-[#8A4418] font-bold">✓</span>
                         </span>
-                        <h4 className="text-xs font-bold uppercase text-black truncate">
-                          {activeItemName || productName}
-                        </h4>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(2)}
+                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[10px] font-bold flex items-center justify-center shadow-2xs">
+                          2
+                        </div>
+                        <span className="text-[9px] sm:text-[9.5px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5">
+                          Body <span className="text-[#8A4418] font-bold">✓</span>
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(3)}
+                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[10px] font-bold flex items-center justify-center shadow-2xs">
+                          3
+                        </div>
+                        <span className="text-[9px] sm:text-[9.5px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5">
+                          Height <span className="text-[#8A4418] font-bold">✓</span>
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(4)}
+                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[10px] font-bold flex items-center justify-center shadow-2xs">
+                          4
+                        </div>
+                        <span className="text-[9px] sm:text-[9.5px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5">
+                          Measure <span className="text-[#8A4418] font-bold">✓</span>
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(5)}
+                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[10px] font-bold flex items-center justify-center shadow-2xs">
+                          5
+                        </div>
+                        <span className="text-[9px] sm:text-[9.5px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5">
+                          Cuff <span className="text-[#8A4418] font-bold">✓</span>
+                        </span>
+                      </button>
+
+                      {/* Step 6 Active Pill */}
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#8A4418] to-[#6E3310] text-white shadow-2xs">
+                        <div className="w-4 h-4 rounded-full bg-[#522307] text-white text-[9.5px] font-bold flex items-center justify-center">
+                          6
+                        </div>
+                        <span className="text-[9.5px] font-bold tracking-wider uppercase">
+                          Review
+                        </span>
                       </div>
                     </div>
 
-                    {/* Bespoke Tailoring Specifications List */}
-                    <div className="bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-4 space-y-2 text-xs shadow-xs">
-                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
-                        <span className="text-[#666666]">{c.reviewLabels.measurements}</span>
-                        <strong className="text-black">{customFit.chestSize}&quot; / {customFit.collarSize}&quot; / {customFit.shoulderSize}&quot;</strong>
+                    {/* SECTION: YOUR SELECTION SUMMARY */}
+                    <div>
+                      {/* Divider Badge with Center Pill */}
+                      <div className="flex items-center gap-3 w-full mb-2">
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
+                        <span className="px-3.5 py-0.5 rounded-full bg-[#8A4418] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase shadow-2xs">
+                          YOUR SELECTION SUMMARY
+                        </span>
+                        <div className="h-[1px] flex-1 bg-[#D8C7B5]" />
                       </div>
-                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
-                        <span className="text-[#666666]">{c.reviewLabels.bodyFit}</span>
-                        <strong className="text-black uppercase">{customFit.bodyFit} Fit</strong>
-                      </div>
-                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
-                        <span className="text-[#666666]">{c.reviewLabels.height}</span>
-                        <strong className="text-black">{getHeightCleanTitle(customFit.height)}</strong>
-                      </div>
-                      <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
-                        <span className="text-[#666666]">{c.reviewLabels.sleevesCollar}</span>
-                        <strong className="text-black uppercase">{customFit.sleeveType} Sleeve | {customFit.collarStyle}</strong>
-                      </div>
-                      {isFullSleeve ? (
-                        <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
-                          <span className="text-[#666666]">{c.reviewLabels.cuffPocket}</span>
-                          <strong className="text-black uppercase">{customFit.cuffStyle} | {customFit.pocket}</strong>
+
+                      {/* 6-Row Specification Strip */}
+                      <div className="rounded-[16px] sm:rounded-[18px] bg-[#FAF5EE]/70 border border-[#DFCDBA] overflow-hidden divide-y divide-[#EADBCE]">
+                        {/* 1. FABRIC */}
+                        <div className="p-2 sm:p-2.5 flex items-center gap-3">
+                          <div className="w-13 h-9 sm:w-15 sm:h-10 rounded-md overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                            <img
+                              src={activeItem?.image || product?.image || "/api/media/53/d-115-suitoholic-crisp-white-royal-twill.jpg"}
+                              alt={activeItemName || productName}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#8A4418] uppercase block">
+                              1. FABRIC
+                            </span>
+                            <span className="text-[11px] sm:text-xs font-bold text-[#1F1A17] block truncate">
+                              {getShortShirtTitle(activeItemName || activeItem?.name || productName)}
+                            </span>
+                          </div>
                         </div>
-                      ) : (
-                        <div className="flex justify-between items-center border-b border-[#E5E3DD] pb-1.5">
-                          <span className="text-[#666666]">Pocket:</span>
-                          <strong className="text-black uppercase">{customFit.pocket}</strong>
+
+                        {/* 2. SIZE & FIT */}
+                        <div className="p-2 sm:p-2.5 flex items-center gap-3">
+                          <div className="w-13 h-9 sm:w-15 sm:h-10 rounded-md overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center p-0.5">
+                            <img
+                              src="/customizer/sleeves_full_pocket.png"
+                              alt="Size & Fit"
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#8A4418] uppercase block">
+                              2. SIZE & FIT
+                            </span>
+                            <span className="text-[10.5px] sm:text-[11px] text-[#1F1A17] block">
+                              Chest Size: <strong className="font-bold">{customFit.chestSize}&quot;</strong> &nbsp;|&nbsp; <strong className="font-bold capitalize">{customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}</strong>
+                            </span>
+                          </div>
                         </div>
-                      )}
-                      <div className="flex justify-between items-center">
-                        <span className="text-[#666666]">{c.reviewLabels.monogram}</span>
-                        <strong className="text-black uppercase">{customFit.initials ||"None"} ({customFit.threadColor})</strong>
+
+                        {/* 3. HEIGHT */}
+                        <div className="p-2 sm:p-2.5 flex items-center gap-3">
+                          <div className="w-13 h-9 sm:w-15 sm:h-10 rounded-md overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center">
+                            <HeightSilhouetteIcon active className="w-4.5 h-7" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#8A4418] uppercase block">
+                              3. HEIGHT
+                            </span>
+                            <span className="text-[10.5px] sm:text-[11px] text-[#1F1A17] block">
+                              <strong className="font-bold">{getHeightCleanTitle(customFit.height)}</strong> ({getHeightMeta(customFit.height).heightRangeFormatted})
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 4. SLEEVE */}
+                        <div className="p-2 sm:p-2.5 flex items-center gap-3">
+                          <div className="w-13 h-9 sm:w-15 sm:h-10 rounded-md overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center p-0.5">
+                            <img
+                              src={customFit.sleeveType === "half" ? "/customizer/sleeves_half_pocket.png" : "/customizer/cuff_style_classic.png"}
+                              alt="Sleeve"
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#8A4418] uppercase block">
+                              4. SLEEVE
+                            </span>
+                            <span className="text-[10.5px] sm:text-[11px] font-bold text-[#1F1A17] block capitalize">
+                              {customFit.sleeveType === "half" ? "Half Sleeves" : "Full Sleeves"}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 5. COLLAR & CUFF */}
+                        <div className="p-2 sm:p-2.5 flex items-center gap-3">
+                          <div className="w-13 h-9 sm:w-15 sm:h-10 rounded-md overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center p-0.5">
+                            <img
+                              src="/customizer/collar_style_cutaway.png"
+                              alt="Collar"
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#8A4418] uppercase block">
+                              5. COLLAR & CUFF
+                            </span>
+                            <span className="text-[10.5px] sm:text-[11px] text-[#1F1A17] block truncate">
+                              <strong className="font-bold">{customFit.collarStyle.replace(/COLLAR/gi, "").trim()} Collar</strong> &nbsp;|&nbsp; <strong className="font-bold">{customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim()}</strong>
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 6. INITIALS */}
+                        <div className="p-2 sm:p-2.5 flex items-center gap-3">
+                          <div className="w-13 h-9 sm:w-15 sm:h-10 rounded-md overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                            <img
+                              src="/customizer/review_monogram_thumb.png"
+                              alt="Monogram Initials"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#8A4418] uppercase block">
+                              6. INITIALS
+                            </span>
+                            <span className="text-[10.5px] sm:text-[11px] font-bold text-[#1F1A17] block">
+                              {customFit.initials ? `${customFit.initials} (${customFit.threadColor.toUpperCase()} Thread)` : "YS (Dark Blue Thread)"}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      {customizationFee > 0 && (
-                        <div className="flex justify-between items-center border-t border-[#E5E3DD] pt-1.5">
-                          <span className="text-[#666666]">{c.reviewLabels.customizationFee}</span>
-                          <strong className="text-black">+ {formatMoney(customizationFee, currencySymbol)}</strong>
-                        </div>
-                      )}
                     </div>
 
+                    {/* SECTION: ADDITIONAL REMARKS / SPECIAL INSTRUCTIONS */}
+                    <div className="pt-0.5">
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-[9px] sm:text-[9.5px] font-bold tracking-wider text-[#1F1A17] uppercase">
+                          ADDITIONAL REMARKS / SPECIAL INSTRUCTIONS
+                        </label>
+                        <span className="text-[9px] text-[#888888] font-medium">
+                          {specialInstructions.length}/400
+                        </span>
+                      </div>
+
+                      <div className="rounded-[14px] bg-[#FAF5EE] border border-[#DFCDBA] p-2.5 sm:p-3 flex items-start gap-2.5 shadow-2xs">
+                        <svg className="w-4 h-4 text-[#A35D27] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+
+                        <textarea
+                          rows={2}
+                          maxLength={400}
+                          value={specialInstructions}
+                          onChange={(e) => setSpecialInstructions(e.target.value.slice(0, 400))}
+                          placeholder="If you want any changes in the above measure, just write in this box for whatever you have selected. If you want a little half inch to one inch plus or minus, just let us know in this box so we can make according to your customization."
+                          className="w-full bg-transparent text-[10px] sm:text-[10.5px] text-[#3C2F27] placeholder:text-[#8C7A6E] placeholder:italic focus:outline-none resize-y min-h-[46px] leading-relaxed"
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
 
                 {/* BOTTOM NAVIGATION ACTIONS */}
-                <div className="pt-3 sm:pt-4 border-t border-[#E5E3DD] flex items-center justify-between gap-3">
-                  {currentStep > 1 && (
-                    <button
-                      onClick={handlePrevStep}
-                      className="px-5 py-3.5 bg-white hover:bg-neutral-100 text-black border border-[#E5E3DD] rounded-full text-xs font-bold tracking-wider uppercase transition-all flex items-center space-x-1 cursor-pointer"
-                    >
-                      <ArrowLeft size={13} />
-                      <span>{c.backLabel}</span>
-                    </button>
-                  )}
+                <div className="pt-3 sm:pt-4 border-t border-[#DFCDBA] flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={currentStep > 1 ? handlePrevStep : onClose}
+                    className="px-6 sm:px-7 py-3.5 bg-[#F5EDE3] hover:bg-[#EFE5D9] text-[#1F1A17] border border-[#DFCDBA] rounded-full font-sans font-bold text-[11px] sm:text-xs tracking-[0.16em] uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-95"
+                  >
+                    <ArrowLeft size={13} strokeWidth={2.5} />
+                    <span>{c.backLabel || "BACK"}</span>
+                  </button>
 
                   <button
+                    type="button"
                     onClick={handleNextStep}
                     disabled={submitting}
-                    className="flex-1 disabled:opacity-60 disabled:cursor-wait bg-black hover:bg-neutral-800 text-white py-4 px-6 rounded-full text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-sm hover:shadow cursor-pointer"
+                    className="flex-1 py-3.5 px-6 rounded-full bg-gradient-to-r from-[#7A1320] via-[#680C17] to-[#4E070F] hover:from-[#851624] hover:to-[#580912] text-white flex items-center justify-between shadow-[0_4px_16px_rgba(110,12,23,0.32)] transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait active:scale-[0.99]"
                   >
-                    <span>{currentStep === totalSteps ? (submitting ? c.addingLabel : c.confirmLabel) : c.continueLabel}</span>
-                    <span className="text-[10px] opacity-75 font-normal tracking-widest">{currentStep} OF {totalSteps}</span>
+                    <span className="font-sans font-bold text-xs tracking-[0.18em] uppercase text-white">
+                      {currentStep === totalSteps ? (submitting ? c.addingLabel : "CONFIRM & PROCEED →") : c.continueLabel}
+                    </span>
+                    <span className="border-l border-white/25 pl-4 sm:pl-5 text-[10px] sm:text-[11px] font-semibold tracking-widest text-white/90">
+                      {currentStep} OF {totalSteps}
+                    </span>
                   </button>
                 </div>
 
@@ -857,7 +1481,7 @@ export default function CustomizationModal({
               )}
 
               {/* 4 Cards in a Responsive Row matching Home Page (ModernProductCard) Pattern */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-1">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-4 pt-1">
                 {sisterProducts.slice(0, 4).map((sister) => {
                   const isSelected = (activeItem?.slug && activeItem.slug === sister.slug) || (activeItem?.id && String(activeItem.id) === String(sister.id));
                   const count = addedBagIds[sister.id] || 0;
@@ -877,28 +1501,32 @@ export default function CustomizationModal({
                       onClick={() => handleSelectSisterProduct(sister)}
                     >
                       {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
-                      <div className={`relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300 ${
+                      <div className={`relative w-full aspect-[254/350] rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300 ${
                         isSelected ? "ring-2 ring-black" : ""
                       }`}>
-                        <div className="block relative w-full h-full overflow-hidden">
+                        <div className="block relative w-full h-full overflow-hidden rounded-[8px]">
                           {/* Default Image */}
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={activeMainImage}
                             alt={sister.name}
-                            className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
+                            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102 ${
+                              activeHoverImage ? "group-hover:opacity-0" : ""
+                            }`}
                             loading="lazy"
                           />
 
                           {/* Hover Image */}
                           {activeHoverImage && (
-                            /* eslint-disable-next-line @next/next/no-img-element */
-                            <img
-                              src={activeHoverImage}
-                              alt={`${sister.name} Full Look`}
-                              className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
-                              loading="lazy"
-                            />
+                            <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-10 overflow-hidden pointer-events-none">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={activeHoverImage}
+                                alt={`${sister.name} Full Look`}
+                                className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
+                                loading="lazy"
+                              />
+                            </div>
                           )}
                         </div>
 

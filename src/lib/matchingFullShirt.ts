@@ -4,7 +4,7 @@
  * Guarantees 100% color consistency from card hover -> detail page -> customizer.
  */
 
-interface MatchableItem {
+export interface MatchableItem {
   id?: number | string;
   name?: string;
   title?: string;
@@ -15,45 +15,33 @@ interface MatchableItem {
   pattern?: string;
   slug?: string;
   category?: string;
+  category_key?: string;
   fibre?: string;
   description?: string;
 }
 
-// Canonical 1-to-1 mapping for the 13 authentic catalog shirts:
-// Catalog ID -> Shirt Image Number (13 to 25)
-const ID_TO_SHIRT_NUM: Record<number, number> = {
-  1: 21,  // Azure Sky Blue Bengal Stripe
-  2: 14,  // Terracotta Brick Bengal Stripe
-  3: 17,  // Charcoal Executive Pinstripe
-  4: 20,  // Navy Executive Bengal Stripe
-  5: 19,  // Savile Row Dark Espresso Twill
-  6: 22,  // Imperial Violet Executive Stripe
-  7: 13,  // Sandstone Oatmeal Linen
-  8: 18,  // Sage Mint Sartorial Stripe
-  9: 15,  // Rose Pastel Pinstripe
-  10: 16, // Magenta Wine Royal Stripe
-  11: 23, // Shadow Monochrome Stripe
-  12: 24, // Espresso Chocolate Bengal Stripe
-  13: 25, // Steel Grey Royal Stripe
-};
-
 export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
   if (!item) return "";
+  const raw = resolveRawShirtPath(item);
+  if (!raw) return "";
+  return raw.replace(/\.png$/i, ".jpg");
+}
 
-  // 1. If item is not a shirt (trousers, tshirts, blazers, ceremonial), DO NOT show a shirt on hover!
-  const cat = (item.category || "").toLowerCase();
+function resolveRawShirtPath(item: MatchableItem): string {
+
+  // 1. Filter out non-shirts (trousers, tshirts, blazers, ceremonial, etc.)
+  const cat = (item.category_key || item.category || "").toLowerCase();
   if (
     cat &&
     cat !== "formal_shirts" &&
     cat !== "formal_stripes" &&
     cat !== "formal_bespoke" &&
+    cat !== "fabrics" &&
     !cat.includes("shirt")
   ) {
     return "";
   }
 
-  // Check if name explicitly denotes non-shirts using whole word matching
-  // (CRITICAL: Do NOT use simple substring "tee" which matches "steel"!)
   const name = (item.name || item.title || "").toLowerCase();
   if (
     /\b(trouser|trousers|pant|pants|chino|chinos|tee|tees|t-shirt|polo|polos|blazer|blazers|bandhgala|sherwani|kurta|sadri)\b/i.test(
@@ -63,11 +51,180 @@ export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
     return "";
   }
 
-  // 2. Direct 1-to-1 match by image filename (e.g. shirt_21.jpg -> full_shirt_21.jpg)
+  const slug = (item.slug || "").toLowerCase();
   const img = (item.image || "").toLowerCase();
+  const text = `${name} ${slug} ${img} ${item.colour || ""} ${item.color || ""}`.toLowerCase();
+
+  // 2. Pure / Crisp White Shirts (Must NOT match black & white bengal stripe)
+  const isWhite =
+    (text.includes("white") || img.includes("white")) &&
+    !text.includes("black & white") &&
+    !text.includes("black and white") &&
+    !text.includes("black-white");
+  if (
+    isWhite &&
+    (text.includes("pure") ||
+      text.includes("crisp") ||
+      text.includes("poplin") ||
+      text.includes("oxford") ||
+      text.includes("twill") ||
+      text.includes("classic white") ||
+      img.includes("formal_white") ||
+      img.includes("classic_white") ||
+      img.includes("crisp-white"))
+  ) {
+    return "/customizer/shirt_model_white.png";
+  }
+
+  // 3. Black & White Bengal Stripe
+  if (text.includes("black & white") || text.includes("black and white") || slug.includes("black-white")) {
+    return "/customizer/shirt_model_black_white_stripe.png";
+  }
+
+  // 4. Mustard Ochre Bengal Stripe
+  if (text.includes("mustard") || text.includes("ochre")) {
+    return "/customizer/shirt_model_mustard_ochre_stripe.png";
+  }
+
+  // 5. Green Bengal Stripes / Solids
+  if (text.includes("forest green") || text.includes("bottle green")) {
+    return "/customizer/shirt_model_forest_green_stripe.png";
+  }
+  if (text.includes("sage") || text.includes("mint") || text.includes("olive")) {
+    return "/customizer/shirt_model_sage.png";
+  }
+
+  // 6. Midnight Obsidian / Solid Black
+  if (
+    text.includes("obsidian") ||
+    text.includes("midnight black") ||
+    slug.includes("midnight-black") ||
+    img.includes("midnight-black")
+  ) {
+    return "/customizer/shirt_model_midnight_black.png";
+  }
+
+  // 7. Champagne Cream / Ivory / Sand
+  if (
+    text.includes("champagne") ||
+    text.includes("ivory") ||
+    (text.includes("cream") && !text.includes("ice")) ||
+    text.includes("sandstone") ||
+    text.includes("sand twill")
+  ) {
+    if (text.includes("linen") || text.includes("sandstone")) {
+      return "/customizer/shirt_model_sandstone_linen.png";
+    }
+    return "/customizer/shirt_model_ivory.png";
+  }
+
+  // 8. Banker Pinstripe / British Banker
+  if (text.includes("banker") || text.includes("fine pinstripe")) {
+    return "/customizer/shirt_model_navy_banker_stripe.png";
+  }
+
+  // 9. Solid Sky Blue / French Cuff Blue / Mist Blue (non-striped)
+  if (
+    !text.includes("bengal") &&
+    !text.includes("stripe") &&
+    (text.includes("sky blue") ||
+      text.includes("french cuff") ||
+      text.includes("mist blue") ||
+      img.includes("french_cuff_blue") ||
+      img.includes("mist-blue"))
+  ) {
+    return "/customizer/shirt_model_skyblue.png";
+  }
+
+  // 10. Solid Navy Blue / Midnight Navy / Deep Petrol (non-striped)
+  if (
+    !text.includes("bengal") &&
+    !text.includes("stripe") &&
+    (text.includes("midnight navy") ||
+      text.includes("deep petrol") ||
+      text.includes("navy satin") ||
+      text.includes("navy solid"))
+  ) {
+    return "/customizer/shirt_model_navy_solid.png";
+  }
+
+  // 11. Coral Red / Terracotta Brick Bengal Stripe
+  if (text.includes("coral") || text.includes("terracotta") || text.includes("brick")) {
+    return "/customizer/full_shirt_14.png";
+  }
+
+  // 12. Wine / Burgundy / Bordeaux / Berry / Crimson / Blackcurrant / Magenta
+  if (
+    text.includes("wine") ||
+    text.includes("burgundy") ||
+    text.includes("bordeaux") ||
+    text.includes("blackcurrant") ||
+    text.includes("crimson") ||
+    text.includes("magenta") ||
+    text.includes("berry")
+  ) {
+    return "/customizer/shirt_model_bordeaux.png";
+  }
+
+  // 13. Pink / Rose / Blush / Pastel
+  if (text.includes("pink") || text.includes("rose") || text.includes("blush") || text.includes("pastel")) {
+    return "/customizer/full_shirt_15.png";
+  }
+
+  // 14. Blue Bengal Stripe Family (Royal Blue, Azure, Navy Stripe, Cornflower, Ice Blue, French Blue, Sky Blue Stripe)
+  if (text.includes("bengal") || text.includes("stripe")) {
+    if (text.includes("navy")) return "/customizer/full_shirt_20.png";
+    if (text.includes("charcoal")) return "/customizer/full_shirt_17.png";
+    if (text.includes("grey") || text.includes("gray")) return "/customizer/full_shirt_25.png";
+    if (
+      text.includes("royal") ||
+      text.includes("azure") ||
+      text.includes("french blue") ||
+      text.includes("cornflower") ||
+      text.includes("ice blue") ||
+      text.includes("sky blue") ||
+      text.includes("blue")
+    ) {
+      return "/customizer/full_shirt_21.png";
+    }
+  }
+
+  // 15. Purple / Violet / Lavender
+  if (text.includes("purple") || text.includes("violet") || text.includes("lavender") || text.includes("imperial")) {
+    return "/customizer/full_shirt_22.png";
+  }
+
+  // 16. Charcoal / Slate Grey / Boardroom
+  if (
+    text.includes("charcoal") ||
+    text.includes("boardroom") ||
+    text.includes("anthracite") ||
+    text.includes("slate")
+  ) {
+    return "/customizer/shirt_model_charcoal.png";
+  }
+
+  // 17. Espresso / Chocolate / Coffee / Caramel / Khaki / Taupe
+  if (text.includes("espresso") || text.includes("chocolate") || text.includes("coffee")) {
+    return "/customizer/shirt_model_espresso.png";
+  }
+  if (
+    text.includes("caramel") ||
+    text.includes("khaki") ||
+    text.includes("taupe") ||
+    text.includes("mocha") ||
+    text.includes("linen")
+  ) {
+    return "/customizer/shirt_model_sandstone_linen.png";
+  }
+  if (text.includes("steel") || text.includes("grey") || text.includes("gray") || img.includes("shirt_25")) {
+    return "/customizer/full_shirt_25.png";
+  }
+
+  // Direct image path check shirt_13 .. shirt_25 (fallback if none matched)
   for (let i = 13; i <= 25; i++) {
     if (img.includes(`shirt_${i}`)) {
-      return `/customizer/full_shirt_${i}.jpg`;
+      return `/customizer/full_shirt_${i}.png`;
     }
   }
 
@@ -77,60 +234,16 @@ export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
       const gLower = (g || "").toLowerCase();
       for (let i = 13; i <= 25; i++) {
         if (gLower.includes(`shirt_${i}`) || gLower.includes(`full_shirt_${i}`)) {
-          return `/customizer/full_shirt_${i}.jpg`;
+          return `/customizer/full_shirt_${i}.png`;
         }
       }
     }
   }
 
-  // 3. Match by numeric ID (1 to 13)
-  if (typeof item.id === "number" && ID_TO_SHIRT_NUM[item.id]) {
-    return `/customizer/full_shirt_${ID_TO_SHIRT_NUM[item.id]}.jpg`;
-  }
-  if (typeof item.id === "string") {
-    const parsed = parseInt(item.id, 10);
-    if (!isNaN(parsed) && ID_TO_SHIRT_NUM[parsed]) {
-      return `/customizer/full_shirt_${ID_TO_SHIRT_NUM[parsed]}.jpg`;
-    }
-    for (let i = 13; i <= 25; i++) {
-      if (item.id.includes(String(i))) {
-        return `/customizer/full_shirt_${i}.jpg`;
-      }
-    }
+  // Generic white fallback if name has white
+  if (text.includes("white")) {
+    return "/customizer/shirt_model_white.png";
   }
 
-  // 4. Exact slug matching
-  const slug = (item.slug || "").toLowerCase();
-  if (slug.includes("azure") || slug === "azure-bengal-stripe-formal") return "/customizer/full_shirt_21.jpg";
-  if (slug.includes("terracotta") || slug.includes("brick")) return "/customizer/full_shirt_14.jpg";
-  if (slug.includes("charcoal")) return "/customizer/full_shirt_17.jpg";
-  if (slug.includes("navy")) return "/customizer/full_shirt_20.jpg";
-  if (slug.includes("savile-row") || (slug.includes("espresso") && !slug.includes("chocolate"))) return "/customizer/full_shirt_19.jpg";
-  if (slug.includes("violet") || slug.includes("imperial")) return "/customizer/full_shirt_22.jpg";
-  if (slug.includes("sandstone") || slug.includes("linen") || slug.includes("oatmeal")) return "/customizer/full_shirt_13.jpg";
-  if (slug.includes("sage") || slug.includes("mint")) return "/customizer/full_shirt_18.jpg";
-  if (slug.includes("rose") || slug.includes("pastel")) return "/customizer/full_shirt_15.jpg";
-  if (slug.includes("magenta") || slug.includes("wine")) return "/customizer/full_shirt_16.jpg";
-  if (slug.includes("shadow") || slug.includes("monochrome")) return "/customizer/full_shirt_23.jpg";
-  if (slug.includes("chocolate")) return "/customizer/full_shirt_24.jpg";
-  if (slug.includes("steel") || slug.includes("grey") || slug.includes("gray")) return "/customizer/full_shirt_25.jpg";
-
-  // 5. Specific keyword matching on name and title
-  const text = `${item.name ?? ""} ${item.title ?? ""} ${item.colour ?? ""} ${item.color ?? ""}`.toLowerCase();
-  if (text.includes("terracotta") || text.includes("brick")) return "/customizer/full_shirt_14.jpg";
-  if (text.includes("rose") || text.includes("pastel") || text.includes("blush")) return "/customizer/full_shirt_15.jpg";
-  if (text.includes("magenta") || text.includes("wine") || text.includes("berry")) return "/customizer/full_shirt_16.jpg";
-  if (text.includes("charcoal")) return "/customizer/full_shirt_17.jpg";
-  if (text.includes("sage") || text.includes("mint")) return "/customizer/full_shirt_18.jpg";
-  if (text.includes("chocolate")) return "/customizer/full_shirt_24.jpg";
-  if (text.includes("espresso")) return "/customizer/full_shirt_19.jpg";
-  if (text.includes("navy")) return "/customizer/full_shirt_20.jpg";
-  if (text.includes("azure") || text.includes("sky blue")) return "/customizer/full_shirt_21.jpg";
-  if (text.includes("violet") || text.includes("imperial") || text.includes("purple")) return "/customizer/full_shirt_22.jpg";
-  if (text.includes("shadow") || text.includes("monochrome")) return "/customizer/full_shirt_23.jpg";
-  if (text.includes("steel") || text.includes("grey") || text.includes("gray")) return "/customizer/full_shirt_25.jpg";
-  if (text.includes("sandstone") || text.includes("linen") || text.includes("oatmeal")) return "/customizer/full_shirt_13.jpg";
-
-  // Fallback for shirts: return empty so we never show an incorrect color image
   return "";
 }

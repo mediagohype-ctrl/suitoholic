@@ -177,8 +177,8 @@ export default function ModernCollectionSection({
         </h2>
       </div>
 
-      {/* 4-Column Product Cards Grid - END TO END (Full-Width Edge-to-Edge) with Exact 2px Column Gap & Distinct Section Row Gap */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[2px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start">
+      {/* 4-Column Product Cards Grid - END TO END (Full-Width Edge-to-Edge) with Exact 10px Column Gap & Distinct Section Row Gap */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[5px]">
         {(gridProducts.length > 0 ? gridProducts : displayProducts).map((product, idx) => (
           <div key={`${product.id}-${product.slug || idx}`} className="w-full">
             <ModernProductCard product={product} />
