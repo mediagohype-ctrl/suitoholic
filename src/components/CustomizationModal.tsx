@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MannequinShirtViewer, { getShirtColorFamily } from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
-import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw } from "lucide-react";
+import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, ChevronDown } from "lucide-react";
 import confetti from "canvas-confetti";
 import { fillTemplate } from "@/content/merge";
 import { useCatalog, useContent, useSettings } from "@/context/SiteDataProvider";
@@ -218,6 +218,20 @@ export default function CustomizationModal({
     }
   };
 
+  // Lock body scroll and pause Lenis while modal is open so wheel events inside modal work smoothly
+  useEffect(() => {
+    if (!isOpen) return;
+    const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis;
+    if (lenis) lenis.stop();
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      if (lenis) lenis.start();
+    };
+  }, [isOpen]);
+
   // The initial state is seeded from initialChestSize; selections are kept if the modal is closed and reopened.
   if (!isOpen) return null;
 
@@ -267,13 +281,19 @@ export default function CustomizationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 lg:p-8 animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 lg:p-8 animate-in fade-in duration-200"
+      data-lenis-prevent
+    >
       
       {/* Modal Container */}
-      <div className="relative w-full max-w-[1480px] bg-[#ECEAE5] border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col max-h-[95vh]">
+      <div
+        className="relative w-full max-w-[1480px] bg-[#ECEAE5] border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[95vh]"
+        data-lenis-prevent
+      >
         
         {/* Modal Top Header Bar */}
-        <div className="bg-white text-black px-6 sm:px-8 lg:px-10 py-4 flex items-center justify-between border-b border-[#E5E3DD]">
+        <div className="bg-white text-black px-6 sm:px-8 lg:px-10 py-4 flex items-center justify-between border-b border-[#E5E3DD] shrink-0">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shadow-xs">
               <Scissors size={15} />
@@ -299,7 +319,10 @@ export default function CustomizationModal({
         </div>
 
         {/* Modal Scrollable Content Body */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 lg:p-6 lg:pt-4 space-y-3 sm:space-y-4">
+        <div
+          className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-5 lg:p-6 lg:pt-4 space-y-4 sm:space-y-6 pb-12 sm:pb-16"
+          data-lenis-prevent
+        >
           <div className={`w-full ${currentStep >= 5 ?"max-w-[1360px]" :"max-w-[1184px]"} mx-auto space-y-4 sm:space-y-6 transition-all duration-300`}>
             
             {/* Breadcrumb Steps Header */}
@@ -793,6 +816,21 @@ export default function CustomizationModal({
                   </button>
                 </div>
 
+                {/* Helpful Scroll Down Indicator for Step 6 */}
+                {currentStep === 6 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const el = document.getElementById("sister-fabrics-section");
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="w-full text-center pt-2 pb-0.5 text-[11px] font-bold text-[#888888] hover:text-black transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Scroll down for more fabrics &amp; sister shirts</span>
+                    <ChevronDown size={14} className="animate-bounce" />
+                  </button>
+                )}
+
               </div>
 
             </div>
@@ -801,7 +839,7 @@ export default function CustomizationModal({
 
           {/* SISTER FABRICS & COLORS - SEPARATE ROW SECTION BELOW THE GRID (MATCHING HOME PAGE PATTERN) */}
           {currentStep === 6 && sisterProducts.length > 0 && (
-            <div className="space-y-4 pt-6 sm:pt-8 border-t border-[#E5E3DD] animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div id="sister-fabrics-section" className="space-y-4 pt-6 sm:pt-8 border-t border-[#E5E3DD] animate-in fade-in slide-in-from-bottom-2 duration-300">
               <div className="text-center pb-2">
                 <h4 className="text-sm sm:text-base font-extrabold tracking-[0.18em] uppercase text-black font-serif-luxury">
                   ADD MORE SHIRTS IN DIFFERENT FABRICS
