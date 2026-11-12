@@ -277,7 +277,7 @@ export default function CartDrawer() {
                 </div>
                 <div className="flex justify-between text-base font-bold text-black border-t border-[#E5E3DD] pt-2 mt-1">
                   <span>Total</span>
-                  <span className="font-serif-luxury text-xl">₹{finalTotal.toLocaleString("en-IN")}</span>
+                  <span className="font-sans text-xl font-bold text-black tracking-tight">₹{finalTotal.toLocaleString("en-IN")}</span>
                 </div>
               </div>
 

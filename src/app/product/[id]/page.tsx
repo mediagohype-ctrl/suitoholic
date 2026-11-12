@@ -285,7 +285,7 @@ export default function ProductDetailPage() {
 
                 {/* Price Display */}
                 <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[#E5E3DD] pt-3.5">
-                  <span className="font-serif-luxury text-3xl sm:text-4xl font-normal text-black">
+                  <span className="font-sans text-2xl sm:text-3xl font-bold text-black tracking-tight">
                     {activeProduct.price}
                   </span>
                   {activeProduct.compareAtPrice ? (

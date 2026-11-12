@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState } from"react";
-import MannequinShirtViewer, { getShirtColorFamily } from"@/components/MannequinShirtViewer";
-import { CollarIllustration, CuffIllustration } from"@/components/customizer/StyleIllustrations";
-import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, Sparkles } from"lucide-react";
-import confetti from"canvas-confetti";
-import { fillTemplate } from"@/content/merge";
-import { useCatalog, useContent, useSettings } from"@/context/SiteDataProvider";
-import { useCart } from"@/context/CartProvider";
-import { formatMoney } from"@/lib/api";
-import type { CustomFit, ProductItem } from"@/lib/types";
+import React, { useState } from "react";
+import MannequinShirtViewer, { getShirtColorFamily } from "@/components/MannequinShirtViewer";
+import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
+import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw } from "lucide-react";
+import confetti from "canvas-confetti";
+import { fillTemplate } from "@/content/merge";
+import { useCatalog, useContent, useSettings } from "@/context/SiteDataProvider";
+import { useCart } from "@/context/CartProvider";
+import { formatMoney } from "@/lib/api";
+import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
+import type { CustomFit, ProductItem } from "@/lib/types";
 
 import { EIGHT_CANONICAL_SISTER_SHIRTS } from"@/data/products";
 
@@ -314,7 +315,7 @@ export default function CustomizationModal({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
             
             {/* LEFT COLUMN: 3D Interactive Mannequin Shirt Viewer & Selection Panel */}
-            <div className={`${currentStep >= 5 ?"lg:col-span-7" :"lg:col-span-6"} flex flex-col justify-start relative transition-all duration-300`}>
+            <div className={`${currentStep === 5 ? "lg:col-span-7" : "lg:col-span-6"} flex flex-col justify-start relative transition-all duration-300`}>
               
               {/* Top Row: Inscription & Selection Summary (Shown from Step 1 onwards) */}
               <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
@@ -330,81 +331,87 @@ export default function CustomizationModal({
 
                 </div>
 
-                {/* Floating"Your Selection" Box - Dynamically reveals selections per step */}
-                <div className="text-left min-w-[130px] sm:min-w-[155px] bg-white p-3 rounded-2xl border border-[#E5E3DD] shadow-sm transition-all duration-300">
-                  <h5 className="text-[11px] font-bold tracking-[0.14em] text-black uppercase mb-1.5 pb-1 border-b border-[#E5E3DD]">
-                    {c.selectionTitle}
-                  </h5>
-                  <div className="space-y-1.5 text-[11px]">
-                    {/* Step 1: Chest Size (always shown) */}
-                    <div className="flex justify-between items-center gap-3">
-                      <span className="text-[#666666] font-medium">Chest Size</span>
-                      <strong className="text-black font-bold">{customFit.chestSize}&quot;</strong>
+                {/* Floating "Your Selection" Box - Dynamically reveals selections per step (Hidden on Step 6 to spotlight shirt preview and avoid duplicate specs) */}
+                {currentStep < 6 && (
+                  <div className={`text-left ${currentStep === 5 ? "min-w-[240px] sm:min-w-[270px] p-2.5" : "min-w-[130px] sm:min-w-[155px] p-3"} bg-white rounded-2xl border border-[#E5E3DD] shadow-sm transition-all duration-300`}>
+                    <h5 className="text-[11px] font-bold tracking-[0.14em] text-black uppercase mb-1 pb-1 border-b border-[#E5E3DD]">
+                      {c.selectionTitle}
+                    </h5>
+                    <div className={`${currentStep === 5 ? "grid grid-cols-2 gap-x-3 gap-y-1" : "space-y-1.5"} text-[10.5px]`}>
+                      {/* Step 1: Chest Size (always shown) */}
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-[#666666] font-medium">Chest Size</span>
+                        <strong className="text-black font-bold">{customFit.chestSize}&quot;</strong>
+                      </div>
+
+                      {/* Step 2: Body Type */}
+                      {showBodyType && (
+                        <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
+                          <span className="text-[#666666] font-medium">Body Type</span>
+                          <strong className="text-black font-bold capitalize">{customFit.bodyFit} Fit</strong>
+                        </div>
+                      )}
+
+                      {/* Step 3: Height */}
+                      {showHeight && (
+                        <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
+                          <span className="text-[#666666] font-medium">Height</span>
+                          <strong className="text-black font-bold">{getHeightCleanTitle(customFit.height)}</strong>
+                        </div>
+                      )}
+
+                      {/* Step 4: Sleeve */}
+                      {showSleeve && (
+                        <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
+                          <span className="text-[#666666] font-medium">Sleeve</span>
+                          <strong className="text-black font-bold capitalize">
+                            {customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve"}
+                          </strong>
+                        </div>
+                      )}
+
+                      {/* Step 5: Collar */}
+                      {showCollar && (
+                        <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
+                          <span className="text-[#666666] font-medium">Collar</span>
+                          <strong className="text-black font-bold truncate max-w-[85px]" title={customFit.collarStyle}>
+                            {customFit.collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() || customFit.collarStyle.split(" ")[0]}
+                          </strong>
+                        </div>
+                      )}
+
+                      {/* Step 5: Cuff */}
+                      {showCuff && (
+                        <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
+                          <span className="text-[#666666] font-medium">Cuff</span>
+                          <strong className="text-black font-bold truncate max-w-[85px]" title={customFit.cuffStyle}>
+                            {customFit.cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() || customFit.cuffStyle.split(" ")[0]}
+                          </strong>
+                        </div>
+                      )}
+
+                      {/* Step 5: Monogram */}
+                      {showMonogram && (
+                        <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
+                          <span className="text-[#666666] font-medium">Monogram</span>
+                          <strong className="text-black font-bold uppercase">{customFit.initials}</strong>
+                        </div>
+                      )}
                     </div>
-
-                    {/* Step 2: Body Type */}
-                    {showBodyType && (
-                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
-                        <span className="text-[#666666] font-medium">Body Type</span>
-                        <strong className="text-black font-bold capitalize">{customFit.bodyFit} Fit</strong>
-                      </div>
-                    )}
-
-                    {/* Step 3: Height */}
-                    {showHeight && (
-                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
-                        <span className="text-[#666666] font-medium">Height</span>
-                        <strong className="text-black font-bold">{getHeightCleanTitle(customFit.height)}</strong>
-                      </div>
-                    )}
-
-                    {/* Step 4: Sleeve */}
-                    {showSleeve && (
-                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
-                        <span className="text-[#666666] font-medium">Sleeve</span>
-                        <strong className="text-black font-bold capitalize">
-                          {customFit.sleeveType ==="half" ?"Half Sleeve" :"Full Sleeve"}
-                        </strong>
-                      </div>
-                    )}
-
-                    {/* Step 5: Collar */}
-                    {showCollar && (
-                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
-                        <span className="text-[#666666] font-medium">Collar</span>
-                        <strong className="text-black font-bold">{customFit.collarStyle.split("")[0]}</strong>
-                      </div>
-                    )}
-
-                    {/* Step 5: Cuff */}
-                    {showCuff && (
-                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
-                        <span className="text-[#666666] font-medium">Cuff</span>
-                        <strong className="text-black font-bold">{customFit.cuffStyle.split("")[0]}</strong>
-                      </div>
-                    )}
-
-                    {/* Step 5: Monogram */}
-                    {showMonogram && (
-                      <div className="flex justify-between items-center gap-3 animate-in fade-in duration-200">
-                        <span className="text-[#666666] font-medium">Monogram</span>
-                        <strong className="text-black font-bold uppercase">{customFit.initials}</strong>
-                      </div>
-                    )}
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Center: 3D Interactive Mannequin Shirt */}
-              <div className="relative w-full flex flex-col items-center justify-start flex-1 -mt-2 sm:-mt-4 lg:-mt-6">
+              <div className="relative w-full flex flex-col items-center justify-start flex-1 pt-1">
                 <MannequinShirtViewer
                   chestSize={customFit.chestSize}
                   bodyFit={asMannequinFit(customFit.bodyFit)}
                   height={customFit.height}
-                  sleeveType={customFit.sleeveType ==="half" ?"half" :"full"}
+                  sleeveType={customFit.sleeveType === "half" ? "half" : "full"}
                   collarStyle={customFit.collarStyle}
                   cuffStyle={customFit.cuffStyle}
-                  pocket={customFit.pocket ==="no-pocket" ?"no-pocket" :"pocket"}
+                  pocket={customFit.pocket === "no-pocket" ? "no-pocket" : "pocket"}
                   initials={customFit.initials}
                   threadColor={customFit.threadColor}
                   currentStep={currentStep}
@@ -415,7 +422,7 @@ export default function CustomizationModal({
             </div>
 
             {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
-            <div className={`${currentStep >= 5 ?"lg:col-span-5" :"lg:col-span-6"} relative flex flex-col transition-all duration-300`}>
+            <div className={`${currentStep === 5 ? "lg:col-span-5" : "lg:col-span-6"} relative flex flex-col transition-all duration-300`}>
               
               <div className="bg-white border border-[#E5E3DD] rounded-[24px] p-5 sm:p-7 shadow-sm relative z-10 flex flex-col justify-start gap-4 sm:gap-5">
                 
@@ -792,21 +799,18 @@ export default function CustomizationModal({
 
           </div>
 
-          {/* SISTER FABRICS & COLORS - SEPARATE ROW SECTION BELOW THE GRID (NO OUTER BOX) */}
+          {/* SISTER FABRICS & COLORS - SEPARATE ROW SECTION BELOW THE GRID (MATCHING HOME PAGE PATTERN) */}
           {currentStep === 6 && sisterProducts.length > 0 && (
-            <div className="space-y-3.5 pt-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <div className="text-center pb-1">
-                <div className="flex items-center justify-center space-x-2">
-                  <Sparkles size={14} className="text-black" />
-                  <h4 className="text-xs sm:text-sm font-extrabold tracking-[0.18em] uppercase text-black font-serif-luxury">
-                    ADD MORE SHIRTS IN DIFFERENT FABRICS
-                  </h4>
-                </div>
+            <div className="space-y-4 pt-6 sm:pt-8 border-t border-[#E5E3DD] animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="text-center pb-2">
+                <h4 className="text-sm sm:text-base font-extrabold tracking-[0.18em] uppercase text-black font-serif-luxury">
+                  ADD MORE SHIRTS IN DIFFERENT FABRICS
+                </h4>
               </div>
 
               {/* Quick Add Inline Feedback Banner */}
               {quickAddToast && (
-                <div className="bg-black text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-between shadow-md animate-in fade-in duration-200">
+                <div className="bg-black text-white px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-between shadow-md animate-in fade-in duration-200">
                   <div className="flex items-center space-x-2">
                     <Check size={14} className="text-white shrink-0" />
                     <span>{quickAddToast.message}</span>
@@ -814,83 +818,101 @@ export default function CustomizationModal({
                 </div>
               )}
 
-              {/* 4 Cards in a Single Row */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                {sisterProducts.map((sister) => {
-                  const isSelected = (activeItem?.slug && activeItem.slug === sister.slug) || (activeItem?.id && activeItem.id === sister.id);
+              {/* 4 Cards in a Responsive Row matching Home Page (ModernProductCard) Pattern */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-1">
+                {sisterProducts.slice(0, 4).map((sister) => {
+                  const isSelected = (activeItem?.slug && activeItem.slug === sister.slug) || (activeItem?.id && String(activeItem.id) === String(sister.id));
                   const count = addedBagIds[sister.id] || 0;
-                  const thumb = getSuggestionThumbnail(sister);
-                  const shortTitle = getShortShirtTitle(sister.name);
+                  const hoverFullShirt = getMatchingFullShirtImage(sister);
+
+                  const rawImages = sister.gallery && sister.gallery.length > 0 
+                    ? sister.gallery 
+                    : [sister.image];
+                  const cleanImages = rawImages.map((img) => (img ? img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : ""));
+                  const activeMainImage = cleanImages[0] || sister.image || getSuggestionThumbnail(sister);
+                  const activeHoverImage = hoverFullShirt || (cleanImages.length > 1 ? cleanImages[1] : null);
 
                   return (
                     <div
                       key={sister.id}
+                      className="group flex flex-col w-full cursor-pointer relative"
                       onClick={() => handleSelectSisterProduct(sister)}
-                      className={`group p-3 rounded-2xl border transition-all flex flex-col justify-between cursor-pointer relative ${
-                        isSelected
-                          ?"bg-[#F5F4F0] border-black ring-2 ring-black shadow-sm"
-                          :"bg-white hover:bg-[#F5F4F0]/60 border-[#E5E3DD]"
-                      }`}
                     >
-                      {/* Top: High-Res Shirt Photo */}
-                      <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-white border border-[#E5E3DD] relative shrink-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={thumb}
-                          alt={sister.name}
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                        />
-                        {isSelected && (
-                          <span className="absolute top-1.5 left-1.5 bg-black text-white text-[8.5px] font-extrabold px-2 py-0.5 rounded tracking-wider uppercase shadow-xs">
-                            Viewing
-                          </span>
-                        )}
-                        {count > 0 && (
-                          <span className="absolute top-1.5 right-1.5 bg-black text-white text-[8.5px] font-bold px-2 py-0.5 rounded shadow-xs flex items-center gap-1">
-                            <Check size={10} strokeWidth={2.5} /> {count} in bag
-                          </span>
-                        )}
-                      </div>
+                      {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
+                      <div className={`relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300 ${
+                        isSelected ? "ring-2 ring-black" : ""
+                      }`}>
+                        <div className="block relative w-full h-full overflow-hidden">
+                          {/* Default Image */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={activeMainImage}
+                            alt={sister.name}
+                            className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
+                            loading="lazy"
+                          />
 
-                      {/* Middle: Details */}
-                      <div className="mt-2 min-w-0 flex-1">
-                        <h5 className="text-xs font-bold text-black uppercase truncate leading-tight" title={sister.name}>
-                          {shortTitle}
-                        </h5>
-                        <div className="flex items-center justify-between text-[11px] mt-1">
-                          <span className="font-extrabold text-black">{sister.price}</span>
-                          <span className="text-[#888888] text-[10px] uppercase truncate max-w-[80px]">
-                            {sister.fabric?.includes("Linen") ?"Linen Blend" :"100% Giza Cotton"}
-                          </span>
+                          {/* Hover Image */}
+                          {activeHoverImage && (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img
+                              src={activeHoverImage}
+                              alt={`${sister.name} Full Look`}
+                              className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
+                              loading="lazy"
+                            />
+                          )}
+                        </div>
+
+                        {/* Top Left: Badges */}
+                        <div className="absolute top-2 left-2 z-20 flex flex-col gap-1 items-start">
+                          {isSelected && (
+                            <span className="bg-black text-white text-[8.5px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider shadow-xs">
+                              Viewing
+                            </span>
+                          )}
+                          {count > 0 && (
+                            <span className="bg-black text-white text-[8.5px] font-bold px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
+                              <Check size={10} strokeWidth={2.5} /> {count} in bag
+                            </span>
+                          )}
                         </div>
                       </div>
 
-                      {/* Bottom: Quick Add Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => handleQuickAddWithSameFit(e, sister)}
-                        disabled={addingId === sister.id}
-                        className={`mt-2.5 w-full h-8 rounded-xl text-[10px] font-bold tracking-wider uppercase transition-all flex items-center justify-center space-x-1.5 shadow-xs cursor-pointer ${
-                          count > 0
-                            ?"bg-black text-white hover:bg-neutral-800"
-                            :"bg-[#F5F4F0] hover:bg-black hover:text-white text-black border border-[#E5E3DD]"
-                        }`}
-                        title="Add with exact same bespoke measurements to bag"
-                      >
-                        {addingId === sister.id ? (
-                          <RefreshCw size={11} className="animate-spin" />
-                        ) : count > 0 ? (
-                          <>
-                            <Check size={11} />
-                            <span>Added ({count})</span>
-                          </>
-                        ) : (
-                          <>
-                            <Plus size={12} className="stroke-[2.5]" />
-                            <span>Add in Fit</span>
-                          </>
-                        )}
-                      </button>
+                      {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
+                      <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-1 pb-2">
+                        <div className="min-w-0 flex-1 space-y-1">
+                          <h5
+                            title={sister.name}
+                            className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
+                          >
+                            {sister.name}
+                          </h5>
+                          <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
+                            RS. {sister.rawPrice ? sister.rawPrice.toLocaleString("en-IN") : sister.price.replace("₹", "").trim()}
+                          </div>
+                        </div>
+
+                        {/* Right: Quick Add Button with same bespoke fit */}
+                        <button
+                          type="button"
+                          onClick={(e) => handleQuickAddWithSameFit(e, sister)}
+                          disabled={addingId === sister.id}
+                          aria-label={`Add ${sister.name} with same fit`}
+                          title="Add with exact same bespoke fit to bag"
+                          className={`shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5 ${
+                            count > 0 ? "bg-black text-white" : "bg-white hover:bg-black text-black hover:text-white"
+                          }`}
+                        >
+                          {addingId === sister.id ? (
+                            <RefreshCw size={11} className="animate-spin" />
+                          ) : count > 0 ? (
+                            <Check size={12} strokeWidth={2.5} />
+                          ) : (
+                            <Plus size={13} strokeWidth={2.5} />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   );
                 })}

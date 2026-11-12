@@ -175,7 +175,7 @@ export default function OrderConfirmationPage() {
               </div>
 
               <div className="shrink-0 sm:text-right">
-                <span className="font-serif-luxury text-sm font-bold text-black block">
+                <span className="font-sans text-sm font-bold text-black block">
                   {formatMoney(total, symbol)}
                 </span>
                 <span className="text-[10px] text-[#888888] uppercase tracking-wider block">Due on Delivery</span>
@@ -214,7 +214,7 @@ export default function OrderConfirmationPage() {
                 </div>
 
                 <div className="shrink-0 sm:text-right">
-                  <span className="font-serif-luxury text-sm font-bold text-black block">
+                  <span className="font-sans text-sm font-bold text-black block">
                     {formatMoney(advanceAmount, symbol)} Now
                   </span>
                   <span className="text-[10px] text-[#888888] uppercase tracking-wider block">
@@ -295,7 +295,7 @@ export default function OrderConfirmationPage() {
                 </div>
 
                 <div className="shrink-0 sm:text-right">
-                  <span className="font-serif-luxury text-sm font-bold text-black block">
+                  <span className="font-sans text-sm font-bold text-black block">
                     {formatMoney(total, symbol)}
                   </span>
                   <span className="text-[10px] text-[#888888] uppercase tracking-wider block">Full Payment</span>

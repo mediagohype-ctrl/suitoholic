@@ -181,9 +181,13 @@ export default function CategoriesRotatingShowcase() {
 
                   {/* Category Title Overlay */}
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 text-center">
-                    <h3 className={`text-white tracking-[0.16em] uppercase font-bold drop-shadow-md transition-all ${
-                      isCenter ?"text-xl sm:text-2xl lg:text-3xl" :"text-base sm:text-xl lg:text-2xl opacity-90"
-                    }`}>
+                    <h3
+                      className={`font-serif-luxury text-white tracking-[0.16em] uppercase font-normal drop-shadow-md transition-all ${
+                        isCenter
+                          ? "text-xl sm:text-2xl lg:text-[28px]"
+                          : "text-base sm:text-lg lg:text-xl opacity-85"
+                      }`}
+                    >
                       {category.title}
                     </h3>
                   </div>

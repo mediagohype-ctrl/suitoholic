@@ -40,7 +40,7 @@ export default function OrderTotals({ subtotal, customizationTotal, shippingFee,
       </div>
       <div className="flex justify-between items-baseline border-t border-[#E5E3DD] pt-3 mt-1">
         <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-black">{c.totalLabel}</span>
-        <span className="font-serif-luxury text-2xl font-bold text-black">{money(total)}</span>
+        <span className="font-sans text-xl sm:text-2xl font-bold text-black tracking-tight">{money(total)}</span>
       </div>
       <p className="text-[10px] text-[#666666] text-right">{c.taxNote}</p>
     </div>

@@ -169,9 +169,13 @@ function getCuffKey(cuffStyle: string):"classic" |"french" |"rounded" {
 function getMatchingShirtModel(
   product?: { id?: number | string; name?: string; image?: string; gallery?: string[]; slug?: string } | null,
   isHalfSleeve: boolean = false,
-  bodyFit:"lean" |"regular" |"tummy" ="lean",
-  collarStyle: string =""
+  bodyFit: "lean" | "regular" | "tummy" = "lean",
+  collarStyle: string = ""
 ): string {
+  if (bodyFit === "tummy") {
+    // Exact bespoke made-shirt with authentic rounded tummy profile, belly curvature and waist drape creases
+    return "/customizer/tummy_fit_shirt.png";
+  }
   const shirtId = getShirtId(product);
   return `/customizer/full_shirt_${shirtId}.png`;
 }
@@ -281,24 +285,24 @@ export default function MannequinShirtViewer({
   const shirtFilter ="contrast(1.0) drop-shadow(0 16px 28px rgba(20,17,14,0.25))";
 
   return (
-    <div className={`relative w-full ${currentStep === 5 ?"max-w-none" :"max-w-[420px]"} mx-auto flex flex-col items-center justify-start py-0 flex-1`}>
+    <div className={`relative w-full ${currentStep === 5 ? "max-w-none" : "max-w-[440px]"} mx-auto flex flex-col items-center justify-start py-0`}>
 
       {/* ============================================================ */}
       {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
       {/* ============================================================ */}
       {currentStep === 5 ? (
-        <div className="relative w-full h-full min-h-[380px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center items-center py-1 sm:py-2 animate-in fade-in duration-300">
+        <div className="relative w-full flex flex-col justify-start items-center py-0 animate-in fade-in duration-300">
           {/* Dual Image Presentation - Always 2-Column Side-by-Side Responsive */}
-          <div className="w-full grid grid-cols-2 gap-2.5 sm:gap-4 items-stretch flex-1 max-h-[520px]">
+          <div className="w-full grid grid-cols-2 gap-2.5 sm:gap-3.5 items-start">
             {/* 1. Primary Folded Shirt Presentation (Collar & Cuff View) */}
-            <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-[4/5] sm:aspect-auto">
+            <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-lg flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-square w-full max-h-[320px] sm:max-h-[350px] lg:max-h-[370px]">
               <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10 max-w-[calc(100%-16px)]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C] shrink-0" />
                 <span className="truncate">
-                  Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi,"").trim() :"Spread"} &nbsp;•&nbsp; Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi,"").trim() :"Classic"}
+                  Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Spread"} &nbsp;•&nbsp; Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic"}
                 </span>
               </div>
-              <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] lg:min-h-[440px] overflow-hidden bg-[#161311] flex items-center justify-center">
+              <div className="relative w-full h-full overflow-hidden bg-[#161311] flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={`folded-${foldedImage}`}
@@ -311,21 +315,21 @@ export default function MannequinShirtViewer({
                   }}
                 />
               </div>
-              <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] text-white">
+              <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[8.5px] sm:text-[9.5px] text-white">
                 <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider shrink-0">Folded Shirt</span>
                 <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate ml-2">
-                  {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi,"").trim() :"Classic Spread"} • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi,"").trim() :"Classic Cuff"}
+                  {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Classic Spread"} • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic Cuff"}
                 </span>
               </div>
             </div>
 
             {/* 2. Side Macro Cuff Detail (Only Cuff shown) */}
-            <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-xl flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-[4/5] sm:aspect-auto">
-              <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8.5px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10">
+            <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-lg flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-square w-full max-h-[320px] sm:max-h-[350px] lg:max-h-[370px]">
+              <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C]" />
-                <span>Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi,"").trim() :"Classic"}</span>
+                <span>Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic"}</span>
               </div>
-              <div className="relative w-full h-full min-h-[220px] sm:min-h-[360px] lg:min-h-[440px] overflow-hidden bg-[#161311] flex items-center justify-center">
+              <div className="relative w-full h-full overflow-hidden bg-[#161311] flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={`macro-${cuffDetailImage}`}
@@ -338,21 +342,21 @@ export default function MannequinShirtViewer({
                   }}
                 />
               </div>
-              <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[9px] sm:text-[10px] text-white">
+              <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[8.5px] sm:text-[9.5px] text-white">
                 <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider">Wrist Cuff</span>
-                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{cuffStyle ||"Classic Cuff"}</span>
+                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{cuffStyle || "Classic Cuff"}</span>
               </div>
             </div>
           </div>
         </div>
       ) : (
         /* Steps 1, 2, 3, 4, 6: Full Ghost Mannequin Stage */
-        <div className="relative w-full flex items-center justify-start flex-1 py-0">
+        <div className="relative w-full flex items-start justify-center py-0">
 
           {/* ============================================================ */}
           {/* CORE SHIRT PHOTO: FULL MADE SHIRT IN MATCHING CHOSEN COLOR   */}
           {/* ============================================================ */}
-          <div className="relative w-full max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px] aspect-[5/6] flex items-center justify-center z-10 mx-auto -translate-y-3 sm:-translate-y-5 lg:-translate-y-7">
+          <div className="relative w-full max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px] aspect-[5/6] flex items-center justify-center z-10 mx-auto">
             <div
               className="relative w-full h-full flex items-center justify-center transition-all duration-500 ease-out"
               style={{
@@ -365,12 +369,17 @@ export default function MannequinShirtViewer({
               <img
                 key={`full-${fullShirtPhoto}`}
                 src={fullShirtPhoto}
-                alt={product?.name ??"Custom Bespoke Made Shirt (Full Sleeve)"}
+                alt={product?.name ?? "Custom Bespoke Made Shirt (Full Sleeve)"}
                 className={`w-full h-full object-contain object-top transition-all duration-300 ease-out animate-in fade-in-50 ${
-                  isHalfSleeve ?"opacity-0 pointer-events-none absolute inset-0" :"opacity-100 relative"
+                  isHalfSleeve ? "opacity-0 pointer-events-none absolute inset-0" : "opacity-100 relative"
                 }`}
                 style={{ filter: shirtFilter }}
                 loading="eager"
+                onError={(e) => {
+                  if (bodyFit === "tummy") {
+                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.jpg";
+                  }
+                }}
               />
 
               {/* Half Sleeve Shirt Photo */}
@@ -378,12 +387,17 @@ export default function MannequinShirtViewer({
               <img
                 key={`half-${halfShirtPhoto}`}
                 src={halfShirtPhoto}
-                alt={product?.name ??"Custom Bespoke Made Shirt (Half Sleeve)"}
+                alt={product?.name ?? "Custom Bespoke Made Shirt (Half Sleeve)"}
                 className={`w-full h-full object-contain object-top transition-all duration-300 ease-out animate-in fade-in-50 ${
-                  isHalfSleeve ?"opacity-100 relative" :"opacity-0 pointer-events-none absolute inset-0"
+                  isHalfSleeve ? "opacity-100 relative" : "opacity-0 pointer-events-none absolute inset-0"
                 }`}
                 style={{ filter: shirtFilter }}
                 loading="eager"
+                onError={(e) => {
+                  if (bodyFit === "tummy") {
+                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.jpg";
+                  }
+                }}
               />
             </div>
 
