@@ -280,7 +280,7 @@ export default function CartPage() {
                   <div
                     key={shirt.id}
                     className="group flex flex-col w-full cursor-pointer"
-                    onClick={() => handleStartNewCustomization(shirt)}
+                    onClick={() => setChoiceModalProduct(shirt)}
                   >
                     {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
                     <div className="relative w-full aspect-[254/350] rounded-none overflow-hidden bg-[#ECEAE5] transition-all duration-300">
@@ -345,7 +345,7 @@ export default function CartPage() {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          handleStartNewCustomization(shirt);
+                          setChoiceModalProduct(shirt);
                         }}
                         aria-label={`Customise ${shirt.name}`}
                         title="Tailor Shirt"
