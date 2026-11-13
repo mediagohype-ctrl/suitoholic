@@ -1423,49 +1423,49 @@ export default function CustomizationModal({
 
                         {/* 2. SIZE & FIT */}
                         <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center p-0.5">
+                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
                             <img
                               src="/customizer/review_shirt_thumb.png"
                               alt="Size & Fit"
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
                             <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
                               2. SIZE & FIT
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] text-[#1F1A17] block leading-snug">
-                              Chest Size: <strong className="font-bold">{customFit.chestSize}&quot;</strong> &nbsp;|&nbsp; <strong className="font-bold capitalize">{customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}</strong>
+                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block leading-snug">
+                              Chest Size: {customFit.chestSize}&quot; &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}
                             </span>
                           </div>
                         </div>
 
                         {/* 3. HEIGHT */}
                         <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center p-0.5">
+                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
                             <img
                               src="/customizer/review_height_thumb.png"
                               alt="Height Category"
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
                             <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
                               3. HEIGHT
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] text-[#1F1A17] block leading-snug">
-                              <strong className="font-bold">{getHeightCleanTitle(customFit.height)}</strong> ({getHeightMeta(customFit.height).heightRangeFormatted})
+                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block leading-snug">
+                              {getHeightCleanTitle(customFit.height)} ({getHeightMeta(customFit.height).heightRangeFormatted})
                             </span>
                           </div>
                         </div>
 
                         {/* 4. SLEEVE */}
                         <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center p-0.5">
+                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
                             <img
                               src="/customizer/review_sleeve_thumb.png"
                               alt="Sleeve"
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
@@ -1480,19 +1480,19 @@ export default function CustomizationModal({
 
                         {/* 5. COLLAR & CUFF */}
                         <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4] flex items-center justify-center p-0.5">
+                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
                             <img
                               src="/customizer/review_collar_thumb.png"
                               alt="Collar"
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
                             <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
                               5. COLLAR & CUFF
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] text-[#1F1A17] block truncate leading-snug">
-                              <strong className="font-bold">{customFit.collarStyle.replace(/COLLAR/gi, "").trim()} Collar</strong> &nbsp;|&nbsp; <strong className="font-bold">{customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim() || "Classic Cuff"}</strong>
+                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block truncate leading-snug">
+                              {customFit.collarStyle.replace(/COLLAR/gi, "").trim()} Collar &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim() || "Classic Cuff"}
                             </span>
                           </div>
                         </div>
@@ -1526,7 +1526,7 @@ export default function CustomizationModal({
                                     : "Dark Blue"
                                 } Thread)`
                               ) : (
-                                "None (No Monogram)"
+                                "YS (Dark Blue Thread)"
                               )}
                             </span>
                           </div>
@@ -1557,7 +1557,7 @@ export default function CustomizationModal({
                           value={specialInstructions}
                           onChange={(e) => setSpecialInstructions(e.target.value.slice(0, 400))}
                           placeholder="If you want any changes in the above measure, just write in this box for whatever you have selected. If you want a little half inch to one inch plus or minus, just let us know in this box so we can make according to your customization."
-                          className="w-full bg-transparent text-[9px] sm:text-[9.5px] text-[#3C2F27] placeholder:text-[#8C7A6E] placeholder:italic focus:outline-none resize-none min-h-[46px] max-h-[50px] leading-relaxed overflow-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                          className="w-full bg-transparent text-[9px] sm:text-[9.5px] text-[#3C2F27] placeholder:text-[#8C7A6E] placeholder:italic focus:outline-none resize-none min-h-[52px] sm:min-h-[56px] max-h-[60px] leading-relaxed overflow-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                         />
 
                         {/* Diagonal resize indicator lines matching Image 2 */}
