@@ -7,7 +7,7 @@ import { AlertCircle, ArrowLeft, Lock } from "lucide-react";
 import PageShell from "@/components/bag/PageShell";
 import CustomizationDetails from "@/components/bag/CustomizationDetails";
 import OrderTotals from "@/components/bag/OrderTotals";
-import { useCart } from "@/context/CartProvider";
+import { useCart, isUuid } from "@/context/CartProvider";
 import { useContent, useSettings } from "@/context/SiteDataProvider";
 import { ApiError, apiFetch } from "@/lib/api";
 import { saveLastOrder } from "@/lib/orders";
@@ -29,7 +29,7 @@ function Field({ label, error, children }: { label: string; error?: string; chil
 export default function CheckoutPage() {
   const c = useContent("bag");
   const settings = useSettings();
-  const { cart, loading, reset, couponCode, discountAmount, applyCoupon, removeCoupon } = useCart();
+  const { cart, loading, reset, couponCode, discountAmount, applyCoupon, removeCoupon, ensureServerCart } = useCart();
   const router = useRouter();
   const [couponInput, setCouponInput] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
@@ -104,10 +104,15 @@ export default function CheckoutPage() {
     setError(null);
     setFieldErrors({});
     try {
+      let activeCartId = cart.id;
+      if (!isUuid(activeCartId) && ensureServerCart) {
+        const syncedId = await ensureServerCart();
+        if (syncedId) activeCartId = syncedId;
+      }
       const order = await apiFetch<Order>("/orders", {
         method: "POST",
         body: {
-          cartId: cart.id,
+          cartId: activeCartId,
           customer: { name: form.name, email: form.email, phone: form.phone },
           shippingAddress: {
             line1: form.line1,

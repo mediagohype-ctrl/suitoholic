@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { Heart, Plus } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { ProductItem } from "@/data/products";
 import { useWishlist } from "@/context/WishlistProvider";
 import { useCustomizer } from "@/context/CustomizerModalProvider";
@@ -44,9 +44,9 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
   return (
     <div className="group flex flex-col w-full">
       {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (or 508:350 for Wide Span) */}
-      <div className={`relative w-full ${isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]"} rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
+      <div className={`relative w-full ${isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]"} rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
         {/* Main Product Image Container */}
-        <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden rounded-[8px] bg-[#ECEAE5]">
+        <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden rounded-[10px] bg-[#ECEAE5]">
           {/* Default Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -108,7 +108,7 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
           </div>
         </div>
 
-        {/* Right: Plus Button -> Opens Customizer Modal */}
+        {/* Right: Cart Button -> Opens Customizer Modal */}
         <button
           type="button"
           onClick={(e) => {
@@ -120,7 +120,7 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
           title="Customise Shirt (6 Steps)"
           className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
         >
-          <Plus size={13} strokeWidth={2.5} />
+          <ShoppingBag size={12} strokeWidth={2} />
         </button>
       </div>
     </div>

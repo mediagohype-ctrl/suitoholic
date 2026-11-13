@@ -255,17 +255,14 @@ export default function CartPage() {
           </div>
 
           {/* Canonical Shirts for immediate tailoring even when cart is empty */}
-          <div className="space-y-4 pt-2">
-            <div className="border-b border-[#E5E3DD] pb-3 text-center sm:text-left">
-              <h3 className="font-serif-luxury text-base sm:text-lg font-bold uppercase tracking-wider text-black">
-                Tailor A Signature Bespoke Shirt
-              </h3>
-              <p className="text-xs text-[#666666] mt-0.5">
-                Select any shirt to start bespoke tailoring with interactive 3D mannequin preview.
-              </p>
+          <div className="space-y-4 pt-10 sm:pt-14">
+            <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+                TAILOR A SIGNATURE BESPOKE SHIRT
+              </h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-6 pt-1">
-              {sisterProducts.slice(0, 4).map((shirt) => {
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[5px]">
+              {sisterProducts.slice(0, 8).map((shirt) => {
                 const hoverFullShirt = getMatchingFullShirtImage(shirt);
                 const isSaved = isInWishlist(shirt.id);
 
@@ -283,8 +280,8 @@ export default function CartPage() {
                     onClick={() => setChoiceModalProduct(shirt)}
                   >
                     {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
-                    <div className="relative w-full aspect-[254/350] rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
-                      <div className="block relative w-full h-full overflow-hidden rounded-[8px]">
+                    <div className="relative w-full aspect-[254/350] rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
+                      <div className="block relative w-full h-full overflow-hidden rounded-[10px]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={activeMainImage}
@@ -351,7 +348,7 @@ export default function CartPage() {
                         title="Tailor Shirt"
                         className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
                       >
-                        <Plus size={13} strokeWidth={2.5} />
+                        <ShoppingBag size={12} strokeWidth={2} />
                       </button>
                     </div>
                   </div>
@@ -546,16 +543,16 @@ export default function CartPage() {
           </div>
 
           {/* SISTER FABRICS SELECTION SECTION (MATCHING HOME PAGE PATTERN) */}
-          <div className="space-y-4 pt-6 sm:pt-8">
-            <div className="text-center pb-2">
-              <h3 className="text-sm sm:text-base font-extrabold tracking-[0.18em] uppercase text-black font-serif-luxury">
+          <div className="space-y-4 pt-10 sm:pt-14">
+            <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
                 ADD MORE SHIRTS IN DIFFERENT FABRICS
-              </h3>
+              </h2>
             </div>
 
-            {/* 4 Cards in a Responsive Row matching Home Page (ModernProductCard) Pattern */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-6 pt-1">
-              {sisterProducts.slice(0, 4).map((shirt) => {
+            {/* 8 Cards in a 4-Column Responsive Grid matching Home Page Pattern */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[5px]">
+              {sisterProducts.slice(0, 8).map((shirt) => {
                 const inBagCount = items
                   .filter((item) => item.productId === shirt.id || item.slug === shirt.slug)
                   .reduce((sum, item) => sum + item.quantity, 0);
@@ -576,8 +573,8 @@ export default function CartPage() {
                     onClick={() => setChoiceModalProduct(shirt)}
                   >
                     {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
-                    <div className="relative w-full aspect-[254/350] rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
-                      <div className="block relative w-full h-full overflow-hidden rounded-[8px]">
+                    <div className="relative w-full aspect-[254/350] rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
+                      <div className="block relative w-full h-full overflow-hidden rounded-[10px]">
                         {/* Default Image */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -589,13 +586,15 @@ export default function CartPage() {
 
                         {/* Hover Image */}
                         {activeHoverImage && (
-                          /* eslint-disable-next-line @next/next/no-img-element */
-                          <img
-                            src={activeHoverImage}
-                            alt={`${shirt.name} Full Look`}
-                            className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
-                            loading="lazy"
-                          />
+                          <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-10 overflow-hidden pointer-events-none">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={activeHoverImage}
+                              alt={`${shirt.name} Full Look`}
+                              className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
+                              loading="lazy"
+                            />
+                          </div>
                         )}
                       </div>
 
@@ -654,7 +653,7 @@ export default function CartPage() {
                         title="Tailor Shirt"
                         className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
                       >
-                        <Plus size={13} strokeWidth={2.5} />
+                        <ShoppingBag size={12} strokeWidth={2} />
                       </button>
                     </div>
                   </div>

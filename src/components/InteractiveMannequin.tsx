@@ -62,12 +62,16 @@ export default function InteractiveMannequin({ customFit, currentStep }: Interac
 
   // Thread colors mapping for initials preview (Image 10)
   const threadColorMap: Record<string, string> = {
-    red:"#A61C1C",
-    blue:"#1E40AF",
-    black:"#1F1C18",
-    rust:"#9A3412",
-    grey:"#4B5563",
-    gold:"#9E7D52",
+    red: "#A61C1C",
+    blue: "#1E40AF",
+    dark_blue: "#1E40AF",
+    black: "#1F1C18",
+    white: "#FFFFFF",
+    rust: "#9A3412",
+    grey: "#4B5563",
+    silver: "#71717A",
+    gold: "#B8860B",
+    burgundy: "#6B1F2A",
   };
   const activeThreadColor = threadColorMap[customFit.threadColor ||"blue"] ||"#1E40AF";
 

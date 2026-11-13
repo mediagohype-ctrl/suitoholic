@@ -1,7 +1,7 @@
 "use client";
 
 import React from"react";
-import { Plus, Heart } from"lucide-react";
+import { ShoppingBag, Heart } from"lucide-react";
 import { ProductItem } from"@/data/products";
 import { useWishlist } from"@/context/WishlistProvider";
 import { useCustomizer } from"@/context/CustomizerModalProvider";
@@ -88,17 +88,17 @@ export default function CuratedStartingPoints({
         </h2>
       </div>
 
-      {/* 4-Card Responsive Grid - END TO END (Full-Width Edge-to-Edge) with Exact 10px Gap */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-10 sm:gap-y-14 w-full items-start px-[5px]">
+      {/* 4-Card Responsive Grid - END TO END (Full-Width Edge-to-Edge) with Exact 15px Gap */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[15px] gap-y-10 sm:gap-y-14 w-full items-start px-[7.5px]">
         {items.map((item) => (
           <div
             key={item.id}
             className="group flex flex-col w-full"
           >
-            {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (8px Radius) */}
+            {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (10px Radius) */}
             <div
               onClick={() => onSelectLook(item)}
-              className="relative w-full aspect-[254/350] rounded-[8px] overflow-hidden bg-[#ECEAE5] transition-all duration-300 cursor-pointer block"
+              className="relative w-full aspect-[254/350] rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300 cursor-pointer block"
             >
               {/* Top-Right Floating Outline Heart Wishlist Icon */}
               <button
@@ -183,7 +183,7 @@ export default function CuratedStartingPoints({
                 aria-label={`Customise ${item.title}`}
                 className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
               >
-                <Plus size={13} strokeWidth={2.5} />
+                <ShoppingBag size={12} strokeWidth={2} />
               </button>
             </div>
           </div>

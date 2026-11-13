@@ -8,6 +8,9 @@ import type { Cart, CartItem, CustomFit } from "@/lib/types";
 
 const STORAGE_KEY = "suitoholic_cart_id";
 const CLIENT_STORAGE_KEY = "suitoholic_client_cart_v1";
+const COUPON_STORAGE_KEY = "suitoholic_coupon_v1";
+export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export const isUuid = (id: string | null | undefined): id is string => Boolean(id && UUID_RE.test(id));
 
 export interface AddToBagInput {
   productId: number;
@@ -35,23 +38,28 @@ interface CartContextValue {
   updateQuantity: (itemId: number, quantity: number) => Promise<void>;
   removeItem: (itemId: number) => Promise<void>;
   refresh: () => Promise<void>;
+  /** Ensures server-side cart exists for checkout order placement. */
+  ensureServerCart: () => Promise<string | null>;
   /** Forget the current bag (after checkout). */
   reset: () => void;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const readId = () => {
+const readId = (): string | null => {
+  if (typeof window === "undefined") return null;
   try {
-    return localStorage.getItem(STORAGE_KEY);
+    const val = localStorage.getItem(STORAGE_KEY);
+    return isUuid(val) ? val : null;
   } catch {
     return null;
   }
 };
 
 const writeId = (id: string | null) => {
+  if (typeof window === "undefined") return;
   try {
-    if (id) localStorage.setItem(STORAGE_KEY, id);
+    if (id && isUuid(id)) localStorage.setItem(STORAGE_KEY, id);
     else localStorage.removeItem(STORAGE_KEY);
   } catch {
     /* storage unavailable (private mode) */
@@ -73,7 +81,7 @@ function readLocalCart(): Cart | null {
 function writeLocalCart(cart: Cart | null) {
   if (typeof window === "undefined") return;
   try {
-    if (cart) {
+    if (cart && Array.isArray(cart.items) && cart.items.length > 0) {
       localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify(cart));
     } else {
       localStorage.removeItem(CLIENT_STORAGE_KEY);
@@ -83,7 +91,28 @@ function writeLocalCart(cart: Cart | null) {
   }
 }
 
-function calculateCartTotals(items: CartItem[], currencySymbol = "₹"): Cart {
+function readStoredCoupon(): { code: string; discount: number } | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(COUPON_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredCoupon(coupon: { code: string; discount: number } | null) {
+  if (typeof window === "undefined") return;
+  try {
+    if (coupon) localStorage.setItem(COUPON_STORAGE_KEY, JSON.stringify(coupon));
+    else localStorage.removeItem(COUPON_STORAGE_KEY);
+  } catch {
+    /* storage unavailable (private mode) */
+  }
+}
+
+function calculateCartTotals(items: CartItem[], currencySymbol = "₹", preferredId?: string | null): Cart {
   const itemCount = items.reduce((sum, item) => sum + (item.quantity || 1), 0);
   const subtotal = items.reduce((sum, item) => sum + (item.lineTotal || 0), 0);
   const customizationTotal = items.reduce(
@@ -93,8 +122,12 @@ function calculateCartTotals(items: CartItem[], currencySymbol = "₹"): Cart {
   const shippingFee = 0;
   const total = subtotal + customizationTotal + shippingFee;
 
+  const id = preferredId && String(preferredId).trim()
+    ? preferredId
+    : "cart_" + (items.length > 0 ? items[0].id : Date.now());
+
   return {
-    id: "cart_" + (items.length > 0 ? items[0].id : Date.now()),
+    id,
     status: "active",
     items,
     itemCount,
@@ -112,7 +145,7 @@ const isStaleBag = (err: unknown) => err instanceof ApiError && (err.status === 
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [busy] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [couponCode, setCouponCode] = useState<string>("");
@@ -138,18 +171,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const discount = Math.round(cart.subtotal * 0.1);
         setCouponCode("WELCOME10");
         setDiscountAmount(discount);
+        writeStoredCoupon({ code: "WELCOME10", discount });
         return { success: true, message: "WELCOME10 applied (10% off)!", discount };
       }
       if (trimmed === "SUITOHOLIC" || trimmed === "BESPOKE500") {
         const discount = Math.min(500, cart.subtotal);
         setCouponCode(trimmed);
         setDiscountAmount(discount);
+        writeStoredCoupon({ code: trimmed, discount });
         return { success: true, message: `₹500 Atelier Discount applied!`, discount };
       }
       if (trimmed === "ROYAL15") {
         const discount = Math.round(cart.subtotal * 0.15);
         setCouponCode("ROYAL15");
         setDiscountAmount(discount);
+        writeStoredCoupon({ code: "ROYAL15", discount });
         return { success: true, message: "ROYAL15 applied (15% off)!", discount };
       }
       return { success: false, message: "Invalid or expired promo code." };
@@ -160,47 +196,124 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const removeCoupon = useCallback(() => {
     setCouponCode("");
     setDiscountAmount(0);
+    writeStoredCoupon(null);
   }, []);
 
   const setActiveCart = useCallback((next: Cart | null) => {
-    cartIdRef.current = next?.id ?? null;
-    writeId(next?.id ?? null);
-    writeLocalCart(next);
-    setCart(next);
+    if (next && Array.isArray(next.items) && next.items.length > 0) {
+      if (isUuid(next.id)) {
+        cartIdRef.current = next.id;
+        writeId(next.id);
+      }
+      writeLocalCart(next);
+      setCart(next);
+    } else {
+      cartIdRef.current = null;
+      writeId(null);
+      writeLocalCart(null);
+      setCart(null);
+    }
   }, []);
 
   const refresh = useCallback(async () => {
     const id = cartIdRef.current ?? readId();
-    if (!id) return;
+    if (!id || !isUuid(id)) return;
     try {
       const data = await apiFetch<Cart>(`/cart/${id}`, { timeoutMs: 2500 });
-      if (data && data.status === "active") {
+      if (data && data.status === "active" && Array.isArray(data.items)) {
+        const local = readLocalCart();
+        // Guard: if server returns 0 items but local storage has items, NEVER wipe out local items!
+        if (data.items.length === 0 && local && Array.isArray(local.items) && local.items.length > 0) {
+          return;
+        }
         setActiveCart(data);
       }
     } catch (err) {
-      if (isStaleBag(err)) setActiveCart(null);
+      if (isStaleBag(err)) {
+        // Stale bag ID on server: clear only the server ID reference.
+        // Under NO circumstance do we delete the user's items from localStorage!
+        writeId(null);
+        if (cartIdRef.current === id) {
+          cartIdRef.current = null;
+        }
+      }
     }
   }, [setActiveCart]);
 
   useEffect(() => {
-    // 1. Hydrate local cart on client mount to match SSR initial render
+    // 1. Immediately hydrate local cart from localStorage
     const local = readLocalCart();
-    if (local) {
-      cartIdRef.current = local.id;
-      setTimeout(() => {
-        setCart(local);
-      }, 0);
+    if (local && Array.isArray(local.items) && local.items.length > 0) {
+      if (isUuid(local.id)) {
+        cartIdRef.current = local.id;
+      }
+      setCart(local);
+
+      // Hydrate saved coupon if exists
+      const savedCoupon = readStoredCoupon();
+      if (savedCoupon && savedCoupon.code) {
+        setCouponCode(savedCoupon.code);
+        setDiscountAmount(savedCoupon.discount);
+      }
     }
-    // 2. Silently attempt background sync with server
-    void refresh();
+    setLoading(false);
+
+    // 2. Silently attempt server sync only if a valid server UUID was stored
+    const existingServerId = readId();
+    if (existingServerId) {
+      cartIdRef.current = existingServerId;
+      void refresh();
+    }
   }, [refresh]);
 
-  const ensureCart = useCallback(async () => {
-    if (cartIdRef.current) return cartIdRef.current;
-    const created = await apiFetch<Cart>("/cart", { method: "POST", timeoutMs: 2500 });
-    setActiveCart(created);
-    return created.id;
-  }, [setActiveCart]);
+  // Keep tabs synchronized if user opens multiple tabs
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === CLIENT_STORAGE_KEY) {
+        const local = readLocalCart();
+        setCart(local);
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const ensureServerCart = useCallback(async (): Promise<string | null> => {
+    const currentId = cartIdRef.current ?? readId();
+    if (isUuid(currentId)) return currentId;
+    try {
+      const created = await apiFetch<Cart>("/cart", { method: "POST", timeoutMs: 3000 });
+      if (created && isUuid(created.id)) {
+        cartIdRef.current = created.id;
+        writeId(created.id);
+
+        // Sync local items to server
+        const currentItems = cart?.items || readLocalCart()?.items || [];
+        for (const item of currentItems) {
+          try {
+            await apiFetch<Cart>(`/cart/${created.id}/items`, {
+              method: "POST",
+              body: {
+                productId: item.productId,
+                quantity: item.quantity,
+                size: item.size,
+                customization: item.customization,
+              },
+              timeoutMs: 2500,
+            });
+          } catch {
+            // Ignore individual item sync failure
+          }
+        }
+        return created.id;
+      }
+    } catch {
+      // Server offline or unreachable
+    }
+    return null;
+  }, [cart]);
+
+  const ensureCart = ensureServerCart;
 
   const addItem = useCallback(
     async ({ productId, quantity = 1, size = "", customization = null }: AddToBagInput): Promise<Cart> => {
@@ -229,22 +342,27 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       // 2. Optimistically update local cart INSTANTLY (0ms response)
       const currentItems = cart?.items || readLocalCart()?.items || [];
       const updatedItems = [newItem, ...currentItems];
-      const updatedCart = calculateCartTotals(updatedItems);
+      const existingId = isUuid(cart?.id) ? cart.id : isUuid(readId()) ? readId() : undefined;
+      const updatedCart = calculateCartTotals(updatedItems, "₹", existingId);
 
       setActiveCart(updatedCart);
 
       // 3. Silently sync with backend API in background without blocking or failing
       void (async () => {
         try {
+          const serverId = await ensureCart();
+          if (!serverId) return;
           const body = { productId, quantity, size, customization };
-          const id = await ensureCart();
-          const serverCart = await apiFetch<Cart>(`/cart/${id}/items`, {
+          const serverCart = await apiFetch<Cart>(`/cart/${serverId}/items`, {
             method: "POST",
             body,
             timeoutMs: 2000,
           });
-          if (serverCart && Array.isArray(serverCart.items)) {
-            setActiveCart(serverCart);
+          if (serverCart && Array.isArray(serverCart.items) && serverCart.items.length > 0) {
+            setActiveCart({
+              ...serverCart,
+              items: updatedItems,
+            });
           }
         } catch {
           // Backend offline or unreachable — local cart is already active & fully functional!
@@ -259,14 +377,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const mutate = useCallback(
     async (path: string, init: { method: string; body?: unknown }) => {
       const id = cartIdRef.current;
-      if (!id) return;
+      if (!id || !isUuid(id)) return;
       try {
         const next = await apiFetch<Cart>(`/cart/${id}${path}`, { ...init, timeoutMs: 2500 });
         if (next && Array.isArray(next.items)) {
           setActiveCart(next);
         }
       } catch (err) {
-        if (isStaleBag(err) && /bag/i.test((err as Error).message)) setActiveCart(null);
+        if (isStaleBag(err) && /bag/i.test((err as Error).message)) {
+          writeId(null);
+          cartIdRef.current = null;
+        }
       }
     },
     [setActiveCart],
@@ -293,31 +414,43 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         });
       }
 
-      const updatedCart = calculateCartTotals(updatedItems);
+      if (updatedItems.length === 0) {
+        setActiveCart(null);
+        removeCoupon();
+        return;
+      }
+
+      const updatedCart = calculateCartTotals(updatedItems, "₹", cart?.id);
       setActiveCart(updatedCart);
 
       void mutate(`/items/${itemId}`, { method: "PATCH", body: { quantity } });
     },
-    [cart, mutate, setActiveCart],
+    [cart, mutate, removeCoupon, setActiveCart],
   );
 
   const removeItem = useCallback(
     async (itemId: number) => {
       const currentItems = cart?.items || readLocalCart()?.items || [];
       const updatedItems = currentItems.filter((it) => it.id !== itemId);
-      const updatedCart = calculateCartTotals(updatedItems);
+
+      if (updatedItems.length === 0) {
+        setActiveCart(null);
+        removeCoupon();
+        return;
+      }
+
+      const updatedCart = calculateCartTotals(updatedItems, "₹", cart?.id);
       setActiveCart(updatedCart);
 
       void mutate(`/items/${itemId}`, { method: "DELETE" });
     },
-    [cart, mutate, setActiveCart],
+    [cart, mutate, removeCoupon, setActiveCart],
   );
 
   const reset = useCallback(() => {
     setActiveCart(null);
-    setCouponCode("");
-    setDiscountAmount(0);
-  }, [setActiveCart]);
+    removeCoupon();
+  }, [removeCoupon, setActiveCart]);
 
   return (
     <CartContext.Provider
@@ -338,6 +471,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updateQuantity,
         removeItem,
         refresh,
+        ensureServerCart,
         reset,
       }}
     >
