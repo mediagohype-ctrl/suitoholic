@@ -97,11 +97,27 @@ export default function ModernCollectionSection({
 
   const uniqueProducts = useMemo(() => {
     if (!products || products.length === 0) return [];
-    const seen = new Set<string | number>();
+    const seenIds = new Set<string | number>();
+    const seenSlugs = new Set<string>();
+    const seenNames = new Set<string>();
+    const seenImages = new Set<string>();
+
     return products.filter((p) => {
-      const key = p?.id ?? p?.slug;
-      if (key === undefined || key === null || seen.has(key)) return false;
-      seen.add(key);
+      if (!p) return false;
+      const idKey = p.id !== undefined && p.id !== null ? String(p.id) : null;
+      const slugKey = p.slug ? p.slug.trim().toLowerCase() : null;
+      const nameKey = p.name ? p.name.trim().toLowerCase() : null;
+      const imgKey = p.image ? p.image.trim().toLowerCase() : null;
+
+      if (idKey && seenIds.has(idKey)) return false;
+      if (slugKey && seenSlugs.has(slugKey)) return false;
+      if (nameKey && seenNames.has(nameKey)) return false;
+      if (imgKey && seenImages.has(imgKey)) return false;
+
+      if (idKey) seenIds.add(idKey);
+      if (slugKey) seenSlugs.add(slugKey);
+      if (nameKey) seenNames.add(nameKey);
+      if (imgKey) seenImages.add(imgKey);
       return true;
     });
   }, [products]);
@@ -109,12 +125,13 @@ export default function ModernCollectionSection({
   const displayProducts = useMemo(() => {
     let list = uniqueProducts;
     if (isThreeCardMode && list.length < 4) {
-      const seen = new Set<string | number>();
-      list.forEach((p) => {
-        if (p.id) seen.add(p.id);
-        if (p.slug) seen.add(p.slug);
+      const seenNames = new Set(list.map((p) => (p.name ? p.name.trim().toLowerCase() : String(p.id))));
+      const seenImages = new Set(list.map((p) => (p.image ? p.image.trim().toLowerCase() : "")));
+      const needed = FALLBACK_FABRIC_ITEMS.filter((p) => {
+        const nKey = p.name ? p.name.trim().toLowerCase() : "";
+        const iKey = p.image ? p.image.trim().toLowerCase() : "";
+        return !seenNames.has(nKey) && (!iKey || !seenImages.has(iKey));
       });
-      const needed = FALLBACK_FABRIC_ITEMS.filter((p) => !seen.has(p.id) && !seen.has(p.slug));
       list = [...list, ...needed];
     }
     return list.length > 0 ? list : FALLBACK_FABRIC_ITEMS;

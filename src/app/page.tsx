@@ -117,8 +117,20 @@ export default function Home() {
                     p.category === "formal_shirts"))
             );
 
+            // Deduplicate products strictly so no repeated shirt or duplicate appears
+            const seenNames = new Set<string>();
+            const seenImages = new Set<string>();
+            const dedupedCollectionProducts = collectionProducts.filter((p) => {
+              const nameKey = p.name ? p.name.trim().toLowerCase() : String(p.id);
+              const imgKey = p.image ? p.image.trim().toLowerCase() : "";
+              if (seenNames.has(nameKey) || (imgKey && seenImages.has(imgKey))) return false;
+              seenNames.add(nameKey);
+              if (imgKey) seenImages.add(imgKey);
+              return true;
+            });
+
             // Strictly 8 products for the Shop by Fabrics section
-            const finalProducts = isShopByFabrics ? collectionProducts.slice(0, 8) : collectionProducts;
+            const finalProducts = isShopByFabrics ? dedupedCollectionProducts.slice(0, 8) : dedupedCollectionProducts;
 
             return (
               <React.Fragment key={colId || index}>

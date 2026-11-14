@@ -134,21 +134,21 @@ const COLLAR_OPTIONS = [
     title: "CUTAWAY COLLAR",
     badge: "CUTAWAY COLLAR",
     matchKey: "CUTAWAY",
-    image: "/customizer/collar_style_cutaway.png",
+    image: "/customizer/collar_style_cutaway.png?v=4",
   },
   {
     id: "mandarin",
     title: "MANDARIN COLLAR",
     badge: "MANDARIN COLLAR",
     matchKey: "MANDARIN",
-    image: "/customizer/collar_style_mandarin.png",
+    image: "/customizer/collar_style_mandarin.png?v=4",
   },
   {
     id: "buttondown",
     title: "BUTTON-DOWN COLLAR",
     badge: "BUTTON-DOWN\nCOLLAR",
     matchKey: "BUTTON",
-    image: "/customizer/collar_style_buttondown.png",
+    image: "/customizer/collar_style_buttondown.png?v=4",
   },
 ];
 
@@ -158,49 +158,65 @@ const CUFF_OPTIONS = [
     title: "CLASSIC CUFF",
     badge: "CLASSIC CUFF",
     matchKeys: ["CLASSIC", "BARREL"],
-    image: "/customizer/cuff_style_classic.png",
+    image: "/customizer/cuff_style_classic.png?v=4",
   },
   {
     id: "cufflink",
     title: "CUFFLINK CUFF (DOUBLE FOLD)",
     badge: "CUFFLINK CUFF\n(DOUBLE FOLD)",
     matchKeys: ["CUFFLINK", "FRENCH", "DOUBLE"],
-    image: "/customizer/cuff_style_cufflink.png",
+    image: "/customizer/cuff_style_cufflink.png?v=4",
   },
 ];
 
-function HeightSilhouetteIcon({ active = false, className = "w-6 h-10" }: { active?: boolean; className?: string }) {
-  const strokeColor = active ? "#8A4418" : "#A89585";
+function HeightSilhouetteIcon({ active = false, className = "w-7 sm:w-8 h-12 sm:h-14" }: { active?: boolean; className?: string }) {
+  const strokeColor = active ? "#3D2415" : "#A68B76";
   return (
     <svg
       className={`${className} shrink-0 inline-block`}
-      viewBox="0 0 28 44"
+      viewBox="0 0 66 110"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Head */}
-      <circle cx="10" cy="6" r="3.2" stroke={strokeColor} strokeWidth="1.4" fill="none" />
-      {/* Torso & Legs */}
+      {/* Head: circular outline with gap to shoulders */}
+      <circle cx="26" cy="12.5" r="7.5" stroke={strokeColor} strokeWidth="2.3" fill="none" />
+
+      {/* Outer Body Contour: Shoulders -> Straight Arms -> Hands curving into Hips -> Straight Legs -> Rounded Feet -> Inseam & Crotch Arch */}
       <path
-        d="M6.5 12.5C6.5 11.4 7.4 10.5 8.5 10.5H11.5C12.6 10.5 13.5 11.4 13.5 12.5V23H12V38.5H10.5V25H9.5V38.5H8V23H6.5V12.5Z"
+        d="
+          M 19 24.5
+          C 14.5 25 11 27.5 11 31.5
+          L 11 60
+          C 11 63.5 13 66 17 66
+          L 17 100
+          A 3.75 3.75 0 0 0 24.5 100
+          L 24.5 65
+          A 1.5 1.5 0 0 1 27.5 65
+          L 27.5 100
+          A 3.75 3.75 0 0 0 35 100
+          L 35 66
+          C 39 66 41 63.5 41 60
+          L 41 31.5
+          C 41 27.5 37.5 25 33 24.5
+          Z
+        "
         stroke={strokeColor}
-        strokeWidth="1.3"
+        strokeWidth="2.3"
         strokeLinejoin="round"
+        strokeLinecap="round"
         fill="none"
       />
-      {/* Arms */}
-      <path
-        d="M5 13.5V23.5M15 13.5V23.5"
-        stroke={strokeColor}
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-      {/* Height Dimension Vertical Arrow Line */}
-      <line x1="22.5" y1="3" x2="22.5" y2="41" stroke={strokeColor} strokeWidth="1.3" />
-      {/* Top arrow */}
-      <path d="M19.5 6L22.5 3L25.5 6" stroke={strokeColor} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-      {/* Bottom arrow */}
-      <path d="M19.5 38L22.5 41L25.5 38" stroke={strokeColor} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+
+      {/* Inner Arm / Torso Division Slits */}
+      <line x1="17" y1="40" x2="17" y2="63.5" stroke={strokeColor} strokeWidth="2.3" strokeLinecap="round" />
+      <line x1="35" y1="40" x2="35" y2="63.5" stroke={strokeColor} strokeWidth="2.3" strokeLinecap="round" />
+
+      {/* Height Dimension Vertical Double-Headed Arrow Line & End Caps matching Reference Design */}
+      <line x1="50" y1="5" x2="62" y2="5" stroke={strokeColor} strokeWidth="2.3" strokeLinecap="round" />
+      <path d="M 52.5 9.5 L 56 5.5 L 59.5 9.5" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="56" y1="5.5" x2="56" y2="103.5" stroke={strokeColor} strokeWidth="2.3" />
+      <path d="M 52.5 99.5 L 56 103.5 L 59.5 99.5" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="50" y1="104" x2="62" y2="104" stroke={strokeColor} strokeWidth="2.3" strokeLinecap="round" />
     </svg>
   );
 }
@@ -264,10 +280,29 @@ export default function CustomizationModal({
   const { addItem } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
 
-  const startChest = initialChestSize ?? c.defaults.chestSize;
+  const createEmptyCustomFit = (): CustomFitState => ({
+    chestSize: 0,
+    collarSize: 0,
+    shoulderSize: 0,
+    bodyFit: "",
+    height: "",
+    sleeveType: "",
+    collarStyle: "",
+    cuffStyle: "",
+    pocket: "",
+    initials: "",
+    threadColor: "",
+    shirtColor: "white",
+  });
+
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [activeItem, setActiveItem] = useState<CustomizationModalProduct | ProductItem | null>(() => product);
   const [activeItemName, setActiveItemName] = useState<string>(() => productName);
+  const [customFit, setCustomFit] = useState<CustomFitState>(createEmptyCustomFit);
+  const [specialInstructions, setSpecialInstructions] = useState<string>("");
+  const [addedBagIds, setAddedBagIds] = useState<Record<number, number>>({});
+  const [addingId, setAddingId] = useState<number | null>(null);
+  const [quickAddToast, setQuickAddToast] = useState<{ message: string; visible: boolean } | null>(null);
 
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
   const [prevProduct, setPrevProduct] = useState(product);
@@ -275,35 +310,15 @@ export default function CustomizationModal({
     setPrevIsOpen(isOpen);
     setPrevProduct(product);
     if (isOpen) {
-      if (isOpen !== prevIsOpen) setCurrentStep(1);
+      if (isOpen !== prevIsOpen) {
+        setCurrentStep(1);
+        setCustomFit(createEmptyCustomFit());
+        setSpecialInstructions("");
+      }
       setActiveItem(product);
       setActiveItemName(productName);
     }
   }
-
-  const [addedBagIds, setAddedBagIds] = useState<Record<number, number>>({});
-  const [addingId, setAddingId] = useState<number | null>(null);
-  const [quickAddToast, setQuickAddToast] = useState<{ message: string; visible: boolean } | null>(null);
-
-  const [customFit, setCustomFit] = useState<CustomFitState>(() => {
-    const m = c.chestSizes.find((x) => x.size === startChest);
-    return {
-      chestSize: startChest,
-      collarSize: m?.collar ?? 15,
-      shoulderSize: m?.shoulder ?? 17.5,
-      bodyFit: c.defaults.bodyFit,
-      height: c.defaults.height,
-      sleeveType: c.defaults.sleeveType,
-      collarStyle: c.defaults.collarStyle,
-      cuffStyle: c.defaults.cuffStyle,
-      pocket:"pocket",
-      initials: c.defaults.initials,
-      threadColor: c.defaults.threadColor,
-      shirtColor:"white",
-    };
-  });
-
-  const [specialInstructions, setSpecialInstructions] = useState<string>("");
 
   const handleChestSelect = (size: number) => {
     const match = c.chestSizes.find((x) => x.size === size);
@@ -431,7 +446,29 @@ export default function CustomizationModal({
   const showCuff = currentStep >= 5 && isFullSleeve && !!customFit.cuffStyle;
   const showMonogram = currentStep >= 5 && !!customFit.initials?.trim();
 
+  const isCurrentStepComplete = (() => {
+    switch (currentStep) {
+      case 1:
+        return customFit.chestSize > 0;
+      case 2:
+        return !!customFit.bodyFit;
+      case 3:
+        return !!customFit.height;
+      case 4:
+        return !!customFit.sleeveType && !!customFit.pocket;
+      case 5:
+        return customFit.sleeveType === "half"
+          ? !!customFit.collarStyle
+          : (!!customFit.collarStyle && !!customFit.cuffStyle);
+      case 6:
+        return true;
+      default:
+        return false;
+    }
+  })();
+
   const handleNextStep = () => {
+    if (!isCurrentStepComplete) return;
     if (currentStep < totalSteps) {
       setCurrentStep((prev) => prev + 1);
     } else if (!submitting) {
@@ -547,14 +584,14 @@ export default function CustomizationModal({
                       {/* Step 1: Chest Size (always shown) */}
                       <div className="flex justify-between items-center gap-2">
                         <span className="text-[#666666] font-medium">Chest Size</span>
-                        <strong className="text-black font-bold">{customFit.chestSize}&quot;</strong>
+                        <strong className="text-black font-bold">{customFit.chestSize > 0 ? `${customFit.chestSize}"` : "—"}</strong>
                       </div>
 
                       {/* Step 2: Body Type */}
                       {showBodyType && (
                         <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
                           <span className="text-[#666666] font-medium">Body Type</span>
-                          <strong className="text-black font-bold capitalize">{customFit.bodyFit} Fit</strong>
+                          <strong className="text-black font-bold capitalize">{customFit.bodyFit ? `${customFit.bodyFit} Fit` : "—"}</strong>
                         </div>
                       )}
 
@@ -562,7 +599,7 @@ export default function CustomizationModal({
                       {showHeight && (
                         <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
                           <span className="text-[#666666] font-medium">Height</span>
-                          <strong className="text-black font-bold">{getHeightCleanTitle(customFit.height)}</strong>
+                          <strong className="text-black font-bold">{customFit.height ? getHeightCleanTitle(customFit.height) : "—"}</strong>
                         </div>
                       )}
 
@@ -571,7 +608,7 @@ export default function CustomizationModal({
                         <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
                           <span className="text-[#666666] font-medium">Sleeve</span>
                           <strong className="text-black font-bold capitalize">
-                            {customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve"}
+                            {customFit.sleeveType ? (customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve") : "—"}
                           </strong>
                         </div>
                       )}
@@ -612,12 +649,12 @@ export default function CustomizationModal({
               <div className="relative w-full flex flex-col items-center justify-start flex-1 pt-1">
                 <MannequinShirtViewer
                   chestSize={customFit.chestSize}
-                  bodyFit={asMannequinFit(customFit.bodyFit)}
+                  bodyFit={customFit.bodyFit as "lean" | "regular" | "tummy" | ""}
                   height={customFit.height}
                   sleeveType={customFit.sleeveType === "half" ? "half" : "full"}
                   collarStyle={customFit.collarStyle}
                   cuffStyle={customFit.cuffStyle}
-                  pocket={customFit.pocket === "no-pocket" ? "no-pocket" : "pocket"}
+                  pocket={customFit.pocket === "no-pocket" ? "no-pocket" : customFit.pocket === "pocket" ? "pocket" : ""}
                   initials={customFit.initials}
                   threadColor={customFit.threadColor}
                   currentStep={currentStep}
@@ -671,7 +708,7 @@ export default function CustomizationModal({
                 </div>
 
                 {/* Steps Content Body - Fixed Height Container with Vertical Centering */}
-                <div className={`flex-1 min-h-0 flex flex-col w-full ${currentStep === 6 ? "justify-start" : "justify-center my-auto"}`}>
+                <div className={`flex-1 min-h-0 flex flex-col w-full ${currentStep === 5 || currentStep === 6 ? "justify-start overflow-y-auto [scrollbar-width:thin] pr-0.5" : "justify-center my-auto"}`}>
 
                 {/* STEP 1: CHEST SIZE */}
                 {currentStep === 1 && (
@@ -715,7 +752,7 @@ export default function CustomizationModal({
                           Chest Size
                         </span>
                         <strong className="font-sans font-bold text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
-                          {customFit.chestSize}&quot;
+                          {customFit.chestSize > 0 ? `${customFit.chestSize}"` : "—"}
                         </strong>
                       </div>
                       <div className="px-1">
@@ -723,7 +760,7 @@ export default function CustomizationModal({
                           Collar Size
                         </span>
                         <strong className="font-sans font-bold text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
-                          {customFit.collarSize}&quot;
+                          {customFit.collarSize > 0 ? `${customFit.collarSize}"` : "—"}
                         </strong>
                       </div>
                       <div className="px-1">
@@ -731,7 +768,7 @@ export default function CustomizationModal({
                           Shoulder
                         </span>
                         <strong className="font-sans font-bold text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
-                          {customFit.shoulderSize}&quot;
+                          {customFit.shoulderSize > 0 ? `${customFit.shoulderSize}"` : "—"}
                         </strong>
                       </div>
                     </div>
@@ -801,7 +838,7 @@ export default function CustomizationModal({
                                   <span>
                                     <span className="font-['Playfair_Display',Georgia,serif] font-medium">Chest is </span>
                                     <strong className="font-sans font-bold text-[#140E0A] text-[12px] sm:text-[12.5px]">
-                                      {customFit.chestSize}&quot;
+                                      {customFit.chestSize > 0 ? `${customFit.chestSize}"` : "—"}
                                     </strong>
                                   </span>
                                 </div>
@@ -811,7 +848,7 @@ export default function CustomizationModal({
                                   <span>
                                     <span className="font-['Playfair_Display',Georgia,serif] font-medium">{meta.stomachLabel} </span>
                                     <strong className="font-sans font-bold text-[#140E0A] text-[12px] sm:text-[12.5px]">
-                                      {meta.getStomach(customFit.chestSize)}
+                                      {customFit.chestSize > 0 ? meta.getStomach(customFit.chestSize) : "—"}
                                     </strong>
                                   </span>
                                 </div>
@@ -834,36 +871,39 @@ export default function CustomizationModal({
                         <div
                           key={opt.id}
                           onClick={() => setCustomFit((prev) => ({ ...prev, height: opt.id }))}
-                          className={`w-full rounded-[16px] sm:rounded-[18px] p-2.5 sm:p-3 text-left transition-all duration-200 cursor-pointer ${
+                          className={`w-full rounded-[16px] sm:rounded-[18px] p-3 sm:p-3.5 lg:p-4 text-left transition-all duration-200 cursor-pointer ${
                             isSelected
                               ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_3px_12px_rgba(157,74,25,0.14)] scale-[1.005]"
                               : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
                           }`}
                         >
-                          <div className="flex items-center gap-3 sm:gap-3.5">
+                          <div className="flex items-center gap-3 sm:gap-4">
                             {/* Radio Circle */}
-                            <div className="shrink-0">
+                            <div className="shrink-0 pl-1">
                               <div
-                                className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                                className={`w-5 sm:w-5.5 h-5 sm:h-5.5 rounded-full flex items-center justify-center transition-all ${
                                   isSelected
                                     ? "border-2 border-[#8A4418] bg-[#FDFBF7]"
                                     : "border-2 border-[#B8A392] bg-transparent"
                                 }`}
                               >
-                                {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
+                                {isSelected && <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-[#8A4418]" />}
                               </div>
                             </div>
 
                             {/* Person Silhouette Height Measurement Icon */}
-                            <div className="shrink-0 flex items-center justify-center">
-                              <HeightSilhouetteIcon active={isSelected} className="w-5.5 sm:w-6 h-9 sm:h-10" />
+                            <div className="shrink-0 flex items-center justify-center px-0.5 sm:px-1">
+                              <HeightSilhouetteIcon active={isSelected} className="w-7 sm:w-8 h-12 sm:h-14" />
                             </div>
+
+                            {/* Vertical separator line matching reference design */}
+                            <div className="h-10 sm:h-12 w-[1px] bg-[#DFC8B4] shrink-0 mx-0.5 sm:mx-1" />
 
                             {/* Card Content */}
                             <div className="flex-1 min-w-0">
                               {/* Pill Badge */}
                               <span
-                                className={`px-3.5 py-0.5 rounded-full text-[9.5px] sm:text-[10px] font-bold tracking-[0.16em] uppercase inline-block transition-colors ${
+                                className={`px-3.5 sm:px-4 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase inline-block transition-colors ${
                                   isSelected
                                     ? "bg-[#8A4418] text-white shadow-2xs"
                                     : "bg-[#DFD0BE] text-[#3E2D22]"
@@ -917,7 +957,7 @@ export default function CustomizationModal({
                       <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
                         {/* Half Sleeve WITH Pocket */}
                         {(() => {
-                          const isSelected = customFit.sleeveType === "half" && customFit.pocket !== "no-pocket";
+                          const isSelected = customFit.sleeveType === "half" && customFit.pocket === "pocket";
                           return (
                             <div
                               onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half", pocket: "pocket" }))}
@@ -1004,7 +1044,7 @@ export default function CustomizationModal({
                       {/* Divider Badge with Center Pill */}
                       <div className="flex items-center gap-3 w-full mb-3 mt-1 sm:mt-2">
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
-                        <span className="px-5 py-1 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[10px] sm:text-[10.5px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)]">
+                        <span className="px-6 py-1 rounded-full bg-[#8A4418] text-white font-['Playfair_Display',Georgia,serif] text-[10.5px] sm:text-[11px] font-bold tracking-[0.2em] uppercase shadow-[0_2px_6px_rgba(138,68,24,0.25)]">
                           FULL SLEEVE
                         </span>
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
@@ -1013,11 +1053,11 @@ export default function CustomizationModal({
                       <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
                         {/* Full Sleeve WITH Pocket */}
                         {(() => {
-                          const isSelected = customFit.sleeveType === "full" && customFit.pocket !== "no-pocket";
+                          const isSelected = customFit.sleeveType === "full" && customFit.pocket === "pocket";
                           return (
                             <div
                               onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "full", pocket: "pocket" }))}
-                              className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                              className={`p-3 sm:p-3.5 rounded-[18px] sm:rounded-[20px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
                                 isSelected
                                   ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_4px_14px_rgba(157,74,25,0.14)] scale-[1.01]"
                                   : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
@@ -1026,24 +1066,24 @@ export default function CustomizationModal({
                               <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 w-5 h-5 rounded-full flex items-center justify-center transition-all">
                                 <div
                                   className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
-                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#8A4418]/70 bg-transparent"
                                   }`}
                                 >
                                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
                                 </div>
                               </div>
 
-                              <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
+                              <div className="w-full flex items-center justify-center pt-1.5 pb-1 h-24 sm:h-28">
                                 <img
                                   src="/customizer/sleeves_full_pocket.png"
                                   alt="Full Sleeve With Pocket"
-                                  className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
+                                  className="h-full w-auto max-w-[155px] object-contain drop-shadow-xs"
                                 />
                               </div>
 
                               <span
-                                className={`w-full py-1 px-2 rounded-full text-[9.5px] sm:text-[10px] font-bold tracking-[0.16em] uppercase transition-colors text-center mt-1.5 ${
-                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#DFD0BE] text-[#3E2D22]"
+                                className={`w-full py-1.5 px-3 rounded-full font-['Playfair_Display',Georgia,serif] text-[11px] sm:text-[11.5px] font-bold tracking-[0.06em] uppercase transition-colors text-center mt-1.5 ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D5C3] text-[#140E0A]"
                                 }`}
                               >
                                 WITH POCKET
@@ -1058,7 +1098,7 @@ export default function CustomizationModal({
                           return (
                             <div
                               onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "full", pocket: "no-pocket" }))}
-                              className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                              className={`p-3 sm:p-3.5 rounded-[18px] sm:rounded-[20px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
                                 isSelected
                                   ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_4px_14px_rgba(157,74,25,0.14)] scale-[1.01]"
                                   : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
@@ -1067,24 +1107,24 @@ export default function CustomizationModal({
                               <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 w-5 h-5 rounded-full flex items-center justify-center transition-all">
                                 <div
                                   className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
-                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#B8A392] bg-transparent"
+                                    isSelected ? "border-2 border-[#8A4418] bg-[#FDFBF7]" : "border-2 border-[#8A4418]/70 bg-transparent"
                                   }`}
                                 >
                                   {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8A4418]" />}
                                 </div>
                               </div>
 
-                              <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
+                              <div className="w-full flex items-center justify-center pt-1.5 pb-1 h-24 sm:h-28">
                                 <img
                                   src="/customizer/sleeves_full_nopocket.png"
                                   alt="Full Sleeve Without Pocket"
-                                  className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
+                                  className="h-full w-auto max-w-[155px] object-contain drop-shadow-xs"
                                 />
                               </div>
 
                               <span
-                                className={`w-full py-1 px-2 rounded-full text-[9.5px] sm:text-[10px] font-bold tracking-[0.16em] uppercase transition-colors text-center mt-1.5 ${
-                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#DFD0BE] text-[#3E2D22]"
+                                className={`w-full py-1.5 px-3 rounded-full font-['Playfair_Display',Georgia,serif] text-[11px] sm:text-[11.5px] font-bold tracking-[0.06em] uppercase transition-colors text-center mt-1.5 ${
+                                  isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#E6D5C3] text-[#140E0A]"
                                 }`}
                               >
                                 WITHOUT POCKET
@@ -1099,13 +1139,13 @@ export default function CustomizationModal({
 
                 {/* STEP 5: COLLAR & CUFF STYLE */}
                 {currentStep === 5 && (
-                  <div className="space-y-2 sm:space-y-2.5 pt-0.5 animate-in fade-in duration-200">
+                  <div className="space-y-1.5 sm:space-y-2 pt-1 pb-1 animate-in fade-in duration-200">
                     {/* SECTION 1: COLLAR STYLE */}
                     <div>
                       {/* Divider Badge with Center Pill */}
-                      <div className="flex items-center gap-3 w-full mb-2 sm:mb-2.5">
+                      <div className="flex items-center gap-3 w-full mb-1.5 sm:mb-2">
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
-                        <span className="px-5 py-0.5 sm:py-1 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
+                        <span className="px-4 py-0.5 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[8.5px] sm:text-[9px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
                           COLLAR STYLE
                         </span>
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
@@ -1113,12 +1153,12 @@ export default function CustomizationModal({
 
                       <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
                         {COLLAR_OPTIONS.map((col) => {
-                          const isSelected = customFit.collarStyle.toUpperCase().includes(col.matchKey);
+                          const isSelected = !!customFit.collarStyle && customFit.collarStyle.toUpperCase().includes(col.matchKey);
                           return (
                             <div
                               key={col.id}
                               onClick={() => setCustomFit((prev) => ({ ...prev, collarStyle: col.title }))}
-                              className={`p-2 sm:p-2.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                              className={`p-1.5 sm:p-2 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
                                 isSelected
                                   ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_4px_14px_rgba(157,74,25,0.14)] scale-[1.01]"
                                   : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
@@ -1136,7 +1176,7 @@ export default function CustomizationModal({
                               </div>
 
                               {/* Collar Photo */}
-                              <div className="w-full flex items-center justify-center pt-1 pb-0.5 h-12 sm:h-14">
+                              <div className="w-full flex items-center justify-center pt-1 pb-0.5 h-14 sm:h-16 lg:h-17">
                                 <img
                                   src={col.image}
                                   alt={col.title}
@@ -1162,9 +1202,9 @@ export default function CustomizationModal({
                     {/* SECTION 2: CUFF STYLE */}
                     <div>
                       {/* Divider Badge with Center Pill */}
-                      <div className="flex items-center gap-3 w-full mb-2 sm:mb-2.5 mt-0.5 sm:mt-1">
+                      <div className="flex items-center gap-3 w-full mb-1.5 sm:mb-2 mt-0.5">
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
-                        <span className="px-5 py-0.5 sm:py-1 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
+                        <span className="px-4 py-0.5 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[8.5px] sm:text-[9px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
                           CUFF STYLE
                         </span>
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
@@ -1172,12 +1212,12 @@ export default function CustomizationModal({
 
                       <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                         {CUFF_OPTIONS.map((cuff) => {
-                          const isSelected = cuff.matchKeys.some((k) => customFit.cuffStyle.toUpperCase().includes(k));
+                          const isSelected = !!customFit.cuffStyle && cuff.matchKeys.some((k) => customFit.cuffStyle.toUpperCase().includes(k));
                           return (
                             <div
                               key={cuff.id}
                               onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.title }))}
-                              className={`p-2 sm:p-2.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
+                              className={`p-1.5 sm:p-2 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${
                                 isSelected
                                   ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_4px_14px_rgba(157,74,25,0.14)] scale-[1.01]"
                                   : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
@@ -1195,7 +1235,7 @@ export default function CustomizationModal({
                               </div>
 
                               {/* Cuff Photo */}
-                              <div className="w-full flex items-center justify-center pt-1 pb-0.5 h-12 sm:h-14">
+                              <div className="w-full flex items-center justify-center pt-1 pb-0.5 h-14 sm:h-16 lg:h-17">
                                 <img
                                   src={cuff.image}
                                   alt={cuff.title}
@@ -1205,7 +1245,7 @@ export default function CustomizationModal({
 
                               {/* Pill Badge */}
                               <span
-                                className={`w-full py-0.5 px-1.5 rounded-full text-[8.5px] sm:text-[9px] font-bold tracking-[0.14em] uppercase transition-colors text-center mt-1 min-h-[22px] sm:min-h-[24px] flex items-center justify-center leading-tight whitespace-pre-line ${
+                                className={`w-full py-0.5 px-1.5 rounded-full text-[8px] sm:text-[8.5px] font-bold tracking-[0.12em] uppercase transition-colors text-center mt-1 min-h-[22px] sm:min-h-[24px] flex items-center justify-center leading-tight whitespace-pre-line ${
                                   isSelected ? "bg-[#8A4418] text-white shadow-2xs" : "bg-[#DFD0BE] text-[#3E2D22]"
                                 }`}
                               >
@@ -1220,9 +1260,9 @@ export default function CustomizationModal({
                     {/* SECTION 3: INITIALS */}
                     <div>
                       {/* Divider Badge with Center Pill */}
-                      <div className="flex items-center gap-3 w-full mb-2 sm:mb-2.5 mt-0.5 sm:mt-1">
+                      <div className="flex items-center gap-3 w-full mb-1.5 sm:mb-2 mt-0.5">
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
-                        <span className="px-5 py-0.5 sm:py-1 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
+                        <span className="px-4 py-0.5 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[8.5px] sm:text-[9px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
                           INITIALS
                         </span>
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
@@ -1231,8 +1271,8 @@ export default function CustomizationModal({
                       {/* 2-Part Grid: Monogram Input on Left, Thread Color Dropdown on Right */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
                         {/* Left Side: Do You Need Monogram? */}
-                        <div className="bg-[#FFF8F1]/90 border border-[#DFC8B4] rounded-[14px] p-2.5 sm:p-3 shadow-2xs flex flex-col justify-between">
-                          <label className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#1F1A17] uppercase block mb-1">
+                        <div className="bg-[#FFF8F1]/90 border border-[#DFC8B4] rounded-[12px] p-2 sm:p-2.5 shadow-2xs flex flex-col justify-between">
+                          <label className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#1F1A17] uppercase block mb-1">
                             DO YOU NEED MONOGRAM?
                           </label>
                           <div className="relative flex items-center">
@@ -1245,7 +1285,7 @@ export default function CustomizationModal({
                                 setCustomFit((prev) => ({ ...prev, initials: val }));
                               }}
                               placeholder="e.g. YS (Optional)"
-                              className="w-full bg-white/90 border border-[#D5C2AF] rounded-[10px] px-3 py-1.5 text-[11px] font-bold tracking-widest text-[#1F1A17] placeholder:text-[#9B897D] placeholder:font-normal placeholder:tracking-normal focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all uppercase"
+                              className="w-full bg-white/90 border border-[#D5C2AF] rounded-[8px] px-2.5 py-1 text-[10.5px] font-bold tracking-widest text-[#1F1A17] placeholder:text-[#9B897D] placeholder:font-normal placeholder:tracking-normal focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all uppercase"
                             />
                             {customFit.initials && (
                               <button
@@ -1261,14 +1301,14 @@ export default function CustomizationModal({
                         </div>
 
                         {/* Right Side: Select Thread Color Dropdown */}
-                        <div className="bg-[#FFF8F1]/90 border border-[#DFC8B4] rounded-[14px] p-2.5 sm:p-3 shadow-2xs flex flex-col justify-between">
-                          <label className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#1F1A17] uppercase block mb-1">
+                        <div className="bg-[#FFF8F1]/90 border border-[#DFC8B4] rounded-[12px] p-2 sm:p-2.5 shadow-2xs flex flex-col justify-between">
+                          <label className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#1F1A17] uppercase block mb-1">
                             SELECT THREAD COLOR
                           </label>
                           <div className="relative flex items-center">
                             {/* Color Dot indicator */}
                             <div
-                              className="w-3.5 h-3.5 rounded-full shrink-0 ml-2.5 mr-[-24px] z-10 border border-black/20 shadow-2xs pointer-events-none"
+                              className="w-3 h-3 rounded-full shrink-0 ml-2 mr-[-20px] z-10 border border-black/20 shadow-2xs pointer-events-none"
                               style={{
                                 backgroundColor:
                                   customFit.threadColor === "black"
@@ -1287,7 +1327,7 @@ export default function CustomizationModal({
                             <select
                               value={customFit.threadColor || "dark_blue"}
                               onChange={(e) => setCustomFit((prev) => ({ ...prev, threadColor: e.target.value }))}
-                              className="w-full bg-white/90 border border-[#D5C2AF] rounded-[10px] pl-7 pr-7 py-1.5 text-[10.5px] font-semibold text-[#1F1A17] focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all cursor-pointer appearance-none"
+                              className="w-full bg-white/90 border border-[#D5C2AF] rounded-[8px] pl-6 pr-6 py-1 text-[10px] font-semibold text-[#1F1A17] focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all cursor-pointer appearance-none"
                             >
                               <option value="dark_blue">Dark Blue (Navy)</option>
                               <option value="black">Classic Black</option>
@@ -1296,7 +1336,7 @@ export default function CustomizationModal({
                               <option value="burgundy">Bordeaux Burgundy</option>
                               <option value="silver">Silver Grey</option>
                             </select>
-                            <div className="pointer-events-none absolute right-2.5 flex items-center text-[#8A796E]">
+                            <div className="pointer-events-none absolute right-2 flex items-center text-[#8A796E]">
                               <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                               </svg>
@@ -1574,7 +1614,7 @@ export default function CustomizationModal({
                 </div>
 
                 {/* BOTTOM NAVIGATION ACTIONS */}
-                <div className="shrink-0 pt-2.5 sm:pt-3 border-t border-[#DFCDBA] flex items-center justify-between gap-3 mt-auto">
+                <div className="shrink-0 pt-2.5 sm:pt-3 border-t border-[#DFCDBA] flex items-center justify-between gap-3 mt-auto relative z-20 bg-[#FAF3EA]">
                   <button
                     type="button"
                     onClick={currentStep > 1 ? handlePrevStep : onClose}
@@ -1587,13 +1627,17 @@ export default function CustomizationModal({
                   <button
                     type="button"
                     onClick={handleNextStep}
-                    disabled={submitting}
-                    className="flex-1 py-2.5 sm:py-3 px-6 sm:px-7 rounded-[14px] sm:rounded-full bg-gradient-to-r from-[#6D0E1C] via-[#5A0713] to-[#3F030A] hover:from-[#7C1222] hover:to-[#4C050D] text-white flex items-center justify-between border border-[#7D1524] shadow-[0_4px_16px_rgba(85,8,18,0.35)] transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait active:scale-[0.99]"
+                    disabled={!isCurrentStepComplete || submitting}
+                    className={`flex-1 py-2.5 sm:py-3 px-6 sm:px-7 rounded-[14px] sm:rounded-full flex items-center justify-between border transition-all ${
+                      isCurrentStepComplete && !submitting
+                        ? "bg-gradient-to-r from-[#6D0E1C] via-[#5A0713] to-[#3F030A] hover:from-[#7C1222] hover:to-[#4C050D] text-white border-[#7D1524] shadow-[0_4px_16px_rgba(85,8,18,0.35)] cursor-pointer active:scale-[0.99]"
+                        : "bg-[#D9C8B7] text-[#7A695C] border-[#CBB8A6] cursor-not-allowed opacity-70"
+                    }`}
                   >
-                    <span className="font-['Playfair_Display',Georgia,serif] font-bold text-[11.5px] sm:text-xs tracking-[0.18em] uppercase text-white">
+                    <span className="font-['Playfair_Display',Georgia,serif] font-bold text-[11.5px] sm:text-xs tracking-[0.18em] uppercase">
                       {currentStep === totalSteps ? (submitting ? c.addingLabel : "CONFIRM & PROCEED →") : c.continueLabel}
                     </span>
-                    <span className="border-l border-white/25 pl-3.5 sm:pl-4 text-[10.5px] sm:text-[11px] font-bold tracking-widest text-white/90 font-sans">
+                    <span className="border-l border-current/25 pl-3.5 sm:pl-4 text-[10.5px] sm:text-[11px] font-bold tracking-widest font-sans">
                       {currentStep} OF {totalSteps}
                     </span>
                   </button>

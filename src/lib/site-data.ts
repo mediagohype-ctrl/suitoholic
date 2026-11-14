@@ -124,7 +124,27 @@ async function loadFromDb(): Promise<SiteBundle | null> {
     ]);
 
     const categories = catRes.rows.map(toCategory);
-    const products = prodRes.rows.map(toProduct);
+    
+    // Strict deduplication by ID, Slug, Name, and Image path
+    const seenIds = new Set<string>();
+    const seenNames = new Set<string>();
+    const seenImages = new Set<string>();
+    const products: ProductItem[] = [];
+
+    for (const p of prodRes.rows.map(toProduct)) {
+      const idKey = String(p.id);
+      const nameKey = p.name ? p.name.trim().toLowerCase() : "";
+      const imgKey = p.image ? p.image.trim().toLowerCase() : "";
+
+      if (seenIds.has(idKey)) continue;
+      if (nameKey && seenNames.has(nameKey)) continue;
+      if (imgKey && seenImages.has(imgKey)) continue;
+
+      seenIds.add(idKey);
+      if (nameKey) seenNames.add(nameKey);
+      if (imgKey) seenImages.add(imgKey);
+      products.push(p);
+    }
 
     const content: Record<string, unknown> = {};
     for (const r of contentRes.rows) {

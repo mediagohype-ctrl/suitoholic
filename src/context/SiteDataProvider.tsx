@@ -38,7 +38,24 @@ export interface Catalog {
 }
 
 export function useCatalog(): Catalog {
-  const { products, categories } = useSiteData();
+  const { products: rawProducts, categories } = useSiteData();
+  const products = useMemo(() => {
+    const seenIds = new Set<string | number>();
+    const seenNames = new Set<string>();
+    const seenImages = new Set<string>();
+    return rawProducts.filter((p) => {
+      if (!p) return false;
+      const idKey = p.id ?? p.slug;
+      const nKey = p.name ? p.name.trim().toLowerCase() : String(p.id);
+      const iKey = p.image ? p.image.trim().toLowerCase() : "";
+      if ((idKey && seenIds.has(idKey)) || seenNames.has(nKey) || (iKey && seenImages.has(iKey))) return false;
+      if (idKey) seenIds.add(idKey);
+      seenNames.add(nKey);
+      if (iKey) seenImages.add(iKey);
+      return true;
+    });
+  }, [rawProducts]);
+
   return useMemo(() => {
     const byKey = new Map(categories.map((c) => [c.id, c]));
     return {
