@@ -134,21 +134,21 @@ const COLLAR_OPTIONS = [
     title: "CUTAWAY COLLAR",
     badge: "CUTAWAY COLLAR",
     matchKey: "CUTAWAY",
-    image: "/customizer/collar_style_cutaway.png?v=4",
+    image: "/customizer/collar_style_cutaway.png?v=6",
   },
   {
     id: "mandarin",
     title: "MANDARIN COLLAR",
     badge: "MANDARIN COLLAR",
     matchKey: "MANDARIN",
-    image: "/customizer/collar_style_mandarin.png?v=4",
+    image: "/customizer/collar_style_mandarin.png?v=6",
   },
   {
     id: "buttondown",
     title: "BUTTON-DOWN COLLAR",
     badge: "BUTTON-DOWN\nCOLLAR",
     matchKey: "BUTTON",
-    image: "/customizer/collar_style_buttondown.png?v=4",
+    image: "/customizer/collar_style_buttondown.png?v=6",
   },
 ];
 
@@ -158,14 +158,14 @@ const CUFF_OPTIONS = [
     title: "CLASSIC CUFF",
     badge: "CLASSIC CUFF",
     matchKeys: ["CLASSIC", "BARREL"],
-    image: "/customizer/cuff_style_classic.png?v=4",
+    image: "/customizer/cuff_style_classic.png?v=6",
   },
   {
     id: "cufflink",
     title: "CUFFLINK CUFF (DOUBLE FOLD)",
     badge: "CUFFLINK CUFF\n(DOUBLE FOLD)",
     matchKeys: ["CUFFLINK", "FRENCH", "DOUBLE"],
-    image: "/customizer/cuff_style_cufflink.png?v=4",
+    image: "/customizer/cuff_style_cufflink.png?v=6",
   },
 ];
 
