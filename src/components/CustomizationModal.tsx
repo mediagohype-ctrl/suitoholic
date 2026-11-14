@@ -1351,79 +1351,84 @@ export default function CustomizationModal({
                 {/* STEP 6: REVIEW */}
                 {currentStep === 6 && (
                   <div className="space-y-1.5 sm:space-y-2 pt-0.5 animate-in fade-in duration-200">
-                    {/* 6-Step Stepper Pills Bar matching Reference Image 2 */}
-                    <div className="flex items-center justify-between gap-1 w-full pb-1.5 border-b border-[#EADBCE]">
+                    {/* 6-Step Stepper Pills Bar matching Reference Image */}
+                    <div className="flex items-center justify-between gap-1 w-full pb-2 border-b border-[#EADBCE]">
+                      {/* Step 1: Chest */}
                       <button
                         type="button"
                         onClick={() => setCurrentStep(1)}
-                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                        className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                       >
-                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[9.5px] font-bold flex items-center justify-center shadow-2xs group-hover:scale-105 transition-all">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
                           1
                         </div>
-                        <span className="text-[8.5px] sm:text-[9px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5 whitespace-nowrap">
-                          Chest <span className="text-[#8A4418] font-bold">✓</span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#FAF0E4] border border-[#E8D9C8] text-[9px] sm:text-[9.5px] font-semibold text-[#422C1D] group-hover:text-[#8A4418] flex items-center justify-center gap-0.5 whitespace-nowrap shadow-2xs leading-none">
+                          Chest <span className="text-[#422C1D] font-bold">✓</span>
                         </span>
                       </button>
 
+                      {/* Step 2: Body */}
                       <button
                         type="button"
                         onClick={() => setCurrentStep(2)}
-                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                        className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                       >
-                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[9.5px] font-bold flex items-center justify-center shadow-2xs group-hover:scale-105 transition-all">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
                           2
                         </div>
-                        <span className="text-[8.5px] sm:text-[9px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5 whitespace-nowrap">
-                          Body <span className="text-[#8A4418] font-bold">✓</span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#FAF0E4] border border-[#E8D9C8] text-[9px] sm:text-[9.5px] font-semibold text-[#422C1D] group-hover:text-[#8A4418] flex items-center justify-center gap-0.5 whitespace-nowrap shadow-2xs leading-none">
+                          Body <span className="text-[#422C1D] font-bold">✓</span>
                         </span>
                       </button>
 
+                      {/* Step 3: Height */}
                       <button
                         type="button"
                         onClick={() => setCurrentStep(3)}
-                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                        className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                       >
-                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[9.5px] font-bold flex items-center justify-center shadow-2xs group-hover:scale-105 transition-all">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
                           3
                         </div>
-                        <span className="text-[8.5px] sm:text-[9px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5 whitespace-nowrap">
-                          Height <span className="text-[#8A4418] font-bold">✓</span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#FAF0E4] border border-[#E8D9C8] text-[9px] sm:text-[9.5px] font-semibold text-[#422C1D] group-hover:text-[#8A4418] flex items-center justify-center gap-0.5 whitespace-nowrap shadow-2xs leading-none">
+                          Height <span className="text-[#422C1D] font-bold">✓</span>
                         </span>
                       </button>
 
+                      {/* Step 4: Measure */}
                       <button
                         type="button"
                         onClick={() => setCurrentStep(4)}
-                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                        className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                       >
-                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[9.5px] font-bold flex items-center justify-center shadow-2xs group-hover:scale-105 transition-all">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
                           4
                         </div>
-                        <span className="text-[8.5px] sm:text-[9px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5 whitespace-nowrap">
-                          Measure <span className="text-[#8A4418] font-bold">✓</span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#FAF0E4] border border-[#E8D9C8] text-[9px] sm:text-[9.5px] font-semibold text-[#422C1D] group-hover:text-[#8A4418] flex items-center justify-center gap-0.5 whitespace-nowrap shadow-2xs leading-none">
+                          Measure <span className="text-[#422C1D] font-bold">✓</span>
                         </span>
                       </button>
 
+                      {/* Step 5: Cuff */}
                       <button
                         type="button"
                         onClick={() => setCurrentStep(5)}
-                        className="flex flex-col items-center gap-0.5 cursor-pointer group"
+                        className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                       >
-                        <div className="w-5 h-5 rounded-full bg-[#8A4418] text-white text-[9.5px] font-bold flex items-center justify-center shadow-2xs group-hover:scale-105 transition-all">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
                           5
                         </div>
-                        <span className="text-[8.5px] sm:text-[9px] font-semibold text-[#5C4A3E] group-hover:text-[#8A4418] flex items-center gap-0.5 whitespace-nowrap">
-                          Cuff <span className="text-[#8A4418] font-bold">✓</span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#FAF0E4] border border-[#E8D9C8] text-[9px] sm:text-[9.5px] font-semibold text-[#422C1D] group-hover:text-[#8A4418] flex items-center justify-center gap-0.5 whitespace-nowrap shadow-2xs leading-none">
+                          Cuff <span className="text-[#422C1D] font-bold">✓</span>
                         </span>
                       </button>
 
-                      {/* Step 6 Active Pill matching Reference Image 2 */}
-                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#9D4A19] to-[#7E370F] text-white shadow-[0_2px_6px_rgba(157,74,25,0.25)] shrink-0">
-                        <div className="w-4 h-4 rounded-full bg-[#522105] text-white text-[9px] font-bold flex items-center justify-center">
+                      {/* Step 6: Review (Active) */}
+                      <div className="flex flex-col items-center gap-1 flex-1">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#7A1220] via-[#5E0713] to-[#42040C] text-white text-[10px] font-bold flex items-center justify-center shadow-xs ring-2 ring-[#7A1220]/25">
                           6
                         </div>
-                        <span className="text-[9.5px] font-bold tracking-wider uppercase text-white">
+                        <span className="px-3.5 sm:px-4 py-0.5 rounded-full bg-gradient-to-r from-[#A05C2B] via-[#8C471C] to-[#A05C2B] text-white text-[9.5px] sm:text-[10px] font-bold tracking-wider leading-none shadow-xs whitespace-nowrap">
                           Review
                         </span>
                       </div>
@@ -1432,125 +1437,125 @@ export default function CustomizationModal({
                     {/* SECTION: YOUR SELECTION SUMMARY */}
                     <div>
                       {/* Divider Badge with Center Pill */}
-                      <div className="flex items-center gap-3 w-full my-1 sm:my-1.5">
+                      <div className="flex items-center gap-3 w-full my-1.5 sm:my-2">
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
-                        <span className="px-5 py-0.5 sm:py-1 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
+                        <span className="px-5 py-1 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
                           YOUR SELECTION SUMMARY
                         </span>
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
                       </div>
 
-                      {/* 6-Row Specification Strip matching Reference Image 2 */}
-                      <div className="rounded-[14px] bg-[#FFF8F1]/90 border border-[#DEC7B2] overflow-hidden divide-y divide-[#EADBCE] shadow-2xs">
+                      {/* 6-Row Specification Strip matching Reference Image */}
+                      <div className="rounded-[16px] bg-[#FFF9F3]/95 border border-[#DEC7B2] overflow-hidden divide-y divide-[#EADBCE] shadow-2xs">
                         {/* 1. FABRIC */}
-                        <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
+                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_fabric_thumb.jpg"
+                              src="/customizer/review_fabric_thumb.jpg?v=6"
                               alt={activeItemName || productName}
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
                               1. FABRIC
                             </span>
-                            <span className="text-[10.5px] sm:text-[11px] font-bold text-[#1F1A17] block truncate leading-snug">
-                              {getShortShirtTitle(activeItemName || activeItem?.name || productName)}
+                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block truncate leading-snug">
+                              {getShortShirtTitle(activeItemName || activeItem?.name || productName) || "White Oxford"}
                             </span>
                           </div>
                         </div>
 
                         {/* 2. SIZE & FIT */}
-                        <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
+                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_shirt_thumb.png"
+                              src="/customizer/review_shirt_thumb.png?v=6"
                               alt="Size & Fit"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
                               2. SIZE & FIT
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block leading-snug">
-                              Chest Size: {customFit.chestSize}&quot; &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}
+                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block leading-snug">
+                              Chest Size: {customFit.chestSize > 0 ? customFit.chestSize : 40}&quot; &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}
                             </span>
                           </div>
                         </div>
 
                         {/* 3. HEIGHT */}
-                        <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
+                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_height_thumb.png"
+                              src="/customizer/review_height_thumb.png?v=6"
                               alt="Height Category"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
                               3. HEIGHT
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block leading-snug">
-                              {getHeightCleanTitle(customFit.height)} ({getHeightMeta(customFit.height).heightRangeFormatted})
+                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block leading-snug">
+                              {getHeightCleanTitle(customFit.height) || "Tall Height"} ({getHeightMeta(customFit.height).heightRangeFormatted || '5.8" to 5.10"'})
                             </span>
                           </div>
                         </div>
 
                         {/* 4. SLEEVE */}
-                        <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
+                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_sleeve_thumb.png"
+                              src="/customizer/review_sleeve_thumb.png?v=6"
                               alt="Sleeve"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
                               4. SLEEVE
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block capitalize leading-snug">
+                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block capitalize leading-snug">
                               {customFit.sleeveType === "half" ? "Half Sleeves" : "Full Sleeves"}
                             </span>
                           </div>
                         </div>
 
                         {/* 5. COLLAR & CUFF */}
-                        <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
+                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_collar_thumb.png"
+                              src="/customizer/review_collar_thumb.png?v=6"
                               alt="Collar"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
                               5. COLLAR & CUFF
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block truncate leading-snug">
-                              {customFit.collarStyle.replace(/COLLAR/gi, "").trim()} Collar &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim() || "Classic Cuff"}
+                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block truncate leading-snug">
+                              {customFit.collarStyle ? customFit.collarStyle.replace(/COLLAR/gi, "").trim() + " Collar" : "Cutaway Collar"} &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.cuffStyle ? customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim() : "Classic Cuff"}
                             </span>
                           </div>
                         </div>
 
                         {/* 6. INITIALS */}
-                        <div className="py-1 px-2.5 sm:py-1.5 sm:px-3 flex items-center gap-2.5 sm:gap-3">
-                          <div className="w-11 h-7.5 sm:w-12 sm:h-8 rounded-[6px] overflow-hidden border border-[#DFCDBA] shrink-0 bg-[#F4EDE4]">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
+                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_monogram_thumb.png"
+                              src="/customizer/review_monogram_thumb.png?v=6"
                               alt="Monogram Initials"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
                               6. INITIALS
                             </span>
-                            <span className="text-[10px] sm:text-[10.5px] font-bold text-[#1F1A17] block leading-snug">
+                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block leading-snug">
                               {customFit.initials ? (
                                 `${customFit.initials} (${
                                   customFit.threadColor === "black"
@@ -1575,18 +1580,18 @@ export default function CustomizationModal({
                     </div>
 
                     {/* SECTION: ADDITIONAL REMARKS / SPECIAL INSTRUCTIONS */}
-                    <div className="pt-0.5">
+                    <div className="pt-1">
                       <div className="flex items-center justify-between mb-1">
-                        <label className="text-[8.5px] sm:text-[9px] font-bold tracking-wider text-[#1F1A17] uppercase">
+                        <label className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#1F1A17] uppercase">
                           ADDITIONAL REMARKS / SPECIAL INSTRUCTIONS
                         </label>
-                        <span className="text-[8.5px] sm:text-[9px] text-[#888888] font-medium">
+                        <span className="text-[9px] sm:text-[9.5px] text-[#7A6B60] font-medium font-sans">
                           {specialInstructions.length}/400
                         </span>
                       </div>
 
-                      <div className="relative rounded-[12px] bg-[#FFF8F1] border border-[#DEC7B2] p-2 sm:p-2.5 flex items-start gap-2 shadow-2xs">
-                        <svg className="w-3.5 h-3.5 text-[#A35D27] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <div className="relative rounded-[14px] bg-[#FFF9F3] border border-[#DEC7B2] p-2.5 sm:p-3 flex items-start gap-2.5 shadow-2xs">
+                        <svg className="w-4 h-4 text-[#8A4418] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                         </svg>
@@ -1597,10 +1602,10 @@ export default function CustomizationModal({
                           value={specialInstructions}
                           onChange={(e) => setSpecialInstructions(e.target.value.slice(0, 400))}
                           placeholder="If you want any changes in the above measure, just write in this box for whatever you have selected. If you want a little half inch to one inch plus or minus, just let us know in this box so we can make according to your customization."
-                          className="w-full bg-transparent text-[9px] sm:text-[9.5px] text-[#3C2F27] placeholder:text-[#8C7A6E] placeholder:italic focus:outline-none resize-none min-h-[52px] sm:min-h-[56px] max-h-[60px] leading-relaxed overflow-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                          className="w-full bg-transparent text-[10px] sm:text-[10.5px] text-[#3C2F27] placeholder:text-[#8C7A6E] placeholder:italic focus:outline-none resize-none min-h-[58px] sm:min-h-[64px] max-h-[72px] leading-relaxed overflow-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden font-serif italic"
                         />
 
-                        {/* Diagonal resize indicator lines matching Image 2 */}
+                        {/* Diagonal resize indicator lines matching Reference Image */}
                         <div className="absolute bottom-1.5 right-1.5 pointer-events-none text-[#C8B7A6]">
                           <svg className="w-2.5 h-2.5" viewBox="0 0 10 10">
                             <line x1="8" y1="2" x2="2" y2="8" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
