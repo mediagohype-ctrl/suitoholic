@@ -108,7 +108,7 @@ export const USER_CATALOG_SHIRTS: ProductItem[] = [
   {
     id: 51,
     slug: "dark-chocolate-brown-satin-twill-shirt",
-    name: "BOARDROOM CHARCOAL OXFORD DRESS SHIRT",
+    name: "DARK CHOCOLATE BROWN SATIN TWILL SHIRT",
     category: "formal_shirts",
     price: "₹ 2,600",
     rawPrice: 2600,
@@ -130,7 +130,7 @@ export const USER_CATALOG_SHIRTS: ProductItem[] = [
   {
     id: 49,
     slug: "coral-red-bold-bengal-stripe-twill-shirt",
-    name: "BRITISH BANKER FINE PINSTRIPE DRESS SHIRT",
+    name: "CORAL RED BOLD BENGAL STRIPE TWILL SHIRT",
     category: "formal_stripes",
     price: "₹ 2,600",
     rawPrice: 2600,
@@ -152,7 +152,7 @@ export const USER_CATALOG_SHIRTS: ProductItem[] = [
   {
     id: 50,
     slug: "beige-textured-linen-cotton-shirt",
-    name: "SAVILE ROW PURE WHITE POPLIN SHIRT",
+    name: "BEIGE TEXTURED LINEN COTTON SHIRT",
     category: "formal_shirts",
     price: "₹ 2,600",
     rawPrice: 2600,
@@ -174,7 +174,7 @@ export const USER_CATALOG_SHIRTS: ProductItem[] = [
   {
     id: 53,
     slug: "pure-white-executive-pinpoint-oxford-shirt",
-    name: "CRISP EXECUTIVE WHITE TWILL SHIRT",
+    name: "PURE WHITE EXECUTIVE PINPOINT OXFORD SHIRT",
     category: "formal_shirts",
     price: "₹ 2,600",
     rawPrice: 2600,
@@ -196,7 +196,7 @@ export const USER_CATALOG_SHIRTS: ProductItem[] = [
   {
     id: 54,
     slug: "navy-blue-fine-pinstripe-formal-shirt",
-    name: "CLASSIC FRENCH CUFF SKY BLUE STRIPE",
+    name: "NAVY BLUE FINE PINSTRIPE FORMAL SHIRT",
     category: "formal_stripes",
     price: "₹ 2,600",
     rawPrice: 2600,

@@ -37,7 +37,7 @@ export const aboutPage = {
         tagline: "100% Egyptian Giza 140s Cotton",
         description:
           "Individually cut to your posture with 22 stitches per inch, split yoke construction, and hand-shanked Australian mother-of-pearl buttons. Choose from over 15 collar, cuff, and monogram styles.",
-        image: "/prod_classic_white.jpg",
+        image: "/shirt_classic_white.jpg",
         link: "/custom-shirt",
         buttonText: "CUSTOMIZE SHIRT",
         highlights: ["Split 45° Yoke", "Mother-of-Pearl", "22 SPI Single-Needle"],

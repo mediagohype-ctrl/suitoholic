@@ -158,14 +158,14 @@ const CUFF_OPTIONS = [
     title: "CLASSIC CUFF",
     badge: "CLASSIC CUFF",
     matchKeys: ["CLASSIC", "BARREL"],
-    image: "/customizer/cuff_style_classic.png?v=6",
+    image: "/customizer/cuff_style_classic.png?v=7",
   },
   {
     id: "cufflink",
     title: "CUFFLINK CUFF (DOUBLE FOLD)",
     badge: "CUFFLINK CUFF\n(DOUBLE FOLD)",
     matchKeys: ["CUFFLINK", "FRENCH", "DOUBLE"],
-    image: "/customizer/cuff_style_cufflink.png?v=6",
+    image: "/customizer/cuff_style_cufflink.png?v=7",
   },
 ];
 
@@ -1306,29 +1306,34 @@ export default function CustomizationModal({
                             SELECT THREAD COLOR
                           </label>
                           <div className="relative flex items-center">
-                            {/* Color Dot indicator */}
-                            <div
-                              className="w-3 h-3 rounded-full shrink-0 ml-2 mr-[-20px] z-10 border border-black/20 shadow-2xs pointer-events-none"
-                              style={{
-                                backgroundColor:
-                                  customFit.threadColor === "black"
-                                    ? "#14110E"
-                                    : customFit.threadColor === "white"
-                                    ? "#FFFFFF"
-                                    : customFit.threadColor === "gold"
-                                    ? "#B8860B"
-                                    : customFit.threadColor === "burgundy"
-                                    ? "#6B1F2A"
-                                    : customFit.threadColor === "silver"
-                                    ? "#71717A"
-                                    : "#1E40AF",
-                              }}
-                            />
+                            {/* Color Dot indicator (only shown when a color is selected) */}
+                            {customFit.threadColor && (
+                              <div
+                                className="w-3 h-3 rounded-full shrink-0 ml-2.5 mr-[-22px] z-10 border border-black/20 shadow-2xs pointer-events-none"
+                                style={{
+                                  backgroundColor:
+                                    customFit.threadColor === "black"
+                                      ? "#14110E"
+                                      : customFit.threadColor === "white"
+                                      ? "#FFFFFF"
+                                      : customFit.threadColor === "gold"
+                                      ? "#B8860B"
+                                      : customFit.threadColor === "burgundy"
+                                      ? "#6B1F2A"
+                                      : customFit.threadColor === "silver"
+                                      ? "#71717A"
+                                      : "#1E40AF",
+                                }}
+                              />
+                            )}
                             <select
-                              value={customFit.threadColor || "dark_blue"}
+                              value={customFit.threadColor || ""}
                               onChange={(e) => setCustomFit((prev) => ({ ...prev, threadColor: e.target.value }))}
-                              className="w-full bg-white/90 border border-[#D5C2AF] rounded-[8px] pl-6 pr-6 py-1 text-[10px] font-semibold text-[#1F1A17] focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all cursor-pointer appearance-none"
+                              className={`w-full bg-white/90 border border-[#D5C2AF] rounded-[8px] ${
+                                customFit.threadColor ? "pl-6 text-[#1F1A17] font-semibold" : "pl-2.5 text-[#8A796E] font-normal"
+                              } pr-6 py-1 text-[10px] focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all cursor-pointer appearance-none`}
                             >
+                              <option value="">Select Thread Color</option>
                               <option value="dark_blue">Dark Blue (Navy)</option>
                               <option value="black">Classic Black</option>
                               <option value="white">Crisp White</option>
@@ -1439,7 +1444,7 @@ export default function CustomizationModal({
                       {/* Divider Badge with Center Pill */}
                       <div className="flex items-center gap-3 w-full my-1.5 sm:my-2">
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
-                        <span className="px-5 py-1 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[9px] sm:text-[9.5px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
+                        <span className="px-5 py-1 rounded-full bg-[#8A4418] text-white text-[9.5px] sm:text-[10px] font-bold tracking-[0.16em] uppercase shadow-[0_2px_6px_rgba(138,68,24,0.25)] shrink-0 font-serif">
                           YOUR SELECTION SUMMARY
                         </span>
                         <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
@@ -1448,114 +1453,114 @@ export default function CustomizationModal({
                       {/* 6-Row Specification Strip matching Reference Image */}
                       <div className="rounded-[16px] bg-[#FFF9F3]/95 border border-[#DEC7B2] overflow-hidden divide-y divide-[#EADBCE] shadow-2xs">
                         {/* 1. FABRIC */}
-                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
-                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3 sm:gap-3.5">
+                          <div className="w-[76px] h-[35px] sm:w-[86px] sm:h-[39px] md:w-[94px] md:h-[42px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_fabric_thumb.jpg?v=6"
+                              src="/customizer/review_fabric_thumb.jpg?v=7"
                               alt={activeItemName || productName}
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.08em] text-[#8A4418] uppercase block leading-tight font-serif">
                               1. FABRIC
                             </span>
-                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block truncate leading-snug">
+                            <span className="text-[12px] sm:text-[13px] font-bold text-[#1F1A17] block truncate leading-snug font-serif">
                               {getShortShirtTitle(activeItemName || activeItem?.name || productName) || "White Oxford"}
                             </span>
                           </div>
                         </div>
 
                         {/* 2. SIZE & FIT */}
-                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
-                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3 sm:gap-3.5">
+                          <div className="w-[76px] h-[35px] sm:w-[86px] sm:h-[39px] md:w-[94px] md:h-[42px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_shirt_thumb.png?v=6"
+                              src="/customizer/review_shirt_thumb.png?v=7"
                               alt="Size & Fit"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.08em] text-[#8A4418] uppercase block leading-tight font-serif">
                               2. SIZE & FIT
                             </span>
-                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block leading-snug">
-                              Chest Size: {customFit.chestSize > 0 ? customFit.chestSize : 40}&quot; &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}
+                            <span className="text-[12px] sm:text-[13px] font-bold text-[#1F1A17] block leading-snug font-serif">
+                              Chest Size: {customFit.chestSize > 0 ? customFit.chestSize : 40}&quot;<span className="font-normal text-[#A68B76] px-1.5 sm:px-2">|</span>{customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}
                             </span>
                           </div>
                         </div>
 
                         {/* 3. HEIGHT */}
-                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
-                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3 sm:gap-3.5">
+                          <div className="w-[76px] h-[35px] sm:w-[86px] sm:h-[39px] md:w-[94px] md:h-[42px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_height_thumb.png?v=6"
+                              src="/customizer/review_height_thumb.png?v=7"
                               alt="Height Category"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.08em] text-[#8A4418] uppercase block leading-tight font-serif">
                               3. HEIGHT
                             </span>
-                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block leading-snug">
+                            <span className="text-[12px] sm:text-[13px] font-bold text-[#1F1A17] block leading-snug font-serif">
                               {getHeightCleanTitle(customFit.height) || "Tall Height"} ({getHeightMeta(customFit.height).heightRangeFormatted || '5.8" to 5.10"'})
                             </span>
                           </div>
                         </div>
 
                         {/* 4. SLEEVE */}
-                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
-                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3 sm:gap-3.5">
+                          <div className="w-[76px] h-[35px] sm:w-[86px] sm:h-[39px] md:w-[94px] md:h-[42px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_sleeve_thumb.png?v=6"
+                              src="/customizer/review_sleeve_thumb.png?v=7"
                               alt="Sleeve"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.08em] text-[#8A4418] uppercase block leading-tight font-serif">
                               4. SLEEVE
                             </span>
-                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block capitalize leading-snug">
+                            <span className="text-[12px] sm:text-[13px] font-bold text-[#1F1A17] block capitalize leading-snug font-serif">
                               {customFit.sleeveType === "half" ? "Half Sleeves" : "Full Sleeves"}
                             </span>
                           </div>
                         </div>
 
                         {/* 5. COLLAR & CUFF */}
-                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
-                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3 sm:gap-3.5">
+                          <div className="w-[76px] h-[35px] sm:w-[86px] sm:h-[39px] md:w-[94px] md:h-[42px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_collar_thumb.png?v=6"
+                              src="/customizer/review_collar_thumb.png?v=7"
                               alt="Collar"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.08em] text-[#8A4418] uppercase block leading-tight font-serif">
                               5. COLLAR & CUFF
                             </span>
-                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block truncate leading-snug">
-                              {customFit.collarStyle ? customFit.collarStyle.replace(/COLLAR/gi, "").trim() + " Collar" : "Cutaway Collar"} &nbsp;&nbsp;|&nbsp;&nbsp; {customFit.cuffStyle ? customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim() : "Classic Cuff"}
+                            <span className="text-[12px] sm:text-[13px] font-bold text-[#1F1A17] block truncate leading-snug font-serif">
+                              {customFit.collarStyle ? customFit.collarStyle.replace(/COLLAR/gi, "").trim() + " Collar" : "Cutaway Collar"}<span className="font-normal text-[#A68B76] px-1.5 sm:px-2">|</span>{customFit.cuffStyle ? customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim() : "Classic Cuff"}
                             </span>
                           </div>
                         </div>
 
                         {/* 6. INITIALS */}
-                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3">
-                          <div className="w-[58px] h-[36px] sm:w-[64px] sm:h-[40px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                        <div className="py-2 px-3 sm:py-2.5 sm:px-3.5 flex items-center gap-3 sm:gap-3.5">
+                          <div className="w-[76px] h-[35px] sm:w-[86px] sm:h-[39px] md:w-[94px] md:h-[42px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                             <img
-                              src="/customizer/review_monogram_thumb.png?v=6"
+                              src="/customizer/review_monogram_thumb.png?v=7"
                               alt="Monogram Initials"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.06em] text-[#8A4418] uppercase block leading-tight">
+                            <span className="text-[9.5px] sm:text-[10px] font-bold tracking-[0.08em] text-[#8A4418] uppercase block leading-tight font-serif">
                               6. INITIALS
                             </span>
-                            <span className="text-[11.5px] sm:text-[12px] font-bold text-[#1F1A17] block leading-snug">
+                            <span className="text-[12px] sm:text-[13px] font-bold text-[#1F1A17] block leading-snug font-serif">
                               {customFit.initials ? (
                                 `${customFit.initials} (${
                                   customFit.threadColor === "black"

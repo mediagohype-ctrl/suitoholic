@@ -130,7 +130,6 @@ function resolveRawShirtPath(item: MatchableItem): string {
     (text.includes("sky blue") ||
       text.includes("french cuff") ||
       text.includes("mist blue") ||
-      img.includes("french_cuff_blue") ||
       img.includes("mist-blue"))
   ) {
     return "/customizer/shirt_model_skyblue.png";
