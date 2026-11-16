@@ -50,7 +50,7 @@ export default function OrdersPage() {
               details: `Size ${it.size || "Custom Fit"} • Master Cut`,
               price: `₹ ${(it.lineTotal || 2600).toLocaleString("en-IN")}`,
               quantity: 1,
-              image: it.image || "/products/shirt-blue-spread.png",
+              image: it.image || "/shirt_classic_white.jpg",
             })),
           });
         }
@@ -169,7 +169,7 @@ export default function OrdersPage() {
                 </Link>
 
                 <a
-                  href={`https://wa.me/919999999999?text=${encodeURIComponent(
+                  href={`https://wa.me/919979938022?text=${encodeURIComponent(
                     `Hello Suitoholic Concierge, I would like an update on my bespoke order ${order.orderNumber}`
                   )}`}
                   target="_blank"

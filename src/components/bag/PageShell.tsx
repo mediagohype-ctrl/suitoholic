@@ -8,7 +8,7 @@ import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 export default function PageShell({
   eyebrow,
   title,
-  showShowcase = true,
+  showShowcase = false,
   children,
 }: {
   eyebrow: string;

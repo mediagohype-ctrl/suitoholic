@@ -270,7 +270,7 @@ export const aboutPage = {
         title: "Flagship Studio Fitting",
         description:
           "Experience personal one-on-one master draper consultations at our flagship studio. Try fabric swatches, drape sample canvases, and configure your bespoke wardrobe.",
-        note: "Mon–Sat: 10:00 AM – 8:30 PM",
+        note: "Vapi Studio: Near Upasana School, Behind Gunjan Cinema, GIDC, Vapi • Mon–Sat: 10:00 AM – 8:30 PM",
       },
       {
         icon: "crown",

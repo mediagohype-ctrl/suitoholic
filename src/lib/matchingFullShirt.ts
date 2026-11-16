@@ -22,9 +22,7 @@ export interface MatchableItem {
 
 export function getMatchingFullShirtImage(item?: MatchableItem | null): string {
   if (!item) return "";
-  const raw = resolveRawShirtPath(item);
-  if (!raw) return "";
-  return raw.replace(/\.png$/i, ".jpg");
+  return resolveRawShirtPath(item);
 }
 
 function resolveRawShirtPath(item: MatchableItem): string {
@@ -54,6 +52,17 @@ function resolveRawShirtPath(item: MatchableItem): string {
   const slug = (item.slug || "").toLowerCase();
   const img = (item.image || "").toLowerCase();
   const text = `${name} ${slug} ${img} ${item.colour || ""} ${item.color || ""}`.toLowerCase();
+
+  // 1a. Royal Steel Blue Bengal Stripe / Sovereign / shirt_21 (exact high-priority match)
+  if (
+    img.includes("shirt_21") ||
+    text.includes("sovereign") ||
+    text.includes("royal steel") ||
+    text.includes("steel blue") ||
+    (text.includes("royal") && text.includes("blue"))
+  ) {
+    return "/customizer/shirt_model_bengal_blue.png";
+  }
 
   // 2. Pure / Crisp White Shirts (Must NOT match black & white bengal stripe)
   const isWhite =
@@ -149,7 +158,7 @@ function resolveRawShirtPath(item: MatchableItem): string {
 
   // 11. Coral Red / Terracotta Brick Bengal Stripe
   if (text.includes("coral") || text.includes("terracotta") || text.includes("brick")) {
-    return "/customizer/full_shirt_14.png";
+    return "/customizer/shirt_model_coral_stripe.png";
   }
 
   // 12. Wine / Burgundy / Bordeaux / Berry / Crimson / Blackcurrant / Magenta
@@ -170,13 +179,14 @@ function resolveRawShirtPath(item: MatchableItem): string {
     return "/customizer/full_shirt_15.png";
   }
 
-  // 14. Blue Bengal Stripe Family (Royal Blue, Azure, Navy Stripe, Cornflower, Ice Blue, French Blue, Sky Blue Stripe)
+  // 14. Blue Bengal Stripe Family (Royal Blue, Steel Blue, Azure, Navy Stripe, Cornflower, Ice Blue, French Blue, Sky Blue Stripe)
   if (text.includes("bengal") || text.includes("stripe")) {
-    if (text.includes("navy")) return "/customizer/full_shirt_20.png";
-    if (text.includes("charcoal")) return "/customizer/full_shirt_17.png";
+    if (text.includes("navy")) return "/customizer/shirt_model_navy_pinstripe.png";
+    if (text.includes("charcoal")) return "/customizer/shirt_model_charcoal.png";
     if (text.includes("grey") || text.includes("gray")) return "/customizer/full_shirt_25.png";
     if (
       text.includes("royal") ||
+      text.includes("steel") ||
       text.includes("azure") ||
       text.includes("french blue") ||
       text.includes("cornflower") ||
@@ -184,7 +194,7 @@ function resolveRawShirtPath(item: MatchableItem): string {
       text.includes("sky blue") ||
       text.includes("blue")
     ) {
-      return "/customizer/full_shirt_21.png";
+      return "/customizer/shirt_model_bengal_blue.png";
     }
   }
 
@@ -216,13 +226,27 @@ function resolveRawShirtPath(item: MatchableItem): string {
   ) {
     return "/customizer/shirt_model_sandstone_linen.png";
   }
-  if (text.includes("steel") || text.includes("grey") || text.includes("gray") || img.includes("shirt_25")) {
+  if (
+    (text.includes("steel") && !text.includes("blue")) ||
+    text.includes("grey") ||
+    text.includes("gray") ||
+    img.includes("shirt_25")
+  ) {
     return "/customizer/full_shirt_25.png";
   }
 
   // Direct image path check shirt_13 .. shirt_25 (fallback if none matched)
   for (let i = 13; i <= 25; i++) {
     if (img.includes(`shirt_${i}`)) {
+      if (i === 21) return "/customizer/shirt_model_bengal_blue.png";
+      if (i === 13) return "/customizer/shirt_model_skyblue.png";
+      if (i === 14) return "/customizer/shirt_model_navy_banker_stripe.png";
+      if (i === 16) return "/customizer/shirt_model_coral_stripe.png";
+      if (i === 18) return "/customizer/shirt_model_mustard_ochre_stripe.png";
+      if (i === 19) return "/customizer/shirt_model_forest_green_stripe.png";
+      if (i === 20) return "/customizer/shirt_model_black_white_stripe.png";
+      if (i === 23) return "/customizer/shirt_model_espresso.png";
+      if (i === 24) return "/customizer/shirt_model_charcoal.png";
       return `/customizer/full_shirt_${i}.png`;
     }
   }

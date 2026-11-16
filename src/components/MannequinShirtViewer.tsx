@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useContent } from "@/context/SiteDataProvider";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
@@ -176,35 +176,79 @@ function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
  * Ensures the shirt displayed on the ghost mannequin is tailored in the exact selected color, pattern, and sleeve length.
  * 100% color-consistent end-to-end from card hover to Step 1 customizer.
  */
-function getMatchingShirtModel(
+/**
+ * Resolves the complete made shirt model based on the chosen product, fabric, or colorway.
+ * Ensures the shirt displayed on the ghost mannequin is tailored in the exact selected color, pattern, and sleeve length.
+ * 100% color-consistent end-to-end from card hover to Step 1 customizer.
+ */
+export function getMatchingShirtModel(
   product?: { id?: number | string; name?: string; image?: string; gallery?: string[]; slug?: string } | null,
   isHalfSleeve: boolean = false,
   bodyFit: "lean" | "regular" | "tummy" = "lean",
   collarStyle: string = ""
 ): string {
-  if (bodyFit === "tummy") {
-    // Exact bespoke made-shirt with authentic rounded tummy profile, belly curvature and waist drape creases
-    return "/customizer/tummy_fit_shirt.png";
-  }
-
   // 1. Central 100% color-consistent resolver
-  const matchedFull = getMatchingFullShirtImage(product);
-  if (matchedFull) {
-    if (isHalfSleeve) {
-      if (matchedFull.includes("shirt_model_white")) return "/customizer/shirt_model_white_half.png";
-      if (matchedFull.includes("shirt_model_skyblue")) return "/customizer/shirt_model_skyblue_half.png";
-      if (matchedFull.includes("shirt_model_charcoal")) return "/customizer/shirt_model_charcoal_half.png";
-      if (matchedFull.includes("shirt_model_espresso")) return "/customizer/shirt_model_espresso_half.png";
-      if (matchedFull.includes("shirt_model_ivory")) return "/customizer/shirt_model_ivory_half.png";
-      if (matchedFull.includes("shirt_model_sandstone_linen")) return "/customizer/shirt_model_sandstone_linen_half.png";
-      if (matchedFull.includes("shirt_model_coral_stripe")) return "/customizer/shirt_model_coral_stripe_half.png";
-      if (matchedFull.includes("shirt_model_navy_solid")) return "/customizer/shirt_model_navy_solid_half.png";
-    }
-    return matchedFull.replace(/\.jpe?g$/i, ".png");
+  const matchedFull = getMatchingFullShirtImage(product) || "/customizer/shirt_model_bengal_blue.png";
+  const modelMatch = matchedFull.match(/shirt_model_([a-z_]+)\.png/);
+  const modelKey = modelMatch ? modelMatch[1] : "";
+
+  if (!modelKey) {
+    // If not a shirt_model_* PNG (e.g. full_shirt_15.png), return the matched full shirt
+    return matchedFull;
   }
 
-  const shirtId = getShirtId(product);
-  return `/customizer/full_shirt_${shirtId}.png`;
+  // Check for collar-specific model variants (available for white and bengal_blue)
+  let collarKey = "";
+  const collarUpper = (collarStyle || "").toUpperCase();
+  if (collarUpper.includes("BUTTON")) {
+    collarKey = "buttondown";
+  } else if (collarUpper.includes("MANDARIN")) {
+    collarKey = "mandarin";
+  } else if (collarUpper.includes("SPREAD") || collarUpper.includes("CUTAWAY")) {
+    collarKey = "spread";
+  }
+
+  // Model-specific collar variants exist for white and bengal_blue
+  if ((modelKey === "white" || modelKey === "bengal_blue") && collarKey) {
+    if (bodyFit === "tummy") {
+      return isHalfSleeve
+        ? `/customizer/shirt_model_${modelKey}_half_tummy_${collarKey}.png`
+        : `/customizer/shirt_model_${modelKey}_tummy_${collarKey}.png`;
+    }
+    if (bodyFit === "regular") {
+      return isHalfSleeve
+        ? `/customizer/shirt_model_${modelKey}_half_regular_${collarKey}.png`
+        : `/customizer/shirt_model_${modelKey}_regular_${collarKey}.png`;
+    }
+    // lean fit
+    return isHalfSleeve
+      ? `/customizer/shirt_model_${modelKey}_half_${collarKey}.png`
+      : `/customizer/shirt_model_${modelKey}_${collarKey}.png`;
+  }
+
+  // All colors: resolve authentic tailored fit (tummy, regular, lean) & sleeve (half, full)
+  if (bodyFit === "tummy") {
+    return isHalfSleeve
+      ? `/customizer/shirt_model_${modelKey}_half_tummy.png`
+      : `/customizer/shirt_model_${modelKey}_tummy.png`;
+  }
+
+  if (bodyFit === "regular") {
+    return isHalfSleeve
+      ? `/customizer/shirt_model_${modelKey}_half_regular.png`
+      : `/customizer/shirt_model_${modelKey}_regular.png`;
+  }
+
+  // lean fit
+  if (modelKey === "bengal_blue") {
+    return isHalfSleeve
+      ? "/customizer/shirt_model_bengal_blue_lean_half.png"
+      : "/customizer/shirt_model_bengal_blue_lean.png";
+  }
+
+  return isHalfSleeve
+    ? `/customizer/shirt_model_${modelKey}_half.png`
+    : `/customizer/shirt_model_${modelKey}.png`;
 }
 
 function getFoldedAndCuffAssets(
@@ -248,9 +292,91 @@ export default function MannequinShirtViewer({
 
   const activeFitForModel = (bodyFit === "regular" || bodyFit === "tummy" || bodyFit === "lean") ? bodyFit : "regular";
 
-  // Complete bespoke tailored made-shirt photo dynamically resolved to the chosen product/colorway, sleeve length, body fit & collar style!
-  const fullShirtPhoto = getMatchingShirtModel(product, false, activeFitForModel, collarStyle);
-  const halfShirtPhoto = getMatchingShirtModel(product, true, activeFitForModel, collarStyle);
+  // Preload all ghost mannequin model variants into memory for instantaneous zero-latency swaps
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const preloadList = [
+      "/customizer/shirt_model_bengal_blue_lean.png",
+      "/customizer/shirt_model_bengal_blue_regular.png",
+      "/customizer/shirt_model_bengal_blue_tummy.png",
+      "/customizer/shirt_model_bengal_blue_lean_half.png",
+      "/customizer/shirt_model_bengal_blue_regular_half.png",
+      "/customizer/shirt_model_bengal_blue_tummy_half.png",
+      "/customizer/shirt_model_white.png",
+      "/customizer/shirt_model_white_half.png",
+      "/customizer/shirt_model_sandstone_linen.png",
+      "/customizer/shirt_model_sandstone_linen_half.png",
+      "/customizer/shirt_model_coral_stripe.png",
+      "/customizer/shirt_model_coral_stripe_half.png",
+      "/customizer/shirt_model_espresso.png",
+      "/customizer/shirt_model_espresso_half.png",
+      "/customizer/shirt_model_charcoal.png",
+      "/customizer/shirt_model_charcoal_half.png",
+      "/customizer/shirt_model_skyblue.png",
+      "/customizer/shirt_model_skyblue_half.png",
+      "/customizer/shirt_model_navy_pinstripe.png",
+      "/customizer/shirt_model_navy_pinstripe_half.png",
+    ];
+    preloadList.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  // Multi-model precomputed mapping for all 6 combinations of sleeve and body fit
+  const shirtModels = {
+    full: {
+      lean: getMatchingShirtModel(product, false, "lean", collarStyle),
+      regular: getMatchingShirtModel(product, false, "regular", collarStyle),
+      tummy: getMatchingShirtModel(product, false, "tummy", collarStyle),
+    },
+    half: {
+      lean: getMatchingShirtModel(product, true, "lean", collarStyle),
+      regular: getMatchingShirtModel(product, true, "regular", collarStyle),
+      tummy: getMatchingShirtModel(product, true, "tummy", collarStyle),
+    },
+  };
+
+  // Crossfade state when switching sister shirt / fabric product
+  const currentShirtKey = `${product?.slug || product?.name || "bengal"}`;
+  const [displayedProductKey, setDisplayedProductKey] = useState(currentShirtKey);
+  const [crossfadeShirtSrc, setCrossfadeShirtSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (currentShirtKey !== displayedProductKey) {
+      const prevSrc = shirtModels[isHalfSleeve ? "half" : "full"][activeFitForModel];
+      setCrossfadeShirtSrc(prevSrc);
+      setDisplayedProductKey(currentShirtKey);
+
+      const timer = setTimeout(() => {
+        setCrossfadeShirtSrc(null);
+      }, 550);
+      return () => clearTimeout(timer);
+    }
+  }, [currentShirtKey, displayedProductKey, isHalfSleeve, activeFitForModel, shirtModels]);
+
+  // Smooth Crossfade for Step 5 (Folded Shirt & Cuff Detail)
+  const [activeFolded, setActiveFolded] = useState(foldedImage);
+  const [prevFolded, setPrevFolded] = useState<string | null>(null);
+  useEffect(() => {
+    if (foldedImage !== activeFolded) {
+      setPrevFolded(activeFolded);
+      setActiveFolded(foldedImage);
+      const timer = setTimeout(() => setPrevFolded(null), 450);
+      return () => clearTimeout(timer);
+    }
+  }, [foldedImage, activeFolded]);
+
+  const [activeCuff, setActiveCuff] = useState(cuffDetailImage);
+  const [prevCuff, setPrevCuff] = useState<string | null>(null);
+  useEffect(() => {
+    if (cuffDetailImage !== activeCuff) {
+      setPrevCuff(activeCuff);
+      setActiveCuff(cuffDetailImage);
+      const timer = setTimeout(() => setPrevCuff(null), 450);
+      return () => clearTimeout(timer);
+    }
+  }, [cuffDetailImage, activeCuff]);
 
   // Calculated stomach measurement values matching the 3-panel reference
   const activeChestForCalc = chestSize && chestSize > 0 ? chestSize : 40;
@@ -294,8 +420,6 @@ export default function MannequinShirtViewer({
       label: heightOption?.shortTitle ?? "Extra Tall",
       range1: "5.11' to",
       range2: "6.2\"",
-      topY: 25,
-      hemY: 474,
     }
     : isRegular
       ? {
@@ -303,16 +427,12 @@ export default function MannequinShirtViewer({
         label: heightOption?.shortTitle ?? "Regular Height",
         range1: "5.5' to",
         range2: "5.7'",
-        topY: 33,
-        hemY: 442,
       }
       : {
         scaleY: 1.0,
         label: heightOption?.shortTitle ?? "Tall Height",
         range1: "5.8' to",
         range2: "5.10\"",
-        topY: 29,
-        hemY: 458,
       };
 
   // Responsive Chest Scale Calculations (Base = 40")
@@ -325,6 +445,15 @@ export default function MannequinShirtViewer({
   // In Step 2 (Body Fit), chest scale does NOT change at all.
   const totalScaleX = chestScaleX;
   const totalScaleY = Number((heightConfig.scaleY * chestScaleY).toFixed(3));
+
+  // Dynamic precision height dimension line calculation:
+  // Base shirt mannequin inside 400x480 container: Collar top apex Y = 23.4, Hem lowest curve apex Y = 456.4
+  // The shirt div scales with transformOrigin "center 30%", corresponding to (200, 144) in 400x480 coordinates.
+  const collarBaseY = 23.4;
+  const hemBaseY = 456.4;
+  const scaleOriginY = 144;
+  const dynamicTopY = Math.round(scaleOriginY + (collarBaseY - scaleOriginY) * totalScaleY);
+  const dynamicHemY = Math.round(scaleOriginY + (hemBaseY - scaleOriginY) * totalScaleY);
 
   // Dynamic chest measurement span calibrated precisely to torso side seams (Center is X=200)
   const chestY = Math.round(162 * chestScaleY);
@@ -350,24 +479,24 @@ export default function MannequinShirtViewer({
   const waistBadgeWidth = isTummyFit ? 116 : 88;
   const waistBadgeX = 200 - waistBadgeWidth / 2;
 
-  // Completely uniform organic drop-shadow hugging only the garment silhouette
-  const shirtFilter = "contrast(1.0) drop-shadow(0 14px 22px rgba(20,17,14,0.18))";
+  // Pristine clean presentation without card-like background shade
+  const shirtFilter = "none";
 
   return (
     <div
-      className={`relative w-full ${
-        currentStep === 5
-          ? "max-w-none"
-          : currentStep === 3
-            ? "max-w-[460px] pl-6 sm:pl-8"
-            : "max-w-[440px]"
-      } mx-auto flex flex-col items-center justify-start py-0 transition-all duration-300`}
+      className={`relative w-full ${currentStep === 5 && !isHalfSleeve
+        ? "max-w-none"
+        : currentStep === 3
+          ? "max-w-[460px] pl-6 sm:pl-8"
+          : "max-w-[440px]"
+        } mx-auto flex flex-col items-center justify-start py-0 transition-all duration-300`}
     >
 
       {/* ============================================================ */}
       {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
+      {/* (Only for Full Sleeves — Half Sleeve shirts do not have cuffs) */}
       {/* ============================================================ */}
-      {currentStep === 5 ? (
+      {currentStep === 5 && !isHalfSleeve ? (
         <div className="relative w-full flex flex-col justify-start items-center py-0 animate-in fade-in duration-300">
           {/* Dual Image Presentation - Always 2-Column Side-by-Side Responsive */}
           <div className="w-full grid grid-cols-2 gap-2.5 sm:gap-3.5 items-start">
@@ -380,13 +509,20 @@ export default function MannequinShirtViewer({
                 </span>
               </div>
               <div className="relative w-full h-full overflow-hidden bg-[#161311] flex items-center justify-center">
+                {prevFolded && (
+                  <img
+                    src={prevFolded}
+                    alt="Previous Folded Shirt"
+                    className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-400 ease-in-out opacity-0 z-0"
+                  />
+                )}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  key={`folded-${foldedImage}`}
-                  src={foldedImage}
+                  src={activeFolded}
                   alt="Folded Bespoke Shirt Presentation"
-                  className="w-full h-full object-cover object-center transition-all duration-300 ease-out animate-in fade-in"
+                  className="w-full h-full object-cover object-center transition-opacity duration-400 ease-in-out relative z-10"
                   loading="eager"
+                  decoding="async"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src = `/customizer/shirt_folded_${shirtId}_spread_classic.jpg`;
                   }}
@@ -407,13 +543,20 @@ export default function MannequinShirtViewer({
                 <span>Cuff • {cuffStyle ? cuffStyle.replace(/CUFF|DOUBLE/gi, "").trim() : "Classic"}</span>
               </div>
               <div className="relative w-full h-full overflow-hidden bg-[#161311] flex items-center justify-center">
+                {prevCuff && (
+                  <img
+                    src={prevCuff}
+                    alt="Previous Cuff Detail"
+                    className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-400 ease-in-out opacity-0 z-0"
+                  />
+                )}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  key={`macro-${cuffDetailImage}`}
-                  src={cuffDetailImage}
+                  src={activeCuff}
                   alt="Cuff Construction Close-Up"
-                  className="w-full h-full object-cover object-center transition-all duration-300 ease-out animate-in fade-in"
+                  className="w-full h-full object-cover object-center transition-opacity duration-400 ease-in-out relative z-10"
                   loading="eager"
+                  decoding="async"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src = `/customizer/cuff_detail_${shirtId}_${cuffKey}.jpg`;
                   }}
@@ -427,7 +570,7 @@ export default function MannequinShirtViewer({
           </div>
         </div>
       ) : (
-        /* Steps 1, 2, 3, 4, 6: Full Ghost Mannequin Stage */
+        /* Steps 1, 2, 3, 4, 6 (and Step 5 for Half Sleeves): Full Ghost Mannequin Stage */
         <div className="relative w-full flex items-start justify-center py-0">
 
           {/* ============================================================ */}
@@ -441,40 +584,56 @@ export default function MannequinShirtViewer({
                 transformOrigin: "center 30%",
               }}
             >
-              {/* Full Sleeve Shirt Photo */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                key={`full-${fullShirtPhoto}`}
-                src={fullShirtPhoto}
-                alt={product?.name ?? "Custom Bespoke Made Shirt (Full Sleeve)"}
-                className={`w-full h-full object-contain object-top transition-all duration-300 ease-out animate-in fade-in-50 ${isHalfSleeve ? "opacity-0 pointer-events-none absolute inset-0" : "opacity-100 relative"
-                  }`}
-                style={{ filter: shirtFilter }}
-                loading="eager"
-                onError={(e) => {
-                  if (bodyFit === "tummy") {
-                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.png";
-                  }
-                }}
-              />
+              {/* Outgoing previous shirt layer during sister shirt change */}
+              {crossfadeShirtSrc && (
+                <img
+                  src={crossfadeShirtSrc}
+                  alt="Previous Shirt Model"
+                  className="absolute inset-0 w-full h-full object-contain object-top pointer-events-none transition-opacity duration-500 ease-in-out opacity-0 z-0"
+                  style={{ filter: shirtFilter }}
+                />
+              )}
 
-              {/* Half Sleeve Shirt Photo */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                key={`half-${halfShirtPhoto}`}
-                src={halfShirtPhoto}
-                alt={product?.name ?? "Custom Bespoke Made Shirt (Half Sleeve)"}
-                className={`w-full h-full object-contain object-top transition-all duration-300 ease-out animate-in fade-in-50 ${isHalfSleeve ? "opacity-100 relative" : "opacity-0 pointer-events-none absolute inset-0"
-                  }`}
-                style={{ filter: shirtFilter }}
-                loading="eager"
-                onError={(e) => {
-                  if (bodyFit === "tummy") {
-                    (e.currentTarget as HTMLImageElement).src = "/customizer/tummy_fit_shirt.png";
-                  }
-                }}
-              />
+              {/* 6-Way Permanent Multi-Layer Stack for Butter-Smooth Fit & Sleeve Crossfades */}
+              {(["full", "half"] as const).map((slv) =>
+                (["lean", "regular", "tummy"] as const).map((fit) => {
+                  const isCurrent = (isHalfSleeve ? slv === "half" : slv === "full") && activeFitForModel === fit;
+                  const src = shirtModels[slv][fit];
+
+                  return (
+                    <img
+                      key={`${slv}-${fit}`}
+                      src={src}
+                      alt={`${product?.name ?? "Custom Bespoke Made Shirt"} (${fit} fit, ${slv} sleeve)`}
+                      className={`absolute inset-0 w-full h-full object-contain object-top transition-opacity duration-500 ease-in-out ${
+                        isCurrent ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"
+                      }`}
+                      style={{
+                        filter: shirtFilter,
+                        willChange: "opacity",
+                      }}
+                      loading="eager"
+                      decoding="async"
+                      onError={(e) => {
+                        const img = e.currentTarget as HTMLImageElement;
+                        if (!img.dataset.retried) {
+                          img.dataset.retried = "1";
+                          img.src = slv === "half" ? "/customizer/shirt_model_white_half.png" : "/customizer/shirt_model_white.png";
+                        }
+                      }}
+                    />
+                  );
+                })
+              )}
             </div>
+
+            {/* Step 5 Half Sleeve Collar Badge */}
+            {currentStep === 5 && isHalfSleeve && (
+              <div className="absolute top-2 left-2 z-30 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full shadow-xs border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C] shrink-0" />
+                <span>Collar • {collarStyle ? collarStyle.replace(/COLLAR|\/ BAND/gi, "").trim() : "Cutaway Collar"}</span>
+              </div>
+            )}
 
             {/* ========================================================== */}
             {/* STEPS 1–3: HIGH-CONTRAST MEASUREMENT ARROWS & BADGES       */}
@@ -508,16 +667,16 @@ export default function MannequinShirtViewer({
                   const badgeWidth = 60;
                   const badgeHeight = 104;
                   const badgeX = dimX - badgeWidth / 2; // -22
-                  const badgeY = Math.round((heightConfig.topY + heightConfig.hemY) / 2 - badgeHeight / 2);
+                  const badgeY = Math.round((dynamicTopY + dynamicHemY) / 2 - badgeHeight / 2);
 
                   return (
                     <g className="transition-all duration-500 ease-out animate-in fade-in">
                       {/* Top horizontal dashed line extending to collar top rim */}
                       <line
                         x1={dimX - 14}
-                        y1={heightConfig.topY}
+                        y1={dynamicTopY}
                         x2="200"
-                        y2={heightConfig.topY}
+                        y2={dynamicTopY}
                         stroke="#14110E"
                         strokeWidth="1.8"
                         strokeDasharray="4 3"
@@ -527,9 +686,9 @@ export default function MannequinShirtViewer({
                       {/* Bottom horizontal dashed line extending to hem curve */}
                       <line
                         x1={dimX - 14}
-                        y1={heightConfig.hemY}
-                        x2="180"
-                        y2={heightConfig.hemY}
+                        y1={dynamicHemY}
+                        x2="200"
+                        y2={dynamicHemY}
                         stroke="#14110E"
                         strokeWidth="1.8"
                         strokeDasharray="4 3"
@@ -539,9 +698,9 @@ export default function MannequinShirtViewer({
                       {/* Vertical dimension line connecting top and bottom dashed lines */}
                       <line
                         x1={dimX}
-                        y1={heightConfig.topY}
+                        y1={dynamicTopY}
                         x2={dimX}
-                        y2={heightConfig.hemY}
+                        y2={dynamicHemY}
                         stroke="#14110E"
                         strokeWidth="2.0"
                         className="transition-all duration-500 ease-out"
@@ -549,14 +708,14 @@ export default function MannequinShirtViewer({
 
                       {/* Top arrow pointing UP touching top dashed line */}
                       <polygon
-                        points={`${dimX},${heightConfig.topY} ${dimX - 5},${heightConfig.topY + 11} ${dimX + 5},${heightConfig.topY + 11}`}
+                        points={`${dimX},${dynamicTopY} ${dimX - 5},${dynamicTopY + 11} ${dimX + 5},${dynamicTopY + 11}`}
                         fill="#14110E"
                         className="transition-all duration-500 ease-out"
                       />
 
                       {/* Bottom arrow pointing DOWN touching bottom dashed line */}
                       <polygon
-                        points={`${dimX},${heightConfig.hemY} ${dimX - 5},${heightConfig.hemY - 11} ${dimX + 5},${heightConfig.hemY - 11}`}
+                        points={`${dimX},${dynamicHemY} ${dimX - 5},${dynamicHemY - 11} ${dimX + 5},${dynamicHemY - 11}`}
                         fill="#14110E"
                         className="transition-all duration-500 ease-out"
                       />

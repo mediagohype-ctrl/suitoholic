@@ -231,7 +231,7 @@ export default function ContactPage() {
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          placeholder="+44 7000 000000"
+                          placeholder="+91 99799 38022"
                           className="w-full bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black/40 focus:border-black focus:ring-1 focus:ring-black rounded-xl px-4 py-3.5 text-xs sm:text-sm text-black placeholder:text-[#999999] transition-all outline-hidden font-sans"
                         />
                       </div>
@@ -326,10 +326,10 @@ export default function ContactPage() {
                       EMAIL
                     </span>
                     <a
-                      href="mailto:support@suitoholic.com"
+                      href="mailto:infosuitoholic@gmail.com"
                       className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block font-sans"
                     >
-                      support@suitoholic.com
+                      infosuitoholic@gmail.com
                     </a>
                   </div>
 
@@ -342,20 +342,34 @@ export default function ContactPage() {
                       TELEPHONE
                     </span>
                     <a
-                      href="tel:+919591444298"
+                      href="tel:+919979938022"
                       className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block font-sans"
                     >
-                      +91 95914 44298
+                      +91 99799 38022
                     </a>
-                    <span className="text-xs sm:text-sm text-[#666666] block font-sans">
-                      +91 (0) 129 415 8890
-                    </span>
                   </div>
 
                   {/* Divider */}
                   <div className="border-t border-[#E5E3DD]" />
 
-                  {/* 3. HOURS */}
+                  {/* 3. ATELIER ADDRESS */}
+                  <div className="space-y-1.5 font-sans">
+                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
+                      ATELIER ADDRESS
+                    </span>
+                    <div className="text-base sm:text-[17px] text-black font-semibold font-sans">
+                      Suitoholic Atelier
+                    </div>
+                    <div className="text-xs sm:text-sm text-[#14110E] font-medium font-sans leading-relaxed">
+                      Near Upasana School, Behind Gunjan Cinema,<br />
+                      GIDC, Vapi, Gujarat - 396195
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-[#E5E3DD]" />
+
+                  {/* 4. HOURS */}
                   <div className="space-y-1.5 font-sans">
                     <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
                       HOURS
@@ -364,7 +378,7 @@ export default function ContactPage() {
                       Monday — Saturday
                     </div>
                     <div className="text-xs sm:text-sm text-[#666666] font-sans">
-                      10:00 — 18:00 · By appointment
+                      10:00 — 20:30 · By appointment
                     </div>
                   </div>
 

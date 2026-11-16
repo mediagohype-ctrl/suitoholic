@@ -35,6 +35,14 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
   const activeMainImage = wideMainImage || cleanImages[0];
   const activeHoverImage = wideMainImage ? cleanImages[0] : hoverImage;
 
+  // Preload hover image immediately for instant, buttery-smooth transition on hover
+  React.useEffect(() => {
+    if (activeHoverImage && typeof window !== "undefined") {
+      const img = new Image();
+      img.src = activeHoverImage;
+    }
+  }, [activeHoverImage]);
+
   const handleToggleSave = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -52,21 +60,40 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
           <img
             src={activeMainImage}
             alt={product.name}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102 ${
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-102 ${
               activeHoverImage ? "group-hover:opacity-0" : ""
             }`}
-            loading="lazy"
+            loading="eager"
+            decoding="async"
+            onError={(e) => {
+              const img = e.currentTarget as HTMLImageElement;
+              if (img.src.includes(".png")) {
+                img.src = img.src.replace(/\.png(\?.*)?$/i, ".jpg$1");
+              } else if (!img.dataset.failed) {
+                img.dataset.failed = "true";
+                img.src = "/shirt_classic_white.jpg";
+              }
+            }}
           />
 
           {/* Hover Image: Full Shirt View (Only Full Shirt shown on hover, clean background) */}
           {activeHoverImage && (
-            <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-10 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out z-10 overflow-hidden pointer-events-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={activeHoverImage}
                 alt={`${product.name} Full Look`}
-                className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
-                loading="lazy"
+                className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-102"
+                loading="eager"
+                decoding="async"
+                onError={(e) => {
+                  const img = e.currentTarget as HTMLImageElement;
+                  if (img.src.includes(".png")) {
+                    img.src = img.src.replace(/\.png(\?.*)?$/i, ".jpg$1");
+                  } else {
+                    img.style.display = "none";
+                  }
+                }}
               />
             </div>
           )}

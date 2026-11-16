@@ -45,7 +45,7 @@ function TrackOrderContent() {
   }, [searchParams, handleResult]);
 
   return (
-    <PageShell eyebrow={c.track.eyebrow} title={c.track.title}>
+    <PageShell eyebrow={c.track.eyebrow} title={c.track.title} showShowcase={false}>
       <form
         onSubmit={(e) => {
           e.preventDefault();

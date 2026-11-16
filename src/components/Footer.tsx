@@ -96,9 +96,9 @@ export default function Footer() {
         <div className="max-w-[1600px] mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-10 xl:gap-14 items-start">
 
           {/* Column 1: BRAND LEGACY & DIRECT CONCIERGE (Placed First on Far Left) */}
-          <div className="lg:col-span-4 space-y-4 sm:space-y-5">
+          <div className="lg:col-span-3 space-y-4 sm:space-y-5">
             <div>
-              <Link href={c.logoHref ||"/"} className="inline-block group">
+              <Link href={c.logoHref || "/"} className="inline-block group">
                 <Image
                   src={c.logo}
                   alt={c.logoAlt}
@@ -111,13 +111,14 @@ export default function Footer() {
 
             {/* Direct Studio Concierge */}
             <div className="space-y-3 pt-1">
-
-              <div className="space-y-2 text-xs text-[#000000]">
+              <div className="space-y-2.5 text-xs text-[#000000]">
                 <div className="flex items-center space-x-2.5">
                   <Phone size={14} className="text-[#000000] shrink-0" />
                   <div>
                     <span className="text-[9px] uppercase text-[#777777] font-medium block">{c.phoneLabel}</span>
-                    <span className="text-xs sm:text-[13px] text-[#000000] font-medium">{c.phone}</span>
+                    <a href={`tel:${c.phone.replace(/[^+\d]/g, "")}`} className="text-xs sm:text-[13px] text-[#000000] font-medium hover:underline transition-colors">
+                      {c.phone}
+                    </a>
                   </div>
                 </div>
 
@@ -138,39 +139,11 @@ export default function Footer() {
                     <span className="text-[11px] sm:text-xs font-normal text-[#666666]">{c.hours}</span>
                   </div>
                 </div>
-
-                {c.address && (
-                  <div className="flex items-center space-x-2.5">
-                    <MapPin size={14} className="text-[#000000] shrink-0" />
-                    <div>
-                      <span className="text-[9px] uppercase text-[#777777] font-medium block">{c.addressLabel}</span>
-                      <span className="text-[11px] sm:text-xs font-normal text-[#666666] whitespace-pre-line">{c.address}</span>
-                    </div>
-                  </div>
-                )}
               </div>
-
             </div>
           </div>
 
-          {/* Column 2: Customer Service (lg:col-span-3) */}
-          <div className="lg:col-span-3 space-y-3 sm:space-y-4">
-            <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight">
-              {c.customerServiceHeading}
-            </h3>
-            <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#666666] font-normal">
-              {(c.customerServiceLinks ?? []).map((link, i) => (
-                <li key={i}>
-                  <Link href={link.href ||"/"} className="hover:text-[#000000] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
-                    <span className="text-[#000000] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
-                    <span>{link.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Company (lg:col-span-2) */}
+          {/* Column 2: Company (Placed on Left) */}
           <div className="lg:col-span-2 space-y-3 sm:space-y-4">
             <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight">
               {c.companyHeading}
@@ -178,7 +151,7 @@ export default function Footer() {
             <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#666666] font-normal">
               {(c.companyLinks ?? []).map((link, i) => (
                 <li key={i}>
-                  <Link href={link.href ||"/"} className="hover:text-[#000000] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
+                  <Link href={link.href || "/"} className="hover:text-[#000000] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
                     <span className="text-[#000000] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
                     <span>{link.label}</span>
                   </Link>
@@ -187,27 +160,60 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: FOLLOW US (Rightmost Column) */}
-          <div className="lg:col-span-3 space-y-4">
+          {/* Column 3: Customer Service (Placed on Right) */}
+          <div className="lg:col-span-3 space-y-3 sm:space-y-4">
             <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight">
-              {c.followHeading}
+              {c.customerServiceHeading}
             </h3>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              {c.followText}
-            </p>
-            <div className="flex items-center space-x-2.5 pt-1">
-              {(c.socialLinks ?? []).map((social, i) => (
-                <a
-                  key={i}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-[#E5E3DD] hover:border-black bg-white hover:bg-black flex items-center justify-center text-[#000000] hover:text-white transition-all duration-300 shadow-xs hover:scale-105"
-                  aria-label={social.label}
-                >
-                  {renderSocialIcon(social.platform)}
-                </a>
+            <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px] text-[#666666] font-normal">
+              {(c.customerServiceLinks ?? []).map((link, i) => (
+                <li key={i}>
+                  <Link href={link.href || "/"} className="hover:text-[#000000] hover:translate-x-0.5 transition-all flex items-center gap-1 group">
+                    <span className="text-[#000000] opacity-0 group-hover:opacity-100 transition-opacity">›</span>
+                    <span>{link.label}</span>
+                  </Link>
+                </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Column 4: LOCATION & FOLLOW US (Rightmost Column) */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* Location (Above Follow Us) */}
+            {c.address && (
+              <div className="space-y-2">
+                <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight flex items-center gap-1.5">
+                  <MapPin size={15} className="text-[#000000] shrink-0" />
+                  <span>{c.addressLabel || "Location"}</span>
+                </h3>
+                <p className="text-xs sm:text-[13px] text-[#14110E] font-medium leading-relaxed whitespace-pre-line">
+                  {c.address}
+                </p>
+              </div>
+            )}
+
+            {/* Follow Us (Below Location) */}
+            <div className="space-y-3 pt-1 border-t border-[#E5E3DD]/80">
+              <h3 className="text-sm sm:text-base font-bold text-[#000000] tracking-tight">
+                {c.followHeading}
+              </h3>
+              <p className="text-xs text-[#666666] leading-relaxed">
+                {c.followText}
+              </p>
+              <div className="flex items-center space-x-2.5 pt-1">
+                {(c.socialLinks ?? []).map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full border border-[#E5E3DD] hover:border-black bg-white hover:bg-black flex items-center justify-center text-[#000000] hover:text-white transition-all duration-300 shadow-xs hover:scale-105"
+                    aria-label={social.label}
+                  >
+                    {renderSocialIcon(social.platform)}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -241,14 +247,20 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright & Estd Note & Legal Links */}
+        {/* Copyright & Agency Credit & Legal Links */}
         <div className="relative z-10 max-w-[1600px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-[#666666] font-normal">
 
           {/* Copyright */}
           <div className="text-center md:text-left flex flex-wrap items-center justify-center md:justify-start gap-1.5">
-            <span suppressHydrationWarning>{(c.copyrightText ||"").replace("{year}", String(new Date().getFullYear()))}</span>
+            <span suppressHydrationWarning>{(c.copyrightText || "").replace("{year}", String(new Date().getFullYear()))}</span>
             <span className="font-semibold text-[#000000] tracking-wide uppercase">{c.copyrightBrand}</span>
             <span>{c.rightsText}</span>
+          </div>
+
+          {/* Agency Credit */}
+          <div className="text-center flex items-center justify-center gap-1 text-[#666666]">
+            <span>Website by</span>
+            <span className="font-semibold text-[#000000] tracking-wide">Go Hype Media</span>
           </div>
 
           {/* Quick Legal Links */}
@@ -256,7 +268,7 @@ export default function Footer() {
             <div className="flex items-center space-x-3 sm:space-x-4">
               {(c.legalLinks ?? []).map((link, i, arr) => (
                 <React.Fragment key={i}>
-                  <Link href={link.href ||"/"} className="hover:text-[#000000] transition-colors">{link.label}</Link>
+                  <Link href={link.href || "/"} className="hover:text-[#000000] transition-colors">{link.label}</Link>
                   {i < arr.length - 1 && <span className="text-[#CCCCCC]">•</span>}
                 </React.Fragment>
               ))}

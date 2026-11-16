@@ -60,7 +60,7 @@ function FaqAccordion({ text }: { text: string }) {
     const defaultCurated = [
       {
         q: "How does the 30-Day Perfect Fit Guarantee work?",
-        a: "If your custom garment doesn't fit flawlessly upon arrival, our master tailors provide complimentary alterations or a remake within 30 days of delivery. Reach out to concierge@suitoholic.com with photos.",
+        a: "If your custom garment doesn't fit flawlessly upon arrival, our master tailors provide complimentary alterations or a remake within 30 days of delivery. Reach out to infosuitoholic@gmail.com with photos.",
       },
       {
         q: "What payment methods are supported?",
@@ -210,7 +210,7 @@ export default function InfoPage() {
   const isFaq = slug === "faq";
 
   return (
-    <PageShell eyebrow={page.eyebrow} title={page.title}>
+    <PageShell eyebrow={page.eyebrow} title={page.title} showShowcase={false}>
       <div className="max-w-3xl mx-auto space-y-8">
         {page.intro && <p className="text-center text-base text-[#666666]">{page.intro}</p>}
 

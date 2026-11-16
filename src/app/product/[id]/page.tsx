@@ -214,6 +214,18 @@ export default function ProductDetailPage() {
                   alt={activeProduct.name}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   loading="eager"
+                  decoding="async"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    if (!target.dataset.retried) {
+                      target.dataset.retried = "1";
+                      if (target.src.endsWith(".png")) target.src = target.src.replace(/\.png$/i, ".jpg");
+                      else if (target.src.endsWith(".jpg")) target.src = target.src.replace(/\.jpg$/i, ".png");
+                      else target.src = "/shirt_classic_white.jpg";
+                    } else {
+                      target.src = "/shirt_classic_white.jpg";
+                    }
+                  }}
                 />
 
                 {/* Wishlist Button */}
@@ -246,6 +258,19 @@ export default function ProductDetailPage() {
                         src={imgUrl}
                         alt=""
                         className="w-full h-full object-cover object-center"
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          if (!target.dataset.retried) {
+                            target.dataset.retried = "1";
+                            if (target.src.endsWith(".png")) target.src = target.src.replace(/\.png$/i, ".jpg");
+                            else if (target.src.endsWith(".jpg")) target.src = target.src.replace(/\.jpg$/i, ".png");
+                            else target.src = "/shirt_classic_white.jpg";
+                          } else {
+                            target.src = "/shirt_classic_white.jpg";
+                          }
+                        }}
                       />
                     </button>
                   ))}

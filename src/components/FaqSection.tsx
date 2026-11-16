@@ -175,7 +175,7 @@ export default function FaqSection() {
 
         <div className="flex items-center gap-3 shrink-0 flex-wrap justify-center">
           <a
-            href="https://wa.me/919999999999?text=Hello%20Suitoholic%20team,%20I%20have%20a%20question%20about%20bespoke%20sizing"
+            href="https://wa.me/919979938022?text=Hello%20Suitoholic%20team,%20I%20have%20a%20question%20about%20bespoke%20sizing"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BE5B] text-white px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all shadow-sm hover:scale-103 active:scale-97 cursor-pointer"
