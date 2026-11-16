@@ -67,7 +67,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       id:"formal_bespoke",
       title:"Bespoke Cutaway & Twill Shirts",
       href:"/shop?category=formal_bespoke",
-      image:"/new_shirts/shirt_14.jpg",
+      image:"/new_shirts/shirt_16.jpg",
     },
     {
       id:"fabrics",

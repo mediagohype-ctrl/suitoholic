@@ -10,7 +10,7 @@ import {
   Plus,
   RotateCcw,
   Save,
-  Sparkles,
+  Eye,
   Trash2,
 } from "lucide-react";
 import { useAdminApi } from "@/lib/admin/api";
@@ -306,7 +306,7 @@ export default function AdminFinishedLooksPage() {
           {/* Section Settings Card */}
           <Card className="p-5 sm:p-6 bg-white border border-[#E5E7EB] rounded-xl shadow-xs">
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="h-4 w-4 text-[#9E774C]" />
+              <Eye className="h-4 w-4 text-[#9E774C]" />
               <h2 className="text-sm font-semibold text-[#14110E]">Section Headlines &amp; Copy</h2>
             </div>
             <div>
@@ -343,7 +343,7 @@ export default function AdminFinishedLooksPage() {
 
             {data.slides.length === 0 ? (
               <EmptyState
-                icon={<Sparkles className="h-10 w-10 text-[#9E774C]" />}
+                icon={<Eye className="h-10 w-10 text-[#9E774C]" />}
                 title="No Finished Looks yet"
                 description="Upload fabric swatches and tailored model looks to showcase custom craftsmanship."
                 action={

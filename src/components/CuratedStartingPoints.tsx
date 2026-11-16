@@ -59,13 +59,13 @@ export const DEFAULT_LOOKS: CuratedLookItem[] = [
   },
   {
     id:"look-4",
-    slug:"coral-red-bold-bengal-stripe-twill-shirt",
-    title:"Terracotta Rust Bengal Stripe",
-    subtitle:"Warm Terracotta Brick and Ecru Weave",
-    price:"₹ 2,633",
-    image:"/new_shirts/shirt_14.jpg",
-    hoverImage:"/customizer/full_shirt_14.jpg",
-    tag:"HERITAGE STRIPE",
+    slug:"crisp-snow-white-twill-shirt",
+    title:"Crisp Snow White Twill Shirt",
+    subtitle:"Pure Egyptian Giza Cotton Twill",
+    price:"₹ 2,499",
+    image:"/new_shirts/shirt_16.jpg",
+    hoverImage:"/customizer/full_shirt_16.jpg",
+    tag:"ICONIC WHITE",
   },
 ];
 

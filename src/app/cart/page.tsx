@@ -20,6 +20,8 @@ import PageShell from "@/components/bag/PageShell";
 import CustomizationDetails from "@/components/bag/CustomizationDetails";
 import OrderTotals from "@/components/bag/OrderTotals";
 import CustomizationModal, { CustomFitState, CustomizationModalProduct } from "@/components/CustomizationModal";
+import ModernProductCard from "@/components/ModernProductCard";
+import YouMayAlsoLikeSection from "@/components/YouMayAlsoLikeSection";
 import { useCart } from "@/context/CartProvider";
 import { useWishlist } from "@/context/WishlistProvider";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
@@ -219,8 +221,33 @@ export default function CartPage() {
     }
   };
 
+  const fullWidthRecommendations = (
+    <div className="w-full space-y-12 sm:space-y-16">
+      {/* SECTION 1: BESPOKE SHIRTS GRID (END TO END MATCHING HOMEPAGE) */}
+      <div className="w-full">
+        <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
+            TAILOR A SIGNATURE BESPOKE SHIRT
+          </h2>
+        </div>
+
+        {/* 4-Column Product Cards Grid - END TO END (Full-Width Edge-to-Edge) with Exact 15px Column Gap & Distinct Section Row Gap */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[15px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[7.5px]">
+          {sisterProducts.slice(0, 8).map((shirt) => (
+            <div key={shirt.id} className="w-full">
+              <ModernProductCard product={shirt} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* SECTION 2: YOU MAY ALSO LIKE (END TO END INFINITE SLOW AUTOPLAY CAROUSEL) */}
+      <YouMayAlsoLikeSection products={products} />
+    </div>
+  );
+
   return (
-    <PageShell eyebrow={c.eyebrow} title={c.title}>
+    <PageShell eyebrow={c.eyebrow} title={c.title} fullWidthContent={fullWidthRecommendations}>
       {/* Toast Notification Banner */}
       {toastMessage && (
         <div className="fixed top-24 right-4 sm:right-8 z-50 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 border border-white/20">
@@ -252,109 +279,6 @@ export default function CartPage() {
             >
               {c.continueShoppingLabel} <ArrowRight size={14} />
             </Link>
-          </div>
-
-          {/* Canonical Shirts for immediate tailoring even when cart is empty */}
-          <div className="space-y-4 pt-10 sm:pt-14">
-            <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                TAILOR A SIGNATURE BESPOKE SHIRT
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[5px]">
-              {sisterProducts.slice(0, 8).map((shirt) => {
-                const hoverFullShirt = getMatchingFullShirtImage(shirt);
-                const isSaved = isInWishlist(shirt.id);
-
-                const rawImages = shirt.gallery && shirt.gallery.length > 0 
-                  ? shirt.gallery 
-                  : [shirt.image];
-                const cleanImages = rawImages.map((img) => (img ? img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : ""));
-                const activeMainImage = cleanImages[0] || getShirtImage(shirt);
-                const activeHoverImage = hoverFullShirt || (cleanImages.length > 1 ? cleanImages[1] : null);
-
-                return (
-                  <div
-                    key={shirt.id}
-                    className="group flex flex-col w-full cursor-pointer"
-                    onClick={() => setChoiceModalProduct(shirt)}
-                  >
-                    {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
-                    <div className="relative w-full aspect-[254/350] rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
-                      <div className="block relative w-full h-full overflow-hidden rounded-[10px]">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={activeMainImage}
-                          alt={shirt.name}
-                          className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
-                          loading="lazy"
-                        />
-                        {activeHoverImage && (
-                          /* eslint-disable-next-line @next/next/no-img-element */
-                          <img
-                            src={activeHoverImage}
-                            alt={`${shirt.name} Full Look`}
-                            className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-102"
-                            loading="lazy"
-                          />
-                        )}
-                      </div>
-
-                      {/* Top Right: Floating Outline Heart Wishlist Icon */}
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          toggleWishlist(shirt.id);
-                        }}
-                        type="button"
-                        aria-label={isSaved ? "Remove from wishlist" : "Save to wishlist"}
-                        className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-20 p-1 transition-transform duration-200 hover:scale-115 active:scale-90 cursor-pointer"
-                      >
-                        <Heart
-                          size={19}
-                          strokeWidth={1.5}
-                          className={`drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors ${
-                            isSaved
-                              ? "text-red-500 fill-red-500"
-                              : "text-white fill-transparent stroke-white"
-                          }`}
-                        />
-                      </button>
-                    </div>
-
-                    {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
-                    <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-1 pb-2">
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <h4
-                          title={shirt.name}
-                          className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
-                        >
-                          {shirt.name}
-                        </h4>
-                        <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
-                          RS. {shirt.rawPrice ? shirt.rawPrice.toLocaleString("en-IN") : shirt.price.replace("₹", "").trim()}
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setChoiceModalProduct(shirt);
-                        }}
-                        aria-label={`Customise ${shirt.name}`}
-                        title="Tailor Shirt"
-                        className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
-                      >
-                        <ShoppingBag size={12} strokeWidth={2} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       ) : (
@@ -540,126 +464,6 @@ export default function CartPage() {
                 ))}
               </ul>
             </aside>
-          </div>
-
-          {/* SISTER FABRICS SELECTION SECTION (MATCHING HOME PAGE PATTERN) */}
-          <div className="space-y-4 pt-10 sm:pt-14">
-            <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-12 max-w-4xl mx-auto px-4">
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                ADD MORE SHIRTS IN DIFFERENT FABRICS
-              </h2>
-            </div>
-
-            {/* 8 Cards in a 4-Column Responsive Grid matching Home Page Pattern */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[10px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[5px]">
-              {sisterProducts.slice(0, 8).map((shirt) => {
-                const inBagCount = items
-                  .filter((item) => item.productId === shirt.id || item.slug === shirt.slug)
-                  .reduce((sum, item) => sum + item.quantity, 0);
-                const hoverFullShirt = getMatchingFullShirtImage(shirt);
-                const isSaved = isInWishlist(shirt.id);
-
-                const rawImages = shirt.gallery && shirt.gallery.length > 0 
-                  ? shirt.gallery 
-                  : [shirt.image];
-                const cleanImages = rawImages.map((img) => (img ? img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : ""));
-                const activeMainImage = cleanImages[0] || getShirtImage(shirt);
-                const activeHoverImage = hoverFullShirt || (cleanImages.length > 1 ? cleanImages[1] : null);
-
-                return (
-                  <div
-                    key={shirt.id}
-                    className="group flex flex-col w-full cursor-pointer"
-                    onClick={() => setChoiceModalProduct(shirt)}
-                  >
-                    {/* Upper Rectangular Image Container - 254:350 Aspect Ratio matching Home Page */}
-                    <div className="relative w-full aspect-[254/350] rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300">
-                      <div className="block relative w-full h-full overflow-hidden rounded-[10px]">
-                        {/* Default Image */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={activeMainImage}
-                          alt={shirt.name}
-                          className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-102"
-                          loading="lazy"
-                        />
-
-                        {/* Hover Image */}
-                        {activeHoverImage && (
-                          <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-10 overflow-hidden pointer-events-none">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={activeHoverImage}
-                              alt={`${shirt.name} Full Look`}
-                              className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"
-                              loading="lazy"
-                            />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Top Right: Floating Outline Heart Wishlist Icon */}
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          toggleWishlist(shirt.id);
-                        }}
-                        type="button"
-                        aria-label={isSaved ? "Remove from wishlist" : "Save to wishlist"}
-                        className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-20 p-1 transition-transform duration-200 hover:scale-115 active:scale-90 cursor-pointer"
-                      >
-                        <Heart
-                          size={19}
-                          strokeWidth={1.5}
-                          className={`drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-colors ${
-                            isSaved
-                              ? "text-red-500 fill-red-500"
-                              : "text-white fill-transparent stroke-white"
-                          }`}
-                        />
-                      </button>
-
-                      {inBagCount > 0 && (
-                        <span className="absolute top-2 left-2 z-20 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
-                          <Check size={10} strokeWidth={2.5} /> {inBagCount} in bag
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Lower Details Strip: Product Name & Price on Left, Plus Icon on Right */}
-                    <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-1 pb-2">
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <h4
-                          title={shirt.name}
-                          className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
-                        >
-                          {shirt.name}
-                        </h4>
-                        <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
-                          RS. {shirt.rawPrice ? shirt.rawPrice.toLocaleString("en-IN") : shirt.price.replace("₹", "").trim()}
-                        </div>
-                      </div>
-
-                      {/* Right: Plus Button -> Opens Tailoring Choice Modal */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setChoiceModalProduct(shirt);
-                        }}
-                        aria-label={`Customise ${shirt.name}`}
-                        title="Tailor Shirt"
-                        className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
-                      >
-                        <ShoppingBag size={12} strokeWidth={2} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       )}

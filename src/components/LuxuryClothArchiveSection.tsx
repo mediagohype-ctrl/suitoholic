@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useRef, useEffect } from"react";
 import Link from"next/link";
-import { Search, ChevronDown, X, ZoomIn, Plus, Scissors, ArrowRight, Check, Heart, SlidersHorizontal, RotateCcw } from "lucide-react";
+import { Search, ChevronDown, X, ZoomIn, Plus, Scissors, ArrowRight, Check, Heart, SlidersHorizontal, RotateCcw, ShoppingBag } from "lucide-react";
 import { useWishlist } from"@/context/WishlistProvider";
 import { useCustomizer } from"@/context/CustomizerModalProvider";
 import { useCatalog } from"@/context/SiteDataProvider";
@@ -956,7 +956,35 @@ export default function LuxuryClothArchiveSection({
                         />
                       </button>
 
-                      {/* Bottom-Right Plus Customizer Button */}
+                      {/* Default Swatch Image */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={cloth.image}
+                        alt={`${cloth.mill} ${cloth.code} Swatch`}
+                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-104"
+                        loading="lazy"
+                      />
+                      
+                      {/* Subtle ambient lighting overlay */}
+                      <div className="pointer-events-none absolute inset-0 bg-black/[0.03] group-hover:opacity-0 transition-opacity" />
+                    </div>
+
+                    {/* Lower Details Strip: Fabric Fibre & Price on Left, Cart Button on Right */}
+                    <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-1 pb-2 font-sans">
+                      {/* Left: Fabric Fibre & Price */}
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <div 
+                          title={cloth.fibre}
+                          className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black uppercase truncate leading-snug"
+                        >
+                          {cloth.fibre}
+                        </div>
+                        <div className="font-sans text-[10px] sm:text-[11px] font-medium text-[#666666] tracking-[0.08em] uppercase">
+                          {cloth.formattedPrice}
+                        </div>
+                      </div>
+
+                      {/* Right: Cart Button -> Opens Customizer Modal */}
                       <button
                         type="button"
                         onClick={(e) => {
@@ -972,34 +1000,12 @@ export default function LuxuryClothArchiveSection({
                             fabric: `${cloth.mill} ${cloth.fibre}`,
                           });
                         }}
-                        title="Customise Shirt in this fabric"
-                        aria-label={`Customise shirt in ${cloth.mill} ${cloth.code}`}
-                        className="absolute bottom-2.5 right-2.5 sm:bottom-3.5 sm:right-3.5 z-20 w-8 h-8 rounded-full bg-white/90 hover:bg-black text-black hover:text-white backdrop-blur-xs transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm cursor-pointer flex items-center justify-center opacity-100"
+                        aria-label={`Customise ${cloth.mill} ${cloth.code}`}
+                        title="Customise Shirt (6 Steps)"
+                        className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
                       >
-                        <Plus size={15} strokeWidth={2.2} />
+                        <ShoppingBag size={12} strokeWidth={2} />
                       </button>
-
-                      {/* Default Swatch Image */}
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={cloth.image}
-                        alt={`${cloth.mill} ${cloth.code} Swatch`}
-                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-104"
-                        loading="lazy"
-                      />
-                      
-                      {/* Subtle ambient lighting overlay */}
-                      <div className="pointer-events-none absolute inset-0 bg-black/[0.03] group-hover:opacity-0 transition-opacity" />
-                    </div>
-
-                    {/* Minimalist Information Block Below Swatch (Matching SELA DRESS / ₹7499 format) */}
-                    <div className="pt-2.5 sm:pt-3 pb-1 font-sans">
-                      <div className="text-[11px] sm:text-xs font-semibold text-[#14110E] uppercase tracking-[0.16em] truncate">
-                        {cloth.fibre}
-                      </div>
-                      <div className="text-[11px] sm:text-xs font-medium text-[#666666] tracking-[0.05em] mt-0.5">
-                        {cloth.formattedPrice}
-                      </div>
                     </div>
 
                   </div>

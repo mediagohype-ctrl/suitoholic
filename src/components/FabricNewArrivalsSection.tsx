@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Heart, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, ShoppingBag } from "lucide-react";
 import { useCustomizer } from "@/context/CustomizerModalProvider";
 import { useWishlist } from "@/context/WishlistProvider";
 import { useCatalog } from "@/context/SiteDataProvider";
@@ -246,7 +246,7 @@ export default function FabricNewArrivalsSection({
                     </div>
                   </div>
 
-                  {/* Right: Plus Button -> Opens Customizer Modal */}
+                  {/* Right: Cart Button -> Opens Customizer Modal */}
                   <button
                     type="button"
                     onClick={(e) => handleOpenCustomizer(e, item)}
@@ -254,7 +254,7 @@ export default function FabricNewArrivalsSection({
                     title="Customise Shirt (6 Steps)"
                     className="shrink-0 w-6 h-6 rounded-full border border-black/20 hover:border-black bg-white hover:bg-black text-black hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95 cursor-pointer mt-0.5"
                   >
-                    <Plus size={13} strokeWidth={2.5} />
+                    <ShoppingBag size={12} strokeWidth={2} />
                   </button>
                 </div>
               </div>

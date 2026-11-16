@@ -7,29 +7,59 @@ import PageShell from "@/components/bag/PageShell";
 import { useContent } from "@/context/SiteDataProvider";
 import { apiFetch } from "@/lib/api";
 
-/** Renders the lightweight "## heading / - bullet / paragraph" format used by info pages. */
+function formatInline(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, idx) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={idx} className="font-semibold text-black">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
+/** Renders the lightweight "## heading / ### subheading / - bullet / paragraph" format used by info pages without any enclosing card. */
 function RichText({ text }: { text: string }) {
   const blocks = text.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
   return (
-    <div className="space-y-4 text-sm leading-relaxed text-[#444444]">
+    <div className="space-y-6 text-[15px] sm:text-[16px] leading-relaxed text-[#2C2723]">
       {blocks.map((block, i) => {
         const lines = block.split("\n");
         return (
-          <div key={i} className="space-y-2">
+          <div key={i} className="space-y-3">
             {lines.map((line, j) => {
               if (line.startsWith("## "))
                 return (
-                  <h2 key={j} className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight pt-2">
+                  <h2
+                    key={j}
+                    className="font-serif-luxury text-xl sm:text-2xl font-bold text-black tracking-[0.06em] uppercase leading-tight pt-8 pb-2.5 border-b border-[#D5CFC5]"
+                  >
                     {line.slice(3)}
                   </h2>
                 );
+              if (line.startsWith("### "))
+                return (
+                  <h3
+                    key={j}
+                    className="font-serif-luxury text-base sm:text-lg font-bold text-black tracking-wide pt-4"
+                  >
+                    {line.slice(4)}
+                  </h3>
+                );
               if (line.startsWith("- "))
                 return (
-                  <p key={j} className="pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-black font-medium">
-                    {line.slice(2)}
+                  <p key={j} className="pl-6 relative before:content-['•'] before:absolute before:left-2 before:text-[#8C7355] font-normal leading-relaxed text-[#2C2723]">
+                    {formatInline(line.slice(2))}
                   </p>
                 );
-              return <p key={j}>{line}</p>;
+              return (
+                <p key={j} className="leading-relaxed text-[#2C2723]">
+                  {formatInline(line)}
+                </p>
+              );
             })}
           </div>
         );
@@ -92,26 +122,24 @@ function FaqAccordion({ text }: { text: string }) {
   }, [text]);
 
   return (
-    <div className="space-y-3">
+    <div className="divide-y divide-[#D5CFC5] border-y border-[#D5CFC5]">
       {parsedSections.map((item, idx) => {
         const isOpen = openIndex === idx;
         return (
           <div
             key={idx}
-            className={`border rounded-2xl transition-all duration-200 overflow-hidden ${
-              isOpen ? "bg-white border-black/40 shadow-sm" : "bg-white/90 border-[#E5E3DD] hover:border-black/20"
-            }`}
+            className="transition-colors duration-200"
           >
             <button
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : idx)}
-              className="w-full text-left px-5 sm:px-6 py-4.5 flex items-center justify-between gap-4 cursor-pointer"
+              className="w-full text-left py-5 flex items-center justify-between gap-4 cursor-pointer group"
             >
-              <div className="flex items-center gap-3">
-                <span className="w-6 h-6 rounded-full bg-[#FAF9F6] border border-[#E5E3DD] text-[#8C7355] text-xs font-bold flex items-center justify-center shrink-0">
+              <div className="flex items-center gap-3.5">
+                <span className="w-6 h-6 rounded-full bg-[#DFD8CC] text-[#6E4F32] text-xs font-bold flex items-center justify-center shrink-0">
                   {idx + 1}
                 </span>
-                <span className="font-serif-luxury text-base sm:text-lg font-bold text-black tracking-wide">
+                <span className="font-serif-luxury text-base sm:text-lg font-bold text-black tracking-wide group-hover:text-[#8C7355] transition-colors">
                   {item.q}
                 </span>
               </div>
@@ -121,7 +149,7 @@ function FaqAccordion({ text }: { text: string }) {
               />
             </button>
             {isOpen && (
-              <div className="px-5 sm:px-6 pb-5 pt-1 text-sm text-[#555555] leading-relaxed border-t border-[#F5F4F0] animate-in fade-in duration-150">
+              <div className="pb-6 pt-1 pl-9 text-[15px] text-[#44403C] leading-relaxed animate-in fade-in duration-150">
                 <p className="whitespace-pre-line">{item.a}</p>
               </div>
             )}
@@ -164,7 +192,7 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={submit} className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 space-y-5 shadow-sm">
+    <form onSubmit={submit} className="border-t border-[#D5CFC5] pt-10 mt-12 space-y-5">
       <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase text-black">{c.heading}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label className="block space-y-1.5">
@@ -192,7 +220,7 @@ function ContactForm() {
       <button
         type="submit"
         disabled={state === "sending"}
-        className="w-full bg-black hover:bg-neutral-800 disabled:opacity-60 text-white py-4 rounded-full text-xs font-bold tracking-[0.16em] uppercase transition-all shadow-sm hover:shadow cursor-pointer"
+        className="w-full sm:w-auto px-8 bg-black hover:bg-neutral-800 disabled:opacity-60 text-white py-4 rounded-full text-xs font-bold tracking-[0.16em] uppercase transition-all shadow-sm hover:shadow cursor-pointer"
       >
         {state === "sending" ? c.sendingLabel : c.submitLabel}
       </button>
@@ -202,7 +230,18 @@ function ContactForm() {
 
 export default function InfoPage() {
   const params = useParams();
-  const slug = String(params?.slug ?? "");
+  const rawSlug = String(params?.slug ?? "");
+  const slugAliases: Record<string, string> = {
+    "return-exchange": "returns",
+    "returns-and-exchanges": "returns",
+    "refund-policy": "returns",
+    "shipping-policy": "shipping",
+    "privacy-policy": "privacy",
+    "terms-and-conditions": "terms",
+    "terms-of-service": "terms",
+    "fabric-care-guide": "fabric-care",
+  };
+  const slug = slugAliases[rawSlug] || rawSlug;
   const { pages } = useContent("infoPages");
   const page = pages.find((p) => p.slug === slug);
   if (!page) notFound();
@@ -211,13 +250,17 @@ export default function InfoPage() {
 
   return (
     <PageShell eyebrow={page.eyebrow} title={page.title} showShowcase={false}>
-      <div className="max-w-3xl mx-auto space-y-8">
-        {page.intro && <p className="text-center text-base text-[#666666]">{page.intro}</p>}
+      <div className="max-w-4xl mx-auto space-y-6">
+        {page.intro && (
+          <p className="text-base sm:text-lg text-[#55504A] leading-relaxed mb-4">
+            {page.intro}
+          </p>
+        )}
 
         {isFaq ? (
           <FaqAccordion text={page.body} />
         ) : (
-          <div className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 shadow-sm">
+          <div className="w-full">
             <RichText text={page.body} />
           </div>
         )}

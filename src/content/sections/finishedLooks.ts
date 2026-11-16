@@ -48,12 +48,12 @@ export const finishedLooks: FinishedLooksContent = {
       active: true,
     },
     {
-      id: "look-terracotta-shirt",
-      fabricImage: "/new_shirts/shirt_14.jpg",
-      lookImage: "/customizer/full_shirt_14.jpg",
-      title: "Fabric to bespoke coral bengal stripe shirt",
+      id: "look-white-shirt",
+      fabricImage: "/new_shirts/shirt_16.jpg",
+      lookImage: "/customizer/full_shirt_16.jpg",
+      title: "Fabric to bespoke crisp snow white twill shirt",
       description: "Shown to you in minutes, in store & online",
-      fabricName: "Coral Red Bold Bengal Stripe Twill",
+      fabricName: "Crisp Snow White Egyptian Cotton Twill",
       active: true,
     },
     {

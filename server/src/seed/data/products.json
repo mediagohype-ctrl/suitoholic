@@ -30,9 +30,10 @@
     "description": "Woven from a premium linen-cotton blend, this subtle textured beige shirt combines breathable comfort with an understated elegance. Designed with a natural melange texture and tailored finish, it is perfect for smart-casual outings, summer events, and laid-back office days",
     "fabric": "Premium Linen-Cotton Blend",
     "threadCount": "Breathable Melange Texture",
-    "image": "/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg",
+    "image": "/new_shirts/shirt_13.jpg",
     "gallery": [
-      "/api/media/6/whatsapp-image-2026-10-27-at-1-06-36-pm-3.jpeg"
+      "/new_shirts/shirt_13.jpg",
+      "/customizer/full_shirt_13.jpg"
     ],
     "colorways": [],
     "rating": 5,

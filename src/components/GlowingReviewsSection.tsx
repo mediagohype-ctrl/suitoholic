@@ -23,11 +23,11 @@ export default function GlowingReviewsSection() {
   const testimonials: PatronStory[] = useMemo(() => {
     const list = products || [];
 
-    const bandhgala = list.find(
+    const sovereign = list.find(
       (p) =>
-        p.image?.includes("bandhgala") ||
-        p.name.toLowerCase().includes("bandhgala") ||
-        p.category === "ceremonial"
+        p.image?.includes("shirt_19") ||
+        p.name.toLowerCase().includes("espresso") ||
+        p.name.toLowerCase().includes("sovereign")
     );
     const linen = list.find(
       (p) =>
@@ -55,13 +55,13 @@ export default function GlowingReviewsSection() {
       {
         id: "story-1",
         name: "AARAV SINGHANIA",
-        outfit: bandhgala?.name || "Bespoke Royal Navy Bandhgala",
-        image: bandhgala?.image || "/ceremonial_bandhgala.jpg",
+        outfit: sovereign?.name || "Bespoke Espresso Satin Twill Shirt",
+        image: sovereign?.image || "/new_shirts/shirt_19.jpg",
         rating: 5,
         quote:
-          "“I walked in nervous about my wedding reception outfit. The master cutter understood my proportions, posture and fit, and we left with everything crafted to bespoke perfection.”",
+          "“I walked in nervous about my reception outfit. The master cutter understood my proportions, posture and fit, and we left with everything crafted to bespoke perfection.”",
         author: "Aarav",
-        role: "groom",
+        role: "patron",
         location: "Delhi",
       },
       {

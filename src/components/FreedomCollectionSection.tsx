@@ -98,19 +98,19 @@ export default function FreedomCollectionSection() {
         <div
           onClick={(e) =>
             handleCustomise(e, {
-              id: 14,
-              name: "Terracotta Rust Bengal Stripe Shirt",
-              image: "/new_shirts/shirt_14.jpg",
-              slug: "terracotta-rust-bengal-stripe",
-              price: "₹ 2,633",
+              id: 16,
+              name: "Crisp Executive Snow White Twill Shirt",
+              image: "/new_shirts/shirt_16.jpg",
+              slug: "crisp-snow-white-twill-shirt",
+              price: "₹ 2,499",
             })
           }
           className="group relative block overflow-hidden bg-[#E7E7E4] cursor-pointer col-span-1 aspect-[3/4] lg:col-span-2"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/new_shirts/shirt_14.jpg"
-            alt="Terracotta Rust Bengal Stripe Shirt"
+            src="/new_shirts/shirt_16.jpg"
+            alt="Crisp Executive Snow White Twill Shirt"
             loading="lazy"
             decoding="async"
             className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"

@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from"react";
-import Link from"next/link";
-import { ChevronLeft, ChevronRight } from"lucide-react";
-import { useContent } from"@/context/SiteDataProvider";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useContent } from "@/context/SiteDataProvider";
+import type { CategoryShowcaseItem } from "@/content/sections/categoriesShowcase";
 
 export default function CategoriesRotatingShowcase() {
   const c = useContent("categoriesShowcase");
-  const categoriesData = c.items ?? [];
+  const categoriesData: CategoryShowcaseItem[] = useMemo(() => {
+    return ((c.items as CategoryShowcaseItem[]) ?? []).filter(
+      (item) =>
+        !item.title?.toLowerCase().includes("ceremonial") &&
+        !item.href?.toLowerCase().includes("ceremonial") &&
+        !item.image?.toLowerCase().includes("ceremonial")
+    );
+  }, [c.items]);
   const total = categoriesData.length;
 
   const [rawActiveIndex, setActiveIndex] = useState(() => Number(c.defaultActiveIndex) || 0); // Default to CO-ORD SETS matching reference

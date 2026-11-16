@@ -26,11 +26,11 @@
       "SELLERS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_14.jpg",
+    "image": "/new_shirts/shirt_16.jpg",
     "homeTitle": "Best Sellers",
     "description": "",
     "tag": "COLLECTION 02 \u2022 BEST SELLERS",
-    "bgImage": "/new_shirts/shirt_14.jpg",
+    "bgImage": "/new_shirts/shirt_16.jpg",
     "showOnHome": true,
     "sortOrder": 2,
     "active": true
@@ -55,17 +55,17 @@
   },
   {
     "key": "trousers",
-    "title": "TAILORED TROUSERS & PANTS",
-    "shortTitle": "TAILORED TROUSERS & PANTS",
+    "title": "SARTORIAL TROUSERS & GURKHAS",
+    "shortTitle": "TROUSERS & GURKHAS",
     "mobileTitle": [
-      "TAILORED",
-      "TROUSERS"
+      "TROUSERS &",
+      "GURKHAS"
     ],
-    "subtitle": "Italian pleated wool dress pants & Gurkha trousers.",
+    "subtitle": "High-waisted Gurkhas, single & double pleats.",
+    "homeTitle": "",
+    "description": "",
+    "tag": "",
     "image": "/pant_pleated_beige.jpg",
-    "homeTitle": "Tailored Trousers & Pants",
-    "description": "Italian pleated wool dress pants, sartorial Gurkha trousers, and premium stretch chinos.",
-    "tag": "COLLECTION 04 \u2022 TAILORED PANTS",
     "bgImage": "/pant_pleated_beige.jpg",
     "showOnHome": false,
     "sortOrder": 4,
@@ -73,17 +73,17 @@
   },
   {
     "key": "tshirts",
-    "title": "PREMIUM POLOS & T-SHIRTS",
-    "shortTitle": "POLOS & T-SHIRTS",
+    "title": "LUXURY SILK KNIT POLOS",
+    "shortTitle": "SILK KNIT POLOS",
     "mobileTitle": [
-      "POLOS &",
-      "T-SHIRTS"
+      "SILK KNIT",
+      "POLOS"
     ],
-    "subtitle": "Heavyweight Supima tees & silk-blend knit polos.",
+    "subtitle": "100% Mulberry silk & mercerised cotton knits.",
+    "homeTitle": "",
+    "description": "",
+    "tag": "",
     "image": "/tshirt_knit_navy_polo.jpg",
-    "homeTitle": "Premium Polos & T-Shirts",
-    "description": "Heavyweight Supima cotton tees, silk-blend knit polos, and fine-gauge textured casuals.",
-    "tag": "COLLECTION 05 \u2022 LUXURY CASUALS",
     "bgImage": "/tshirt_knit_navy_polo.jpg",
     "showOnHome": false,
     "sortOrder": 5,
@@ -98,10 +98,10 @@
       "BLAZERS"
     ],
     "subtitle": "Super 130s Italian wool jackets & dinner tuxedos.",
-    "image": "/blazer_navy_wool.jpg",
     "homeTitle": "",
     "description": "",
     "tag": "",
+    "image": "/blazer_navy_wool.jpg",
     "bgImage": "/blazer_navy_wool.jpg",
     "showOnHome": false,
     "sortOrder": 6,
@@ -116,13 +116,13 @@
       "ROYAL ATELIER"
     ],
     "subtitle": "Silk bandhgalas, wedding kurtas & smoking jackets.",
-    "image": "/ceremonial_bandhgala.jpg",
     "homeTitle": "",
     "description": "",
     "tag": "",
+    "image": "/ceremonial_bandhgala.jpg",
     "bgImage": "/ceremonial_bandhgala.jpg",
     "showOnHome": false,
     "sortOrder": 7,
-    "active": true
+    "active": false
   }
 ]

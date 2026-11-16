@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertCircle, ArrowLeft, Lock } from "lucide-react";
+import { AlertCircle, ArrowLeft, CreditCard, Lock, ShieldCheck, Wallet } from "lucide-react";
 import PageShell from "@/components/bag/PageShell";
 import CustomizationDetails from "@/components/bag/CustomizationDetails";
 import OrderTotals from "@/components/bag/OrderTotals";
 import { useCart, isUuid } from "@/context/CartProvider";
 import { useContent, useSettings } from "@/context/SiteDataProvider";
-import { ApiError, apiFetch } from "@/lib/api";
+import { ApiError, apiFetch, formatMoney } from "@/lib/api";
 import { saveLastOrder } from "@/lib/orders";
 import type { Order } from "@/lib/types";
 
@@ -50,6 +50,9 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  const total = Math.max(0, (cart?.total ?? 0) - discountAmount);
+  const symbol = cart?.currencySymbol || "₹";
 
   // Auto-fill from saved addresses & logged-in profile
   useEffect(() => {
@@ -200,6 +203,40 @@ export default function CheckoutPage() {
             </Field>
           </section>
 
+          {/* Payment Method */}
+          <section className="bg-white border border-[#E5E3DD] rounded-[24px] p-6 sm:p-7 shadow-sm space-y-4">
+            <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-3">
+              <div className="flex items-center gap-2">
+                <Wallet size={16} className="text-black" />
+                <h2 className="text-[11px] font-bold tracking-[0.22em] uppercase text-black">
+                  Payment Method
+                </h2>
+              </div>
+              <span className="text-[10px] text-[#888888] font-bold tracking-wider uppercase">
+                Pay Upon Delivery
+              </span>
+            </div>
+
+            <div className="p-4 sm:p-5 rounded-2xl border border-black bg-[#F5F4F0] flex items-start gap-3.5 shadow-xs">
+              <div className="w-8 h-8 rounded-full bg-white border border-[#E5E3DD] flex items-center justify-center shrink-0 mt-0.5">
+                <Wallet size={16} className="text-black" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
+                    Cash On Delivery (COD)
+                  </span>
+                  <span className="font-sans text-xs font-bold text-black">
+                    {formatMoney(total, symbol)}
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#666666] mt-1.5 leading-relaxed">
+                  Pay full amount of <strong className="text-black">{formatMoney(total, symbol)}</strong> in cash or UPI when your tailored pieces arrive at your doorstep.
+                </p>
+              </div>
+            </div>
+          </section>
+
           <section className="bg-white border border-[#E5E3DD] rounded-[24px] p-6 sm:p-7 shadow-sm space-y-3">
             <Field label={c.checkout.notesLabel}>
               <textarea rows={3} className={inputClass} value={form.notes} onChange={set("notes")} placeholder={c.checkout.notesPlaceholder} />
@@ -316,7 +353,7 @@ export default function CheckoutPage() {
             className="w-full bg-black hover:bg-neutral-800 disabled:opacity-60 text-white py-4 px-6 rounded-full text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
           >
             <Lock size={14} />{" "}
-            {submitting ? c.checkout.placingLabel : c.checkout.placeOrderLabel}
+            {submitting ? c.checkout.placingLabel : "Place Order (Cash on Delivery)"}
           </button>
           <Link href="/cart" className="inline-flex items-center gap-1 text-[11px] font-bold tracking-widest text-black hover:text-[#666666] uppercase transition-colors">
             <ArrowLeft size={12} /> {c.checkout.backToBagLabel}

@@ -135,35 +135,6 @@ export const SUITOHOLIC_COLLECTIONS: CollectionSectionData[] = [
       },
     ],
   },
-  {
-    id: "ceremonial",
-    title: "ETHNIC & CEREMONIAL LUXURY",
-    description:
-      "Regal raw silk bandhgalas, handcrafted velvet smoking jackets, and festive bespoke sherwanis curated for weddings, royal galas, and life's most momentous celebrations.",
-    bgBottom: "#FAF8F5",
-    images: [
-      {
-        src: "/ceremonial_bandhgala.jpg",
-        alt: "Royal Silk Bandhgala Jacket",
-      },
-      {
-        src: "/ceremonial_ivory_tux.jpg",
-        alt: "Ivory Silk Blend Ceremonial Jacket",
-      },
-      {
-        src: "/ceremonial_kurta_silk.jpg",
-        alt: "Hand-Stitched Silk Kurta Ensemble",
-      },
-      {
-        src: "/ceremonial_velvet.jpg",
-        alt: "Bespoke Midnight Velvet Smoking Jacket",
-      },
-      {
-        src: "/ceremonial_silk_blend.jpg",
-        alt: "Artisanal Jacquard Ceremonial Royal Coat",
-      },
-    ],
-  },
 ];
 
 interface ShopCollectionsOverviewProps {

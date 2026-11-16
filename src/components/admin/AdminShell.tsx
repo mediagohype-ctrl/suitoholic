@@ -17,13 +17,14 @@ import {
   Scissors,
   Settings,
   ShoppingBag,
-  Sparkles,
+  Eye,
   Tags,
   UserCircle,
   Users,
   X,
   Boxes,
   ClipboardList,
+  CreditCard,
 } from "lucide-react";
 import { AdminAuthProvider, useAdminAuth } from "@/lib/admin/auth";
 import { loginRedirectPath } from "@/lib/admin/api";
@@ -44,6 +45,7 @@ const NAV: { section?: string; items: NavItem[] }[] = [
     items: [
       { href: "/admin/orders", label: "Orders", icon: <ClipboardList className="h-4 w-4" /> },
       { href: "/admin/bags", label: "Bags", icon: <ShoppingBag className="h-4 w-4" /> },
+      { href: "/admin/settings", label: "Store setting", icon: <Settings className="h-4 w-4" /> },
     ],
   },
   {
@@ -53,7 +55,7 @@ const NAV: { section?: string; items: NavItem[] }[] = [
       { href: "/admin/inventory", label: "Inventory", icon: <Boxes className="h-4 w-4" /> },
       { href: "/admin/categories", label: "Categories", icon: <Tags className="h-4 w-4" /> },
       { href: "/admin/fabrics", label: "Fabrics", icon: <Scissors className="h-4 w-4" /> },
-      { href: "/admin/finished-looks", label: "Finished Looks", icon: <Sparkles className="h-4 w-4" /> },
+      { href: "/admin/finished-looks", label: "Finished Looks", icon: <Eye className="h-4 w-4" /> },
     ],
   },
   {
@@ -73,7 +75,6 @@ const NAV: { section?: string; items: NavItem[] }[] = [
   {
     section: "System",
     items: [
-      { href: "/admin/settings", label: "Settings", icon: <Settings className="h-4 w-4" /> },
       { href: "/admin/users", label: "Users", icon: <Users className="h-4 w-4" />, adminOnly: true },
     ],
   },
@@ -98,6 +99,22 @@ function ShellInner({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isLogin && status === "anonymous") router.replace(loginRedirectPath());
   }, [isLogin, status, router]);
+
+  // Remove any Next.js floating dev indicator portal / badge
+  useEffect(() => {
+    const removeDevIndicator = () => {
+      const elements = document.querySelectorAll(
+        "nextjs-portal, [data-nextjs-dev-indicator], [data-nextjs-toast-wrapper], #nextjs-dev-indicator"
+      );
+      elements.forEach((el) => el.remove());
+    };
+    removeDevIndicator();
+    const observer = new MutationObserver(removeDevIndicator);
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+    return () => observer.disconnect();
+  }, []);
 
   if (isLogin) {
     return <div className="relative z-20 min-h-screen w-full bg-white text-[#14110E]">{children}</div>;

@@ -35,14 +35,7 @@ export const shopByCategory = {
       href: "/product/royal-blue-classic-bengal-stripe-twill-shirt",
       price: "₹ 2,600",
     },
-    {
-      id: 49,
-      slug: "coral-red-bold-bengal-stripe-twill-shirt",
-      title: "TERRACOTTA RUST STRIPE",
-      image: "/new_shirts/shirt_14.jpg",
-      href: "/product/coral-red-bold-bengal-stripe-twill-shirt",
-      price: "₹ 2,633",
-    },
+
     {
       id: 53,
       slug: "french-blue-bengal-striped-twill-shirt",

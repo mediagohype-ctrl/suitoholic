@@ -32,7 +32,14 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
 
   // When isWideSpan is true, prefer the secondary lookbook image if available for dramatic editorial width
   const wideMainImage = isWideSpan && (hoverImage || (cleanImages.length > 1 ? cleanImages[1] : null));
-  const activeMainImage = wideMainImage || cleanImages[0];
+  const isBeigeLinen =
+    product.slug === "beige-textured-linen-cotton-shirt" ||
+    (product.name || "").toLowerCase().includes("beige textured linen");
+  const baseImage =
+    isBeigeLinen || (cleanImages[0] && cleanImages[0].includes("whatsapp-image"))
+      ? "/new_shirts/shirt_13.jpg"
+      : cleanImages[0];
+  const activeMainImage = wideMainImage || baseImage;
   const activeHoverImage = wideMainImage ? cleanImages[0] : hoverImage;
 
   // Preload hover image immediately for instant, buttery-smooth transition on hover

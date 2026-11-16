@@ -29,11 +29,11 @@ export const fallbackCategories: Category[] = [
       "SELLERS"
     ],
     "subtitle": "",
-    "image": "/new_shirts/shirt_14.jpg",
+    "image": "/new_shirts/shirt_16.jpg",
     "homeTitle": "Best Sellers",
     "description": "",
     "tag": "COLLECTION 02 • BEST SELLERS",
-    "bgImage": "/new_shirts/shirt_14.jpg",
+    "bgImage": "/new_shirts/shirt_16.jpg",
     "showOnHome": true,
     "sortOrder": 2,
     "active": true
@@ -72,24 +72,6 @@ export const fallbackCategories: Category[] = [
     "bgImage": "/blazer_navy_wool.jpg",
     "showOnHome": false,
     "sortOrder": 4,
-    "active": true
-  },
-  {
-    "id": "ceremonial",
-    "title": "ETHNIC & CEREMONIAL LUXURY",
-    "shortTitle": "CEREMONIAL LUXURY",
-    "mobileTitle": [
-      "CEREMONIAL &",
-      "ROYAL ATELIER"
-    ],
-    "subtitle": "Silk bandhgalas, wedding kurtas & smoking jackets.",
-    "image": "/ceremonial_bandhgala.jpg",
-    "homeTitle": "",
-    "description": "",
-    "tag": "",
-    "bgImage": "/ceremonial_bandhgala.jpg",
-    "showOnHome": false,
-    "sortOrder": 5,
     "active": true
   }
 ];

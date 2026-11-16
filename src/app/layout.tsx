@@ -32,6 +32,22 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-full w-full overflow-x-clip antialiased">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function removeBadges() {
+                  var els = document.querySelectorAll('nextjs-portal, [data-nextjs-dev-indicator], [data-nextjs-toast-wrapper], #nextjs-dev-indicator');
+                  for (var i = 0; i < els.length; i++) els[i].remove();
+                }
+                removeBadges();
+                if (window.MutationObserver) {
+                  new MutationObserver(removeBadges).observe(document.documentElement, { childList: true, subtree: true });
+                }
+              })();
+            `,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
