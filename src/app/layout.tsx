@@ -19,7 +19,19 @@ const loadSite = cache(getSiteBundle);
 export async function generateMetadata(): Promise<Metadata> {
   const { content } = await loadSite();
   const seo = mergeContent(contentDefaults.seo, content.seo);
-  return { title: seo.title, description: seo.description };
+  return {
+    title: seo.title,
+    description: seo.description,
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/icon.png", type: "image/png" },
+        { url: "/logo/suitoholic-logo-dark.png", type: "image/png" },
+      ],
+      shortcut: "/favicon.ico",
+      apple: "/apple-icon.png",
+    },
+  };
 }
 
 export default async function RootLayout({
@@ -30,7 +42,7 @@ export default async function RootLayout({
   const site = await loadSite();
 
   return (
-    <html lang="en" suppressHydrationWarning className="h-full w-full overflow-x-clip antialiased">
+    <html lang="en" suppressHydrationWarning className="h-full w-full antialiased">
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -48,6 +60,9 @@ export default async function RootLayout({
             `,
           }}
         />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" href="/icon.png" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -59,7 +74,7 @@ export default async function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning className="min-h-full w-full max-w-[100vw] overflow-x-clip flex flex-col bg-[#ECEAE5] text-[#000000] relative selection:bg-[#000000] selection:text-white font-sans">
+      <body suppressHydrationWarning className="min-h-full w-full flex flex-col bg-[#ECEAE5] text-[#000000] relative selection:bg-[#000000] selection:text-white font-sans">
         {/* Global BLUORNG Warm Alabaster Canvas Atmosphere */}
         <StudioBackground />
 

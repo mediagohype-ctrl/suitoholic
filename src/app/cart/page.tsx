@@ -235,14 +235,21 @@ export default function CartPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[15px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[7.5px]">
           {sisterProducts.slice(0, 8).map((shirt) => (
             <div key={shirt.id} className="w-full">
-              <ModernProductCard product={shirt} />
+              <ModernProductCard
+                product={shirt}
+                onCardClick={(p) => setChoiceModalProduct(p)}
+                onCustomise={(p) => setChoiceModalProduct(p)}
+              />
             </div>
           ))}
         </div>
       </div>
 
       {/* SECTION 2: YOU MAY ALSO LIKE (END TO END INFINITE SLOW AUTOPLAY CAROUSEL) */}
-      <YouMayAlsoLikeSection products={products} />
+      <YouMayAlsoLikeSection
+        products={products}
+        onProductClick={(p) => setChoiceModalProduct(p)}
+      />
     </div>
   );
 
@@ -518,8 +525,11 @@ export default function CartPage() {
               >
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div>
+                    <span className="inline-block bg-black text-white text-[9px] font-bold uppercase tracking-[0.14em] px-2.5 py-0.5 rounded-full mb-1.5">
+                      Option 1 • Current Selection
+                    </span>
                     <h4 className="text-sm sm:text-base font-bold text-black uppercase tracking-wide">
-                      Add With Current Bespoke Fit
+                      Add With Current Selection (Bespoke Fit)
                     </h4>
                   </div>
                   <ArrowRight size={18} className="text-black group-hover:translate-x-1 transition-transform mt-0.5 shrink-0" />
@@ -547,7 +557,7 @@ export default function CartPage() {
                   ) : (
                     <>
                       <Plus size={14} className="stroke-[2.5]" />
-                      <span>Add In Current Fit (Direct To Bag)</span>
+                      <span>Add With Current Selection (Direct To Bag)</span>
                     </>
                   )}
                 </button>
@@ -559,11 +569,14 @@ export default function CartPage() {
                 className="group relative p-4 sm:p-5 rounded-2xl border border-[#E5E3DD] hover:border-black bg-white hover:bg-[#F5F4F0]/60 transition-all cursor-pointer shadow-xs hover:shadow"
               >
                 <div className="flex items-start justify-between gap-3 mb-1.5">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-[#ECEAE5] group-hover:bg-black text-black group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
-                      <Scissors size={14} />
-                    </div>
-                    <div>
+                  <div className="space-y-1">
+                    <span className="inline-block bg-[#E5E3DD] text-black text-[9px] font-bold uppercase tracking-[0.14em] px-2.5 py-0.5 rounded-full mb-1">
+                      Option 2 • Start From Step 1
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-[#ECEAE5] group-hover:bg-black text-black group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
+                        <Scissors size={14} />
+                      </div>
                       <h4 className="text-sm font-bold text-black uppercase tracking-wide">
                         Customize A New Fit (Start From Step 1)
                       </h4>
@@ -573,7 +586,7 @@ export default function CartPage() {
                 </div>
 
                 <p className="text-[11px] text-[#666666] mb-3">
-                  Start fresh in the 3D customizer to select custom chest size, body fit, height, sleeve, collar, cuff &amp; initials.
+                  Start fresh in the 3D customizer from Step 1 to select custom chest size, body fit, height, sleeve, collar, cuff &amp; initials.
                 </p>
 
                 <button

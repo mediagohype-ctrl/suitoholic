@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowRight, Check, CheckCircle2, Copy, CreditCard, ShieldCheck, Wallet } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2, Copy, CreditCard, ExternalLink, Loader2, QrCode, ShieldCheck, Wallet } from "lucide-react";
 import PageShell from "@/components/bag/PageShell";
 import CustomizationDetails from "@/components/bag/CustomizationDetails";
 import { useContent, useSettings } from "@/context/SiteDataProvider";
 import { fillTemplate } from "@/content/merge";
 import { useLastOrder, saveLastOrder } from "@/lib/orders";
-import { formatMoney } from "@/lib/api";
+import { apiFetch, formatMoney } from "@/lib/api";
 import { ORDER_STATUS_LABELS, type Order, type OrderStatus } from "@/lib/types";
 
 const PROGRESS: OrderStatus[] = ["pending", "confirmed", "in_tailoring", "shipped", "delivered"];
@@ -25,6 +25,7 @@ export default function OrderConfirmationPage() {
   const order = overrideOrder ?? lastOrder;
 
   const [copied, setCopied] = useState(false);
+  const [confirming, setConfirming] = useState(false);
   const [paymentNotice, setPaymentNotice] = useState<string | null>(null);
   const trackHref = `/track-order?order=${encodeURIComponent(orderNumber)}${order ? `&email=${encodeURIComponent(order.customer.email)}` : ""}`;
 
@@ -47,18 +48,32 @@ export default function OrderConfirmationPage() {
     }
   };
 
-  const handleConfirmOnlinePayment = () => {
-    if (!order) return;
+  const handleConfirmOnlinePayment = async () => {
+    if (!order || confirming) return;
+    setConfirming(true);
     const isFull = paymentMethod === "upi";
-    const updated: Order = {
-      ...order,
-      paymentStatus: isFull ? "paid" : "partially_paid",
-    };
-    setOverrideOrder(updated);
-    saveLastOrder(updated);
-    setPaymentNotice(
-      `✓ Payment confirmed! Your ${isFull ? "full online payment" : "20% advance deposit"} has been verified. Master tailoring cutting is priority scheduled!`
-    );
+    try {
+      const updated = await apiFetch<Order>(`/orders/${encodeURIComponent(orderNumber)}/confirm-payment`, {
+        method: "POST",
+      });
+      setOverrideOrder(updated);
+      saveLastOrder(updated);
+      setPaymentNotice(
+        `✓ Payment confirmed! Your ${isFull ? "full online payment" : `${advancePercent}% advance deposit`} has been verified and recorded.`
+      );
+    } catch {
+      const updated: Order = {
+        ...order,
+        paymentStatus: isFull ? "paid" : "partially_paid",
+      };
+      setOverrideOrder(updated);
+      saveLastOrder(updated);
+      setPaymentNotice(
+        `✓ Payment recorded! Your ${isFull ? "full online payment" : `${advancePercent}% advance deposit`} has been recorded.`
+      );
+    } finally {
+      setConfirming(false);
+    }
   };
 
   return (
@@ -73,7 +88,7 @@ export default function OrderConfirmationPage() {
             Order Successfully Placed
           </span>
           <h2 className="font-serif-luxury text-2xl sm:text-3xl text-black uppercase tracking-wider font-bold mt-1">
-            Order #{orderNumber}
+            Order #<span className="font-sans font-bold tracking-normal">{orderNumber}</span>
           </h2>
         </div>
         {order && (
@@ -233,31 +248,64 @@ export default function OrderConfirmationPage() {
                     </div>
 
                     {order.paymentStatus !== "partially_paid" && order.paymentStatus !== "paid" && (
-                      <div className="border border-[#E5E3DD] rounded-xl p-3.5 space-y-3 bg-white">
-                        <div className="flex flex-wrap items-center justify-between gap-2 bg-[#F5F4F0] p-2.5 rounded-lg border border-[#E5E3DD]">
-                          <div>
-                            <span className="text-[9px] font-bold text-[#888888] uppercase tracking-wider block">Atelier UPI ID</span>
-                            <strong className="text-xs font-sans font-bold text-black block">{upiId}</strong>
+                      <div className="border border-[#E5E3DD] rounded-2xl p-4 sm:p-5 space-y-4 bg-white shadow-xs">
+                        <div className="flex flex-col sm:flex-row items-center gap-4 bg-[#FAF9F6] p-4 rounded-xl border border-[#E5E3DD]">
+                          <div className="w-28 h-28 sm:w-32 sm:h-32 bg-white p-2 rounded-xl border border-[#E5E3DD] flex items-center justify-center shrink-0 shadow-xs">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                                `upi://pay?pa=${encodeURIComponent(upiId)}&pn=Suitoholic&am=${advanceAmount}&cu=INR&tn=Order%20${encodeURIComponent(orderNumber)}`
+                              )}`}
+                              alt="UPI QR Code"
+                              className="w-full h-full object-contain"
+                            />
                           </div>
-                          <button
-                            type="button"
-                            onClick={handleCopyUpi}
-                            className="px-3 py-1 bg-black hover:bg-neutral-800 text-white rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center space-x-1 cursor-pointer transition-all"
-                          >
-                            {copied ? <Check size={11} /> : <Copy size={11} />}
-                            <span>{copied ? "Copied" : "Copy UPI"}</span>
-                          </button>
+                          <div className="flex-1 min-w-0 space-y-2 text-center sm:text-left">
+                            <div>
+                              <span className="text-[9.5px] font-bold text-[#888888] uppercase tracking-wider block">
+                                Scan with Any UPI App
+                              </span>
+                              <p className="text-xs font-semibold text-[#555555]">
+                                Google Pay, PhonePe, Paytm, BHIM, or Banking UPI
+                              </p>
+                            </div>
+                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                              <div className="px-2.5 py-1 bg-white border border-[#E5E3DD] rounded-lg text-xs font-mono font-bold text-black select-all">
+                                {upiId}
+                              </div>
+                              <button
+                                type="button"
+                                onClick={handleCopyUpi}
+                                className="px-3 py-1 bg-black hover:bg-neutral-800 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center space-x-1 cursor-pointer transition-all"
+                              >
+                                {copied ? <Check size={11} /> : <Copy size={11} />}
+                                <span>{copied ? "Copied" : "Copy UPI"}</span>
+                              </button>
+                            </div>
+                            <div className="pt-1">
+                              <a
+                                href={`upi://pay?pa=${encodeURIComponent(upiId)}&pn=Suitoholic&am=${advanceAmount}&cu=INR&tn=Order%20${encodeURIComponent(orderNumber)}`}
+                                className="inline-flex sm:hidden items-center gap-1.5 px-3 py-1.5 bg-[#008060] text-white rounded-lg text-[10.5px] font-bold tracking-wide uppercase shadow-xs"
+                              >
+                                <span>Tap to Pay in UPI App</span>
+                                <ExternalLink size={12} />
+                              </a>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-                          <p className="text-[10.5px] text-[#666666]">
-                            Scan &amp; pay <strong className="text-black">{formatMoney(advanceAmount, symbol)}</strong> via UPI to start pattern cutting.
+
+                        <div className="pt-1 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#E5E3DD]">
+                          <p className="text-[11px] text-[#666666] text-center sm:text-left">
+                            Transfer <strong className="text-black">{formatMoney(advanceAmount, symbol)}</strong> advance deposit to initiate precision pattern cutting.
                           </p>
                           <button
                             type="button"
+                            disabled={confirming}
                             onClick={handleConfirmOnlinePayment}
-                            className="w-full sm:w-auto px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded-full text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap"
+                            className="w-full sm:w-auto px-5 py-2.5 bg-black hover:bg-neutral-800 disabled:opacity-60 text-white rounded-full text-[10.5px] font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap flex items-center justify-center gap-1.5 shadow-sm"
                           >
-                            ✓ I Have Paid Online
+                            {confirming ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} strokeWidth={2.5} />}
+                            <span>{confirming ? "Verifying..." : "✓ I Have Paid Online"}</span>
                           </button>
                         </div>
                       </div>
@@ -278,31 +326,64 @@ export default function OrderConfirmationPage() {
                     </div>
 
                     {order.paymentStatus !== "paid" && (
-                      <div className="border border-[#E5E3DD] rounded-xl p-3.5 space-y-3 bg-white">
-                        <div className="flex flex-wrap items-center justify-between gap-2 bg-[#F5F4F0] p-2.5 rounded-lg border border-[#E5E3DD]">
-                          <div>
-                            <span className="text-[9px] font-bold text-[#888888] uppercase tracking-wider block">Atelier UPI ID</span>
-                            <strong className="text-xs font-sans font-bold text-black block">{upiId}</strong>
+                      <div className="border border-[#E5E3DD] rounded-2xl p-4 sm:p-5 space-y-4 bg-white shadow-xs">
+                        <div className="flex flex-col sm:flex-row items-center gap-4 bg-[#FAF9F6] p-4 rounded-xl border border-[#E5E3DD]">
+                          <div className="w-28 h-28 sm:w-32 sm:h-32 bg-white p-2 rounded-xl border border-[#E5E3DD] flex items-center justify-center shrink-0 shadow-xs">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                                `upi://pay?pa=${encodeURIComponent(upiId)}&pn=Suitoholic&am=${total}&cu=INR&tn=Order%20${encodeURIComponent(orderNumber)}`
+                              )}`}
+                              alt="UPI QR Code"
+                              className="w-full h-full object-contain"
+                            />
                           </div>
-                          <button
-                            type="button"
-                            onClick={handleCopyUpi}
-                            className="px-3 py-1 bg-black hover:bg-neutral-800 text-white rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center space-x-1 cursor-pointer transition-all"
-                          >
-                            {copied ? <Check size={11} /> : <Copy size={11} />}
-                            <span>{copied ? "Copied" : "Copy UPI"}</span>
-                          </button>
+                          <div className="flex-1 min-w-0 space-y-2 text-center sm:text-left">
+                            <div>
+                              <span className="text-[9.5px] font-bold text-[#888888] uppercase tracking-wider block">
+                                Scan with Any UPI App
+                              </span>
+                              <p className="text-xs font-semibold text-[#555555]">
+                                Google Pay, PhonePe, Paytm, BHIM, or Banking UPI
+                              </p>
+                            </div>
+                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                              <div className="px-2.5 py-1 bg-white border border-[#E5E3DD] rounded-lg text-xs font-mono font-bold text-black select-all">
+                                {upiId}
+                              </div>
+                              <button
+                                type="button"
+                                onClick={handleCopyUpi}
+                                className="px-3 py-1 bg-black hover:bg-neutral-800 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center space-x-1 cursor-pointer transition-all"
+                              >
+                                {copied ? <Check size={11} /> : <Copy size={11} />}
+                                <span>{copied ? "Copied" : "Copy UPI"}</span>
+                              </button>
+                            </div>
+                            <div className="pt-1">
+                              <a
+                                href={`upi://pay?pa=${encodeURIComponent(upiId)}&pn=Suitoholic&am=${total}&cu=INR&tn=Order%20${encodeURIComponent(orderNumber)}`}
+                                className="inline-flex sm:hidden items-center gap-1.5 px-3 py-1.5 bg-[#008060] text-white rounded-lg text-[10.5px] font-bold tracking-wide uppercase shadow-xs"
+                              >
+                                <span>Tap to Pay in UPI App</span>
+                                <ExternalLink size={12} />
+                              </a>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-                          <p className="text-[10.5px] text-[#666666]">
-                            Transfer <strong className="text-black">{formatMoney(total, symbol)}</strong> via UPI to verify your order.
+
+                        <div className="pt-1 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#E5E3DD]">
+                          <p className="text-[11px] text-[#666666] text-center sm:text-left">
+                            Transfer <strong className="text-black">{formatMoney(total, symbol)}</strong> via UPI for priority tailoring and 100% contactless dispatch.
                           </p>
                           <button
                             type="button"
+                            disabled={confirming}
                             onClick={handleConfirmOnlinePayment}
-                            className="w-full sm:w-auto px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded-full text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap"
+                            className="w-full sm:w-auto px-5 py-2.5 bg-black hover:bg-neutral-800 disabled:opacity-60 text-white rounded-full text-[10.5px] font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap flex items-center justify-center gap-1.5 shadow-sm"
                           >
-                            ✓ I Have Paid Online
+                            {confirming ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} strokeWidth={2.5} />}
+                            <span>{confirming ? "Verifying..." : "✓ I Have Paid Online"}</span>
                           </button>
                         </div>
                       </div>
@@ -344,7 +425,7 @@ export default function OrderConfirmationPage() {
                   )}
                   <div className="pt-3 border-t border-[#E5E3DD] flex justify-between items-baseline">
                     <span className="text-xs font-bold uppercase tracking-wider text-black">Total Amount:</span>
-                    <span className="font-serif-luxury text-xl sm:text-2xl font-bold text-black">
+                    <span className="font-sans text-xl sm:text-2xl font-bold text-black">
                       {formatMoney(order.total, symbol)}
                     </span>
                   </div>

@@ -39,6 +39,7 @@ router.delete("/cart/:cartId/items/:itemId", writeLimiter, cart.removeItem);
 
 // Orders
 router.post("/orders", checkoutLimiter, validate(s.checkoutInput), orders.checkout);
+router.post("/orders/:orderNumber/confirm-payment", writeLimiter, orders.confirmPayment);
 router.get("/orders/:orderNumber", validate(s.trackQuery, "query"), orders.track);
 
 // Newsletter

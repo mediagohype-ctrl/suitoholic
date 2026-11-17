@@ -77,9 +77,9 @@ async function loadOrder(where, params, { withAdminFields = true } = {}) {
 export async function checkout({ cartId, customer, shippingAddress, paymentMethod, notes }) {
   const settings = await getSettings();
   const allowed = [
+    "partial_cod",
+    "upi",
     settings.codEnabled && "cod",
-    settings.upiEnabled && "upi",
-    settings.partialPaymentEnabled && "partial_cod",
   ].filter(Boolean);
   if (!allowed.includes(paymentMethod)) throw ApiError.badRequest("This payment method is not available");
 
@@ -134,7 +134,7 @@ export async function checkout({ cartId, customer, shippingAddress, paymentMetho
     const balanceDue = isPartial
       ? Math.round((priced.total - advanceAmount) * 100) / 100
       : (paymentMethod === "cod" ? priced.total : 0);
-    const initialPaymentStatus = isPartial ? "partially_paid" : "pending";
+    const initialPaymentStatus = "pending";
 
     const order = await one(
       `INSERT INTO orders (cart_id, customer_name, email, phone, shipping_address, subtotal, customization_total,
@@ -208,6 +208,34 @@ export async function trackOrder(orderNumber, email) {
     withAdminFields: false,
   });
   return order;
+}
+
+/** Customer confirmation of online UPI payment (advance deposit or full amount). */
+export async function confirmCustomerPayment(orderNumber, { transactionId } = {}) {
+  const normalizedOrderNumber = String(orderNumber || "").trim().toUpperCase();
+  return withTransaction(async (client) => {
+    const order = await one(
+      "SELECT id, order_number, payment_method, status, advance_amount, total FROM orders WHERE UPPER(order_number) = $1 FOR UPDATE",
+      [normalizedOrderNumber],
+      client,
+    );
+    if (!order) throw ApiError.notFound("Order not found");
+
+    const isPartial = order.payment_method === "partial_cod";
+    const newStatus = isPartial ? "partially_paid" : "paid";
+    const amountPaid = isPartial ? Number(order.advance_amount) || 0 : Number(order.total) || 0;
+    const noteText = transactionId
+      ? `Customer confirmed online payment of ₹${amountPaid.toLocaleString("en-IN")} (Txn: ${transactionId})`
+      : `Customer confirmed online payment of ₹${amountPaid.toLocaleString("en-IN")} via UPI`;
+
+    await client.query("UPDATE orders SET payment_status = $1 WHERE id = $2", [newStatus, order.id]);
+    await client.query(
+      "INSERT INTO order_status_history (order_id, status, note, changed_by) VALUES ($1, $2, $3, $4)",
+      [order.id, order.status, noteText, "Customer"],
+    );
+
+    return loadOrder("id = $1", [order.id], { withAdminFields: false });
+  });
 }
 
 // ------------------------------------------------------------------- admin

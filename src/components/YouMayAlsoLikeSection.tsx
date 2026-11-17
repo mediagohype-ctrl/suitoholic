@@ -8,11 +8,13 @@ import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 interface YouMayAlsoLikeSectionProps {
   products: ProductItem[];
   currentProductId?: string | number;
+  onProductClick?: (product: ProductItem) => void;
 }
 
 export default function YouMayAlsoLikeSection({
   products,
   currentProductId,
+  onProductClick,
 }: YouMayAlsoLikeSectionProps) {
   // Filter out the current active product so we show alternative recommendations
   const filtered = (products || []).filter(
@@ -44,7 +46,7 @@ export default function YouMayAlsoLikeSection({
       {/* Infinite Autoplay Smooth Slow Moving Carousel - Exactly 5px from Screen */}
       <div className="relative w-full overflow-hidden select-none px-[5px]">
         <div
-          className="flex items-center gap-2.5 sm:gap-3.5 animate-marquee-slow hover:[animation-play-state:paused]"
+          className="flex items-center gap-2.5 sm:gap-3.5 animate-marquee-slow"
           style={{
             animationDuration: `${Math.max(50, displayItems.length * 3.5)}s`,
           }}
@@ -61,6 +63,12 @@ export default function YouMayAlsoLikeSection({
               <Link
                 key={`${item.id}-${idx}`}
                 href={productHref}
+                onClick={(e) => {
+                  if (onProductClick) {
+                    e.preventDefault();
+                    onProductClick(item);
+                  }
+                }}
                 className="group relative block shrink-0 w-[230px] sm:w-[270px] md:w-[300px] lg:w-[330px] aspect-[3/4] overflow-hidden bg-[#ECEAE5] cursor-pointer"
                 title={item.name}
               >

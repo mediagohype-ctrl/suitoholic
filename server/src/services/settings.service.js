@@ -9,9 +9,9 @@ export const DEFAULT_SETTINGS = {
   freeShippingThreshold: 0,
   // Added per unit for items ordered with bespoke customization.
   customizationFee: 0,
-  codEnabled: true,
-  upiEnabled: false,
-  upiId: "",
+  codEnabled: false,
+  upiEnabled: true,
+  upiId: "suitoholic@okaxis",
   supportEmail: "care@suitoholic.com",
   supportPhone: "",
   orderNotice: "Every bespoke garment is hand-cut to your measurements and dispatched within 7–10 working days.",

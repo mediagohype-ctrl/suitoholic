@@ -1,4 +1,4 @@
-// Browser end-to-end test: plays a customer journey (shop → customizer → bag → checkout →
+﻿// Browser end-to-end test: plays a customer journey (shop → customizer → bag → checkout →
 // tracking) and an admin journey (login → orders → bags → content edits) in real Chrome.
 //
 //   npm run test:e2e

@@ -11,31 +11,32 @@ export default function ShopByCategoryGrid() {
   const categoryItems = c.items ?? [];
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activePageIndex, setActivePageIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
 
   const totalPages = Math.max(1, Math.ceil(categoryItems.length / 3));
 
-  // Auto-play: Slide to the left every 2 seconds
+  // Auto-play: Continuously slide leftwards every 2 seconds without pausing on cursor hover
   useEffect(() => {
-    if (isHovered || categoryItems.length === 0) return;
+    if (categoryItems.length === 0) return;
 
     const interval = setInterval(() => {
       if (!scrollRef.current) return;
       const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
+      if (scrollWidth <= clientWidth) return;
+
       const firstCard = scrollRef.current.firstElementChild as HTMLElement;
       const step = firstCard ? firstCard.offsetWidth + 5 : 360;
 
       if (scrollLeft + clientWidth >= scrollWidth - 25) {
         // Reached end, loop back smoothly to start
-        scrollRef.current.scrollTo({ left: 0, behavior:"smooth" });
+        scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
       } else {
         // Slide leftwards by 1 card step
-        scrollRef.current.scrollBy({ left: step, behavior:"smooth" });
+        scrollRef.current.scrollBy({ left: step, behavior: "smooth" });
       }
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isHovered, categoryItems.length]);
+  }, [categoryItems.length]);
 
   const handleScroll = () => {
     if (!scrollRef.current) return;
@@ -80,13 +81,7 @@ export default function ShopByCategoryGrid() {
       </div>
 
       {/* Carousel Container */}
-      <div
-        className="relative w-full group/carousel"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onTouchStart={() => setIsHovered(true)}
-        onTouchEnd={() => setIsHovered(false)}
-      >
+      <div className="relative w-full group/carousel">
         {/* Left Arrow Button */}
         <button
           onClick={handlePrev}

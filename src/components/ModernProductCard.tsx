@@ -11,9 +11,16 @@ import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 interface ModernProductCardProps {
   product: ProductItem;
   isWideSpan?: boolean;
+  onCardClick?: (product: ProductItem) => void;
+  onCustomise?: (product: ProductItem) => void;
 }
 
-export default function ModernProductCard({ product, isWideSpan }: ModernProductCardProps) {
+export default function ModernProductCard({
+  product,
+  isWideSpan,
+  onCardClick,
+  onCustomise,
+}: ModernProductCardProps) {
   const { openCustomizer } = useCustomizer();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSaved = isInWishlist(product.id);
@@ -22,10 +29,12 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
   const hoverFullShirt = getMatchingFullShirtImage(product);
 
   // Use gallery if available, or fallback to main image (clean any localhost URLs)
-  const rawImages = product.gallery && product.gallery.length > 0 
+  const rawImages = (product.gallery && product.gallery.length > 0)
     ? product.gallery 
     : [product.image];
-  const cleanImages = rawImages.map(img => img ? img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/") : "");
+  const cleanImages = rawImages
+    .filter((img): img is string => Boolean(img && typeof img === "string" && img.trim().length > 0))
+    .map(img => img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/"));
 
   // Hover image: Full shirt ghost mannequin view or secondary gallery angle
   const hoverImage = hoverFullShirt || (cleanImages.length > 1 ? cleanImages[1] : null);
@@ -35,12 +44,11 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
   const isBeigeLinen =
     product.slug === "beige-textured-linen-cotton-shirt" ||
     (product.name || "").toLowerCase().includes("beige textured linen");
-  const baseImage =
-    isBeigeLinen || (cleanImages[0] && cleanImages[0].includes("whatsapp-image"))
-      ? "/new_shirts/shirt_13.jpg"
-      : cleanImages[0];
+  const baseImage = isBeigeLinen
+    ? "/new_shirts/shirt_13.jpg"
+    : (cleanImages[0] || product.image || "/new_shirts/shirt_13.jpg");
   const activeMainImage = wideMainImage || baseImage;
-  const activeHoverImage = wideMainImage ? cleanImages[0] : hoverImage;
+  const activeHoverImage = wideMainImage ? (cleanImages[0] || baseImage) : hoverImage;
 
   // Preload hover image immediately for instant, buttery-smooth transition on hover
   React.useEffect(() => {
@@ -61,7 +69,16 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
       {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (or 508:350 for Wide Span) */}
       <div className={`relative w-full ${isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]"} rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
         {/* Main Product Image Container */}
-        <Link href={`/product/${product.slug}`} className="block relative w-full h-full overflow-hidden rounded-[10px] bg-[#ECEAE5]">
+        <Link
+          href={`/product/${product.slug}`}
+          onClick={(e) => {
+            if (onCardClick) {
+              e.preventDefault();
+              onCardClick(product);
+            }
+          }}
+          className="block relative w-full h-full overflow-hidden rounded-[10px] bg-[#ECEAE5]"
+        >
           {/* Default Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -129,7 +146,16 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
       <div className="mt-2.5 sm:mt-3 flex items-start justify-between gap-2 px-1 pb-2">
         {/* Left: Product Name & Price */}
         <div className="min-w-0 flex-1 space-y-1">
-          <Link href={`/product/${product.slug}`} className="block">
+          <Link
+            href={`/product/${product.slug}`}
+            onClick={(e) => {
+              if (onCardClick) {
+                e.preventDefault();
+                onCardClick(product);
+              }
+            }}
+            className="block"
+          >
             <h3 
               title={product.name}
               className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
@@ -142,13 +168,17 @@ export default function ModernProductCard({ product, isWideSpan }: ModernProduct
           </div>
         </div>
 
-        {/* Right: Cart Button -> Opens Customizer Modal */}
+        {/* Right: Cart Button -> Opens Customizer Modal or triggers onCustomise */}
         <button
           type="button"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            openCustomizer(product);
+            if (onCustomise) {
+              onCustomise(product);
+            } else {
+              openCustomizer(product);
+            }
           }}
           aria-label={`Customise ${product.name}`}
           title="Customise Shirt (6 Steps)"

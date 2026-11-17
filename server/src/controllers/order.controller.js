@@ -11,6 +11,10 @@ export async function track(req, res) {
   res.json(await orders.trackOrder(req.params.orderNumber, req.validQuery.email));
 }
 
+export async function confirmPayment(req, res) {
+  res.json(await orders.confirmCustomerPayment(req.params.orderNumber, req.body));
+}
+
 // ------------------------------------------------------------------ admin
 
 export async function adminList(req, res) {

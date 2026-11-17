@@ -17,13 +17,15 @@ export default function SmoothScrollProvider({
     ).matches;
     if (prefersReducedMotion) return;
 
-    // Initialize Lenis with luxurious ultra-smooth inertia damping
+    // Initialize Lenis with luxurious ultra-smooth inertia damping (matching localhost:3001)
     const lenis = new Lenis({
-      lerp: 0.08, // Buttery smooth momentum
+      duration: 1.6,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 0.8,
       touchMultiplier: 1.0,
-      autoRaf: false,
     });
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
