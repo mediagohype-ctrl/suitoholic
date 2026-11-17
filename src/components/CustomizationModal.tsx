@@ -508,7 +508,7 @@ export default function CustomizationModal({
 
       {/* Modal Container */}
       <div
-        className="relative w-full max-w-[1560px] bg-[#F4E2DE] border border-[#E5D2C7] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col min-h-[92vh] max-h-[97vh]"
+        className="relative w-full max-w-[1560px] bg-[#ECEAE5] border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col min-h-[92vh] max-h-[97vh]"
         data-lenis-prevent
       >
 
@@ -603,12 +603,21 @@ export default function CustomizationModal({
                           </div>
                         )}
 
-                        {/* Step 4: Sleeve */}
+                        {/* Step 4: Sleeve & Pocket */}
                         {showSleeve && (
                           <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
                             <span className="text-[#666666] font-medium">Sleeve</span>
                             <strong className="text-black font-bold capitalize">
                               {customFit.sleeveType ? (customFit.sleeveType === "half" ? "Half Sleeve" : "Full Sleeve") : "—"}
+                            </strong>
+                          </div>
+                        )}
+
+                        {showSleeve && !!customFit.pocket && (
+                          <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
+                            <span className="text-[#666666] font-medium">Pocket</span>
+                            <strong className="text-black font-bold capitalize">
+                              {customFit.pocket === "pocket" ? "With Pocket" : "Without Pocket"}
                             </strong>
                           </div>
                         )}
