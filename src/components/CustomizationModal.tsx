@@ -53,6 +53,9 @@ function getSuggestionThumbnail(p: any): string {
 
 function getShortShirtTitle(name: string): string {
   const n = (name || "").toUpperCase();
+  if (n.includes("MUSTARD") || n.includes("OCHRE")) return "Mustard Ochre Bengal Stripe";
+  if (n.includes("CORAL") && n.includes("BENGAL")) return "Coral Red Bold Bengal Stripe";
+  if (n.includes("CORAL") || n.includes("TERRACOTTA")) return "Coral Red Bengal Stripe";
   if (n.includes("WHITE") && (n.includes("OXFORD") || n.includes("PINPOINT"))) return "White Oxford";
   if (n.includes("TERRACOTTA") || n.includes("CORAL")) return "Terracotta Coral";
   if (n.includes("ESPRESSO") || n.includes("DARK")) return "Dark Espresso";
@@ -61,7 +64,8 @@ function getShortShirtTitle(name: string): string {
   if (n.includes("SKY") || n.includes("OXFORD")) return "Sky Blue Oxford";
   if (n.includes("SOLID") || (n.includes("MIDNIGHT") && n.includes("NAVY"))) return "Midnight Navy";
   if (n.includes("CHARCOAL") || n.includes("ANTHRACITE")) return "Charcoal Twill";
-  if (n.includes("PINSTRIPE") || n.includes("BENGAL") || n.includes("NAVY")) return "Navy Pinstripe";
+  if (n.includes("BENGAL") && (n.includes("BLUE") || n.includes("SOVEREIGN") || n.includes("ROYAL"))) return "Royal Steel Blue Stripe";
+  if (n.includes("PINSTRIPE") || n.includes("NAVY")) return "Navy Pinstripe";
   return name.replace(/FORMAL|SAVILE ROW/gi, "").trim();
 }
 
@@ -1447,7 +1451,11 @@ export default function CustomizationModal({
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                                 <img
-                                  src="/customizer/review_fabric_thumb.jpg?v=7"
+                                  src={
+                                    (activeItemName || productName || "").toUpperCase().includes("MUSTARD") || (activeItemName || productName || "").toUpperCase().includes("OCHRE")
+                                      ? "/api/media/49/suitoholic-mustard-ochre-bengal-stripe.jpg"
+                                      : (activeItem?.image || product?.image || "/customizer/review_fabric_thumb.jpg?v=7")
+                                  }
                                   alt={activeItemName || productName}
                                   className="w-full h-full object-cover"
                                 />
@@ -1469,7 +1477,9 @@ export default function CustomizationModal({
                                   src={getMatchingShirtModel(
                                     activeItem || product,
                                     customFit.sleeveType === "half",
-                                    (customFit.bodyFit || "regular") as "lean" | "regular" | "tummy"
+                                    (customFit.bodyFit || "regular") as "lean" | "regular" | "tummy",
+                                    customFit.collarStyle,
+                                    customFit.pocket
                                   )}
                                   alt="Size & Fit"
                                   className="w-full h-full object-contain"

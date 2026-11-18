@@ -84,6 +84,31 @@ export const collectionCategories: CollectionCategory[] = [
 /** Exactly 8 unique canonical sister shirts matching the user's authentic catalog imagery */
 export const USER_CATALOG_SHIRTS: ProductItem[] = [
   {
+    id: 78,
+    slug: "mustard-ochre-bengal-striped-twill-shirt",
+    name: "MUSTARD OCHRE BENGAL STRIPED TWILL SHIRT",
+    category: "formal_stripes",
+    price: "₹ 2,800",
+    rawPrice: 2800,
+    compareAtPrice: 3800,
+    subtitle: "Commanding mustard ochre and alabaster Bengal stripe in superfine Giza Egyptian cotton twill",
+    description: "Tailored from bespoke 120s two-ply Egyptian Giza cotton twill, this mustard ochre Bengal striped shirt delivers a commanding sartorial presence. Featuring silky drape, breathable finish, and mother-of-pearl buttons.",
+    fabric: "100% Giza Egyptian Long-Staple Cotton Twill",
+    threadCount: "120s Two-Ply Superfine Twill",
+    collar: "Classic English Spread Collar",
+    cuff: "Dual-Use Mitred Single Cuff",
+    image: "/api/media/49/suitoholic-mustard-ochre-bengal-stripe.jpg",
+    gallery: [
+      "/api/media/49/suitoholic-mustard-ochre-bengal-stripe.jpg",
+      "/customizer/shirt_model_mustard_ochre_stripe.png",
+    ],
+    rating: 5.0,
+    reviewsCount: 124,
+    tag: "NEW ARRIVAL",
+    customizable: true,
+    featured: true,
+  },
+  {
     id: 52,
     slug: "royal-blue-classic-bengal-stripe-twill-shirt",
     name: "ROYAL STEEL BLUE SOVEREIGN SHIRT",

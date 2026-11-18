@@ -1,5 +1,26 @@
 [
   {
+    "id": 78,
+    "slug": "mustard-ochre-bengal-striped-twill-shirt",
+    "name": "MUSTARD OCHRE BENGAL STRIPED TWILL SHIRT",
+    "category": "formal_stripes",
+    "price": 2800,
+    "compareAtPrice": 3800,
+    "subtitle": "Commanding mustard ochre and alabaster Bengal stripe in superfine Giza Egyptian cotton twill",
+    "description": "Tailored from bespoke 120s two-ply Egyptian Giza cotton twill, this mustard ochre Bengal striped shirt delivers a commanding sartorial presence. Featuring silky drape, breathable finish, and mother-of-pearl buttons.",
+    "fabric": "100% Giza Egyptian Long-Staple Cotton Twill",
+    "threadCount": "120s Two-Ply Superfine Twill",
+    "image": "/api/media/49/suitoholic-mustard-ochre-bengal-stripe.jpg",
+    "gallery": [
+      "/api/media/49/suitoholic-mustard-ochre-bengal-stripe.jpg",
+      "/customizer/shirt_model_mustard_ochre_stripe.png"
+    ],
+    "colorways": [],
+    "rating": 5,
+    "reviewsCount": 124,
+    "tag": "NEW ARRIVAL"
+  },
+  {
     "id": 49,
     "slug": "coral-red-bold-bengal-stripe-twill-shirt",
     "name": "Coral Red Bold Bengal Stripe Twill Shirt",

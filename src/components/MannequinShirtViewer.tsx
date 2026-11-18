@@ -21,6 +21,7 @@ export interface MannequinShirtViewerProps {
 
 export type ShirtColorFamily =
   | "bengal_blue"
+  | "mustard_ochre_stripe"
   | "espresso"
   | "sandstone_linen"
   | "coral_stripe"
@@ -57,6 +58,7 @@ export function getShirtColorFamily(
   if (img.includes("shirt_15") || img.includes("rose") || img.includes("pink")) return "coral_stripe";
   if (img.includes("shirt_16") || img.includes("magenta") || img.includes("wine")) return "coral_stripe";
   if (img.includes("shirt_17") || img.includes("charcoal")) return "charcoal";
+  if (img.includes("mustard") || img.includes("ochre")) return "mustard_ochre_stripe";
   if (img.includes("shirt_18") || img.includes("sage") || img.includes("mint")) return "bengal_blue";
   if (img.includes("shirt_19") || img.includes("espresso") || img.includes("dark")) return "espresso";
   if (img.includes("shirt_20") || img.includes("navy")) return "bengal_blue";
@@ -66,18 +68,20 @@ export function getShirtColorFamily(
   if (img.includes("shirt_24") || img.includes("chocolate")) return "espresso";
   if (img.includes("shirt_25") || img.includes("steel") || img.includes("grey")) return "charcoal";
 
-  // 2. Specific Product Slugs
+  // 2. Specific Product Slugs (Specific colors FIRST before generic "bengal")
+  if (slug.includes("mustard") || slug.includes("ochre")) return "mustard_ochre_stripe";
+  if (slug.includes("terracotta") || slug.includes("coral") || slug.includes("rose") || slug.includes("magenta")) return "coral_stripe";
   if (slug.includes("espresso") || slug.includes("chocolate")) return "espresso";
   if (slug.includes("navy") || slug.includes("bengal") || slug.includes("azure") || slug.includes("royal")) return "bengal_blue";
   if (slug.includes("sandstone") || slug.includes("oatmeal") || slug.includes("linen") || slug.includes("beige")) return "sandstone_linen";
-  if (slug.includes("terracotta") || slug.includes("coral") || slug.includes("rose") || slug.includes("magenta")) return "coral_stripe";
   if (slug.includes("charcoal") || slug.includes("shadow") || slug.includes("steel")) return "charcoal";
 
-  // 3. Product Names
+  // 3. Product Names (Specific colors FIRST before generic "bengal")
+  if (name.includes("mustard") || name.includes("ochre")) return "mustard_ochre_stripe";
+  if (name.includes("coral") || name.includes("terracotta") || name.includes("rose") || name.includes("wine")) return "coral_stripe";
   if (name.includes("espresso") || name.includes("chocolate")) return "espresso";
   if (name.includes("bengal") || name.includes("azure") || name.includes("navy") || name.includes("royal")) return "bengal_blue";
   if (name.includes("sandstone") || name.includes("oatmeal") || name.includes("linen") || name.includes("beige")) return "sandstone_linen";
-  if (name.includes("coral") || name.includes("terracotta") || name.includes("rose") || name.includes("wine")) return "coral_stripe";
   if (name.includes("charcoal") || name.includes("shadow") || name.includes("grey")) return "charcoal";
 
   return "bengal_blue";
@@ -139,6 +143,7 @@ export function getShirtId(
   const slug = (product.slug || "").toLowerCase();
   const name = (product.name || "").toLowerCase();
 
+  if (slug.includes("mustard") || slug.includes("ochre") || name.includes("mustard") || name.includes("ochre")) return 49;
   if (slug.includes("terracotta") || slug.includes("brick") || name.includes("terracotta")) return 14;
   if (slug.includes("rose") || slug.includes("pastel") || name.includes("rose")) return 15;
   if (slug.includes("magenta") || slug.includes("wine") || name.includes("magenta")) return 16;
@@ -185,7 +190,8 @@ export function getMatchingShirtModel(
   product?: { id?: number | string; name?: string; image?: string; gallery?: string[]; slug?: string } | null,
   isHalfSleeve: boolean = false,
   bodyFit: "lean" | "regular" | "tummy" = "lean",
-  collarStyle: string = ""
+  collarStyle: string = "",
+  pocket: string = ""
 ): string {
   // 1. Central 100% color-consistent resolver
   const matchedFull = getMatchingFullShirtImage(product) || "/customizer/shirt_model_bengal_blue.png";
@@ -195,6 +201,19 @@ export function getMatchingShirtModel(
   if (!modelKey) {
     // If not a shirt_model_* PNG (e.g. full_shirt_15.png), return the matched full shirt
     return matchedFull;
+  }
+
+  // Exact 4-way pocket and sleeve pairing for coral_stripe (authentic master studio photography)
+  if (modelKey === "coral_stripe") {
+    const hasPocket = pocket === "pocket";
+    if (isHalfSleeve) {
+      return hasPocket
+        ? "/customizer/shirt_model_coral_stripe_half_pocket.png"
+        : "/customizer/shirt_model_coral_stripe_half.png";
+    }
+    return hasPocket
+      ? "/customizer/shirt_model_coral_stripe_pocket.png"
+      : "/customizer/shirt_model_coral_stripe.png";
   }
 
   // Check for collar-specific model variants (available for white and bengal_blue)
@@ -208,8 +227,8 @@ export function getMatchingShirtModel(
     collarKey = "spread";
   }
 
-  // Model-specific collar variants exist for white and bengal_blue
-  if ((modelKey === "white" || modelKey === "bengal_blue") && collarKey) {
+  // Model-specific collar variants exist for white, bengal_blue, and mustard_ochre_stripe
+  if ((modelKey === "white" || modelKey === "bengal_blue" || modelKey === "mustard_ochre_stripe") && collarKey) {
     if (bodyFit === "tummy") {
       return isHalfSleeve
         ? `/customizer/shirt_model_${modelKey}_half_tummy_${collarKey}.png`
@@ -308,7 +327,9 @@ export default function MannequinShirtViewer({
       "/customizer/shirt_model_sandstone_linen.png",
       "/customizer/shirt_model_sandstone_linen_half.png",
       "/customizer/shirt_model_coral_stripe.png",
+      "/customizer/shirt_model_coral_stripe_pocket.png",
       "/customizer/shirt_model_coral_stripe_half.png",
+      "/customizer/shirt_model_coral_stripe_half_pocket.png",
       "/customizer/shirt_model_espresso.png",
       "/customizer/shirt_model_espresso_half.png",
       "/customizer/shirt_model_charcoal.png",
@@ -327,14 +348,14 @@ export default function MannequinShirtViewer({
   // Multi-model precomputed mapping for all 6 combinations of sleeve and body fit
   const shirtModels = {
     full: {
-      lean: getMatchingShirtModel(product, false, "lean", collarStyle),
-      regular: getMatchingShirtModel(product, false, "regular", collarStyle),
-      tummy: getMatchingShirtModel(product, false, "tummy", collarStyle),
+      lean: getMatchingShirtModel(product, false, "lean", collarStyle, pocket),
+      regular: getMatchingShirtModel(product, false, "regular", collarStyle, pocket),
+      tummy: getMatchingShirtModel(product, false, "tummy", collarStyle, pocket),
     },
     half: {
-      lean: getMatchingShirtModel(product, true, "lean", collarStyle),
-      regular: getMatchingShirtModel(product, true, "regular", collarStyle),
-      tummy: getMatchingShirtModel(product, true, "tummy", collarStyle),
+      lean: getMatchingShirtModel(product, true, "lean", collarStyle, pocket),
+      regular: getMatchingShirtModel(product, true, "regular", collarStyle, pocket),
+      tummy: getMatchingShirtModel(product, true, "tummy", collarStyle, pocket),
     },
   };
 
@@ -450,8 +471,8 @@ export default function MannequinShirtViewer({
   // Dynamic precision height dimension line calculation:
   // Base shirt mannequin inside 400x480 container: Collar top apex Y = 23.4, Hem lowest curve apex Y = 456.4
   // The shirt div scales with transformOrigin "center 30%", corresponding to (200, 144) in 400x480 coordinates.
-  const collarBaseY = 23.4;
-  const hemBaseY = 456.4;
+  const collarBaseY = 23.2;
+  const hemBaseY = 456.0;
   const scaleOriginY = 144;
   const dynamicTopY = Math.round(scaleOriginY + (collarBaseY - scaleOriginY) * totalScaleY);
   const dynamicHemY = Math.round(scaleOriginY + (hemBaseY - scaleOriginY) * totalScaleY);
@@ -627,108 +648,7 @@ export default function MannequinShirtViewer({
                 })
               )}
 
-              {/* Bespoke Dress Shirt Chest Pocket (Viewer's Right / Wearer's Left Chest) */}
-              {pocket === "pocket" && (
-                <svg
-                  viewBox="0 0 400 480"
-                  className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible transition-all duration-300 animate-in fade-in zoom-in-95"
-                  aria-hidden="true"
-                >
-                  <defs>
-                    <filter id="pocketPatchShadow" x="-30%" y="-20%" width="160%" height="160%">
-                      <feDropShadow dx="1.0" dy="2.0" stdDeviation="2.2" floodColor="#000000" floodOpacity={isDarkShirt ? "0.5" : "0.34"} />
-                    </filter>
-                  </defs>
-
-                  <g filter="url(#pocketPatchShadow)">
-                    {/* 1. Pocket Body (subtle fabric luster layer) */}
-                    <path
-                      d="M 220 166 L 264 166 L 264 214 L 242 226 L 220 214 Z"
-                      fill={isDarkShirt ? "rgba(255, 255, 255, 0.04)" : "rgba(255, 255, 255, 0.08)"}
-                      stroke={isDarkShirt ? "rgba(255, 255, 255, 0.35)" : "rgba(20, 15, 10, 0.42)"}
-                      strokeWidth="1.1"
-                    />
-
-                    {/* 2. Top Folded Hem (8px band) */}
-                    <path
-                      d="M 220 166 L 264 166 L 264 174 L 220 174 Z"
-                      fill={isDarkShirt ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.04)"}
-                    />
-                    {/* Top opening crease lines */}
-                    <line
-                      x1="220"
-                      y1="166"
-                      x2="264"
-                      y2="166"
-                      stroke={isDarkShirt ? "rgba(0, 0, 0, 0.85)" : "rgba(10, 5, 0, 0.85)"}
-                      strokeWidth="1.3"
-                    />
-                    <line
-                      x1="220"
-                      y1="167.2"
-                      x2="264"
-                      y2="167.2"
-                      stroke={isDarkShirt ? "rgba(255, 255, 255, 0.45)" : "rgba(255, 255, 255, 0.6)"}
-                      strokeWidth="0.7"
-                    />
-
-                    {/* Hem bottom fold seam line */}
-                    <line
-                      x1="220"
-                      y1="174"
-                      x2="264"
-                      y2="174"
-                      stroke={isDarkShirt ? "rgba(255, 255, 255, 0.25)" : "rgba(20, 15, 10, 0.35)"}
-                      strokeWidth="0.75"
-                    />
-                    {/* Hem single-needle topstitch (dashed) */}
-                    <line
-                      x1="222"
-                      y1="172.5"
-                      x2="262"
-                      y2="172.5"
-                      stroke={isDarkShirt ? "rgba(255, 255, 255, 0.7)" : "rgba(20, 12, 6, 0.7)"}
-                      strokeWidth="0.85"
-                      strokeDasharray="2.4 1.4"
-                    />
-
-                    {/* 3. Single-needle perimeter topstitching (1.8px inset) */}
-                    <path
-                      d="M 222 174 L 222 212.5 L 242 223.5 L 262 212.5 L 262 174"
-                      fill="none"
-                      stroke={isDarkShirt ? "rgba(255, 255, 255, 0.75)" : "rgba(20, 12, 6, 0.75)"}
-                      strokeWidth="0.9"
-                      strokeDasharray="2.4 1.4"
-                    />
-                    {/* Thread highlight under stitch */}
-                    <path
-                      d="M 222.5 174 L 222.5 212.8 L 242 224 L 261.5 212.8 L 261.5 174"
-                      fill="none"
-                      stroke={isDarkShirt ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)"}
-                      strokeWidth="0.5"
-                      strokeDasharray="2.4 1.4"
-                    />
-
-                    {/* 4. Reinforced Corner Bar-Tacks */}
-                    <rect
-                      x="219.5"
-                      y="165"
-                      width="4"
-                      height="2.5"
-                      rx="0.6"
-                      fill={isDarkShirt ? "rgba(255, 255, 255, 0.85)" : "rgba(20, 12, 6, 0.85)"}
-                    />
-                    <rect
-                      x="260.5"
-                      y="165"
-                      width="4"
-                      height="2.5"
-                      rx="0.6"
-                      fill={isDarkShirt ? "rgba(255, 255, 255, 0.85)" : "rgba(20, 12, 6, 0.85)"}
-                    />
-                  </g>
-                </svg>
-              )}
+              {/* Authentic Studio Photography handles with-pocket and without-pocket models directly */}
             </div>
 
             {/* Step 4 Sleeve & Pocket Live Status Badge */}
