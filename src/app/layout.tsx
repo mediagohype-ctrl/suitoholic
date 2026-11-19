@@ -15,6 +15,10 @@ import { getSiteBundle } from "@/lib/site-data";
 export const dynamic = "force-dynamic";
 
 const loadSite = cache(getSiteBundle);
+const fontStylesheets = [
+  "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=Pinyon+Script&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
+  "https://fonts.cdnfonts.com/css/sf-pro-display",
+];
 
 export async function generateMetadata(): Promise<Metadata> {
   const { content } = await loadSite();
@@ -65,14 +69,21 @@ export default async function RootLayout({
         <link rel="apple-touch-icon" href="/apple-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=Alex+Brush&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.cdnfonts.com/css/sf-pro-display"
-          rel="stylesheet"
-        />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            ${JSON.stringify(fontStylesheets)}.forEach(function (href) {
+              var link = document.createElement("link");
+              link.rel = "stylesheet";
+              link.media = "print";
+              link.href = href;
+              link.addEventListener("load", function () { link.media = "all"; }, { once: true });
+              document.head.appendChild(link);
+            });
+          `,
+        }} />
+        <noscript>
+          {fontStylesheets.map((href) => <link key={href} rel="stylesheet" href={href} />)}
+        </noscript>
       </head>
       <body suppressHydrationWarning className="min-h-full w-full flex flex-col bg-[#ECEAE5] text-[#000000] relative selection:bg-[#000000] selection:text-white font-sans">
         {/* Global BLUORNG Warm Alabaster Canvas Atmosphere */}
