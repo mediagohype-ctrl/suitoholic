@@ -469,13 +469,14 @@ export default function MannequinShirtViewer({
   const totalScaleY = Number((heightConfig.scaleY * chestScaleY).toFixed(3));
 
   // Dynamic precision height dimension line calculation:
-  // Base shirt mannequin inside 400x480 container: Collar top apex Y = 23.4, Hem lowest curve apex Y = 456.4
+  // Base shirt mannequin inside 400x480 container: Collar top apex Y = 25.4, Hem lowest curve apex Y = 454.0
   // The shirt div scales with transformOrigin "center 30%", corresponding to (200, 144) in 400x480 coordinates.
-  const collarBaseY = 23.2;
-  const hemBaseY = 456.0;
+  const isCoralStripe = (product?.slug ?? "").includes("coral");
+  const collarBaseY = isCoralStripe ? 25.4 : 24.6;
+  const hemBaseY = isCoralStripe ? 454.0 : 455.0;
   const scaleOriginY = 144;
-  const dynamicTopY = Math.round(scaleOriginY + (collarBaseY - scaleOriginY) * totalScaleY);
-  const dynamicHemY = Math.round(scaleOriginY + (hemBaseY - scaleOriginY) * totalScaleY);
+  const dynamicTopY = Number((scaleOriginY + (collarBaseY - scaleOriginY) * totalScaleY).toFixed(1));
+  const dynamicHemY = Number((scaleOriginY + (hemBaseY - scaleOriginY) * totalScaleY).toFixed(1));
 
   // Dynamic chest measurement span calibrated precisely to torso side seams (Center is X=200)
   const chestY = Math.round(162 * chestScaleY);
@@ -712,8 +713,8 @@ export default function MannequinShirtViewer({
                         x2="200"
                         y2={dynamicTopY}
                         stroke="#14110E"
-                        strokeWidth="1.8"
-                        strokeDasharray="4 3"
+                        strokeWidth="1.6"
+                        strokeDasharray="4 4"
                         className="transition-all duration-500 ease-out"
                       />
 
@@ -724,8 +725,8 @@ export default function MannequinShirtViewer({
                         x2="200"
                         y2={dynamicHemY}
                         stroke="#14110E"
-                        strokeWidth="1.8"
-                        strokeDasharray="4 3"
+                        strokeWidth="1.6"
+                        strokeDasharray="4 4"
                         className="transition-all duration-500 ease-out"
                       />
 
