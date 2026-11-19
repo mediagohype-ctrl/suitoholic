@@ -203,17 +203,23 @@ export function getMatchingShirtModel(
     return matchedFull;
   }
 
-  // Exact 4-way pocket and sleeve pairing for coral_stripe (authentic master studio photography)
+  // Exact body-fit, pocket and sleeve pairing for coral_stripe (authentic master studio photography)
   if (modelKey === "coral_stripe") {
     const hasPocket = pocket === "pocket";
     if (isHalfSleeve) {
-      return hasPocket
-        ? "/customizer/shirt_model_coral_stripe_half_pocket.png"
-        : "/customizer/shirt_model_coral_stripe_half.png";
+      if (hasPocket) {
+        return "/customizer/shirt_model_coral_stripe_half_pocket.png";
+      }
+      if (bodyFit === "tummy") return "/customizer/shirt_model_coral_stripe_half_tummy.png";
+      if (bodyFit === "regular") return "/customizer/shirt_model_coral_stripe_half_regular.png";
+      return "/customizer/shirt_model_coral_stripe_half.png";
     }
-    return hasPocket
-      ? "/customizer/shirt_model_coral_stripe_pocket.png"
-      : "/customizer/shirt_model_coral_stripe.png";
+    if (hasPocket) {
+      return "/customizer/shirt_model_coral_stripe_pocket.png";
+    }
+    if (bodyFit === "tummy") return "/customizer/shirt_model_coral_stripe_tummy.png";
+    if (bodyFit === "regular") return "/customizer/shirt_model_coral_stripe_regular.png";
+    return "/customizer/shirt_model_coral_stripe_lean.png";
   }
 
   // Check for collar-specific model variants (available for white and bengal_blue)
@@ -327,6 +333,9 @@ export default function MannequinShirtViewer({
       "/customizer/shirt_model_sandstone_linen.png",
       "/customizer/shirt_model_sandstone_linen_half.png",
       "/customizer/shirt_model_coral_stripe.png",
+      "/customizer/shirt_model_coral_stripe_lean.png",
+      "/customizer/shirt_model_coral_stripe_regular.png",
+      "/customizer/shirt_model_coral_stripe_tummy.png",
       "/customizer/shirt_model_coral_stripe_pocket.png",
       "/customizer/shirt_model_coral_stripe_half.png",
       "/customizer/shirt_model_coral_stripe_half_pocket.png",
@@ -469,10 +478,10 @@ export default function MannequinShirtViewer({
   const totalScaleY = Number((heightConfig.scaleY * chestScaleY).toFixed(3));
 
   // Dynamic precision height dimension line calculation:
-  // Base shirt mannequin inside 400x480 container: Collar top apex Y = 25.4, Hem lowest curve apex Y = 454.0
+  // Base shirt mannequin inside 400x480 container: Collar leaf/shoulder level Y = 36.6, Hem curve apex Y = 454.0
   // The shirt div scales with transformOrigin "center 30%", corresponding to (200, 144) in 400x480 coordinates.
   const isCoralStripe = (product?.slug ?? "").includes("coral");
-  const collarBaseY = isCoralStripe ? 25.4 : 24.6;
+  const collarBaseY = isCoralStripe ? 36.6 : 35.8;
   const hemBaseY = isCoralStripe ? 454.0 : 455.0;
   const scaleOriginY = 144;
   const dynamicTopY = Number((scaleOriginY + (collarBaseY - scaleOriginY) * totalScaleY).toFixed(1));
@@ -706,11 +715,11 @@ export default function MannequinShirtViewer({
 
                   return (
                     <g className="transition-all duration-500 ease-out animate-in fade-in">
-                      {/* Top horizontal dashed line extending to collar top rim */}
+                      {/* Top horizontal dashed line extending to collar leaf contour */}
                       <line
                         x1={dimX - 14}
                         y1={dynamicTopY}
-                        x2="200"
+                        x2={Math.round(200 - 20 * chestScaleX)}
                         y2={dynamicTopY}
                         stroke="#14110E"
                         strokeWidth="1.6"
@@ -722,7 +731,7 @@ export default function MannequinShirtViewer({
                       <line
                         x1={dimX - 14}
                         y1={dynamicHemY}
-                        x2="200"
+                        x2={Math.round(200 - 15 * chestScaleX)}
                         y2={dynamicHemY}
                         stroke="#14110E"
                         strokeWidth="1.6"
