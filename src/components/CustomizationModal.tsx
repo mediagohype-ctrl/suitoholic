@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import MannequinShirtViewer, { getShirtColorFamily, getMatchingShirtModel } from "@/components/MannequinShirtViewer";
+import MannequinShirtViewer, { CoralFullSleevePocket, getCoralBuyNowFitPhoto, getShirtColorFamily, getMatchingShirtModel } from "@/components/MannequinShirtViewer";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, ChevronDown, ShoppingBag, Heart } from "lucide-react";
 import confetti from "canvas-confetti";
@@ -32,6 +32,7 @@ export interface CustomizationModalProduct {
 
 interface CustomizationModalProps {
   isOpen: boolean;
+  buyNow?: boolean;
   onClose: () => void;
   productName?: string;
   /** The product being customised; its photo drives the fabric chip and the detail/review previews. */
@@ -271,6 +272,7 @@ const FIT_METADATA: Record<string, { desc: string; stomachLabel: string; getStom
 
 export default function CustomizationModal({
   isOpen,
+  buyNow = false,
   onClose,
   productName = "Azure Sky Blue Bengal Stripe",
   product = null,
@@ -309,10 +311,11 @@ export default function CustomizationModal({
   const [quickAddToast, setQuickAddToast] = useState<{ message: string; visible: boolean } | null>(null);
 
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
-  const [prevProduct, setPrevProduct] = useState(product);
-  if (isOpen !== prevIsOpen || product !== prevProduct) {
+  const productKey = product?.slug ?? product?.id ?? product?.name ?? productName;
+  const [prevProductKey, setPrevProductKey] = useState(productKey);
+  if (isOpen !== prevIsOpen || productKey !== prevProductKey) {
     setPrevIsOpen(isOpen);
-    setPrevProduct(product);
+    setPrevProductKey(productKey);
     if (isOpen) {
       if (isOpen !== prevIsOpen) {
         setCurrentStep(1);
@@ -323,6 +326,11 @@ export default function CustomizationModal({
       setActiveItemName(productName);
     }
   }
+  const orderFit = {
+    ...customFit,
+    shirtColor: activeItemName,
+    ...(customFit.sleeveType === "half" ? { cuffStyle: "", initials: "", threadColor: "" } : {}),
+  };
 
   const handleChestSelect = (size: number) => {
     const match = c.chestSizes.find((x) => x.size === size);
@@ -384,7 +392,7 @@ export default function CustomizationModal({
         quantity: 1,
         size: String(customFit.chestSize),
         customization: {
-          ...customFit,
+          ...orderFit,
           shirtColor: sister.name,
         },
       });
@@ -434,7 +442,6 @@ export default function CustomizationModal({
     };
   }, [isOpen]);
 
-  // The initial state is seeded from initialChestSize; selections are kept if the modal is closed and reopened.
   if (!isOpen) return null;
 
   const isFullSleeve = customFit.sleeveType === "full";
@@ -449,6 +456,9 @@ export default function CustomizationModal({
   const showCollar = currentStep >= 5 && !!customFit.collarStyle;
   const showCuff = currentStep >= 5 && isFullSleeve && !!customFit.cuffStyle;
   const showMonogram = currentStep >= 5 && isFullSleeve && !!customFit.initials?.trim();
+  const reviewFitPhoto = buyNow
+    ? getCoralBuyNowFitPhoto((activeItem || product)?.slug, customFit.bodyFit, customFit.sleeveType, customFit.pocket)
+    : undefined;
 
   const isCurrentStepComplete = (() => {
     switch (currentStep) {
@@ -474,17 +484,17 @@ export default function CustomizationModal({
   const handleNextStep = () => {
     if (!isCurrentStepComplete) return;
     if (currentStep < totalSteps) {
-      setCurrentStep((prev) => prev + 1);
+      setCurrentStep(currentStep + 1);
     } else if (!submitting) {
       // Step 6: Complete — the parent adds the configured shirt to the bag
       triggerCelebration();
-      void onConfirmCustomization({ ...customFit, specialInstructions: specialInstructions || undefined }, activeItem);
+      void onConfirmCustomization({ ...orderFit, specialInstructions: specialInstructions || undefined }, activeItem);
     }
   };
 
   const handlePrevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
+      setCurrentStep(currentStep - 1);
     }
   };
 
@@ -661,6 +671,7 @@ export default function CustomizationModal({
                 {/* Center: 3D Interactive Mannequin Shirt */}
                 <div className="relative w-full flex flex-col items-center justify-start flex-1 pt-1">
                   <MannequinShirtViewer
+                    buyNow={buyNow}
                     chestSize={customFit.chestSize}
                     bodyFit={customFit.bodyFit as "lean" | "regular" | "tummy" | ""}
                     height={customFit.height}
@@ -970,7 +981,7 @@ export default function CustomizationModal({
                               const isSelected = customFit.sleeveType === "half" && customFit.pocket === "pocket";
                               return (
                                 <div
-                                  onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half", pocket: "pocket", cuffStyle: "", initials: "", threadColor: "" }))}
+                                  onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half", pocket: "pocket" }))}
                                   className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${isSelected
                                       ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_4px_14px_rgba(157,74,25,0.14)] scale-[1.01]"
                                       : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
@@ -1008,7 +1019,7 @@ export default function CustomizationModal({
                               const isSelected = customFit.sleeveType === "half" && customFit.pocket === "no-pocket";
                               return (
                                 <div
-                                  onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half", pocket: "no-pocket", cuffStyle: "", initials: "", threadColor: "" }))}
+                                  onClick={() => setCustomFit((prev) => ({ ...prev, sleeveType: "half", pocket: "no-pocket" }))}
                                   className={`p-3 sm:p-3.5 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${isSelected
                                       ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_4px_14px_rgba(157,74,25,0.14)] scale-[1.01]"
                                       : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
@@ -1473,8 +1484,9 @@ export default function CustomizationModal({
                             {/* 2. SIZE & FIT */}
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F8F4EE] shadow-2xs flex items-center justify-center p-0.5">
+                                <div className="relative h-full w-full">
                                 <img
-                                  src={getMatchingShirtModel(
+                                  src={reviewFitPhoto ?? getMatchingShirtModel(
                                     activeItem || product,
                                     customFit.sleeveType === "half",
                                     (customFit.bodyFit || "regular") as "lean" | "regular" | "tummy",
@@ -1484,6 +1496,10 @@ export default function CustomizationModal({
                                   alt="Size & Fit"
                                   className="w-full h-full object-contain"
                                 />
+                                  {reviewFitPhoto && isFullSleeve && customFit.pocket === "pocket" && (
+                                    <CoralFullSleevePocket visible />
+                                  )}
+                                </div>
                               </div>
                               <div className="flex-1 min-w-0">
                                 <span className="text-[10.5px] sm:text-[11.5px] font-extrabold tracking-[0.09em] text-[#8A4418] uppercase block leading-tight font-sans">
@@ -1529,6 +1545,8 @@ export default function CustomizationModal({
                                 </span>
                                 <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block capitalize leading-snug font-sans">
                                   {customFit.sleeveType === "half" ? "Half Sleeves" : "Full Sleeves"}
+                                  <span className="font-bold text-[#8A4418]/60 px-2">|</span>
+                                  {customFit.pocket === "pocket" ? "With Pocket" : "Without Pocket"}
                                 </span>
                               </div>
                             </div>

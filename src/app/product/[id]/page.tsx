@@ -543,6 +543,7 @@ export default function ProductDetailPage() {
       {/* 6-Step Bespoke Customization Popup Modal */}
       <CustomizationModal
         isOpen={isCustomizerOpen}
+        buyNow={buyNowMode}
         onClose={() => setIsCustomizerOpen(false)}
         productName={activeProduct.name}
         product={{
