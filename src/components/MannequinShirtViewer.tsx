@@ -19,12 +19,6 @@ export interface MannequinShirtViewerProps {
   product?: { name: string; image: string; gallery?: string[]; slug?: string; colorways?: unknown[] } | null;
 }
 
-const CORAL_STRIPE_FIT_PHOTOS = {
-  lean: "/customizer/coral-stripe-fit-38-lean.webp?v=2",
-  regular: "/customizer/coral-stripe-fit-38-regular.webp?v=2",
-  tummy: "/customizer/coral-stripe-fit-38-tummy.webp?v=2",
-};
-
 export type ShirtColorFamily =
   | "bengal_blue"
   | "mustard_ochre_stripe"
@@ -323,10 +317,6 @@ export default function MannequinShirtViewer({
   const isDarkShirt = colorKey === "charcoal" || colorKey === "espresso" || colorKey === "navy_pinstripe";
 
   const activeFitForModel = (bodyFit === "regular" || bodyFit === "tummy" || bodyFit === "lean") ? bodyFit : "regular";
-  const isCoralBengalShirt = product?.slug === "coral-red-bold-bengal-stripe-twill-shirt";
-  const showCoralFitPhotos = isCoralBengalShirt && currentStep <= 2;
-  const showCoralFitMeasurements = showCoralFitPhotos && currentStep === 2;
-  const previewSleeve = isHalfSleeve && !showCoralFitPhotos ? "half" : "full";
 
   // Preload all ghost mannequin model variants into memory for instantaneous zero-latency swaps
   useEffect(() => {
@@ -423,9 +413,7 @@ export default function MannequinShirtViewer({
   const activeChestForCalc = chestSize && chestSize > 0 ? chestSize : 40;
   const stomachSizeLean = activeChestForCalc - 4;
   const stomachSizeRegular = activeChestForCalc - 2;
-  const stomachSizeTummy = isCoralBengalShirt
-    ? `${activeChestForCalc + 1}" – ${activeChestForCalc + 2}"`
-    : `${activeChestForCalc + 2}" – ${activeChestForCalc + 4}"`;
+  const stomachSizeTummy = `${activeChestForCalc + 2}" – ${activeChestForCalc + 4}"`;
 
   const currentStomachValue =
     bodyFit === "lean"
@@ -501,7 +489,7 @@ export default function MannequinShirtViewer({
 
   // Dynamic chest measurement span calibrated precisely to torso side seams (Center is X=200)
   const chestY = Math.round(162 * chestScaleY);
-  const chestHalfSpan = Math.round((showCoralFitPhotos ? 104 : 81) * chestScaleX);
+  const chestHalfSpan = Math.round(81 * chestScaleX);
   const chestLeftX = 200 - chestHalfSpan;
   const chestRightX = 200 + chestHalfSpan;
   const chestBadgeWidth = 88;
@@ -510,11 +498,13 @@ export default function MannequinShirtViewer({
   const chestRightLineStart = chestBadgeX + chestBadgeWidth + 4; // 248
 
   // Dynamic waist measurement span calibrated precisely to waist side seams
-  const waistY = Math.round((showCoralFitMeasurements ? 278 : 262) * heightConfig.scaleY * chestScaleY);
-  const waistSpanByFit = showCoralFitMeasurements
-    ? { lean: 85, regular: 98, tummy: 111 }
-    : { lean: 68, regular: 76, tummy: 88 };
-  const waistHalfSpan = Math.round(waistSpanByFit[bodyFit || "lean"] * chestScaleX);
+  const waistY = Math.round(262 * heightConfig.scaleY * chestScaleY);
+  const waistHalfSpan =
+    bodyFit === "tummy"
+      ? Math.round(88 * chestScaleX)
+      : bodyFit === "regular"
+        ? Math.round(76 * chestScaleX)
+        : Math.round(68 * chestScaleX);
   const waistLeftX = 200 - waistHalfSpan;
   const waistRightX = 200 + waistHalfSpan;
   const isTummyFit = bodyFit === "tummy";
@@ -620,7 +610,7 @@ export default function MannequinShirtViewer({
           {/* ============================================================ */}
           <div className="relative w-full max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px] aspect-[5/6] flex items-center justify-center z-10 mx-auto">
             <div
-              className="relative w-full h-full flex items-center justify-center transition-transform duration-500 ease-out motion-reduce:transition-none"
+              className="relative w-full h-full flex items-center justify-center transition-all duration-500 ease-out"
               style={{
                 transform: `scaleX(${totalScaleX}) scaleY(${totalScaleY})`,
                 transformOrigin: "center 30%",
@@ -637,18 +627,17 @@ export default function MannequinShirtViewer({
               )}
 
               {/* 6-Way Permanent Multi-Layer Stack for Butter-Smooth Fit & Sleeve Crossfades */}
-              {(showCoralFitPhotos ? (["full"] as const) : (["full", "half"] as const)).map((slv) =>
+              {(["full", "half"] as const).map((slv) =>
                 (["lean", "regular", "tummy"] as const).map((fit) => {
-                  const isCurrent = slv === previewSleeve && activeFitForModel === fit;
-                  const src = showCoralFitPhotos ? CORAL_STRIPE_FIT_PHOTOS[fit] : shirtModels[slv][fit];
+                  const isCurrent = (isHalfSleeve ? slv === "half" : slv === "full") && activeFitForModel === fit;
+                  const src = shirtModels[slv][fit];
 
                   return (
                     <img
                       key={`${slv}-${fit}`}
                       src={src}
                       alt={`${product?.name ?? "Custom Bespoke Made Shirt"} (${fit} fit, ${slv} sleeve)`}
-                      aria-hidden={!isCurrent}
-                      className={`absolute inset-0 w-full h-full object-contain object-top transition-opacity duration-500 ease-in-out motion-reduce:transition-none ${
+                      className={`absolute inset-0 w-full h-full object-contain object-top transition-opacity duration-500 ease-in-out ${
                         isCurrent ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"
                       }`}
                       style={{
@@ -887,8 +876,8 @@ export default function MannequinShirtViewer({
                   </g>
                 )}
 
-                {/* Dashed chest line with a cream measurement badge */}
-                {(currentStep === 3 || showCoralFitMeasurements) && (() => {
+                {/* Step 3 Chest Line: Dashed with circular endcaps and luxury cream pill badge matching reference */}
+                {currentStep === 3 && (() => {
                   const displayChest = chestSize > 0 ? chestSize : 38;
                   return (
                     <g className="transition-all duration-500 ease-out">
@@ -936,7 +925,7 @@ export default function MannequinShirtViewer({
                 {/* ====================================================== */}
                 {/* STOMACH / WAIST MEASUREMENT: STEP 2 (SOLID ARROWS) & STEP 3 (DASHED + PILL) */}
                 {/* ====================================================== */}
-                {currentStep === 2 && !!bodyFit && !showCoralFitMeasurements && (
+                {currentStep === 2 && !!bodyFit && (
                   <g filter="url(#badgeShadow)">
                     <line x1={waistLeftX} y1={waistY} x2={waistBadgeX - 6} y2={waistY} stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" className="transition-all duration-500 ease-out" />
                     <line x1={waistLeftX} y1={waistY} x2={waistBadgeX - 6} y2={waistY} stroke="#14110E" strokeWidth="2.2" markerStart="url(#arrowLeft)" strokeLinecap="round" className="transition-all duration-500 ease-out" />
@@ -951,8 +940,8 @@ export default function MannequinShirtViewer({
                   </g>
                 )}
 
-                {/* Dashed stomach line with a cream measurement badge */}
-                {(currentStep === 3 || (showCoralFitMeasurements && bodyFit)) && (() => {
+                {/* Step 3 Stomach Line: Dashed with circular endcaps and luxury cream pill badge matching reference */}
+                {currentStep === 3 && (() => {
                   const displayStomach = currentStomachValue || `${activeChestForCalc - 4}"`;
                   return (
                     <g className="transition-all duration-500 ease-out">
