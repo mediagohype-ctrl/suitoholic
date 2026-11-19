@@ -30,6 +30,7 @@ import {
 import confetti from"canvas-confetti";
 import CustomizationModal from "@/components/CustomizationModal";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
+import CatalogImage from "@/components/CatalogImage";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 // Icon keys usable in the productPage.badges content
@@ -208,12 +209,13 @@ export default function ProductDetailPage() {
 
               {/* Main Display Box */}
               <div className="relative w-full aspect-[4/4.1] sm:aspect-[4/4.1] lg:aspect-[4/4] max-h-[485px] sm:max-h-[520px] lg:max-h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden bg-white border border-[#E5E3DD] shadow-sm flex items-center justify-center group">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <CatalogImage
                   src={gallery[selectedImageIndex] || (activeProduct.image ? activeProduct.image.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i,"/") :"")}
                   alt={activeProduct.name}
+                  sizes="(max-width: 1023px) 100vw, (max-width: 1600px) 50vw, 800px"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   loading="eager"
+                  fetchPriority="high"
                   decoding="async"
                   onError={(e) => {
                     const target = e.currentTarget as HTMLImageElement;
@@ -253,10 +255,10 @@ export default function ProductDetailPage() {
                         :"border-[#E5E3DD] opacity-60 hover:opacity-100"
                         }`}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <CatalogImage
                         src={imgUrl}
                         alt=""
+                        sizes="(max-width: 1023px) 25vw, 180px"
                         className="w-full h-full object-cover object-center"
                         loading="lazy"
                         decoding="async"

@@ -414,42 +414,6 @@ export default function MannequinShirtViewer({
     }
   }, [useCoralFitPhotos, showCoralSleevePhotos, visibleCoralPhoto]);
 
-  // Preload all ghost mannequin model variants into memory for instantaneous zero-latency swaps
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const preloadList = [
-      "/customizer/shirt_model_bengal_blue_lean.png",
-      "/customizer/shirt_model_bengal_blue_regular.png",
-      "/customizer/shirt_model_bengal_blue_tummy.png",
-      "/customizer/shirt_model_bengal_blue_lean_half.png",
-      "/customizer/shirt_model_bengal_blue_regular_half.png",
-      "/customizer/shirt_model_bengal_blue_tummy_half.png",
-      "/customizer/shirt_model_white.png",
-      "/customizer/shirt_model_white_half.png",
-      "/customizer/shirt_model_sandstone_linen.png",
-      "/customizer/shirt_model_sandstone_linen_half.png",
-      "/customizer/shirt_model_coral_stripe.png",
-      "/customizer/shirt_model_coral_stripe_lean.png",
-      "/customizer/shirt_model_coral_stripe_regular.png",
-      "/customizer/shirt_model_coral_stripe_tummy.png",
-      "/customizer/shirt_model_coral_stripe_pocket.png",
-      "/customizer/shirt_model_coral_stripe_half.png",
-      "/customizer/shirt_model_coral_stripe_half_pocket.png",
-      "/customizer/shirt_model_espresso.png",
-      "/customizer/shirt_model_espresso_half.png",
-      "/customizer/shirt_model_charcoal.png",
-      "/customizer/shirt_model_charcoal_half.png",
-      "/customizer/shirt_model_skyblue.png",
-      "/customizer/shirt_model_skyblue_half.png",
-      "/customizer/shirt_model_navy_pinstripe.png",
-      "/customizer/shirt_model_navy_pinstripe_half.png",
-    ];
-    preloadList.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
-
   // Multi-model precomputed mapping for all 6 combinations of sleeve and body fit
   const shirtModels = {
     full: {
@@ -751,6 +715,8 @@ export default function MannequinShirtViewer({
                     }))
                   )
               ).map(({ key, src, description, fallback, isCurrent }) => {
+                  const fitPhoto = useCoralFitPhotos && CORAL_FITS.some((fit) => CORAL_BUY_NOW_PHOTOS[fit] === src);
+                  const fitPhotoPath = fitPhoto ? src.split(".webp")[0] : undefined;
                   const photoStyle = useCoralFitPhotos
                     ? "pointer-events-none"
                     : `transition-opacity duration-500 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"}`;
@@ -763,6 +729,8 @@ export default function MannequinShirtViewer({
                         else delete coralFitImages.current[src];
                       } : undefined}
                       src={src}
+                      srcSet={fitPhotoPath ? `${fitPhotoPath}-640-v1.webp 640w, ${fitPhotoPath}-896-v1.webp 896w, ${src} 1072w` : undefined}
+                      sizes={fitPhotoPath ? "(max-width: 639px) 250px, (max-width: 1023px) 280px, 320px" : undefined}
                       alt={`${product?.name ?? "Custom Bespoke Made Shirt"} (${description}${isCurrent && showCoralFullPocket ? ", full sleeve with pocket" : ""})`}
                       aria-hidden={!isCurrent}
                       className={`absolute inset-0 w-full h-full object-contain object-top ${photoStyle}`}
@@ -787,6 +755,7 @@ export default function MannequinShirtViewer({
                         const img = e.currentTarget as HTMLImageElement;
                         if (!img.dataset.retried) {
                           img.dataset.retried = "1";
+                          img.removeAttribute("srcset");
                           img.src = fallback;
                         }
                       } : undefined}

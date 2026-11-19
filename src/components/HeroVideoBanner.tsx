@@ -5,10 +5,14 @@ import Link from"next/link";
 import { useContent } from"@/context/SiteDataProvider";
 
 const swatchGradient = (from: string, to: string) => `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
+const STOCK_HERO_VIDEO = "/video/suitoholic-hero-v1.mp4";
+const LEGACY_HERO_VIDEO = "/video/Suitoholic%20Approved.mp4";
 
 export default function HeroVideoBanner() {
   const c = useContent("homeHero");
   const variants = c.variants;
+  const usingStockVideo = !c.video || [LEGACY_HERO_VIDEO, "/video/Suitoholic Approved.mp4", "/video/Suitoholic_Approved.mp4", STOCK_HERO_VIDEO].includes(c.video);
+  const videoSource = usingStockVideo ? STOCK_HERO_VIDEO : c.video;
   // Position of a variant on the vertical tracker (0–100%).
   const lastIndex = Math.max(variants.length - 1, 1);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
@@ -86,15 +90,16 @@ export default function HeroVideoBanner() {
       {/* 1. Background Video Layer */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
+          key={videoSource}
           ref={videoRef}
-          src={c.video ||"/video/Suitoholic%20Approved.mp4"}
+          poster={usingStockVideo ? "/banners/suitoholic-hero-poster-v1.webp" : undefined}
           autoPlay
           loop
           muted
           playsInline
           disablePictureInPicture
           controlsList="nodownload no-picture-in-picture"
-          preload="auto"
+          preload="metadata"
           onLoadedData={() => setIsVideoLoaded(true)}
           onTimeUpdate={handleTimeUpdate}
           className="absolute inset-0 w-full h-full object-cover object-top pointer-events-none transition-opacity duration-700 ease-out"
@@ -102,9 +107,8 @@ export default function HeroVideoBanner() {
             opacity: isVideoLoaded ? 1 : 0.85,
           }}
         >
-          <source src={c.video ||"/video/Suitoholic%20Approved.mp4"} type="video/mp4" />
-          <source src="/video/Suitoholic_Approved.mp4" type="video/mp4" />
-          <source src="/video/Suitoholic Approved.mp4" type="video/mp4" />
+          <source src={videoSource} type="video/mp4" />
+          <source src={LEGACY_HERO_VIDEO} type="video/mp4" />
         </video>
 
         {/* Soft top luxury vignette to guarantee clean contrast under the navbar */}

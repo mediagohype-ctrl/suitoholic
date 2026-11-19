@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useContent } from "@/context/SiteDataProvider";
 
 export default function AtelierEditorialBanner() {
@@ -10,8 +10,26 @@ export default function AtelierEditorialBanner() {
   const innerRef = useRef<HTMLDivElement>(null);
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [loadVideo, setLoadVideo] = useState(false);
 
   const videoSource = c.video || "/video/create_a_second_premium_shirt_video.mp4";
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (!("IntersectionObserver" in window)) {
+      setLoadVideo(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setLoadVideo(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "250px 0px" });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   // Ensure video autoplays smoothly
   useEffect(() => {
@@ -26,7 +44,7 @@ export default function AtelierEditorialBanner() {
         playPromise.catch(() => {});
       }
     }
-  }, [videoSource]);
+  }, [loadVideo, videoSource]);
 
   // Signature ColourPig-Style Scroll Expansion & Parallax Effect
   // Uses direct DOM transform updates for 120fps silky-smooth GPU performance without React re-render overhead
@@ -155,7 +173,8 @@ export default function AtelierEditorialBanner() {
                 willChange: "transform",
               }}
             >
-              <video
+              {loadVideo && <video
+                key={videoSource}
                 ref={videoRef}
                 playsInline
                 muted
@@ -166,7 +185,7 @@ export default function AtelierEditorialBanner() {
               >
                 <source src={videoSource} type="video/mp4" />
                 <source src="/video/create_a_second_premium_shirt_video.mp4" type="video/mp4" />
-              </video>
+              </video>}
             </div>
 
             {/* Cinematic Luxury Vignette Overlay */}

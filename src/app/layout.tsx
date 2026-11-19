@@ -11,7 +11,7 @@ import { SiteDataProvider } from "@/context/SiteDataProvider";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { getSiteBundle } from "@/lib/site-data";
 
-// Content, catalog and prices are edited live from /admin, so render on every request.
+// Render the shell per request while sharing the short-lived public storefront data cache.
 export const dynamic = "force-dynamic";
 
 const loadSite = cache(getSiteBundle);

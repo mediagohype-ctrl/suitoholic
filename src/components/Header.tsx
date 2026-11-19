@@ -501,11 +501,12 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 className="group/card relative block aspect-[3/2] w-[340px] sm:w-[380px] lg:w-[420px] shrink-0 cursor-pointer overflow-hidden bg-neutral-100"
               >
                 <div className="absolute inset-0">
-                  <img
+                  {isShopMenuOpen && <img
                     src="/banners/menu_card_country_edit.jpg"
                     alt="Suitoholic Country Edit - New Launch"
+                    decoding="async"
                     className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover/card:scale-105"
-                  />
+                  />}
                 </div>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.45)_100%)]" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]">
@@ -525,11 +526,12 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 className="group/card relative block aspect-[3/2] w-[340px] sm:w-[380px] lg:w-[420px] shrink-0 cursor-pointer overflow-hidden bg-neutral-100"
               >
                 <div className="absolute inset-0">
-                  <img
+                  {isShopMenuOpen && <img
                     src="/banners/menu_card_timeless.jpg"
                     alt="Suitoholic Timeless Collection"
+                    decoding="async"
                     className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover/card:scale-105"
-                  />
+                  />}
                 </div>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.45)_100%)]" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]">

@@ -3,7 +3,7 @@
 // jumps there, and the active swatch follows the video. Keep variants ordered by startTime.
 // swatchFrom / swatchTo are the two colours of the swatch gradient.
 export const homeHero = {
-  video: "/video/Suitoholic%20Approved.mp4",
+  video: "/video/suitoholic-hero-v1.mp4",
   eyebrow: "EFFORTLESSLY ELEGANT",
   headingLine1: "NOT EVERY BODY",
   headingLine2: "IS THE SAME SIZE",

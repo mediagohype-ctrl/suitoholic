@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import { ProductItem } from "@/data/products";
 import { useWishlist } from "@/context/WishlistProvider";
 import { useCustomizer } from "@/context/CustomizerModalProvider";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
+import CatalogImage from "@/components/CatalogImage";
 
 interface ModernProductCardProps {
   product: ProductItem;
@@ -50,13 +51,10 @@ export default function ModernProductCard({
   const activeMainImage = wideMainImage || baseImage;
   const activeHoverImage = wideMainImage ? (cleanImages[0] || baseImage) : hoverImage;
 
-  // Preload hover image immediately for instant, buttery-smooth transition on hover
-  React.useEffect(() => {
-    if (activeHoverImage && typeof window !== "undefined") {
-      const img = new Image();
-      img.src = activeHoverImage;
-    }
-  }, [activeHoverImage]);
+  const [requestedHoverImage, setRequestedHoverImage] = useState<string | null>(null);
+  const [loadedHoverImage, setLoadedHoverImage] = useState<string | null>(null);
+  const showHoverImage = !!activeHoverImage && loadedHoverImage === activeHoverImage;
+  const imageSizes = isWideSpan ? "(max-width: 767px) 100vw, 50vw" : "(max-width: 767px) 50vw, 25vw";
 
   const handleToggleSave = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -71,6 +69,7 @@ export default function ModernProductCard({
         {/* Main Product Image Container */}
         <Link
           href={`/product/${product.slug}`}
+          onMouseEnter={() => setRequestedHoverImage(activeHoverImage || null)}
           onClick={(e) => {
             if (onCardClick) {
               e.preventDefault();
@@ -80,14 +79,14 @@ export default function ModernProductCard({
           className="block relative w-full h-full overflow-hidden rounded-[10px] bg-[#ECEAE5]"
         >
           {/* Default Image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <CatalogImage
             src={activeMainImage}
             alt={product.name}
+            sizes={imageSizes}
             className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-102 ${
-              activeHoverImage ? "group-hover:opacity-0" : ""
+              showHoverImage ? "group-hover:opacity-0" : ""
             }`}
-            loading="eager"
+            loading="lazy"
             decoding="async"
             onError={(e) => {
               const img = e.currentTarget as HTMLImageElement;
@@ -101,11 +100,12 @@ export default function ModernProductCard({
           />
 
           {/* Hover Image: Full Shirt View (Only Full Shirt shown on hover, clean background) */}
-          {activeHoverImage && (
-            <div className="absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out z-10 overflow-hidden pointer-events-none">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+          {activeHoverImage && activeHoverImage === requestedHoverImage && (
+            <div className={`absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 ${showHoverImage ? "group-hover:opacity-100" : ""} transition-opacity duration-700 ease-out z-10 overflow-hidden pointer-events-none`}>
+              <CatalogImage
                 src={activeHoverImage}
+                sizes={imageSizes}
+                onLoad={() => setLoadedHoverImage(activeHoverImage)}
                 alt={`${product.name} Full Look`}
                 className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-102"
                 loading="eager"

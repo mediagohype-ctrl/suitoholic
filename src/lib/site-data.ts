@@ -185,12 +185,7 @@ function fallbackBundle(): SiteBundle {
   };
 }
 
-/**
- * Loads CMS content, catalog and store settings for the storefront in a single request.
- * Always fresh (admin edits show up on the next page load). First tries the API if configured,
- * then queries the database directly, and finally falls back to built-in data.
- */
-export async function getSiteBundle(): Promise<SiteBundle> {
+async function loadSiteBundle(): Promise<SiteBundle> {
   if (API_URL) {
     try {
       const res = await fetch(`${API_URL}/api/site`, { cache: "no-store", signal: AbortSignal.timeout(4000) });
@@ -214,4 +209,20 @@ export async function getSiteBundle(): Promise<SiteBundle> {
   }
 
   return fallbackBundle();
+}
+
+let cachedSite: { bundle: SiteBundle; expiresAt: number } | undefined;
+let pendingSite: Promise<SiteBundle> | undefined;
+
+export function getSiteBundle(): Promise<SiteBundle> {
+  if (cachedSite && cachedSite.expiresAt > Date.now()) {
+    return Promise.resolve(cachedSite.bundle);
+  }
+  pendingSite ??= loadSiteBundle().then((bundle) => {
+    cachedSite = { bundle, expiresAt: Date.now() + (bundle.apiAvailable ? 20_000 : 3_000) };
+    return bundle;
+  }).finally(() => {
+    pendingSite = undefined;
+  });
+  return pendingSite;
 }
