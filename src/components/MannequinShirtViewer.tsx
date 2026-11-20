@@ -30,9 +30,34 @@ type CoralFit = keyof typeof CORAL_BUY_NOW_PHOTOS;
 const CORAL_FITS: CoralFit[] = ["lean", "regular", "tummy"];
 const CORAL_HALF_POCKET_PHOTO = "/customizer/shirt_model_coral_stripe_half_pocket.png";
 const CORAL_HALF_NO_POCKET_PHOTO = "/customizer/shirt_model_coral_stripe_half_nopocket.png";
+const CORAL_PRODUCT_SLUG = "coral-red-bold-bengal-stripe-twill-shirt";
+const CORAL_HEIGHT_GUIDE_PHOTOS = {
+  buyNow: {
+    width: 1072,
+    height: 1536,
+    collarY: 110,
+    hemY: 1449,
+    leftEdges: {
+      lean: { collarX: 393, hemX: 368 },
+      regular: { collarX: 385, hemX: 364 },
+      tummy: { collarX: 387, hemX: 350 },
+    },
+  },
+  addToBag: {
+    width: 896,
+    height: 1200,
+    collarY: 95,
+    hemY: 1120,
+    leftEdges: {
+      lean: { collarX: 343, hemX: 321 },
+      regular: { collarX: 343, hemX: 323 },
+      tummy: { collarX: 341, hemX: 304 },
+    },
+  },
+};
 
 export function getCoralBuyNowFitPhoto(slug?: string, bodyFit?: string, sleeveType?: string, pocket?: string) {
-  if (slug !== "coral-red-bold-bengal-stripe-twill-shirt") return undefined;
+  if (slug !== CORAL_PRODUCT_SLUG) return undefined;
   const fit = bodyFit === "regular" || bodyFit === "tummy" ? bodyFit : "lean";
   if (sleeveType === "half" && pocket === "pocket") return CORAL_HALF_POCKET_PHOTO;
   if (sleeveType === "half" && pocket === "no-pocket") return CORAL_HALF_NO_POCKET_PHOTO;
@@ -364,7 +389,22 @@ export default function MannequinShirtViewer({
 }: MannequinShirtViewerProps) {
   const c = useContent("customizer");
 
-  const useCoralFitPhotos = buyNow && !!getCoralBuyNowFitPhoto(product?.slug);
+  const isCoralProduct = product?.slug === CORAL_PRODUCT_SLUG;
+  const showCoralHeightGuides = currentStep === 3 && isCoralProduct;
+  const shirtStageRef = useRef<HTMLDivElement>(null);
+  const [shirtStageSize, setShirtStageSize] = useState({ width: 0, height: 0 });
+  useLayoutEffect(() => {
+    const stage = shirtStageRef.current;
+    if (!showCoralHeightGuides || !stage) return;
+
+    const updateSize = () => setShirtStageSize({ width: stage.clientWidth, height: stage.clientHeight });
+    updateSize();
+    const observer = new ResizeObserver(updateSize);
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, [showCoralHeightGuides]);
+
+  const useCoralFitPhotos = buyNow && isCoralProduct;
   const showCoralFitMeasurements = useCoralFitPhotos && currentStep === 2 && chestSize > 0 && !!bodyFit;
   const showCoralChestMeasurements = useCoralFitPhotos && currentStep <= 2 && chestSize > 0;
   const isHalfSleeve = sleeveType === "half";
@@ -547,8 +587,29 @@ export default function MannequinShirtViewer({
   const collarBaseY = isCoralStripe ? 36.6 : 35.8;
   const hemBaseY = isCoralStripe ? 454.0 : 455.0;
   const scaleOriginY = 144;
-  const dynamicTopY = Number((scaleOriginY + (collarBaseY - scaleOriginY) * totalScaleY).toFixed(1));
-  const dynamicHemY = Number((scaleOriginY + (hemBaseY - scaleOriginY) * totalScaleY).toFixed(1));
+  let dynamicTopY = scaleOriginY + (collarBaseY - scaleOriginY) * totalScaleY;
+  let dynamicHemY = scaleOriginY + (hemBaseY - scaleOriginY) * totalScaleY;
+  let collarGuideX = Math.round(200 - 20 * chestScaleX);
+  let hemGuideX = Math.round(200 - 15 * chestScaleX);
+
+  if (showCoralHeightGuides && shirtStageSize.width && shirtStageSize.height) {
+    // Match the reference where the guides meet the left edge of the collar and hem.
+    const photo = useCoralFitPhotos ? CORAL_HEIGHT_GUIDE_PHOTOS.buyNow : CORAL_HEIGHT_GUIDE_PHOTOS.addToBag;
+    const { collarX, hemX } = photo.leftEdges[useCoralFitPhotos ? visiblePhotoFit : previewFit];
+    const { width, height } = shirtStageSize;
+    const photoScale = Math.min(width / photo.width, height / photo.height);
+    const overlayScale = Math.min(width / 400, height / 480);
+    const originY = height * 0.3;
+    // The photo is top-aligned with object-contain. The SVG centers its viewBox.
+    const guideY = (y: number) =>
+      240 + (originY + (y * photoScale - originY) * totalScaleY - height / 2) / overlayScale;
+    const guideX = (x: number) => 200 + (x - photo.width / 2) * photoScale * totalScaleX / overlayScale;
+
+    dynamicTopY = guideY(photo.collarY);
+    dynamicHemY = guideY(photo.hemY);
+    collarGuideX = guideX(collarX);
+    hemGuideX = guideX(hemX);
+  }
 
   // Dynamic chest measurement span calibrated precisely to torso side seams (Center is X=200)
   const chestY = Math.round(162 * chestScaleY);
@@ -670,7 +731,13 @@ export default function MannequinShirtViewer({
           {/* ============================================================ */}
           {/* CORE SHIRT PHOTO: FULL MADE SHIRT IN MATCHING CHOSEN COLOR   */}
           {/* ============================================================ */}
-          <div className="relative w-full max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px] aspect-[5/6] flex items-center justify-center z-10 mx-auto">
+          <div
+            ref={shirtStageRef}
+            className={`relative w-full aspect-[5/6] flex items-center justify-center z-10 mx-auto ${isCoralProduct
+              ? "max-w-[345px] sm:max-w-[376px] lg:max-w-[398px] h-[355px] sm:h-[398px] lg:h-[440px]"
+              : "max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px]"
+              }`}
+          >
             <div
               className={`relative w-full h-full flex items-center justify-center transition-transform duration-500 ease-out motion-reduce:transition-none ${useCoralFitPhotos ? "isolate" : ""}`}
               style={{
@@ -730,7 +797,7 @@ export default function MannequinShirtViewer({
                       } : undefined}
                       src={src}
                       srcSet={fitPhotoPath ? `${fitPhotoPath}-640-v1.webp 640w, ${fitPhotoPath}-896-v1.webp 896w, ${src} 1072w` : undefined}
-                      sizes={fitPhotoPath ? "(max-width: 639px) 250px, (max-width: 1023px) 280px, 320px" : undefined}
+                      sizes={fitPhotoPath ? "(max-width: 639px) 295px, (max-width: 1023px) 330px, 365px" : undefined}
                       alt={`${product?.name ?? "Custom Bespoke Made Shirt"} (${description}${isCurrent && showCoralFullPocket ? ", full sleeve with pocket" : ""})`}
                       aria-hidden={!isCurrent}
                       className={`absolute inset-0 w-full h-full object-contain object-top ${photoStyle}`}
@@ -814,6 +881,10 @@ export default function MannequinShirtViewer({
                 {/* ====================================================== */}
                 {currentStep === 3 && (() => {
                   const dimX = 8;
+                  const guideStartX = dimX - 14;
+                  // End each coral guide on a painted dash at the shirt edge.
+                  const guidePathLength = (endX: number) =>
+                    showCoralHeightGuides ? Math.round((endX - guideStartX - 4) / 8) * 8 + 4 : undefined;
                   const badgeWidth = 60;
                   const badgeHeight = 104;
                   const badgeX = dimX - badgeWidth / 2; // -22
@@ -823,25 +894,27 @@ export default function MannequinShirtViewer({
                     <g className="transition-all duration-500 ease-out animate-in fade-in">
                       {/* Top horizontal dashed line extending to collar leaf contour */}
                       <line
-                        x1={dimX - 14}
+                        x1={guideStartX}
                         y1={dynamicTopY}
-                        x2={Math.round(200 - 20 * chestScaleX)}
+                        x2={collarGuideX}
                         y2={dynamicTopY}
                         stroke="#14110E"
                         strokeWidth="1.6"
                         strokeDasharray="4 4"
+                        pathLength={guidePathLength(collarGuideX)}
                         className="transition-all duration-500 ease-out"
                       />
 
                       {/* Bottom horizontal dashed line extending to hem curve */}
                       <line
-                        x1={dimX - 14}
+                        x1={guideStartX}
                         y1={dynamicHemY}
-                        x2={Math.round(200 - 15 * chestScaleX)}
+                        x2={hemGuideX}
                         y2={dynamicHemY}
                         stroke="#14110E"
                         strokeWidth="1.6"
                         strokeDasharray="4 4"
+                        pathLength={guidePathLength(hemGuideX)}
                         className="transition-all duration-500 ease-out"
                       />
 

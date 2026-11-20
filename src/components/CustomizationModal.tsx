@@ -522,7 +522,7 @@ export default function CustomizationModal({
 
       {/* Modal Container */}
       <div
-        className="relative w-full max-w-[1560px] bg-[#ECEAE5] border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col min-h-[92vh] max-h-[97vh]"
+        className="relative w-full max-w-[1560px] bg-[#F2E4D3] border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col min-h-[92vh] max-h-[97vh]"
         data-lenis-prevent
       >
 
