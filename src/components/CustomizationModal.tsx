@@ -305,6 +305,8 @@ export default function CustomizationModal({
   const [activeItem, setActiveItem] = useState<CustomizationModalProduct | ProductItem | null>(() => product);
   const [activeItemName, setActiveItemName] = useState<string>(() => productName);
   const [customFit, setCustomFit] = useState<CustomFitState>(createEmptyCustomFit);
+  const [wantsInitials, setWantsInitials] = useState(false);
+  const initialsId = React.useId();
   const [specialInstructions, setSpecialInstructions] = useState<string>("");
   const [addedBagIds, setAddedBagIds] = useState<Record<number, number>>({});
   const [addingId, setAddingId] = useState<number | null>(null);
@@ -320,16 +322,20 @@ export default function CustomizationModal({
       if (isOpen !== prevIsOpen) {
         setCurrentStep(1);
         setCustomFit(createEmptyCustomFit());
+        setWantsInitials(false);
         setSpecialInstructions("");
       }
       setActiveItem(product);
       setActiveItemName(productName);
     }
   }
+  const isFullSleeve = customFit.sleeveType === "full";
+  const includesInitials = isFullSleeve && wantsInitials;
   const orderFit = {
     ...customFit,
     shirtColor: activeItemName,
-    ...(customFit.sleeveType === "half" ? { cuffStyle: "", initials: "", threadColor: "" } : {}),
+    ...(customFit.sleeveType === "half" ? { cuffStyle: "" } : {}),
+    ...(!includesInitials ? { initials: "", threadColor: "" } : {}),
   };
 
   const handleChestSelect = (size: number) => {
@@ -444,7 +450,6 @@ export default function CustomizationModal({
 
   if (!isOpen) return null;
 
-  const isFullSleeve = customFit.sleeveType === "full";
   const totalSteps = 6;
   const stepCopy = (n: number) => c.steps[n - 1] ?? { breadcrumb: "", title: "", subtitle: "" };
 
@@ -455,7 +460,7 @@ export default function CustomizationModal({
   const showSleeve = currentStep >= 4;
   const showCollar = currentStep >= 5 && !!customFit.collarStyle;
   const showCuff = currentStep >= 5 && isFullSleeve && !!customFit.cuffStyle;
-  const showMonogram = currentStep >= 5 && isFullSleeve && !!customFit.initials?.trim();
+  const showMonogram = currentStep >= 5 && includesInitials && !!customFit.initials?.trim();
   const reviewFitPhoto = buyNow
     ? getCoralBuyNowFitPhoto((activeItem || product)?.slug, customFit.bodyFit, customFit.sleeveType, customFit.pocket)
     : undefined;
@@ -679,8 +684,8 @@ export default function CustomizationModal({
                     collarStyle={customFit.collarStyle}
                     cuffStyle={customFit.cuffStyle}
                     pocket={customFit.pocket === "no-pocket" ? "no-pocket" : customFit.pocket === "pocket" ? "pocket" : ""}
-                    initials={customFit.initials}
-                    threadColor={customFit.threadColor}
+                    initials={orderFit.initials}
+                    threadColor={orderFit.threadColor}
                     currentStep={currentStep}
                     product={activeItem}
                   />
@@ -1267,23 +1272,50 @@ export default function CustomizationModal({
                         {isFullSleeve && (
                           <div>
                             {/* Divider Badge with Center Pill */}
-                            <div className="flex items-center gap-3 w-full mb-1.5 sm:mb-2 mt-0.5">
+                            <div className="mt-1 mb-2 flex w-full items-center gap-3">
                               <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
-                              <span className="px-4 py-0.5 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] text-white text-[8.5px] sm:text-[9px] font-bold tracking-[0.18em] uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] shrink-0">
+                              <span className="shrink-0 rounded-full bg-gradient-to-r from-[#9A5426] via-[#8C471C] to-[#9A5426] px-5 py-1 text-[10px] font-bold tracking-[0.18em] text-white uppercase shadow-[0_2px_6px_rgba(146,76,30,0.25)] sm:text-[11px]">
                                 INITIALS
                               </span>
                               <div className="h-[1.5px] flex-1 bg-[#8E6F57]" />
                             </div>
 
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 rounded-[14px] border border-[#DFC8B4] bg-[#FFF8F1]/90 px-3 py-2 shadow-2xs sm:px-3.5">
+                              <span id={`${initialsId}-question`} className="font-playfair text-[13px] font-extrabold leading-tight text-[#1F1A17] sm:text-[15px]">
+                                Do You Want Initials?
+                              </span>
+                              <div role="radiogroup" aria-labelledby={`${initialsId}-question`} className="flex shrink-0 gap-2">
+                                {[true, false].map((enabled) => (
+                                  <label
+                                    key={String(enabled)}
+                                    className={`font-playfair flex min-h-9 min-w-[68px] cursor-pointer items-center justify-center gap-1.5 rounded-full border px-2.5 text-[11px] font-extrabold transition-colors focus-within:ring-2 focus-within:ring-[#C68A4C]/50 sm:min-h-10 sm:min-w-[74px] sm:text-[13px] ${wantsInitials === enabled
+                                      ? "border-[#8A4418] bg-[#F3DFCB] text-[#6D3413]"
+                                      : "border-[#DFC8B4] bg-[#FFFCF8] text-[#4E3B30] hover:bg-[#FAEDE0]"
+                                      }`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      name={`${initialsId}-choice`}
+                                      checked={wantsInitials === enabled}
+                                      onChange={() => setWantsInitials(enabled)}
+                                      className="size-3.5 shrink-0 accent-[#8A4418]"
+                                    />
+                                    {enabled ? "Yes" : "No"}
+                                  </label>
+                                ))}
+                              </div>
+                            </div>
+
                             {/* 2-Part Grid: Monogram Input on Left, Thread Color Dropdown on Right */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+                            <div className={`${wantsInitials ? "grid" : "hidden"} grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3`}>
                               {/* Left Side: Do You Need Monogram? */}
-                              <div className="bg-[#FFF8F1]/90 border border-[#DFC8B4] rounded-[12px] p-2 sm:p-2.5 shadow-2xs flex flex-col justify-between">
-                                <label className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#1F1A17] uppercase block mb-1">
+                              <div className="flex min-w-0 flex-col justify-between gap-1.5 rounded-[14px] border border-[#DFC8B4] bg-[#FFF8F1]/90 p-2.5 shadow-2xs sm:p-3">
+                                <label htmlFor={`${initialsId}-monogram`} className="font-playfair text-[11px] font-extrabold leading-snug tracking-wide text-[#1F1A17] uppercase sm:text-xs">
                                   DO YOU NEED MONOGRAM?
                                 </label>
                                 <div className="relative flex items-center">
                                   <input
+                                    id={`${initialsId}-monogram`}
                                     type="text"
                                     maxLength={3}
                                     value={customFit.initials || ""}
@@ -1292,13 +1324,13 @@ export default function CustomizationModal({
                                       setCustomFit((prev) => ({ ...prev, initials: val }));
                                     }}
                                     placeholder="e.g. YS (Optional)"
-                                    className="w-full bg-white/90 border border-[#D5C2AF] rounded-[8px] px-2.5 py-1 text-[10.5px] font-bold tracking-widest text-[#1F1A17] placeholder:text-[#9B897D] placeholder:font-normal placeholder:tracking-normal focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all uppercase"
+                                    className="font-playfair min-h-10 w-full rounded-[10px] border border-[#D5C2AF] bg-white/90 py-1.5 pr-10 pl-3 text-[15px] font-bold tracking-widest text-[#1F1A17] uppercase shadow-2xs transition-colors placeholder:font-medium placeholder:tracking-normal placeholder:text-[#776352] focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 focus:outline-none"
                                   />
                                   {customFit.initials && (
                                     <button
                                       type="button"
                                       onClick={() => setCustomFit((prev) => ({ ...prev, initials: "" }))}
-                                      className="absolute right-2 text-[#8A796E] hover:text-[#1F1A17] text-xs font-bold p-1 cursor-pointer"
+                                      className="absolute right-1 flex size-8 cursor-pointer items-center justify-center rounded-md text-sm font-bold text-[#776352] hover:bg-[#F6E7D8] hover:text-[#1F1A17] focus-visible:outline-2 focus-visible:outline-[#9A5426]"
                                       title="Clear monogram"
                                     >
                                       ✕
@@ -1308,15 +1340,15 @@ export default function CustomizationModal({
                               </div>
 
                               {/* Right Side: Select Thread Color Dropdown */}
-                              <div className="bg-[#FFF8F1]/90 border border-[#DFC8B4] rounded-[12px] p-2 sm:p-2.5 shadow-2xs flex flex-col justify-between">
-                                <label className="text-[8px] sm:text-[8.5px] font-bold tracking-wider text-[#1F1A17] uppercase block mb-1">
+                              <div className="flex min-w-0 flex-col justify-between gap-1.5 rounded-[14px] border border-[#DFC8B4] bg-[#FFF8F1]/90 p-2.5 shadow-2xs sm:p-3">
+                                <label htmlFor={`${initialsId}-thread`} className="font-playfair text-[11px] font-extrabold leading-snug tracking-wide text-[#1F1A17] uppercase sm:text-xs">
                                   SELECT THREAD COLOR
                                 </label>
                                 <div className="relative flex items-center">
                                   {/* Color Dot indicator (only shown when a color is selected) */}
                                   {customFit.threadColor && (
                                     <div
-                                      className="w-3 h-3 rounded-full shrink-0 ml-2.5 mr-[-22px] z-10 border border-black/20 shadow-2xs pointer-events-none"
+                                      className="pointer-events-none absolute left-3 z-10 size-3.5 rounded-full border border-black/20 shadow-2xs"
                                       style={{
                                         backgroundColor:
                                           customFit.threadColor === "black"
@@ -1334,10 +1366,13 @@ export default function CustomizationModal({
                                     />
                                   )}
                                   <select
+                                    id={`${initialsId}-thread`}
                                     value={customFit.threadColor || ""}
                                     onChange={(e) => setCustomFit((prev) => ({ ...prev, threadColor: e.target.value }))}
-                                    className={`w-full bg-white/90 border border-[#D5C2AF] rounded-[8px] ${customFit.threadColor ? "pl-6 text-[#1F1A17] font-semibold" : "pl-2.5 text-[#8A796E] font-normal"
-                                      } pr-6 py-1 text-[10px] focus:outline-none focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 shadow-2xs transition-all cursor-pointer appearance-none`}
+                                    className={`font-playfair min-h-10 w-full cursor-pointer appearance-none rounded-[10px] border border-[#D5C2AF] bg-white/90 py-1.5 pr-9 text-[15px] shadow-2xs transition-colors focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 focus:outline-none ${customFit.threadColor
+                                      ? "pl-8 font-semibold text-[#1F1A17]"
+                                      : "pl-3 font-medium text-[#776352]"
+                                      }`}
                                   >
                                     <option value="">Select Thread Color</option>
                                     <option value="dark_blue">Dark Blue (Navy)</option>
@@ -1347,8 +1382,8 @@ export default function CustomizationModal({
                                     <option value="burgundy">Bordeaux Burgundy</option>
                                     <option value="silver">Silver Grey</option>
                                   </select>
-                                  <div className="pointer-events-none absolute right-2 flex items-center text-[#8A796E]">
-                                    <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                                  <div className="pointer-events-none absolute right-3 flex items-center text-[#776352]">
+                                    <svg className="size-4" viewBox="0 0 20 20" fill="currentColor">
                                       <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                     </svg>
                                   </div>
@@ -1578,7 +1613,7 @@ export default function CustomizationModal({
                             </div>
 
                         {/* 6. INITIALS (Only for Full Sleeves when Monogram is Entered) */}
-                        {isFullSleeve && !!customFit.initials?.trim() && (
+                        {showMonogram && (
                           <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                             <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                               <img
