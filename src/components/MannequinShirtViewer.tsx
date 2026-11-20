@@ -411,7 +411,16 @@ export default function MannequinShirtViewer({
   const c = useContent("customizer");
 
   const isCoralProduct = product?.slug === CORAL_PRODUCT_SLUG;
-  const showRegularFitReference = isCoralProduct && currentStep === 2 && bodyFit === "regular";
+  const isCoralBodyFitStep = isCoralProduct && currentStep === 2;
+  const wantsRegularFitReference = isCoralBodyFitStep && bodyFit === "regular";
+  const [regularFitReferenceStatus, setRegularFitReferenceStatus] = useState<"loading" | "ready" | "failed">("loading");
+  const showRegularFitReference = wantsRegularFitReference && regularFitReferenceStatus === "ready";
+  const [lastNonRegularFit, setLastNonRegularFit] = useState<Exclude<MannequinShirtViewerProps["bodyFit"], "regular" | undefined>>("");
+  if (isCoralBodyFitStep && bodyFit !== "regular" && bodyFit !== lastNonRegularFit) {
+    setLastNonRegularFit(bodyFit);
+  }
+  // Keep the outgoing shirt and its guides together while the reference fades in.
+  const previewBodyFit = wantsRegularFitReference && regularFitReferenceStatus !== "failed" ? lastNonRegularFit : bodyFit;
   const showCoralHeightGuides = currentStep === 3 && isCoralProduct;
   const shirtStageRef = useRef<HTMLDivElement>(null);
   const [shirtStageSize, setShirtStageSize] = useState({ width: 0, height: 0 });
@@ -427,7 +436,7 @@ export default function MannequinShirtViewer({
   }, [showCoralHeightGuides]);
 
   const useCoralFitPhotos = buyNow && isCoralProduct;
-  const showCoralFitMeasurements = useCoralFitPhotos && currentStep === 2 && chestSize > 0 && !!bodyFit;
+  const showCoralFitMeasurements = useCoralFitPhotos && currentStep === 2 && chestSize > 0 && !!previewBodyFit;
   const showCoralChestMeasurements = useCoralFitPhotos && currentStep <= 2 && chestSize > 0;
   const isHalfSleeve = sleeveType === "half";
   const showFoldedPreview = currentStep === 5 && !isHalfSleeve && !useCoralFitPhotos;
@@ -437,7 +446,7 @@ export default function MannequinShirtViewer({
   const { foldedImage, cuffDetailImage, shirtId, colorKey } = getFoldedAndCuffAssets(product, cuffStyle, collarStyle);
   const isDarkShirt = colorKey === "charcoal" || colorKey === "espresso" || colorKey === "navy_pinstripe";
 
-  const activeFitForModel = (bodyFit === "regular" || bodyFit === "tummy" || bodyFit === "lean") ? bodyFit : "regular";
+  const activeFitForModel = (previewBodyFit === "regular" || previewBodyFit === "tummy" || previewBodyFit === "lean") ? previewBodyFit : "regular";
   const previewFit = useCoralFitPhotos && currentStep === 1 && !bodyFit ? "lean" : activeFitForModel;
   const showCoralSleevePhotos = useCoralFitPhotos && currentStep >= 4;
   const step4ProductSlug = currentStep === 4 ? product?.slug : undefined;
@@ -546,7 +555,7 @@ export default function MannequinShirtViewer({
   const stomachSizeTummy = useCoralFitPhotos
     ? `${activeChestForCalc + 1}" – ${activeChestForCalc + 2}"`
     : `${activeChestForCalc + 2}" – ${activeChestForCalc + 4}"`;
-  const measurementFit = useCoralFitPhotos ? visiblePhotoFit : bodyFit;
+  const measurementFit = useCoralFitPhotos ? visiblePhotoFit : previewBodyFit;
 
   const currentStomachValue =
     measurementFit === "lean"
@@ -669,6 +678,7 @@ export default function MannequinShirtViewer({
   const shirtStageSizeClass = isCoralProduct
     ? "max-w-[345px] sm:max-w-[376px] lg:max-w-[398px] h-[355px] sm:h-[398px] lg:h-[440px]"
     : "max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px]";
+  const fitFadeClass = "mix-blend-plus-lighter transition-opacity duration-300 ease-in-out motion-reduce:transition-none";
 
   return (
     <div
@@ -677,10 +687,13 @@ export default function MannequinShirtViewer({
         : currentStep === 3 && !useCoralFitPhotos
           ? "max-w-[460px] pl-6 sm:pl-8"
           : "max-w-[440px]"
-        } mx-auto flex flex-col items-center justify-start py-0 transition-all duration-300`}
+        } mx-auto flex flex-col items-center justify-start py-0 transition-all duration-300 ${isCoralBodyFitStep ? "isolate" : ""}`}
     >
-      {showRegularFitReference && (
-        <figure className="flex w-full flex-col items-center">
+      {isCoralBodyFitStep && (
+        <div
+          aria-hidden={!showRegularFitReference}
+          className={`pointer-events-none absolute inset-x-0 top-0 z-20 flex justify-center ${fitFadeClass} ${showRegularFitReference ? "opacity-100" : "opacity-0"}`}
+        >
           <div className={`relative w-full ${shirtStageSizeClass}`}>
             <div className="absolute left-1/2 top-[3.6%] h-[96%] max-w-full aspect-[5/6] -translate-x-1/2 overflow-hidden">
               {/* The shirt is centered at 24.2% of the original landscape photo's width. */}
@@ -691,15 +704,20 @@ export default function MannequinShirtViewer({
                 width={1600}
                 height={900}
                 className="absolute left-1/2 top-0 h-full w-auto max-w-none -translate-x-[24.2%]"
+                decoding="async"
+                onLoad={({ currentTarget }) => {
+                  void currentTarget.decode().then(
+                    () => setRegularFitReferenceStatus("ready"),
+                    () => {
+                      if (currentTarget.isConnected) setRegularFitReferenceStatus("failed");
+                    },
+                  );
+                }}
+                onError={() => setRegularFitReferenceStatus("failed")}
               />
             </div>
           </div>
-          {chestSize > 0 && chestSize !== 38 && (
-            <figcaption className="mt-1.5 text-sm text-[#4E3B30]">
-              Reference photo shown with a 38″ chest and 36″ waist.
-            </figcaption>
-          )}
-        </figure>
+        </div>
       )}
 
       {/* ============================================================ */}
@@ -781,7 +799,10 @@ export default function MannequinShirtViewer({
         </div>
       ) : (
         /* Steps 1, 2, 3, 4, 6 (and Step 5 for Half Sleeves): Full Ghost Mannequin Stage */
-        <div className={showRegularFitReference ? "hidden" : "relative w-full flex items-start justify-center py-0"}>
+        <div
+          aria-hidden={showRegularFitReference || undefined}
+          className={`relative flex w-full items-start justify-center py-0 ${isCoralBodyFitStep ? `${fitFadeClass} ${showRegularFitReference ? "opacity-0" : "opacity-100"}` : ""}`}
+        >
 
           {/* ============================================================ */}
           {/* CORE SHIRT PHOTO: FULL MADE SHIRT IN MATCHING CHOSEN COLOR   */}
@@ -1162,7 +1183,7 @@ export default function MannequinShirtViewer({
                 {/* ====================================================== */}
                 {/* STOMACH / WAIST MEASUREMENT: STEP 2 (SOLID ARROWS) & STEP 3 (DASHED + PILL) */}
                 {/* ====================================================== */}
-                {currentStep === 2 && !!bodyFit && !showCoralFitMeasurements && (
+                {currentStep === 2 && !!previewBodyFit && !showCoralFitMeasurements && (
                   <g filter="url(#badgeShadow)">
                     <line x1={waistLeftX} y1={waistY} x2={waistBadgeX - 6} y2={waistY} stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" className="transition-all duration-500 ease-out" />
                     <line x1={waistLeftX} y1={waistY} x2={waistBadgeX - 6} y2={waistY} stroke="#14110E" strokeWidth="2.2" markerStart="url(#arrowLeft)" strokeLinecap="round" className="transition-all duration-500 ease-out" />
@@ -1230,6 +1251,14 @@ export default function MannequinShirtViewer({
         </div>
       )}
 
+      {isCoralBodyFitStep && chestSize > 0 && chestSize !== 38 && (
+        <p
+          aria-hidden={!showRegularFitReference}
+          className={`mt-1.5 text-center text-sm text-[#4E3B30] transition-opacity duration-300 motion-reduce:transition-none ${showRegularFitReference ? "opacity-100" : "opacity-0"}`}
+        >
+          Reference photo shown with a 38″ chest and 36″ waist.
+        </p>
+      )}
     </div>
   );
 }
