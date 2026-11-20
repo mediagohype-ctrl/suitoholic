@@ -64,6 +64,27 @@ export function getCoralBuyNowFitPhoto(slug?: string, bodyFit?: string, sleeveTy
   return CORAL_BUY_NOW_PHOTOS[fit];
 }
 
+const CORAL_STEP4_SLEEVE_PHOTOS = {
+  half: {
+    pocket: "/customizer/coral-stripe-half-pocket-step4-cutout.webp",
+    "no-pocket": "/customizer/coral-stripe-half-no-pocket-step4-cutout.webp",
+  },
+  full: {
+    pocket: "/customizer/coral-stripe-full-pocket-step4-cutout.webp",
+    "no-pocket": "/customizer/coral-stripe-full-no-pocket-step4-cutout.webp",
+  },
+};
+
+export function getCoralStep4SleevePhoto(
+  slug?: string,
+  sleeveType?: MannequinShirtViewerProps["sleeveType"],
+  pocket?: MannequinShirtViewerProps["pocket"],
+) {
+  return slug === CORAL_PRODUCT_SLUG && sleeveType && pocket
+    ? CORAL_STEP4_SLEEVE_PHOTOS[sleeveType][pocket]
+    : undefined;
+}
+
 export function CoralFullSleevePocket({ visible }: { visible: boolean }) {
   return (
     <div
@@ -419,8 +440,16 @@ export default function MannequinShirtViewer({
   const activeFitForModel = (bodyFit === "regular" || bodyFit === "tummy" || bodyFit === "lean") ? bodyFit : "regular";
   const previewFit = useCoralFitPhotos && currentStep === 1 && !bodyFit ? "lean" : activeFitForModel;
   const showCoralSleevePhotos = useCoralFitPhotos && currentStep >= 4;
+  const step4ProductSlug = currentStep === 4 ? product?.slug : undefined;
+  const step4SleevePhotos = [
+    [getCoralStep4SleevePhoto(step4ProductSlug, "half", "pocket"), "half sleeve with pocket"],
+    [getCoralStep4SleevePhoto(step4ProductSlug, "half", "no-pocket"), "half sleeve without pocket"],
+    [getCoralStep4SleevePhoto(step4ProductSlug, "full", "pocket"), "full sleeve with pocket"],
+    [getCoralStep4SleevePhoto(step4ProductSlug, "full", "no-pocket"), "full sleeve without pocket"],
+  ] as const;
+  const selectedStep4Photo = getCoralStep4SleevePhoto(step4ProductSlug, sleeveType, pocket);
   const requestedCoralPhoto = useCoralFitPhotos
-    ? getCoralBuyNowFitPhoto(product?.slug, previewFit, showCoralSleevePhotos ? sleeveType : "", pocket)
+    ? selectedStep4Photo ?? getCoralBuyNowFitPhoto(product?.slug, previewFit, showCoralSleevePhotos ? sleeveType : "", pocket)
     : undefined;
   const [readyCoralPhotos, setReadyCoralPhotos] = useState<Partial<Record<string, true>>>({});
   const [lastReadyCoralPhoto, setLastReadyCoralPhoto] = useState<string>(CORAL_BUY_NOW_PHOTOS.lean);
@@ -789,6 +818,7 @@ export default function MannequinShirtViewer({
                       isCurrent: visibleCoralPhoto === CORAL_BUY_NOW_PHOTOS[fit],
                     })),
                     ...(showCoralSleevePhotos ? [
+                      ...step4SleevePhotos.flatMap(([src, description]) => src ? [[src, description]] : []),
                       [CORAL_HALF_POCKET_PHOTO, "half sleeve with pocket"],
                       [CORAL_HALF_NO_POCKET_PHOTO, "half sleeve without pocket"],
                     ].map(([src, description]) => ({
@@ -798,8 +828,10 @@ export default function MannequinShirtViewer({
                 : (["full", "half"] as const).flatMap((slv) =>
                     CORAL_FITS.map((fit) => ({
                       key: `${slv}-${fit}`,
-                      src: shirtModels[slv][fit],
-                      description: `${fit} fit, ${slv} sleeve`,
+                      src: slv === sleeveType ? selectedStep4Photo ?? shirtModels[slv][fit] : shirtModels[slv][fit],
+                      description: slv === sleeveType && selectedStep4Photo
+                        ? `${slv} sleeve ${pocket === "pocket" ? "with" : "without"} pocket`
+                        : `${fit} fit, ${slv} sleeve`,
                       fallback: slv === "half" ? "/customizer/shirt_model_white_half.png" : "/customizer/shirt_model_white.png",
                       isCurrent: slv === (isHalfSleeve ? "half" : "full") && fit === previewFit,
                     }))
@@ -807,6 +839,9 @@ export default function MannequinShirtViewer({
               ).map(({ key, src, description, fallback, isCurrent }) => {
                   const fitPhoto = useCoralFitPhotos && CORAL_FITS.some((fit) => CORAL_BUY_NOW_PHOTOS[fit] === src);
                   const fitPhotoPath = fitPhoto ? src.split(".webp")[0] : undefined;
+                  const photoFraming = step4SleevePhotos.some(([step4Src]) => src === step4Src)
+                    ? "object-cover object-center"
+                    : "object-contain object-top";
                   const photoStyle = useCoralFitPhotos
                     ? "pointer-events-none"
                     : `transition-opacity duration-500 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"}`;
@@ -823,7 +858,7 @@ export default function MannequinShirtViewer({
                       sizes={fitPhotoPath ? "(max-width: 639px) 295px, (max-width: 1023px) 330px, 365px" : undefined}
                       alt={`${product?.name ?? "Custom Bespoke Made Shirt"} (${description}${isCurrent && showCoralFullPocket ? ", full sleeve with pocket" : ""})`}
                       aria-hidden={!isCurrent}
-                      className={`absolute inset-0 w-full h-full object-contain object-top ${photoStyle}`}
+                      className={`absolute inset-0 w-full h-full ${photoFraming} ${photoStyle}`}
                       style={{
                         filter: shirtFilter,
                         mixBlendMode: useCoralFitPhotos ? "plus-lighter" : undefined,
