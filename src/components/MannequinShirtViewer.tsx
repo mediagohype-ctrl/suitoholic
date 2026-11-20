@@ -390,6 +390,7 @@ export default function MannequinShirtViewer({
   const c = useContent("customizer");
 
   const isCoralProduct = product?.slug === CORAL_PRODUCT_SLUG;
+  const showRegularFitReference = isCoralProduct && currentStep === 2 && bodyFit === "regular";
   const showCoralHeightGuides = currentStep === 3 && isCoralProduct;
   const shirtStageRef = useRef<HTMLDivElement>(null);
   const [shirtStageSize, setShirtStageSize] = useState({ width: 0, height: 0 });
@@ -636,6 +637,9 @@ export default function MannequinShirtViewer({
 
   // Pristine clean presentation without card-like background shade
   const shirtFilter = "none";
+  const shirtStageSizeClass = isCoralProduct
+    ? "max-w-[345px] sm:max-w-[376px] lg:max-w-[398px] h-[355px] sm:h-[398px] lg:h-[440px]"
+    : "max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px]";
 
   return (
     <div
@@ -646,6 +650,28 @@ export default function MannequinShirtViewer({
           : "max-w-[440px]"
         } mx-auto flex flex-col items-center justify-start py-0 transition-all duration-300`}
     >
+      {showRegularFitReference && (
+        <figure className="flex w-full flex-col items-center">
+          <div className={`relative w-full ${shirtStageSizeClass}`}>
+            <div className="absolute left-1/2 top-[3.6%] h-[96%] max-w-full aspect-[5/6] -translate-x-1/2 overflow-hidden">
+              {/* The shirt is centered at 24.2% of the original landscape photo's width. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/customizer/coral-stripe-regular-fit-cutout.webp"
+                alt="Coral red striped shirt in Regular Fit with a 38-inch chest and 36-inch waist"
+                width={1600}
+                height={900}
+                className="absolute left-1/2 top-0 h-full w-auto max-w-none -translate-x-[24.2%]"
+              />
+            </div>
+          </div>
+          {chestSize > 0 && chestSize !== 38 && (
+            <figcaption className="mt-1.5 text-sm text-[#4E3B30]">
+              Reference photo shown with a 38″ chest and 36″ waist.
+            </figcaption>
+          )}
+        </figure>
+      )}
 
       {/* ============================================================ */}
       {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
@@ -726,17 +752,14 @@ export default function MannequinShirtViewer({
         </div>
       ) : (
         /* Steps 1, 2, 3, 4, 6 (and Step 5 for Half Sleeves): Full Ghost Mannequin Stage */
-        <div className="relative w-full flex items-start justify-center py-0">
+        <div className={showRegularFitReference ? "hidden" : "relative w-full flex items-start justify-center py-0"}>
 
           {/* ============================================================ */}
           {/* CORE SHIRT PHOTO: FULL MADE SHIRT IN MATCHING CHOSEN COLOR   */}
           {/* ============================================================ */}
           <div
             ref={shirtStageRef}
-            className={`relative w-full aspect-[5/6] flex items-center justify-center z-10 mx-auto ${isCoralProduct
-              ? "max-w-[345px] sm:max-w-[376px] lg:max-w-[398px] h-[355px] sm:h-[398px] lg:h-[440px]"
-              : "max-w-[325px] sm:max-w-[355px] lg:max-w-[375px] h-[335px] sm:h-[375px] lg:h-[415px]"
-              }`}
+            className={`relative w-full aspect-[5/6] flex items-center justify-center z-10 mx-auto ${shirtStageSizeClass}`}
           >
             <div
               className={`relative w-full h-full flex items-center justify-center transition-transform duration-500 ease-out motion-reduce:transition-none ${useCoralFitPhotos ? "isolate" : ""}`}
