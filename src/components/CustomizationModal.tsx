@@ -757,8 +757,9 @@ export default function CustomizationModal({
                                 <button
                                   key={size}
                                   type="button"
+                                  aria-pressed={isSelected}
                                   onClick={() => handleChestSelect(size)}
-                                  className={`h-[48px] sm:h-[52px] px-1 rounded-[14px] font-sans font-bold text-[16px] sm:text-[17px] tracking-tight transition-all duration-200 cursor-pointer flex items-center justify-center ${isSelected
+                                  className={`h-[48px] sm:h-[52px] px-1 rounded-[14px] font-[Arial,sans-serif] font-bold tabular-nums text-[16px] sm:text-[17px] transition-all duration-200 cursor-pointer flex items-center justify-center ${isSelected
                                       ? "bg-gradient-to-b from-[#6D0E1C] via-[#5A0713] to-[#3F030A] text-white border border-[#7D1524] shadow-[0_6px_16px_rgba(85,8,18,0.5),inset_0_1px_1px_rgba(255,255,255,0.2)] scale-[1.02]"
                                       : "bg-gradient-to-b from-[#FFFDF9] via-[#FAF3EA] to-[#F3E7D7] hover:from-[#FFFFFF] hover:to-[#EEDECB] text-[#1A110B] border border-[#E4D3C2] shadow-[0_2px_5px_rgba(140,90,50,0.08),inset_0_1px_1px_rgba(255,255,255,0.95)] hover:shadow-xs active:scale-[0.98]"
                                     }`}
@@ -776,7 +777,7 @@ export default function CustomizationModal({
                             <span className="font-['Playfair_Display',Georgia,serif] italic font-medium text-[11.5px] sm:text-[12px] text-[#4E3B30] block">
                               Chest Size
                             </span>
-                            <strong className="font-sans font-bold text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
+                            <strong className="font-[Arial,sans-serif] font-bold tabular-nums text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
                               {customFit.chestSize > 0 ? `${customFit.chestSize}"` : "—"}
                             </strong>
                           </div>
@@ -784,7 +785,7 @@ export default function CustomizationModal({
                             <span className="font-['Playfair_Display',Georgia,serif] italic font-medium text-[11.5px] sm:text-[12px] text-[#4E3B30] block">
                               Collar Size
                             </span>
-                            <strong className="font-sans font-bold text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
+                            <strong className="font-[Arial,sans-serif] font-bold tabular-nums text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
                               {customFit.collarSize > 0 ? `${customFit.collarSize}"` : "—"}
                             </strong>
                           </div>
@@ -792,7 +793,7 @@ export default function CustomizationModal({
                             <span className="font-['Playfair_Display',Georgia,serif] italic font-medium text-[11.5px] sm:text-[12px] text-[#4E3B30] block">
                               Shoulder
                             </span>
-                            <strong className="font-sans font-bold text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
+                            <strong className="font-[Arial,sans-serif] font-bold tabular-nums text-[15px] sm:text-[16px] text-[#1A110B] block mt-0.5">
                               {customFit.shoulderSize > 0 ? `${customFit.shoulderSize}"` : "—"}
                             </strong>
                           </div>
