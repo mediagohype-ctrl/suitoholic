@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import Image from "next/image";
 import { useContent } from "@/context/SiteDataProvider";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
@@ -31,6 +32,9 @@ const CORAL_FITS: CoralFit[] = ["lean", "regular", "tummy"];
 const CORAL_HALF_POCKET_PHOTO = "/customizer/shirt_model_coral_stripe_half_pocket.png";
 const CORAL_HALF_NO_POCKET_PHOTO = "/customizer/shirt_model_coral_stripe_half_nopocket.png";
 const CORAL_PRODUCT_SLUG = "coral-red-bold-bengal-stripe-twill-shirt";
+const CORAL_STEP5_CUFFLINK_REFERENCE = "/customizer/coral-stripe-step5-cutaway-cufflink-transparent.png";
+const CORAL_STEP5_WIDE_ASSETS = "/customizer/coral-step5-wide";
+const CORAL_STEP5_COLLARS = { cutaway: "Cutaway", mandarin: "Mandarin", buttondown: "Button-down" };
 const CORAL_HEIGHT_GUIDE_PHOTOS = {
   buyNow: {
     width: 1072,
@@ -271,7 +275,7 @@ function getCollarKey(collarStyle: string): "mandarin" | "buttondown" | "cutaway
 
 function getCuffKey(cuffStyle: string): "classic" | "french" | "rounded" {
   const norm = (cuffStyle || "").toLowerCase();
-  if (norm.includes("french") || norm.includes("double")) return "french";
+  if (norm.includes("cufflink") || norm.includes("french") || norm.includes("double")) return "french";
   if (norm.includes("rounded") || norm.includes("round")) return "rounded";
   return "classic";
 }
@@ -452,8 +456,13 @@ export default function MannequinShirtViewer({
 
   // Step 5: High-end luxury folded shirt (showing collar & cuff) and macro cuff close-up
   const cuffKey = getCuffKey(cuffStyle);
+  const activeCollarKey = getCollarKey(collarStyle);
   const { foldedImage, cuffDetailImage, foldedFallback, cuffFallback } = getFoldedAndCuffAssets(product, cuffStyle, collarStyle);
   const cuffLabel = cuffKey === "french" ? "Cufflink" : cuffKey === "rounded" ? "Rounded" : "Classic";
+  const coralCollarKey = activeCollarKey === "spread" ? "cutaway" : activeCollarKey;
+  const coralCollarLabel = CORAL_STEP5_COLLARS[coralCollarKey];
+  const coralCuffKey = cuffKey === "french" ? "french" : "classic";
+  const coralCuffLabel = coralCuffKey === "french" ? "Cufflink" : "Classic";
 
   const activeFitForModel = (previewBodyFit === "regular" || previewBodyFit === "tummy" || previewBodyFit === "lean") ? previewBodyFit : "regular";
   const previewFit = useCoralFitPhotos && currentStep === 1 && !bodyFit ? "lean" : activeFitForModel;
@@ -472,7 +481,6 @@ export default function MannequinShirtViewer({
       { key: "buttondown", label: "Button-down collar", src: selectedSleevePhoto.replace("-step4-cutout.webp", "-buttondown-step5.webp") },
     ]
     : [];
-  const activeCollarKey = getCollarKey(collarStyle);
   const selectedCollarPhoto = collarPhotoOptions.find(({ key }) => key === activeCollarKey)?.src;
   const requestedCoralPhoto = useCoralFitPhotos
     ? selectedCollarPhoto ?? selectedSleevePhoto ?? getCoralBuyNowFitPhoto(product?.slug, previewFit, showCoralSleevePhotos ? sleeveType : "", pocket)
@@ -753,7 +761,59 @@ export default function MannequinShirtViewer({
       {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
       {/* (Only for Full Sleeves — Half Sleeve shirts do not have cuffs) */}
       {/* ============================================================ */}
-      {showFoldedPreview ? (
+      {showFoldedPreview && isCoralProduct ? (
+        <figure className="w-full">
+          <figcaption className="mb-2 text-[10px] font-semibold tracking-wider text-[#72533b] uppercase">
+            Style preview
+          </figcaption>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {[
+              {
+                title: "Folded Shirt",
+                detail: `${coralCollarLabel} • ${coralCuffLabel}`,
+                alt: `Folded coral striped shirt with a ${coralCollarLabel.toLowerCase()} collar and ${coralCuffLabel.toLowerCase()} cuff`,
+                variant: `${coralCollarKey}-${coralCuffKey}`,
+              },
+              {
+                title: "Wrist Cuff",
+                detail: `${coralCuffLabel} Cuff`,
+                alt: coralCuffKey === "french" ? "Coral striped wrist cuff with a black and gold cufflink" : "Classic coral striped wrist cuff with a cream button",
+                variant: coralCuffKey === "classic" ? "cuff-classic" : undefined,
+              },
+            ].map(({ title, detail, alt, variant }) => (
+              <div key={title} className="@container relative aspect-[839/810] min-w-0 overflow-hidden rounded-xl border border-[#C69C74]/65 bg-white/20 shadow-sm sm:rounded-2xl">
+                <div className="absolute inset-x-0 top-0 h-[88.5%] overflow-hidden">
+                  {variant ? (
+                    <Image
+                      key={variant}
+                      src={`${CORAL_STEP5_WIDE_ASSETS}/${variant}.webp`}
+                      alt={alt}
+                      fill
+                      loading="eager"
+                      unoptimized
+                      className="object-contain"
+                    />
+                  ) : (
+                    <Image
+                      src={CORAL_STEP5_CUFFLINK_REFERENCE}
+                      alt={alt}
+                      width={1678}
+                      height={937}
+                      loading="eager"
+                      unoptimized
+                      className="absolute -right-[1.5%] top-0 h-auto w-[200%] max-w-none"
+                    />
+                  )}
+                </div>
+                <div className="absolute inset-x-[6%] bottom-[3.5%] flex items-center justify-between gap-1 rounded-full bg-[#24201e] px-[3%] py-[2.2%] text-[clamp(0.375rem,3cqi,0.625rem)] leading-tight font-semibold uppercase">
+                  <span className="text-[#f0d9c9]">{title}</span>
+                  <span className="text-right text-[#e4a276]">{detail}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </figure>
+      ) : showFoldedPreview ? (
         <div className="relative w-full flex flex-col justify-start items-center py-0 animate-in fade-in duration-300">
           {/* Dual Image Presentation - Always 2-Column Side-by-Side Responsive */}
           <div className="w-full grid grid-cols-2 gap-2.5 sm:gap-3.5 items-start">

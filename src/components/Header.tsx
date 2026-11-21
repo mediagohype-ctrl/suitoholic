@@ -4,12 +4,14 @@ import React, { useState, useEffect, useRef, useSyncExternalStore } from "react"
 import Link from"next/link";
 import Image from"next/image";
 import { usePathname } from"next/navigation";
-import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart, Package, MapPin, LogOut, LogIn } from"lucide-react";
-import { useCatalog, useContent } from"@/context/SiteDataProvider";
+import { ArrowRight, Search, User, ShoppingBag, Menu, X, ChevronDown, Heart, Package, MapPin, LogOut, LogIn } from"lucide-react";
+import { useContent } from"@/context/SiteDataProvider";
 import { useCart } from"@/context/CartProvider";
 import { useWishlist } from"@/context/WishlistProvider";
 import CartDrawer from"@/components/CartDrawer";
 import SearchModal from"@/components/SearchModal";
+import ShopCollectionsOverview from "@/components/ShopCollectionsOverview";
+import { shopCategoryHref, shopCollections } from "@/data/shopCollections";
 
 interface HeaderProps {
   /** Legacy tab id ("shop","custom-fit","fabrics","about") forcing the highlighted link. */
@@ -37,13 +39,24 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
   const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const pathname = usePathname();
   const c = useContent("header");
-  const { categories } = useCatalog();
   const { itemCount } = useCart();
   const { wishlistCount } = useWishlist();
   const bagCount = isClient ? (cartCount ?? itemCount) : (cartCount ?? 0);
   const [currentUser, setCurrentUser] = useState<{ name: string; email: string; isLoggedIn: boolean } | null>(null);
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
+  const [previousPathname, setPreviousPathname] = useState(pathname);
+  const shopDisclosureRef = useRef<HTMLButtonElement>(null);
   const shopMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  if (previousPathname !== pathname) {
+    setPreviousPathname(pathname);
+    setIsShopMenuOpen(false);
+  }
+
+  const closeShopMenu = () => {
+    if (shopMenuTimeoutRef.current) clearTimeout(shopMenuTimeoutRef.current);
+    setIsShopMenuOpen(false);
+  };
 
   const handleMenuEnter = () => {
     if (shopMenuTimeoutRef.current) clearTimeout(shopMenuTimeoutRef.current);
@@ -62,10 +75,6 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       if (shopMenuTimeoutRef.current) clearTimeout(shopMenuTimeoutRef.current);
     };
   }, []);
-
-  useEffect(() => {
-    setIsShopMenuOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     const syncUser = () => {
@@ -167,7 +176,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           ?"bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
           :"bg-transparent border-b border-transparent"
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-between relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-between">
 
           {/* Mobile: Hamburger Button (Left) */}
           <div className="flex items-center lg:hidden z-10 w-8">
@@ -196,7 +205,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
           </div>
 
           {/* Desktop Navigation Links (Center) */}
-          <nav className="hidden lg:flex items-center space-x-9 text-[11px] font-semibold tracking-[0.2em] uppercase">
+          <nav className="hidden lg:flex items-center space-x-9 font-sans text-[11px] font-semibold tracking-[0.2em] uppercase">
             {c.navLinks.map((link, i) => {
               const isShop = link.href ==="/shop" || link.label.toLowerCase() ==="shop";
               const active = isActive(link.href);
@@ -205,26 +214,90 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 return (
                   <div
                     key={`${link.href}-${i}`}
-                    className="relative py-2"
+                    className="py-2"
                     onMouseEnter={handleMenuEnter}
                     onMouseLeave={handleMenuLeave}
+                    onBlur={(event) => {
+                      if (!event.currentTarget.contains(event.relatedTarget)) closeShopMenu();
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape" && isShopMenuOpen) {
+                        event.preventDefault();
+                        closeShopMenu();
+                        shopDisclosureRef.current?.focus();
+                      }
+                    }}
                   >
-                    <Link
-                      href={link.href}
-                      className={`transition-colors duration-200 pb-1 flex items-center gap-1.5 relative ${
-                        active || isShopMenuOpen
-                          ? "text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
-                          : "text-[#666666] hover:text-[#000000]"
+                    <div className={`relative flex items-center pb-1 ${
+                      active || isShopMenuOpen
+                        ? "text-black after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-black"
+                        : "text-[#666666] hover:text-black"
+                    }`}>
+                      <Link href={link.href} onClick={closeShopMenu} className="leading-none">
+                        {link.label}
+                      </Link>
+                      <button
+                        ref={shopDisclosureRef}
+                        type="button"
+                        aria-label="Shop categories"
+                        aria-controls="desktop-shop-menu"
+                        aria-expanded={isShopMenuOpen}
+                        onClick={() => {
+                          if (isShopMenuOpen) closeShopMenu();
+                          else handleMenuEnter();
+                        }}
+                        className="cursor-pointer py-0.5 pl-2"
+                      >
+                        <ChevronDown
+                          size={14}
+                          aria-hidden="true"
+                          className={`transition-transform duration-200 ${isShopMenuOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                    </div>
+
+                    <div
+                      id="desktop-shop-menu"
+                      inert={!isShopMenuOpen}
+                      className={`absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain border-y border-black/10 bg-white text-black shadow-[0_24px_45px_rgba(0,0,0,0.1)] transition-opacity duration-150 ${
+                        isShopMenuOpen ? "visible opacity-100" : "invisible pointer-events-none opacity-0"
                       }`}
                     >
-                      <span>{link.label}</span>
-                      <ChevronDown
-                        size={12}
-                        className={`transition-transform duration-300 ${
-                          isShopMenuOpen ? "rotate-180 text-[#000000]" : "text-[#666666]"
-                        }`}
-                      />
-                    </Link>
+                      <div className="mx-auto grid max-w-[1720px] grid-cols-[clamp(11rem,16vw,17rem)_minmax(0,1fr)] gap-4 py-5 pr-2 pl-5 xl:gap-6 xl:py-6 xl:pl-8">
+                        <nav aria-label="Shop collections" className="flex flex-col py-3 text-[clamp(0.75rem,1vw,1rem)] font-semibold leading-snug tracking-[0.12em] xl:py-8">
+                          <Link
+                            href="/shop"
+                            onClick={closeShopMenu}
+                            className="border-b border-black/10 py-3 pb-5 font-bold hover:text-[#765737] xl:pb-6"
+                          >
+                            Shop All
+                          </Link>
+                          <ul className="pt-2">
+                            {shopCollections.map(({ id, title }) => (
+                              <li key={id}>
+                                <Link
+                                  href={shopCategoryHref(id)}
+                                  onClick={closeShopMenu}
+                                  className="block py-[clamp(0.6rem,1.15vw,1.25rem)] hover:text-[#765737]"
+                                >
+                                  {title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                          <div className="mt-auto pt-5">
+                            <Link
+                              href="/custom-shirt"
+                              onClick={closeShopMenu}
+                              className="flex items-center gap-4 border-t border-black/10 py-4 font-bold hover:text-[#765737]"
+                            >
+                              Custom Fit <ArrowRight size={20} aria-hidden="true" />
+                            </Link>
+                          </div>
+                        </nav>
+                        <ShopCollectionsOverview onSelect={closeShopMenu} />
+                      </div>
+                    </div>
                   </div>
                 );
               }
@@ -232,7 +305,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                 <Link
                   key={`${link.href}-${i}`}
                   href={link.href}
-                  onMouseEnter={() => setIsShopMenuOpen(false)}
+                  onMouseEnter={closeShopMenu}
                   className={`transition-colors duration-200 pb-1 relative ${
                     active
                       ?"text-[#000000] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]"
@@ -385,184 +458,9 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
         </div>
       </div>
 
-      {/* SUOS India-Style Full-Width Shop Mega-Menu Dropdown Panel */}
-      <div
-        onMouseEnter={handleMenuEnter}
-        onMouseLeave={handleMenuLeave}
-        className="absolute left-0 top-full hidden w-full overflow-hidden bg-white text-black border-b border-black/10 shadow-[0_24px_60px_rgba(0,0,0,0.08)] [will-change:clip-path] lg:block z-50"
-        style={{
-          clipPath: isShopMenuOpen ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
-          transition: isShopMenuOpen
-            ? "clip-path 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease-out"
-            : "clip-path 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in",
-          opacity: isShopMenuOpen ? 1 : 0,
-          pointerEvents: isShopMenuOpen ? "auto" : "none",
-        }}
-      >
-        <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-14 py-8">
-          <div className="flex h-full w-full items-start gap-12 xl:gap-16">
-            
-            {/* Left Column: Categories List */}
-            <div className="min-w-[14rem] max-w-[20rem] flex-1">
-              <div className="pb-3 mb-3 border-b border-black/10 flex items-center justify-between">
-                <h4 className="text-[12px] font-bold tracking-[0.2em] text-black uppercase font-sans">
-                  EDITS
-                </h4>
-                <span className="text-[9.5px] text-[#888888] tracking-widest uppercase font-semibold">
-                  SUITOHOLIC
-                </span>
-              </div>
-
-              <ul className="space-y-2.5">
-                <li>
-                  <Link
-                    href="/shop"
-                    onClick={() => setIsShopMenuOpen(false)}
-                    className="inline-flex cursor-pointer items-start text-left text-[13px] font-bold uppercase leading-[1.4] tracking-[0.08em] text-black transition-colors duration-200 hover:opacity-60 focus-visible:outline-none"
-                  >
-                    SHOP ALL
-                  </Link>
-                </li>
-                {categories && categories.length > 0 ? (
-                  categories.map((cat) => (
-                    <li key={cat.id}>
-                      <Link
-                        href={`/shop?category=${cat.id}`}
-                        onClick={() => setIsShopMenuOpen(false)}
-                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
-                      >
-                        {cat.title}
-                      </Link>
-                    </li>
-                  ))
-                ) : (
-                  <>
-                    <li>
-                      <Link
-                        href="/shop?category=formal_shirts"
-                        onClick={() => setIsShopMenuOpen(false)}
-                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
-                      >
-                        FORMAL SHIRTS
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/shop?category=formal_stripes"
-                        onClick={() => setIsShopMenuOpen(false)}
-                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
-                      >
-                        ORIGINALS
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/shop?category=formal_bespoke"
-                        onClick={() => setIsShopMenuOpen(false)}
-                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
-                      >
-                        FORMAL SHIRTS
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/shop?category=timeless"
-                        onClick={() => setIsShopMenuOpen(false)}
-                        className="inline-flex cursor-pointer items-start text-left text-[13px] font-medium uppercase leading-[1.4] tracking-[0.06em] text-black/60 transition-colors duration-200 hover:text-black focus-visible:outline-none"
-                      >
-                        TIMELESS
-                      </Link>
-                    </li>
-                  </>
-                )}
-              </ul>
-
-              {/* Bespoke Atelier Shortcut */}
-              <div className="pt-4 border-t border-black/10 mt-5 flex items-center justify-between text-[10px] font-bold tracking-[0.18em] uppercase text-[#666666]">
-                <span>BESPOKE ATELIER</span>
-                <Link
-                  href="/custom-shirt"
-                  onClick={() => setIsShopMenuOpen(false)}
-                  className="text-black hover:opacity-60 flex items-center gap-1 transition-opacity"
-                >
-                  <span>CUSTOM FIT</span>
-                  <span className="text-xs">→</span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Column: Two Editorial Cards matching SUOS India layout */}
-            <div className="flex shrink-0 gap-5 lg:gap-6">
-              
-              {/* Card 1: NEW LAUNCH / COUNTRY EDIT */}
-              <Link
-                href="/shop?category=country-edit"
-                onClick={() => setIsShopMenuOpen(false)}
-                className="group/card relative block aspect-[3/2] w-[340px] sm:w-[380px] lg:w-[420px] shrink-0 cursor-pointer overflow-hidden bg-neutral-100"
-              >
-                <div className="absolute inset-0">
-                  {isShopMenuOpen && <img
-                    src="/banners/menu_card_country_edit.jpg"
-                    alt="Suitoholic Country Edit - New Launch"
-                    decoding="async"
-                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover/card:scale-105"
-                  />}
-                </div>
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.45)_100%)]" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]">
-                  <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/90 mb-1 font-sans">
-                    NEW LAUNCH
-                  </span>
-                  <h4 className="font-serif-luxury text-2xl lg:text-3xl font-bold uppercase tracking-[0.1em] text-white">
-                    COUNTRY EDIT
-                  </h4>
-                </div>
-              </Link>
-
-              {/* Card 2: EXPLORE / TIMELESS */}
-              <Link
-                href="/shop?category=timeless"
-                onClick={() => setIsShopMenuOpen(false)}
-                className="group/card relative block aspect-[3/2] w-[340px] sm:w-[380px] lg:w-[420px] shrink-0 cursor-pointer overflow-hidden bg-neutral-100"
-              >
-                <div className="absolute inset-0">
-                  {isShopMenuOpen && <img
-                    src="/banners/menu_card_timeless.jpg"
-                    alt="Suitoholic Timeless Collection"
-                    decoding="async"
-                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover/card:scale-105"
-                  />}
-                </div>
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.45)_100%)]" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]">
-                  <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/90 mb-1 font-sans">
-                    EXPLORE
-                  </span>
-                  <h4 className="font-serif-luxury text-2xl lg:text-3xl font-bold uppercase tracking-[0.1em] text-white">
-                    TIMELESS
-                  </h4>
-                </div>
-
-                {/* Bottom-Left Subtle Specification (Screenshot format) */}
-                <div className="absolute bottom-3.5 left-4 z-10 text-left pointer-events-none drop-shadow-sm">
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/85 leading-tight">
-                    LIGHT FIT DENIM
-                  </p>
-                  <p className="text-[8px] font-normal uppercase tracking-[0.14em] text-white/65 leading-tight mt-0.5">
-                    COTTON • NON-STRETCH
-                  </p>
-                </div>
-              </Link>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-200 px-6 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
+        <div className="lg:hidden max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain bg-white border-b border-gray-200 px-6 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-4 duration-200">
           {c.navLinks.map((link, i) => {
             const isShop = link.href ==="/shop" || link.label.toLowerCase() ==="shop";
             if (isShop) {
@@ -575,22 +473,22 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
                   >
                     {link.mobileLabel || link.label}
                   </Link>
-                  <div className="pl-3 space-y-1 pt-1">
+                  <div className="space-y-1 pt-1 pl-3 font-sans text-[11px] font-semibold tracking-[0.12em] uppercase">
                     <Link
                       href="/shop"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block text-[11px] font-bold tracking-wider uppercase text-[#14110E] py-1"
+                      className="block py-1 font-bold text-[#14110E]"
                     >
                       • ALL PRODUCTS
                     </Link>
-                    {categories.map((cat) => (
+                    {shopCollections.map(({ id, title }) => (
                       <Link
-                        key={cat.id}
-                        href={`/shop?category=${cat.id}`}
+                        key={id}
+                        href={shopCategoryHref(id)}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block text-[11px] font-semibold tracking-wider uppercase text-[#6E5D4F] hover:text-[#14110E] py-1"
+                        className="block py-1 text-[#6E5D4F] hover:text-[#14110E]"
                       >
-                        • {cat.title}
+                        {title}
                       </Link>
                     ))}
                   </div>

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { shopCollections } from "@/data/shopCollections";
 import { apiFetch, ApiError } from "@/lib/api";
 import {
   Phone,
@@ -237,20 +238,20 @@ export default function ContactPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
+                        <label htmlFor="consultation-service" className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.2em] uppercase text-[#666666] font-bold block">
                           SERVICE
                         </label>
                         <div className="relative">
                           <select
+                            id="consultation-service"
                             value={service}
                             onChange={(e) => setService(e.target.value)}
                             className="w-full bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black/40 focus:border-black focus:ring-1 focus:ring-black rounded-xl pl-4 pr-10 py-3.5 text-xs sm:text-sm text-black transition-all outline-hidden appearance-none font-sans cursor-pointer"
                           >
                             <option value="">Select a service...</option>
-                            <option value="Bespoke Suits & Tuxedos">Bespoke Suits & Tuxedos</option>
-                            <option value="Custom Tailored Dress Shirts">Custom Tailored Dress Shirts</option>
-                            <option value="Sartorial Trousers & Gurkhas">Sartorial Trousers & Gurkhas</option>
-                            <option value="Ceremonial & Evening Wear">Ceremonial & Evening Wear</option>
+                            {shopCollections.map(({ id, title }) => (
+                              <option key={id} value={title}>{title}</option>
+                            ))}
                             <option value="Private Studio Fitting Appointment">Private Studio Fitting Appointment</option>
                             <option value="Fabric Swatch Archive Request">Fabric Swatch Archive Request</option>
                           </select>
@@ -309,81 +310,72 @@ export default function ContactPage() {
 
               </div>
 
-              {/* RIGHT COLUMN: "Get in Touch" Information Card (lg:col-span-5) */}
-              <div className="lg:col-span-5">
+              <section aria-labelledby="studio-visit-heading" className="lg:col-span-5">
                 <div 
-                  className="bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-8 sm:p-10 lg:p-12 shadow-sm space-y-7 sm:space-y-8"
+                  className="@container bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-8 sm:p-10 lg:p-12 shadow-sm space-y-7 sm:space-y-8"
                 >
-                  
-                  {/* Card Title */}
-                  <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                    Get in Touch
+                  <h2 id="studio-visit-heading" className="font-serif-luxury whitespace-nowrap text-[min(2.375rem,7cqi)] font-bold uppercase leading-tight">
+                    Visit Our Vapi Studio
                   </h2>
 
-                  {/* 1. EMAIL */}
                   <div className="space-y-1.5 font-sans">
                     <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      EMAIL
+                      Studio Address
                     </span>
-                    <a
-                      href="mailto:infosuitoholic@gmail.com"
-                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block font-sans"
-                    >
-                      infosuitoholic@gmail.com
-                    </a>
+                    <address className="space-y-1.5 not-italic">
+                      <div className="text-base sm:text-[17px] text-black font-semibold">
+                        Suitoholic Atelier
+                      </div>
+                      <div className="text-xs sm:text-sm text-[#14110E] font-medium leading-relaxed">
+                        Near Upasana School, Behind Gunjan Cinema,<br />
+                        GIDC, Vapi, Gujarat - 396195
+                      </div>
+                    </address>
                   </div>
 
-                  {/* Divider */}
                   <div className="border-t border-[#E5E3DD]" />
 
-                  {/* 2. TELEPHONE */}
                   <div className="space-y-1.5 font-sans">
                     <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      TELEPHONE
+                      Visiting Hours
+                    </span>
+                    <div className="text-base sm:text-[17px] text-black font-medium">
+                      Monday — Saturday
+                    </div>
+                    <div className="text-xs sm:text-sm text-[#666666]">
+                      10:00 — 20:30 · By appointment
+                    </div>
+                  </div>
+
+                  <div className="border-t border-[#E5E3DD]" />
+
+                  <div className="space-y-1.5 font-sans">
+                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
+                      Call for an Appointment
                     </span>
                     <a
                       href="tel:+919979938022"
-                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block font-sans"
+                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block"
                     >
                       +91 99799 38022
                     </a>
                   </div>
 
-                  {/* Divider */}
                   <div className="border-t border-[#E5E3DD]" />
 
-                  {/* 3. ATELIER ADDRESS */}
                   <div className="space-y-1.5 font-sans">
                     <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      ATELIER ADDRESS
+                      Studio Email
                     </span>
-                    <div className="text-base sm:text-[17px] text-black font-semibold font-sans">
-                      Suitoholic Atelier
-                    </div>
-                    <div className="text-xs sm:text-sm text-[#14110E] font-medium font-sans leading-relaxed">
-                      Near Upasana School, Behind Gunjan Cinema,<br />
-                      GIDC, Vapi, Gujarat - 396195
-                    </div>
+                    <a
+                      href="mailto:infosuitoholic@gmail.com"
+                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block break-words"
+                    >
+                      infosuitoholic@gmail.com
+                    </a>
                   </div>
-
-                  {/* Divider */}
-                  <div className="border-t border-[#E5E3DD]" />
-
-                  {/* 4. HOURS */}
-                  <div className="space-y-1.5 font-sans">
-                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      HOURS
-                    </span>
-                    <div className="text-base sm:text-[17px] text-black font-medium font-sans">
-                      Monday — Saturday
-                    </div>
-                    <div className="text-xs sm:text-sm text-[#666666] font-sans">
-                      10:00 — 20:30 · By appointment
-                    </div>
-                  </div>
-
                 </div>
-              </div>
+              </section>
 
             </div>
 

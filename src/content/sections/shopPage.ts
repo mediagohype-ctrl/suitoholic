@@ -6,7 +6,7 @@ export const shopPage = {
   subtitle: "Handcrafted from 100% Egyptian Giza Cotton & fine Italian weaves, tailored to your exact measurements.",
   allPillLabel: "ALL SHIRTS",
   allSidebarLabel: "ALL SHIRTS & PRODUCTS",
-  allCategoryName: "ALL SHIRTS",
+  allCategoryName: "SHOP ALL",
   collectionsHeading: "COLLECTIONS",
   resetLabel: "RESET",
   filterHeading: "FILTER BY",
