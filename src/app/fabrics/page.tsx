@@ -205,7 +205,7 @@ export default function FabricsPage() {
 
       {/* Fabrics banner uses the same photos as the catalog and swatch archive. */}
       <div className="w-full">
-        <FabricsHeroCarouselBanner fabrics={[...(c.fabrics ?? []), ...(liveFabrics ?? [])]} products={products} ctaLabel={hero.primaryCtaLabel} />
+        <FabricsHeroCarouselBanner />
       </div>
 
       {/* 2. WORLDS FINEST FABRICS ATELIER PREFACE SECTION (MATCHING REFERENCE) */}

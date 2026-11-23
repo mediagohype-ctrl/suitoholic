@@ -11,33 +11,28 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-[#ECEAE5] text-black antialiased">
       {/* Global Header */}
-      <Header activeTab="about" />
+      <Header activeTab="about" forceSolid />
 
       {/* ========================================================================= */}
       {/* 1. HERO SECTION:"Tailoring with Care and Precision" (Light Atelier Aesthetic) */}
       {/* ========================================================================= */}
-      <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center text-center overflow-hidden border-b border-[#E5E3DD] bg-[#ECEAE5] pt-32 sm:pt-36 pb-20 sm:pb-24">
-        {/* Background Tailoring Atelier Photo (Light & Sunlit with Fabric Shelves & Tailor) */}
+      <section aria-labelledby="about-hero-heading" className="relative h-[100svh] min-h-[600px] w-full overflow-hidden border-b border-[#E5E3DD] bg-[#ECEAE5]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/about_hero_light.jpg"
-          alt="Suitoholic Master Bespoke Tailoring Atelier"
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+          src="/banners/about-atelier-racks-banner.webp"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full scale-110 object-cover object-center blur-2xl opacity-50"
           loading="eager"
         />
-
-        {/* Top Navbar Scrim for clean header contrast */}
-        <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
-
-        {/* Centered Hero Content Container */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-          
-          {/* Main Headline: Tailoring with Care and Precision */}
-          <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight max-w-4xl text-center">
-            Tailoring with Care and <span className="text-black italic font-serif">Precision</span>
-          </h1>
-
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/banners/about-atelier-racks-banner.webp"
+          alt="Suitoholic tailoring atelier with fabric shelves on both sides and the words Tailoring with Care and Precision."
+          className="absolute inset-0 h-full w-full object-contain object-center"
+          loading="eager"
+        />
+        <h1 id="about-hero-heading" className="sr-only">Tailoring with Care and Precision</h1>
       </section>
 
       {/* ========================================================================= */}

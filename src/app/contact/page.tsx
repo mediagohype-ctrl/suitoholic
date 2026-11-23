@@ -109,35 +109,21 @@ export default function ContactPage() {
         {/* ========================================================================= */}
         {/* 2. HERO SECTION: Light Luxury Editorial Split Layout                      */}
         {/* ========================================================================= */}
-        <section className="w-full bg-[#ECEAE5] border-b border-[#E5E3DD] text-black pt-24 sm:pt-32 lg:pt-36 pb-12 sm:pb-16 lg:pb-20">
-          <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-12">
-            
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              
-              {/* Left Column: Typography & Heading (lg:col-span-6) */}
-              <div className="lg:col-span-6 space-y-5 sm:space-y-6">
-                
-                {/* Main Luxury Heading */}
-                <h1 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                  Let&apos;s Create Your <span className="italic font-serif">Perfect Fit</span>
-                </h1>
-              </div>
-
-              {/* Right Column: High-End Framed Bespoke Fitting Image (lg:col-span-6, 12px border radius) */}
-              <div className="lg:col-span-6">
-                <div className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] min-h-[340px] sm:min-h-[420px] lg:min-h-[470px] w-full rounded-[12px] overflow-hidden border border-[#E5E3DD] shadow-sm bg-white group">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/contact_hero_indian_gentleman.jpg"
-                    alt="Master Tailor Bespoke Fitting and Craftsmanship"
-                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                    loading="eager"
-                  />
-                </div>
-              </div>
-
+        <section className="relative h-[100svh] min-h-[600px] w-full overflow-hidden border-b border-[#E5E3DD] bg-[#ECEAE5] text-black">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/banners/contact-master-tailor-hero.webp"
+            alt="A master tailor cutting blue striped fabric at a worktable in a bespoke atelier."
+            className="absolute inset-0 h-full w-full object-cover object-[62%_48%]"
+            loading="eager"
+          />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#ECEAE5]/85 via-[#ECEAE5]/52 to-transparent" />
+          <div className="relative z-10 mx-auto flex h-full max-w-[1600px] items-center px-5 pt-24 sm:px-10 sm:pt-28 lg:px-16">
+            <div className="max-w-[560px] rounded-sm border border-white/60 bg-[#F3F0EA]/72 p-5 shadow-[0_16px_50px_#21160e1c] backdrop-blur-[2px] sm:p-8 lg:p-10">
+              <h1 className="font-serif-luxury text-2xl leading-tight font-bold tracking-[0.1em] text-black uppercase sm:text-3xl lg:text-[42px]">
+                Let&apos;s Create Your <span className="font-serif italic">Perfect Fit</span>
+              </h1>
             </div>
-
           </div>
         </section>
 
