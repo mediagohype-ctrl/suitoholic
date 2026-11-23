@@ -32,7 +32,6 @@ const CORAL_FITS: CoralFit[] = ["lean", "regular", "tummy"];
 const CORAL_HALF_POCKET_PHOTO = "/customizer/shirt_model_coral_stripe_half_pocket.png";
 const CORAL_HALF_NO_POCKET_PHOTO = "/customizer/shirt_model_coral_stripe_half_nopocket.png";
 const CORAL_PRODUCT_SLUG = "coral-red-bold-bengal-stripe-twill-shirt";
-const CORAL_STEP5_CUFFLINK_REFERENCE = "/customizer/coral-stripe-step5-cutaway-cufflink-transparent.png";
 const CORAL_STEP5_WIDE_ASSETS = "/customizer/coral-step5-wide";
 const CORAL_STEP5_COLLARS = { cutaway: "Cutaway", mandarin: "Mandarin", buttondown: "Button-down" };
 const CORAL_HEIGHT_GUIDE_PHOTOS = {
@@ -380,7 +379,7 @@ export function getMatchingShirtModel(
     : `/customizer/shirt_model_${modelKey}.png`;
 }
 
-function getFoldedAndCuffAssets(
+function getFoldedShirtAssets(
   product?: { name?: string; image?: string; gallery?: string[]; slug?: string } | null,
   cuffStyle: string = "CLASSIC CUFF",
   collarStyle: string = "SPREAD"
@@ -391,18 +390,11 @@ function getFoldedAndCuffAssets(
   const foldedAsset = `/customizer/shirt_folded_${fabric}_${collarKey}_${cuffKey}`;
   const isCoralFabric = fabric === "coral_stripe";
   const coralFoldedSuffix = "_tailored.webp?v=2";
-  const standardCuffDetail = `/customizer/cuff_detail_${fabric}_${cuffKey}.jpg`;
-  const hasClosedCuffPhoto = isCoralFabric && (cuffKey === "classic" || cuffKey === "french");
-
   return {
     foldedImage: isCoralFabric ? `${foldedAsset}${coralFoldedSuffix}` : `${foldedAsset}.jpg`,
-    cuffDetailImage: hasClosedCuffPhoto
-      ? `/customizer/cuff_detail_${fabric}_${cuffKey}_closed.webp`
-      : standardCuffDetail,
     foldedFallback: isCoralFabric
       ? `/customizer/shirt_folded_${fabric}_${collarKey}_classic${coralFoldedSuffix}`
       : `/customizer/shirt_folded_${fabric}_spread_classic.jpg`,
-    cuffFallback: hasClosedCuffPhoto ? standardCuffDetail : `/customizer/cuff_detail_${fabric}_classic.jpg`,
   };
 }
 
@@ -423,12 +415,13 @@ export default function MannequinShirtViewer({
   const c = useContent("customizer");
 
   const isCoralProduct = product?.slug === CORAL_PRODUCT_SLUG;
-  const isCoralBodyFitStep = isCoralProduct && currentStep === 2;
-  const wantsRegularFitReference = isCoralBodyFitStep && bodyFit === "regular";
+  // Buy Now uses the clean fit photos with shared, live measurement guides.
+  const isCoralAddToBagBodyFitStep = !buyNow && isCoralProduct && currentStep === 2;
+  const wantsRegularFitReference = isCoralAddToBagBodyFitStep && bodyFit === "regular";
   const [regularFitReferenceStatus, setRegularFitReferenceStatus] = useState<"loading" | "ready" | "failed">("loading");
   const showRegularFitReference = wantsRegularFitReference && regularFitReferenceStatus === "ready";
   const [lastNonRegularFit, setLastNonRegularFit] = useState<Exclude<MannequinShirtViewerProps["bodyFit"], "regular" | undefined>>("");
-  if (isCoralBodyFitStep && bodyFit !== "regular" && bodyFit !== lastNonRegularFit) {
+  if (isCoralAddToBagBodyFitStep && bodyFit !== "regular" && bodyFit !== lastNonRegularFit) {
     setLastNonRegularFit(bodyFit);
   }
   // Keep the outgoing shirt and its guides together while the reference fades in.
@@ -451,18 +444,19 @@ export default function MannequinShirtViewer({
   const showCoralFitMeasurements = useCoralFitPhotos && currentStep === 2 && chestSize > 0 && !!previewBodyFit;
   const showCoralChestMeasurements = useCoralFitPhotos && currentStep <= 2 && chestSize > 0;
   const isHalfSleeve = sleeveType === "half";
-  const showCoralCollarPreview = isCoralProduct && currentStep === 5 && isHalfSleeve && !!pocket;
+  const showCoralCollarPreview = isCoralProduct && !!pocket
+    && (currentStep === 6 || (currentStep === 5 && isHalfSleeve));
   const showFoldedPreview = currentStep === 5 && !isHalfSleeve;
 
-  // Step 5: High-end luxury folded shirt (showing collar & cuff) and macro cuff close-up
+  // Step 5 folded shirt shows the selected collar and cuff together.
   const cuffKey = getCuffKey(cuffStyle);
   const activeCollarKey = getCollarKey(collarStyle);
-  const { foldedImage, cuffDetailImage, foldedFallback, cuffFallback } = getFoldedAndCuffAssets(product, cuffStyle, collarStyle);
+  const { foldedImage, foldedFallback } = getFoldedShirtAssets(product, cuffStyle, collarStyle);
   const cuffLabel = cuffKey === "french" ? "Cufflink" : cuffKey === "rounded" ? "Rounded" : "Classic";
   const coralCollarKey = activeCollarKey === "spread" ? "cutaway" : activeCollarKey;
   const coralCollarLabel = CORAL_STEP5_COLLARS[coralCollarKey];
-  const coralCuffKey = cuffKey === "french" ? "french" : "classic";
-  const coralCuffLabel = coralCuffKey === "french" ? "Cufflink" : "Classic";
+  const coralCuffKey = cuffKey === "french" ? "cufflink" : "classic";
+  const coralCuffLabel = coralCuffKey === "cufflink" ? "Cufflink" : "Classic";
 
   const activeFitForModel = (previewBodyFit === "regular" || previewBodyFit === "tummy" || previewBodyFit === "lean") ? previewBodyFit : "regular";
   const previewFit = useCoralFitPhotos && currentStep === 1 && !bodyFit ? "lean" : activeFitForModel;
@@ -558,7 +552,7 @@ export default function MannequinShirtViewer({
     }
   }, [currentShirtKey, displayedProductKey, isHalfSleeve, activeFitForModel, shirtModels]);
 
-  // Smooth Crossfade for Step 5 (Folded Shirt & Cuff Detail)
+  // Smooth Crossfade for Step 5 folded shirts.
   const [activeFolded, setActiveFolded] = useState(foldedImage);
   const [prevFolded, setPrevFolded] = useState<string | null>(null);
   useEffect(() => {
@@ -569,17 +563,6 @@ export default function MannequinShirtViewer({
       return () => clearTimeout(timer);
     }
   }, [foldedImage, activeFolded]);
-
-  const [activeCuff, setActiveCuff] = useState(cuffDetailImage);
-  const [prevCuff, setPrevCuff] = useState<string | null>(null);
-  useEffect(() => {
-    if (cuffDetailImage !== activeCuff) {
-      setPrevCuff(activeCuff);
-      setActiveCuff(cuffDetailImage);
-      const timer = setTimeout(() => setPrevCuff(null), 450);
-      return () => clearTimeout(timer);
-    }
-  }, [cuffDetailImage, activeCuff]);
 
   // Calculated stomach measurement values matching the 3-panel reference
   const activeChestForCalc = chestSize && chestSize > 0 ? chestSize : 40;
@@ -720,9 +703,9 @@ export default function MannequinShirtViewer({
         : currentStep === 3 && !useCoralFitPhotos
           ? "max-w-[460px] pl-6 sm:pl-8"
           : "max-w-[440px]"
-        } mx-auto flex flex-col items-center justify-start py-0 transition-all duration-300 ${isCoralBodyFitStep ? "isolate" : ""}`}
+        } mx-auto flex flex-col items-center justify-start py-0 transition-all duration-300 ${isCoralAddToBagBodyFitStep ? "isolate" : ""}`}
     >
-      {isCoralBodyFitStep && (
+      {isCoralAddToBagBodyFitStep && (
         <div
           aria-hidden={!showRegularFitReference}
           className={`pointer-events-none absolute inset-x-0 top-0 z-20 flex justify-center ${fitFadeClass} ${showRegularFitReference ? "opacity-100" : "opacity-0"}`}
@@ -757,67 +740,29 @@ export default function MannequinShirtViewer({
         </div>
       )}
 
-      {/* ============================================================ */}
-      {/* STEP 5: BESPOKE LUXURY PRESENTATION (FOLDED SHIRT & MACRO CUFF) */}
-      {/* (Only for Full Sleeves — Half Sleeve shirts do not have cuffs) */}
-      {/* ============================================================ */}
       {showFoldedPreview && isCoralProduct ? (
-        <figure className="w-full">
+        <figure className="w-full max-w-[clamp(220px,calc(125dvh-375px),520px)]">
           <figcaption className="mb-2 text-[10px] font-semibold tracking-wider text-[#72533b] uppercase">
             Style preview
           </figcaption>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {[
-              {
-                title: "Folded Shirt",
-                detail: `${coralCollarLabel} • ${coralCuffLabel}`,
-                alt: `Folded coral striped shirt with a ${coralCollarLabel.toLowerCase()} collar and ${coralCuffLabel.toLowerCase()} cuff`,
-                variant: `${coralCollarKey}-${coralCuffKey}`,
-              },
-              {
-                title: "Wrist Cuff",
-                detail: `${coralCuffLabel} Cuff`,
-                alt: coralCuffKey === "french" ? "Coral striped wrist cuff with a black and gold cufflink" : "Classic coral striped wrist cuff with a cream button",
-                variant: coralCuffKey === "classic" ? "cuff-classic" : undefined,
-              },
-            ].map(({ title, detail, alt, variant }) => (
-              <div key={title} className="@container relative aspect-[839/810] min-w-0 overflow-hidden rounded-xl border border-[#C69C74]/65 bg-white/20 shadow-sm sm:rounded-2xl">
-                <div className="absolute inset-x-0 top-0 h-[88.5%] overflow-hidden">
-                  {variant ? (
-                    <Image
-                      key={variant}
-                      src={`${CORAL_STEP5_WIDE_ASSETS}/${variant}.webp`}
-                      alt={alt}
-                      fill
-                      loading="eager"
-                      unoptimized
-                      className="object-contain"
-                    />
-                  ) : (
-                    <Image
-                      src={CORAL_STEP5_CUFFLINK_REFERENCE}
-                      alt={alt}
-                      width={1678}
-                      height={937}
-                      loading="eager"
-                      unoptimized
-                      className="absolute -right-[1.5%] top-0 h-auto w-[200%] max-w-none"
-                    />
-                  )}
-                </div>
-                <div className="absolute inset-x-[6%] bottom-[3.5%] flex items-center justify-between gap-1 rounded-full bg-[#24201e] px-[3%] py-[2.2%] text-[clamp(0.375rem,3cqi,0.625rem)] leading-tight font-semibold uppercase">
-                  <span className="text-[#f0d9c9]">{title}</span>
-                  <span className="text-right text-[#e4a276]">{detail}</span>
-                </div>
-              </div>
-            ))}
+          <div className="relative aspect-[670/518] overflow-hidden rounded-xl border border-[#C69C74]/45 bg-[#F6E7D9] sm:rounded-2xl">
+            <Image
+              src={`${CORAL_STEP5_WIDE_ASSETS}/${coralCollarKey}-${coralCuffKey}-reference-matched.webp`}
+              alt={`Folded coral striped shirt with a ${coralCollarLabel.toLowerCase()} collar and ${coralCuffLabel.toLowerCase()} cuff`}
+              fill
+              loading="eager"
+              unoptimized
+              className="object-contain"
+            />
+          </div>
+          <div className="mx-3 mt-2 flex items-center justify-between gap-2 rounded-full bg-[#24201e] px-3 py-1.5 text-[9px] leading-tight font-semibold uppercase sm:mx-4 sm:px-4 sm:py-2 sm:text-[11px]">
+            <span className="text-[#F0D9C9]">Folded Shirt</span>
+            <span className="text-right text-[#E4A276]">{coralCollarLabel} ? {coralCuffLabel}</span>
           </div>
         </figure>
       ) : showFoldedPreview ? (
         <div className="relative w-full flex flex-col justify-start items-center py-0 animate-in fade-in duration-300">
-          {/* Dual Image Presentation - Always 2-Column Side-by-Side Responsive */}
-          <div className="w-full grid grid-cols-2 gap-2.5 sm:gap-3.5 items-start">
-            {/* 1. Primary Folded Shirt Presentation (Collar & Cuff View) */}
+          <div className="w-full max-w-[370px]">
             <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-lg flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-square w-full max-h-[320px] sm:max-h-[350px] lg:max-h-[370px]">
               {!isCoralProduct && (
                 <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10 max-w-[calc(100%-16px)]">
@@ -854,47 +799,13 @@ export default function MannequinShirtViewer({
                 </span>
               </div>
             </div>
-
-            {/* 2. Side Macro Cuff Detail (Only Cuff shown) */}
-            <div className="relative rounded-2xl overflow-hidden bg-white border border-[#C68A4C]/45 shadow-lg flex flex-col group transition-all duration-300 hover:border-[#C68A4C] aspect-square w-full max-h-[320px] sm:max-h-[350px] lg:max-h-[370px]">
-              {!isCoralProduct && (
-                <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2 py-0.5 rounded shadow-xs border border-white/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C]" />
-                  <span>Cuff • {cuffLabel}</span>
-                </div>
-              )}
-              <div className="relative w-full h-full overflow-hidden bg-[#161311] flex items-center justify-center">
-                {prevCuff && (
-                  <img
-                    src={prevCuff}
-                    alt="Previous Cuff Detail"
-                    className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-400 ease-in-out opacity-0 z-0"
-                  />
-                )}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={activeCuff}
-                  alt="Cuff Construction Close-Up"
-                  className="w-full h-full object-cover object-center transition-opacity duration-400 ease-in-out relative z-10"
-                  loading="eager"
-                  decoding="async"
-                  onError={(e) => {
-                    if (!e.currentTarget.src.endsWith(cuffFallback)) e.currentTarget.src = cuffFallback;
-                  }}
-                />
-              </div>
-              <div className="absolute bottom-2 inset-x-2 z-10 bg-black/75 backdrop-blur-md border border-white/10 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[8.5px] sm:text-[9.5px] text-white">
-                <span className="font-semibold text-[#D0BDA9] uppercase tracking-wider">Wrist Cuff</span>
-                <span className="font-extrabold text-[#C68A4C] uppercase tracking-wide truncate">{cuffLabel} Cuff</span>
-              </div>
-            </div>
           </div>
         </div>
       ) : (
         /* Steps 1, 2, 3, 4, 6 (and Step 5 for Half Sleeves): Full Ghost Mannequin Stage */
         <div
           aria-hidden={showRegularFitReference || undefined}
-          className={`relative flex w-full items-start justify-center py-0 ${isCoralBodyFitStep ? `${fitFadeClass} ${showRegularFitReference ? "opacity-0" : "opacity-100"}` : ""}`}
+          className={`relative flex w-full items-start justify-center py-0 ${isCoralAddToBagBodyFitStep ? `${fitFadeClass} ${showRegularFitReference ? "opacity-0" : "opacity-100"}` : ""}`}
         >
 
           {/* ============================================================ */}
@@ -1354,7 +1265,7 @@ export default function MannequinShirtViewer({
         </div>
       )}
 
-      {isCoralBodyFitStep && chestSize > 0 && chestSize !== 38 && (
+      {isCoralAddToBagBodyFitStep && chestSize > 0 && chestSize !== 38 && (
         <p
           aria-hidden={!showRegularFitReference}
           className={`mt-1.5 text-center text-sm text-[#4E3B30] transition-opacity duration-300 motion-reduce:transition-none ${showRegularFitReference ? "opacity-100" : "opacity-0"}`}

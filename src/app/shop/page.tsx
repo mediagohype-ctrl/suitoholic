@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 import ModernProductCard from "@/components/ModernProductCard";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
-import ShopCollectionsOverview from "@/components/ShopCollectionsOverview";
+import ShopNatureHeroBanner from "@/components/ShopNatureHeroBanner";
 import { getShopCollectionId, shopCategoryHref, shopCollections } from "@/data/shopCollections";
 
 function ShopContent() {
@@ -66,14 +66,10 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
   return (
     <main className="relative flex-1 pb-12 sm:pb-20">
       {isShopAll ? (
-        <section aria-labelledby="shop-all-heading" className="bg-white px-4 pt-20 pb-6 sm:px-8 sm:pt-28 sm:pb-8">
-          <div className="mx-auto max-w-[1440px]">
-            <h1 id="shop-all-heading" className="mb-5 font-serif-luxury text-3xl font-bold uppercase tracking-widest sm:text-4xl">
-              {c.allCategoryName}
-            </h1>
-            <ShopCollectionsOverview />
-          </div>
-        </section>
+        <>
+          <h1 className="sr-only">{c.allCategoryName}</h1>
+          <ShopNatureHeroBanner />
+        </>
       ) : (
         <section className="relative h-[55vh] min-h-[360px] w-full overflow-hidden bg-[#e7e7e4] sm:h-[65vh] lg:h-[70vh]">
           {/* eslint-disable-next-line @next/next/no-img-element */}

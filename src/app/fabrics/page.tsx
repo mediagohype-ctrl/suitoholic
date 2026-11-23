@@ -203,9 +203,9 @@ export default function FabricsPage() {
       {/* Header with active 'fabrics' tab indicator (forceSolid guarantees high-contrast solid white navbar) */}
       <Header activeTab="fabrics" forceSolid />
 
-      {/* 1. FULL-WIDTH 4-SLIDE HERO BANNER CAROUSEL (MALE + FABRICS + LIGHT BG, HEADING ONLY - ZERO GAP UNDER NAVBAR) */}
+      {/* Fabrics banner uses the same photos as the catalog and swatch archive. */}
       <div className="w-full">
-        <FabricsHeroCarouselBanner />
+        <FabricsHeroCarouselBanner fabrics={[...(c.fabrics ?? []), ...(liveFabrics ?? [])]} products={products} ctaLabel={hero.primaryCtaLabel} />
       </div>
 
       {/* 2. WORLDS FINEST FABRICS ATELIER PREFACE SECTION (MATCHING REFERENCE) */}

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import MannequinShirtViewer, { CoralFullSleevePocket, getCoralBuyNowFitPhoto, getShirtColorFamily, getMatchingShirtModel } from "@/components/MannequinShirtViewer";
+import MannequinShirtViewer, { getCoralBuyNowFitPhoto, getShirtColorFamily, getMatchingShirtModel } from "@/components/MannequinShirtViewer";
+import InitialsPanel, { DEFAULT_INITIALS_THREAD, getInitialsThreadLabel, InitialsCuffPreview } from "@/components/customizer/InitialsPanel";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, ChevronDown, ShoppingBag, Heart } from "lucide-react";
 import confetti from "canvas-confetti";
@@ -50,24 +51,6 @@ function getSuggestionThumbnail(p: any): string {
   if (p?.image) return p.image;
   if (p?.gallery && p.gallery.length > 0) return p.gallery[0];
   return "/new_shirts/shirt_21.jpg";
-}
-
-function getShortShirtTitle(name: string): string {
-  const n = (name || "").toUpperCase();
-  if (n.includes("MUSTARD") || n.includes("OCHRE")) return "Mustard Ochre Bengal Stripe";
-  if (n.includes("CORAL") && n.includes("BENGAL")) return "Coral Red Bold Bengal Stripe";
-  if (n.includes("CORAL") || n.includes("TERRACOTTA")) return "Coral Red Bengal Stripe";
-  if (n.includes("WHITE") && (n.includes("OXFORD") || n.includes("PINPOINT"))) return "White Oxford";
-  if (n.includes("TERRACOTTA") || n.includes("CORAL")) return "Terracotta Coral";
-  if (n.includes("ESPRESSO") || n.includes("DARK")) return "Dark Espresso";
-  if (n.includes("SANDSTONE") || n.includes("LINEN") || n.includes("OATMEAL")) return "Sandstone Linen";
-  if (n.includes("WHITE") || n.includes("CRISP")) return "Crisp White";
-  if (n.includes("SKY") || n.includes("OXFORD")) return "Sky Blue Oxford";
-  if (n.includes("SOLID") || (n.includes("MIDNIGHT") && n.includes("NAVY"))) return "Midnight Navy";
-  if (n.includes("CHARCOAL") || n.includes("ANTHRACITE")) return "Charcoal Twill";
-  if (n.includes("BENGAL") && (n.includes("BLUE") || n.includes("SOVEREIGN") || n.includes("ROYAL"))) return "Royal Steel Blue Stripe";
-  if (n.includes("PINSTRIPE") || n.includes("NAVY")) return "Navy Pinstripe";
-  return name.replace(/FORMAL|SAVILE ROW/gi, "").trim();
 }
 
 function MeasuringTapeIcon({ className = "w-[22px] h-[16px]" }: { className?: string }) {
@@ -173,6 +156,11 @@ const CUFF_OPTIONS = [
     image: "/customizer/cuff_style_cufflink.png?v=12",
   },
 ];
+
+const SLEEVE_PHOTOS = {
+  full: { pocket: "/customizer/sleeves_full_pocket.png", "no-pocket": "/customizer/sleeves_full_nopocket.png" },
+  half: { pocket: "/customizer/sleeves_half_pocket.png", "no-pocket": "/customizer/sleeves_half_nopocket.png" },
+};
 
 function HeightSilhouetteIcon({ active = false, className = "w-7 sm:w-8 h-12 sm:h-14" }: { active?: boolean; className?: string }) {
   const strokeColor = active ? "#3D2415" : "#A68B76";
@@ -331,11 +319,13 @@ export default function CustomizationModal({
   }
   const isFullSleeve = customFit.sleeveType === "full";
   const includesInitials = isFullSleeve && wantsInitials;
+  const showInitialsPanel = currentStep === 5 && includesInitials;
   const orderFit = {
     ...customFit,
     shirtColor: activeItemName,
     ...(customFit.sleeveType === "half" ? { cuffStyle: "" } : {}),
-    ...(!includesInitials ? { initials: "", threadColor: "" } : {}),
+    threadColor: includesInitials ? customFit.threadColor || (customFit.initials ? DEFAULT_INITIALS_THREAD : "") : "",
+    ...(!includesInitials ? { initials: "" } : {}),
   };
 
   const handleChestSelect = (size: number) => {
@@ -460,10 +450,18 @@ export default function CustomizationModal({
   const showSleeve = currentStep >= 4;
   const showCollar = currentStep >= 5 && !!customFit.collarStyle;
   const showCuff = currentStep >= 5 && isFullSleeve && !!customFit.cuffStyle;
+  const selectedCollarStyle = customFit.collarStyle.toUpperCase();
+  const selectedCollar = COLLAR_OPTIONS.find(({ matchKey }) => selectedCollarStyle.includes(matchKey));
+  const selectedCuffStyle = customFit.cuffStyle.toUpperCase();
+  const selectedCuff = CUFF_OPTIONS.find(({ matchKeys }) => matchKeys.some((key) => selectedCuffStyle.includes(key)));
+  const handleCuffChange = (cuffStyle: string) => setCustomFit((prev) => ({ ...prev, cuffStyle }));
   const showMonogram = currentStep >= 5 && includesInitials && !!customFit.initials?.trim();
-  const reviewFitPhoto = buyNow
-    ? getCoralBuyNowFitPhoto((activeItem || product)?.slug, customFit.bodyFit, customFit.sleeveType, customFit.pocket)
-    : undefined;
+  const reviewFitPhoto = getCoralBuyNowFitPhoto((activeItem || product)?.slug, customFit.bodyFit);
+  const reviewFitTitle = c.bodyFits.find(({ id }) => id === customFit.bodyFit)?.title;
+  const reviewHeight = getHeightMeta(customFit.height);
+  const reviewSleeve = isFullSleeve ? "Full Sleeves" : "Half Sleeves";
+  const reviewPocket = customFit.pocket === "pocket" ? "With Pocket" : "Without Pocket";
+  const reviewSleevePhoto = SLEEVE_PHOTOS[isFullSleeve ? "full" : "half"][customFit.pocket === "pocket" ? "pocket" : "no-pocket"];
 
   const isCurrentStepComplete = (() => {
     switch (currentStep) {
@@ -696,7 +694,7 @@ export default function CustomizationModal({
               {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
               <div className="lg:col-span-6 relative flex flex-col items-end w-full transition-all duration-300 -mt-1 sm:-mt-1.5 lg:-mt-2">
 
-                <div className="bg-gradient-to-b from-[#FAF3EA] via-[#F8EFE4] to-[#FAF3EA] border border-[#E7D6C6] rounded-[24px] sm:rounded-[32px] p-4 sm:p-5 lg:p-6 shadow-[0_20px_50px_rgba(120,70,30,0.1)] relative z-10 flex flex-col justify-between w-full max-w-[550px] lg:ml-auto h-[585px] sm:h-[605px] lg:h-[625px] shrink-0">
+                <div className={`bg-gradient-to-b from-[#FAF3EA] via-[#F8EFE4] to-[#FAF3EA] border border-[#E7D6C6] rounded-[24px] sm:rounded-[32px] p-4 sm:p-5 lg:p-6 shadow-[0_20px_50px_rgba(120,70,30,0.1)] relative z-10 flex flex-col justify-between w-full max-w-[550px] lg:ml-auto shrink-0 ${showInitialsPanel ? "h-[635px] sm:h-[705px] lg:h-[715px]" : "h-[585px] sm:h-[605px] lg:h-[625px]"}`}>
 
                   {/* Stepper Header with Brand Accent */}
                   <div className="shrink-0 mb-0.5 sm:mb-1">
@@ -1004,7 +1002,7 @@ export default function CustomizationModal({
 
                                   <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
                                     <img
-                                      src="/customizer/sleeves_half_pocket.png"
+                                      src={SLEEVE_PHOTOS.half.pocket}
                                       alt="Half Sleeve With Pocket"
                                       className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
                                     />
@@ -1042,7 +1040,7 @@ export default function CustomizationModal({
 
                                   <div className="w-full flex items-center justify-center pt-2 sm:pt-3 pb-1 h-20 sm:h-24">
                                     <img
-                                      src="/customizer/sleeves_half_nopocket.png"
+                                      src={SLEEVE_PHOTOS.half["no-pocket"]}
                                       alt="Half Sleeve Without Pocket"
                                       className="max-h-full max-w-[130px] object-contain drop-shadow-xs"
                                     />
@@ -1094,7 +1092,7 @@ export default function CustomizationModal({
 
                                   <div className="w-full flex items-center justify-center pt-1.5 pb-1 h-24 sm:h-28">
                                     <img
-                                      src="/customizer/sleeves_full_pocket.png"
+                                      src={SLEEVE_PHOTOS.full.pocket}
                                       alt="Full Sleeve With Pocket"
                                       className="h-full w-auto max-w-[155px] object-contain drop-shadow-xs"
                                     />
@@ -1132,7 +1130,7 @@ export default function CustomizationModal({
 
                                   <div className="w-full flex items-center justify-center pt-1.5 pb-1 h-24 sm:h-28">
                                     <img
-                                      src="/customizer/sleeves_full_nopocket.png"
+                                      src={SLEEVE_PHOTOS.full["no-pocket"]}
                                       alt="Full Sleeve Without Pocket"
                                       className="h-full w-auto max-w-[155px] object-contain drop-shadow-xs"
                                     />
@@ -1168,7 +1166,7 @@ export default function CustomizationModal({
 
                           <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
                             {COLLAR_OPTIONS.map((col) => {
-                              const isSelected = !!customFit.collarStyle && customFit.collarStyle.toUpperCase().includes(col.matchKey);
+                              const isSelected = selectedCollar?.id === col.id;
                               return (
                                 <div
                                   key={col.id}
@@ -1225,11 +1223,11 @@ export default function CustomizationModal({
 
                             <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                               {CUFF_OPTIONS.map((cuff) => {
-                                const isSelected = !!customFit.cuffStyle && cuff.matchKeys.some((k) => customFit.cuffStyle.toUpperCase().includes(k));
+                                const isSelected = selectedCuff?.id === cuff.id;
                                 return (
                                   <div
                                     key={cuff.id}
-                                    onClick={() => setCustomFit((prev) => ({ ...prev, cuffStyle: cuff.title }))}
+                                    onClick={() => handleCuffChange(cuff.title)}
                                     className={`p-1.5 sm:p-2 rounded-[16px] text-center transition-all duration-200 flex flex-col justify-between items-center relative cursor-pointer ${isSelected
                                         ? "bg-gradient-to-b from-[#FFF5EC] to-[#F5E2D2] border-2 border-[#9D4A19] shadow-[0_4px_14px_rgba(157,74,25,0.14)] scale-[1.01]"
                                         : "bg-[#FFF8F1]/80 hover:bg-[#FFF5EC] border border-[#DFC8B4] shadow-2xs hover:shadow-xs"
@@ -1306,90 +1304,18 @@ export default function CustomizationModal({
                               </div>
                             </div>
 
-                            {/* 2-Part Grid: Monogram Input on Left, Thread Color Dropdown on Right */}
-                            <div className={`${wantsInitials ? "grid" : "hidden"} grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3`}>
-                              {/* Left Side: Do You Need Monogram? */}
-                              <div className="flex min-w-0 flex-col justify-between gap-1.5 rounded-[14px] border border-[#DFC8B4] bg-[#FFF8F1]/90 p-2.5 shadow-2xs sm:p-3">
-                                <label htmlFor={`${initialsId}-monogram`} className="font-playfair text-[11px] font-extrabold leading-snug tracking-wide text-[#1F1A17] uppercase sm:text-xs">
-                                  DO YOU NEED MONOGRAM?
-                                </label>
-                                <div className="relative flex items-center">
-                                  <input
-                                    id={`${initialsId}-monogram`}
-                                    type="text"
-                                    maxLength={3}
-                                    value={customFit.initials || ""}
-                                    onChange={(e) => {
-                                      const val = e.target.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 3);
-                                      setCustomFit((prev) => ({ ...prev, initials: val }));
-                                    }}
-                                    placeholder="e.g. YS (Optional)"
-                                    className="font-playfair min-h-10 w-full rounded-[10px] border border-[#D5C2AF] bg-white/90 py-1.5 pr-10 pl-3 text-[15px] font-bold tracking-widest text-[#1F1A17] uppercase shadow-2xs transition-colors placeholder:font-medium placeholder:tracking-normal placeholder:text-[#776352] focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 focus:outline-none"
-                                  />
-                                  {customFit.initials && (
-                                    <button
-                                      type="button"
-                                      onClick={() => setCustomFit((prev) => ({ ...prev, initials: "" }))}
-                                      className="absolute right-1 flex size-8 cursor-pointer items-center justify-center rounded-md text-sm font-bold text-[#776352] hover:bg-[#F6E7D8] hover:text-[#1F1A17] focus-visible:outline-2 focus-visible:outline-[#9A5426]"
-                                      title="Clear monogram"
-                                    >
-                                      ✕
-                                    </button>
-                                  )}
-                                </div>
-                              </div>
-
-                              {/* Right Side: Select Thread Color Dropdown */}
-                              <div className="flex min-w-0 flex-col justify-between gap-1.5 rounded-[14px] border border-[#DFC8B4] bg-[#FFF8F1]/90 p-2.5 shadow-2xs sm:p-3">
-                                <label htmlFor={`${initialsId}-thread`} className="font-playfair text-[11px] font-extrabold leading-snug tracking-wide text-[#1F1A17] uppercase sm:text-xs">
-                                  SELECT THREAD COLOR
-                                </label>
-                                <div className="relative flex items-center">
-                                  {/* Color Dot indicator (only shown when a color is selected) */}
-                                  {customFit.threadColor && (
-                                    <div
-                                      className="pointer-events-none absolute left-3 z-10 size-3.5 rounded-full border border-black/20 shadow-2xs"
-                                      style={{
-                                        backgroundColor:
-                                          customFit.threadColor === "black"
-                                            ? "#14110E"
-                                            : customFit.threadColor === "white"
-                                              ? "#FFFFFF"
-                                              : customFit.threadColor === "gold"
-                                                ? "#B8860B"
-                                                : customFit.threadColor === "burgundy"
-                                                  ? "#6B1F2A"
-                                                  : customFit.threadColor === "silver"
-                                                    ? "#71717A"
-                                                    : "#1E40AF",
-                                      }}
-                                    />
-                                  )}
-                                  <select
-                                    id={`${initialsId}-thread`}
-                                    value={customFit.threadColor || ""}
-                                    onChange={(e) => setCustomFit((prev) => ({ ...prev, threadColor: e.target.value }))}
-                                    className={`font-playfair min-h-10 w-full cursor-pointer appearance-none rounded-[10px] border border-[#D5C2AF] bg-white/90 py-1.5 pr-9 text-[15px] shadow-2xs transition-colors focus:border-[#9A5426] focus:ring-1 focus:ring-[#9A5426]/30 focus:outline-none ${customFit.threadColor
-                                      ? "pl-8 font-semibold text-[#1F1A17]"
-                                      : "pl-3 font-medium text-[#776352]"
-                                      }`}
-                                  >
-                                    <option value="">Select Thread Color</option>
-                                    <option value="dark_blue">Dark Blue (Navy)</option>
-                                    <option value="black">Classic Black</option>
-                                    <option value="white">Crisp White</option>
-                                    <option value="gold">Royal Gold</option>
-                                    <option value="burgundy">Bordeaux Burgundy</option>
-                                    <option value="silver">Silver Grey</option>
-                                  </select>
-                                  <div className="pointer-events-none absolute right-3 flex items-center text-[#776352]">
-                                    <svg className="size-4" viewBox="0 0 20 20" fill="currentColor">
-                                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                    </svg>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                            {showInitialsPanel && (
+                              <InitialsPanel
+                                id={initialsId}
+                                initials={customFit.initials}
+                                threadColor={orderFit.threadColor}
+                                cuff={selectedCuff ?? CUFF_OPTIONS[0]}
+                                cuffOptions={CUFF_OPTIONS}
+                                onCuffChange={handleCuffChange}
+                                onInitialsChange={(initials) => setCustomFit((prev) => ({ ...prev, initials }))}
+                                onThreadChange={(threadColor) => setCustomFit((prev) => ({ ...prev, threadColor }))}
+                              />
+                            )}
                           </div>
                         )}
                       </div>
@@ -1498,11 +1424,7 @@ export default function CustomizationModal({
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                                 <img
-                                  src={
-                                    (activeItemName || productName || "").toUpperCase().includes("MUSTARD") || (activeItemName || productName || "").toUpperCase().includes("OCHRE")
-                                      ? "/api/media/49/suitoholic-mustard-ochre-bengal-stripe.jpg"
-                                      : (activeItem?.image || product?.image || "/customizer/review_fabric_thumb.jpg?v=7")
-                                  }
+                                  src={activeItem?.image || product?.image || "/customizer/review_fabric_thumb.jpg?v=7"}
                                   alt={activeItemName || productName}
                                   className="w-full h-full object-cover"
                                 />
@@ -1511,8 +1433,8 @@ export default function CustomizationModal({
                                 <span className="text-[10.5px] sm:text-[11.5px] font-extrabold tracking-[0.09em] text-[#8A4418] uppercase block leading-tight font-sans">
                                   1. FABRIC
                                 </span>
-                                <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block truncate leading-snug font-sans">
-                                  {getShortShirtTitle(activeItemName || activeItem?.name || productName) || "White Oxford"}
+                                <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block leading-snug font-sans">
+                                  {activeItem?.name || activeItemName || productName}
                                 </span>
                               </div>
                             </div>
@@ -1520,48 +1442,37 @@ export default function CustomizationModal({
                             {/* 2. SIZE & FIT */}
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F8F4EE] shadow-2xs flex items-center justify-center p-0.5">
-                                <div className="relative h-full w-full">
                                 <img
                                   src={reviewFitPhoto ?? getMatchingShirtModel(
                                     activeItem || product,
-                                    customFit.sleeveType === "half",
-                                    (customFit.bodyFit || "regular") as "lean" | "regular" | "tummy",
-                                    customFit.collarStyle,
-                                    customFit.pocket
+                                    false,
+                                    asMannequinFit(customFit.bodyFit),
                                   )}
                                   alt="Size & Fit"
                                   className="w-full h-full object-contain"
                                 />
-                                  {reviewFitPhoto && isFullSleeve && customFit.pocket === "pocket" && (
-                                    <CoralFullSleevePocket visible />
-                                  )}
-                                </div>
                               </div>
                               <div className="flex-1 min-w-0">
                                 <span className="text-[10.5px] sm:text-[11.5px] font-extrabold tracking-[0.09em] text-[#8A4418] uppercase block leading-tight font-sans">
                                   2. SIZE & FIT
                                 </span>
-                                <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block leading-snug font-sans">
-                                  Chest Size: {customFit.chestSize > 0 ? customFit.chestSize : 40}&quot;<span className="font-bold text-[#8A4418]/60 px-2">|</span>{customFit.bodyFit === "lean" ? "Lean Fit" : customFit.bodyFit === "regular" ? "Regular Fit" : "Tummy Comfort Fit"}
+                                <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block capitalize leading-snug font-sans">
+                                  Chest Size: {customFit.chestSize}&quot;<span className="font-bold text-[#8A4418]/60 px-2">|</span>{reviewFitTitle?.toLowerCase() || customFit.bodyFit}
                                 </span>
                               </div>
                             </div>
 
                             {/* 3. HEIGHT */}
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
-                              <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
-                                <img
-                                  src="/customizer/review_height_thumb.png?v=7"
-                                  alt="Height Category"
-                                  className="w-full h-full object-cover"
-                                />
+                              <div aria-hidden="true" className="flex w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] items-end justify-center rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] pb-0.5 shadow-2xs">
+                                <HeightSilhouetteIcon active className={`w-auto ${reviewHeight.title.startsWith("EXTRA") ? "h-full" : reviewHeight.title === "TALL HEIGHT" ? "h-[90%]" : "h-[80%]"}`} />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <span className="text-[10.5px] sm:text-[11.5px] font-extrabold tracking-[0.09em] text-[#8A4418] uppercase block leading-tight font-sans">
                                   3. HEIGHT
                                 </span>
                                 <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block leading-snug font-sans">
-                                  {getHeightCleanTitle(customFit.height) || "Tall Height"} ({getHeightMeta(customFit.height).heightRangeFormatted || '5.8" to 5.10"'})
+                                  {getHeightCleanTitle(customFit.height)} ({reviewHeight.heightRangeFormatted})
                                 </span>
                               </div>
                             </div>
@@ -1570,9 +1481,9 @@ export default function CustomizationModal({
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                                 <img
-                                  src="/customizer/review_sleeve_thumb.png?v=7"
-                                  alt="Sleeve"
-                                  className="w-full h-full object-cover"
+                                  src={reviewSleevePhoto}
+                                  alt={`${reviewSleeve} ${reviewPocket.toLowerCase()}`}
+                                  className="w-full h-full object-contain p-0.5"
                                 />
                               </div>
                               <div className="flex-1 min-w-0">
@@ -1580,32 +1491,35 @@ export default function CustomizationModal({
                                   4. SLEEVE
                                 </span>
                                 <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block capitalize leading-snug font-sans">
-                                  {customFit.sleeveType === "half" ? "Half Sleeves" : "Full Sleeves"}
+                                  {reviewSleeve}
                                   <span className="font-bold text-[#8A4418]/60 px-2">|</span>
-                                  {customFit.pocket === "pocket" ? "With Pocket" : "Without Pocket"}
+                                  {reviewPocket}
                                 </span>
                               </div>
                             </div>
 
                             {/* 5. COLLAR & CUFF */}
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
-                              <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                              <div className="flex w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] items-center divide-x divide-[#DEC7B2] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
                                 <img
-                                  src="/customizer/review_collar_thumb.png?v=7"
-                                  alt="Collar"
-                                  className="w-full h-full object-cover"
+                                  src={(selectedCollar ?? COLLAR_OPTIONS[0]).image}
+                                  alt={selectedCollar?.title ?? customFit.collarStyle}
+                                  className="min-w-0 flex-1 h-full object-contain p-0.5"
                                 />
+                                {isFullSleeve && selectedCuff && (
+                                  <img src={selectedCuff.image} alt={selectedCuff.title} className="min-w-0 flex-1 h-full object-contain p-0.5" />
+                                )}
                               </div>
                               <div className="flex-1 min-w-0">
                                 <span className="text-[10.5px] sm:text-[11.5px] font-extrabold tracking-[0.09em] text-[#8A4418] uppercase block leading-tight font-sans">
                                   {isFullSleeve ? "5. COLLAR & CUFF" : "5. COLLAR STYLE"}
                                 </span>
-                                <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block truncate leading-snug font-sans">
-                                  {customFit.collarStyle ? customFit.collarStyle.replace(/COLLAR/gi, "").trim() + " Collar" : "Cutaway Collar"}
+                                <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block leading-snug font-sans">
+                                  {selectedCollar?.title ?? customFit.collarStyle}
                                   {isFullSleeve && (
                                     <>
                                       <span className="font-bold text-[#8A4418]/60 px-2">|</span>
-                                      {customFit.cuffStyle ? customFit.cuffStyle.replace(/\(DOUBLE FOLD\)/gi, "").trim() : "Classic Cuff"}
+                                      {selectedCuff?.title ?? customFit.cuffStyle}
                                     </>
                                   )}
                                 </span>
@@ -1615,12 +1529,8 @@ export default function CustomizationModal({
                         {/* 6. INITIALS (Only for Full Sleeves when Monogram is Entered) */}
                         {showMonogram && (
                           <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
-                            <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
-                              <img
-                                src="/customizer/review_monogram_thumb.png?v=7"
-                                alt="Monogram Initials"
-                                className="w-full h-full object-cover"
-                              />
+                            <div className="flex w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] items-center rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
+                              <InitialsCuffPreview initials={orderFit.initials} threadColor={orderFit.threadColor} cuffId={selectedCuff?.id ?? CUFF_OPTIONS[0].id} className="w-full" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <span className="text-[10.5px] sm:text-[11.5px] font-extrabold tracking-[0.09em] text-[#8A4418] uppercase block leading-tight font-sans">
@@ -1628,21 +1538,7 @@ export default function CustomizationModal({
                               </span>
                               <span className="text-[13px] sm:text-[14.5px] font-bold text-[#14110E] block leading-snug font-sans">
                                 {customFit.initials.trim()}
-                                {customFit.threadColor
-                                  ? ` (${
-                                      customFit.threadColor === "black"
-                                        ? "Classic Black"
-                                        : customFit.threadColor === "white"
-                                        ? "Crisp White"
-                                        : customFit.threadColor === "gold"
-                                        ? "Royal Gold"
-                                        : customFit.threadColor === "burgundy"
-                                        ? "Bordeaux Burgundy"
-                                        : customFit.threadColor === "silver"
-                                        ? "Silver Grey"
-                                        : "Dark Blue"
-                                    } Thread)`
-                                  : " (Dark Blue Thread)"}
+                                {` (${getInitialsThreadLabel(orderFit.threadColor)} Thread)`}
                               </span>
                             </div>
                           </div>

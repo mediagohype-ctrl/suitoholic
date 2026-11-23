@@ -8,14 +8,16 @@ export default function ShopNatureHeroBanner() {
       aria-label="Shop Collection Hero Banner"
       className="relative w-full h-[100dvh] min-h-[580px] overflow-hidden bg-[#ECEAE5]"
     >
-      {/* Background Photographic Image: Natural, crisp, full 100vh viewport coverage */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/banners/shop_hero_banner.jpg"
-        alt="Suitoholic Contemporary Sartorial Collection"
-        className="w-full h-full object-cover object-center"
-        loading="eager"
-      />
+      <picture className="absolute inset-0 block">
+        <source media="(max-width: 767px)" srcSet="/banners/shop-hero-atelier-tea-mobile.webp" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/banners/shop-hero-atelier-tea.webp"
+          alt="Three men in tailored shirts sharing tea in a bright atelier: two sit talking on a sofa while one stands beside them."
+          className="h-full w-full object-cover object-center"
+          loading="eager"
+        />
+      </picture>
 
       {/* Left Bottom: Minimalist Label */}
       <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-16 z-20 flex items-center">
