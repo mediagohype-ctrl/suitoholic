@@ -1,6 +1,7 @@
 "use client";
 
 import React from"react";
+import Image from "next/image";
 import Header from"@/components/Header";
 import Footer from"@/components/Footer";
 import AtelierStoryTimeline from"@/components/AtelierStoryTimeline";
@@ -16,21 +17,19 @@ export default function AboutPage() {
       {/* ========================================================================= */}
       {/* 1. HERO SECTION:"Tailoring with Care and Precision" (Light Atelier Aesthetic) */}
       {/* ========================================================================= */}
-      <section aria-labelledby="about-hero-heading" className="relative h-[100svh] min-h-[600px] w-full overflow-hidden border-b border-[#E5E3DD] bg-[#ECEAE5]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/banners/about-atelier-racks-banner.webp"
-          alt=""
+      <section aria-labelledby="about-hero-heading" className="relative h-svh w-full overflow-hidden bg-[#ECEAE5]">
+        <div
           aria-hidden="true"
-          className="absolute inset-0 h-full w-full scale-110 object-cover object-center blur-2xl opacity-50"
-          loading="eager"
+          className="absolute inset-0 scale-110 bg-[url('/banners/tailoring-with-care-and-precision.png')] bg-cover bg-center opacity-50 blur-2xl landscape:hidden"
         />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/banners/about-atelier-racks-banner.webp"
-          alt="Suitoholic tailoring atelier with fabric shelves on both sides and the words Tailoring with Care and Precision."
-          className="absolute inset-0 h-full w-full object-contain object-center"
+        <Image
+          src="/banners/tailoring-with-care-and-precision.png"
+          alt="Suitoholic tailoring atelier with fabric shelves, a measuring tape, and scissors"
+          fill
+          unoptimized
           loading="eager"
+          fetchPriority="high"
+          className="object-contain landscape:object-cover"
         />
         <h1 id="about-hero-heading" className="sr-only">Tailoring with Care and Precision</h1>
       </section>

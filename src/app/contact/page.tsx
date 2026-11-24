@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -106,25 +107,21 @@ export default function ContactPage() {
 
       <main className="flex-1 pb-16 sm:pb-24">
         
-        {/* ========================================================================= */}
-        {/* 2. HERO SECTION: Light Luxury Editorial Split Layout                      */}
-        {/* ========================================================================= */}
-        <section className="relative h-[100svh] min-h-[600px] w-full overflow-hidden border-b border-[#E5E3DD] bg-[#ECEAE5] text-black">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/banners/contact-master-tailor-hero.webp"
-            alt="A master tailor cutting blue striped fabric at a worktable in a bespoke atelier."
-            className="absolute inset-0 h-full w-full object-cover object-[62%_48%]"
-            loading="eager"
+        <section aria-labelledby="contact-hero-heading" className="relative h-svh w-full overflow-hidden bg-[#ECEAE5]">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 scale-110 bg-[url('/banners/contact-tailoring-with-care-and-precision.png')] bg-cover bg-center opacity-50 blur-2xl landscape:hidden"
           />
-          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#ECEAE5]/85 via-[#ECEAE5]/52 to-transparent" />
-          <div className="relative z-10 mx-auto flex h-full max-w-[1600px] items-center px-5 pt-24 sm:px-10 sm:pt-28 lg:px-16">
-            <div className="max-w-[560px] rounded-sm border border-white/60 bg-[#F3F0EA]/72 p-5 shadow-[0_16px_50px_#21160e1c] backdrop-blur-[2px] sm:p-8 lg:p-10">
-              <h1 className="font-serif-luxury text-2xl leading-tight font-bold tracking-[0.1em] text-black uppercase sm:text-3xl lg:text-[42px]">
-                Let&apos;s Create Your <span className="font-serif italic">Perfect Fit</span>
-              </h1>
-            </div>
-          </div>
+          <Image
+            src="/banners/contact-tailoring-with-care-and-precision.png"
+            alt="Tailoring with Care and Precision. A master tailor cuts blue striped fabric at his worktable."
+            fill
+            unoptimized
+            loading="eager"
+            fetchPriority="high"
+            className="object-contain landscape:object-cover landscape:object-[55%_42%]"
+          />
+          <h1 id="contact-hero-heading" className="sr-only">Let&apos;s Create Your Perfect Fit</h1>
         </section>
 
         {/* ========================================================================= */}
