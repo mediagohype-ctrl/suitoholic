@@ -447,7 +447,7 @@ export default function CustomizationModal({
   // going back (e.g. from Step 6 to Step 2) dynamically hides future step choices.
   const showBodyType = currentStep >= 2;
   const showHeight = currentStep >= 3;
-  const showSleeve = currentStep >= 4;
+  const showSleeve = currentStep >= 5;
   const showCollar = currentStep >= 5 && !!customFit.collarStyle;
   const showCuff = currentStep >= 5 && isFullSleeve && !!customFit.cuffStyle;
   const selectedCollarStyle = customFit.collarStyle.toUpperCase();
@@ -620,7 +620,7 @@ export default function CustomizationModal({
                           </div>
                         )}
 
-                        {/* Step 4: Sleeve & Pocket */}
+                        {/* Step 5 summary: Step 4 shows these choices on the preview and option cards. */}
                         {showSleeve && (
                           <div className="flex justify-between items-center gap-2 animate-in fade-in duration-200">
                             <span className="text-[#666666] font-medium">Sleeve</span>

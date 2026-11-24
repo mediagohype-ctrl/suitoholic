@@ -27,8 +27,8 @@ export function InitialsCuffPreview({ initials, threadColor, cuffId, className =
 
   return (
     <div className={`@container relative isolate aspect-[3.25] overflow-hidden bg-[#AD927A] ${className}`}>
-      <Image key={cuffId} src={`/customizer/initials/${cufflink ? "cufflink" : "classic"}-preview.webp`} alt={cufflink ? "White double-fold cuff with a black and gold cufflink" : "White classic cuff with a single button"} fill loading="eager" unoptimized className="object-cover" />
-      <span className={`font-playfair absolute top-[48%] left-[42%] -translate-1/2 rotate-[20deg] leading-none font-extrabold tracking-[0.035em] ${initials.length > 2 ? "text-[5.1cqw]" : "text-[6.4cqw]"}`} style={{ color: thread.color, textShadow: "0 0.55px 0.65px #3F2F2866, 0 -0.3px 0.65px #4C403866" }}>
+      <Image key={cuffId} src={`/customizer/initials/${cufflink ? "cufflink" : "classic-buttonhole"}-preview.webp`} alt={cufflink ? "White double-fold cuff with a black and gold cufflink" : "White classic cuff with a single button and stitched buttonhole"} fill loading="eager" unoptimized className="object-cover" />
+      <span className={`font-playfair absolute top-[48%] left-[42%] -translate-1/2 rotate-[20deg] leading-none font-extrabold tracking-[0.035em] ${initials.length > 2 ? "text-[calc(5.1cqw_-_1px)]" : "text-[calc(6.4cqw_-_1px)]"}`} style={{ color: thread.color, textShadow: "0 0.55px 0.65px #3F2F2866, 0 -0.3px 0.65px #4C403866" }}>
         {initials}
       </span>
     </div>
