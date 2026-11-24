@@ -16,6 +16,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { formatMoney } from "@/lib/api";
+import { isLegacyShirtCategory } from "@/data/shopCollections";
 import { useAdminApi, useAdminQuery } from "@/lib/admin/api";
 import { errorMessage, fieldErrors } from "@/lib/admin/format";
 import type { AdminCategory, AdminColorway, AdminProduct, Paginated } from "@/lib/admin/types";
@@ -377,11 +378,14 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
   const dirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(baseline), [form, baseline]);
   useUnsavedChanges(dirty);
 
-  const { data: catData } = useAdminQuery<Paginated<AdminCategory>>("/categories?limit=100");
-  const categoryOptions = useMemo(
-    () => (catData?.items ?? []).filter((c) => c.active).map((c) => ({ value: c.id, label: c.title })),
-    [catData]
-  );
+  const { data: categories, loading: categoriesLoading, error: categoriesError } = useAdminQuery<AdminCategory[]>("/categories");
+  const savedCategory = product?.category;
+  const categoryOptions = [
+    { value: "", label: categoriesLoading ? "Loading categories…" : "Select a category" },
+    ...(categories ?? [])
+      .filter((c) => c.id === savedCategory || (c.active && c.id !== "blazers" && !isLegacyShirtCategory(c.id)))
+      .map((c) => ({ value: c.id, label: c.title })),
+  ];
 
   const { data: allProds } = useAdminQuery<Paginated<AdminProduct>>("/products?limit=200");
   const slugOptions = useMemo(
@@ -528,7 +532,15 @@ export default function ProductForm({ product, onSaved }: { product?: AdminProdu
             <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
               <TextField label="Product name" value={form.name} onChange={(e) => set("name", e.target.value)} error={errors.name} required />
               <TextField label="URL slug" value={form.slug} onChange={(e) => set("slug", e.target.value.toLowerCase())} error={errors.slug} hint="Leave empty to generate from name." />
-              <SelectField label="Category" value={form.category} onChange={(e) => set("category", e.target.value)} options={categoryOptions} error={errors.category} required />
+              <SelectField
+                label="Category"
+                value={form.category}
+                onChange={(e) => set("category", e.target.value)}
+                options={categoryOptions}
+                error={errors.category || (categoriesError ? "Could not load categories." : undefined)}
+                disabled={categoriesLoading || !!categoriesError}
+                required
+              />
               <TextField label="Badge / Tag" value={form.tag} onChange={(e) => set("tag", e.target.value)} error={errors.tag} placeholder="e.g. LUXURY TWILL, BESTSELLER" />
               <div className="sm:col-span-2">
                 <TextField label="Subtitle" value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} error={errors.subtitle} placeholder="Short highlight shown under the title" />

@@ -31,15 +31,33 @@ import { useContent, useCatalog } from "@/context/SiteDataProvider";
 import { useCart } from "@/context/CartProvider";
 import CustomizationModal from "@/components/CustomizationModal";
 import confetti from "canvas-confetti";
+import type { fabricsPage } from "@/content/sections/fabricsPage";
 import type { CustomFit } from "@/lib/types";
+
+type Fabric = (typeof fabricsPage.fabrics)[number] & {
+  compareAtPrice?: string;
+  rating?: number;
+  reviewsCount?: number;
+};
+type FabricResponse = Pick<Fabric, "code" | "name" | "category"> & Partial<Omit<Fabric, "id">> & {
+  id: string | number;
+  category_label?: string;
+  yarn_count?: string;
+  wrinkle_resistance?: string;
+  short_info?: string;
+  compare_at_price?: string;
+  reviews_count?: number;
+  best_for?: string;
+  accent_color?: string;
+};
 
 export default function FabricsPage() {
   const c = useContent("fabricsPage");
-  const [liveFabrics, setLiveFabrics] = useState<any[] | null>(null);
+  const [liveFabrics, setLiveFabrics] = useState<Fabric[] | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    apiFetch<any[]>("/fabrics")
+    apiFetch<FabricResponse[]>("/fabrics")
       .then((items) => {
         if (!cancelled && Array.isArray(items) && items.length > 0) {
           const formatted = items.map((f) => ({
@@ -237,7 +255,7 @@ export default function FabricsPage() {
       {/* NEW ARRIVALS FABRICS SLIDER (EMBROIDERED, JACQUARD, PRINTED) */}
       <FabricNewArrivalsSection
         onSelectFabric={(code) => {
-          const matched = fabrics.find((f: any) => f.code === code);
+          const matched = fabrics.find((f) => f.code === code);
           if (matched) {
             setActiveFabricId(matched.id);
           }

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from"react";
+import React, { useEffect, useMemo } from"react";
+import { useIsClient } from "@/lib/useIsClient";
 import { createPortal } from"react-dom";
 import Link from"next/link";
 import { X, Heart, Trash2, ArrowRight, ShoppingBag } from"lucide-react";
@@ -13,11 +14,7 @@ import { LUXURY_CLOTH_ITEMS } from"@/components/LuxuryClothArchiveSection";
 export default function WishlistDrawer() {
   const { wishlistIds, isWishlistOpen, closeWishlist, removeFromWishlist } = useWishlist();
   const { products } = useCatalog();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsClient();
 
   useEffect(() => {
     if (isWishlistOpen) {
@@ -29,8 +26,6 @@ export default function WishlistDrawer() {
       document.body.style.overflow ="unset";
     };
   }, [isWishlistOpen]);
-
-  if (!isWishlistOpen || !mounted) return null;
 
   const savedProducts: ProductItem[] = useMemo(() => {
     const productMap = new Map<string, ProductItem>();
@@ -111,6 +106,8 @@ export default function WishlistDrawer() {
 
     return result;
   }, [wishlistIds, products]);
+
+  if (!isWishlistOpen || !mounted) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] overflow-hidden animate-in fade-in duration-200">

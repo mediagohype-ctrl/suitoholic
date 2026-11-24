@@ -124,5 +124,41 @@
     "showOnHome": false,
     "sortOrder": 7,
     "active": false
+  },
+  {
+    "key": "plain-formal-shirts",
+    "title": "Plain Formal Shirts",
+    "shortTitle": "Plain Formal Shirts",
+    "mobileTitle": ["Plain Formal Shirts"],
+    "image": "/banners/shop_hero_banner_hd.jpg",
+    "bgImage": "/banners/shop_hero_banner_hd.jpg",
+    "sortOrder": 10
+  },
+  {
+    "key": "stripe-cotton-shirts",
+    "title": "Stripe Cotton Shirts",
+    "shortTitle": "Stripe Cotton Shirts",
+    "mobileTitle": ["Stripe Cotton Shirts"],
+    "image": "/bengal_stripe_flatlay_macro.jpg",
+    "bgImage": "/bengal_stripe_flatlay_macro.jpg",
+    "sortOrder": 11
+  },
+  {
+    "key": "executive-linen-shirts",
+    "title": "Executive Linen Shirts",
+    "shortTitle": "Executive Linen Shirts",
+    "mobileTitle": ["Executive Linen Shirts"],
+    "image": "/banners/shop_hero_nature_linen.jpg",
+    "bgImage": "/banners/shop_hero_nature_linen.jpg",
+    "sortOrder": 12
+  },
+  {
+    "key": "handcrafted-shirts",
+    "title": "Handcrafted Shirts",
+    "shortTitle": "Handcrafted Shirts",
+    "mobileTitle": ["Handcrafted Shirts"],
+    "image": "/about_atelier_heritage.jpg",
+    "bgImage": "/about_atelier_heritage.jpg",
+    "sortOrder": 13
   }
 ]

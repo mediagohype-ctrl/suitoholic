@@ -98,7 +98,7 @@ export const NEW_ARRIVALS_FABRICS = NEW_ARRIVALS_ITEMS;
 
 interface FabricNewArrivalsSectionProps {
   onSelectFabric?: (code: string) => void;
-  onOpenCustomizer?: (item: any) => void;
+  onOpenCustomizer?: (item: NewArrivalShirt) => void;
 }
 
 export default function FabricNewArrivalsSection({

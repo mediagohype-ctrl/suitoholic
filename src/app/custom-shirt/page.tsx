@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo, Suspense } from"react";
+import React, { useState, useRef, useMemo, Suspense } from"react";
 import Link from"next/link";
 import { useSearchParams } from"next/navigation";
 import Header from"@/components/Header";
@@ -17,7 +17,7 @@ import GlowingReviewsSection from"@/components/GlowingReviewsSection";
 
 const ShowcaseDivider = () => (
   <div className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8 my-6 sm:my-8 lg:my-10">
-    <div className="w-full h-[1px] bg-[#E5E3DD]" />
+    <div className="w-full h-px bg-[#E5E3DD]" />
   </div>
 );
 import MannequinShirtViewer from"@/components/MannequinShirtViewer";
@@ -28,6 +28,7 @@ import confetti from"canvas-confetti";
 import { apiFetch } from"@/lib/api";
 import { useCatalog, useContent } from"@/context/SiteDataProvider";
 import { useCart } from"@/context/CartProvider";
+import { customShirtPage } from "@/content/sections/customShirtPage";
 import { fillTemplate } from"@/content/merge";
 import type { CustomFit, ProductItem } from"@/lib/types";
 
@@ -70,37 +71,21 @@ function CustomShirtConfiguratorContent() {
   const productParam = searchParams?.get("product") || searchParams?.get("slug") || searchParams?.get("id");
   const fabricParam = searchParams?.get("fabric");
 
-  const [activeProduct, setActiveProduct] = useState<ProductItem | null>(() => {
-    if (productParam) {
-      const found = getProduct(productParam);
-      if (found) return found;
-    }
-    if (fabricParam) {
-      const found = products.find(
-        (p) =>
-          p.category ==="formal_bespoke" ||
-          p.category ==="fabrics" ||
-          (p.slug && p.slug.toLowerCase().includes(fabricParam.toLowerCase())),
-      );
-      if (found) return found;
-    }
-    return getProduct(c.bagProductSlug) || products[0] || null;
-  });
-
-  useEffect(() => {
-    if (productParam) {
-      const found = getProduct(productParam);
-      if (found) setActiveProduct(found);
-    } else if (fabricParam) {
-      const found = products.find(
-        (p) =>
-          p.category ==="formal_bespoke" ||
-          p.category ==="fabrics" ||
-          (p.slug && p.slug.toLowerCase().includes(fabricParam.toLowerCase())),
-      );
-      if (found) setActiveProduct(found);
-    }
-  }, [productParam, fabricParam, getProduct, products]);
+  const fabricKey = fabricParam?.toLowerCase();
+  const fabricProduct = fabricKey ? products.find((p) =>
+    p.category === "formal_bespoke" ||
+    p.category === "fabrics" ||
+    p.slug?.toLowerCase().includes(fabricKey)
+  ) : undefined;
+  const requestedProduct = productParam ? getProduct(productParam) : fabricProduct;
+  const [activeProduct, setActiveProduct] = useState<ProductItem | null>(
+    requestedProduct ?? fabricProduct ?? getProduct(c.bagProductSlug) ?? products[0] ?? null,
+  );
+  const [previousRequest, setPreviousRequest] = useState(requestedProduct);
+  if (requestedProduct !== previousRequest) {
+    setPreviousRequest(requestedProduct);
+    if (requestedProduct) setActiveProduct(requestedProduct);
+  }
 
   const productScrollRef = useRef<HTMLDivElement>(null);
 
@@ -185,38 +170,8 @@ function CustomShirtConfiguratorContent() {
   const [appointmentSuccess, setAppointmentSuccess] = useState(false);
   const [bookingReference, setBookingReference] = useState<string | null>(null);
 
-  const heroCopy = (c as any).hero || {
-    badge:"SUITOHOLIC BESPOKE ATELIER • DELHI NCR",
-    title:"The Art of Bespoke Tailoring in Delhi NCR",
-    description:"Founded in New Delhi by master bespoke cutters dedicated to heritage craftsmanship. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture. Tailored from 140s Egyptian Giza cottons and Italian worsted wools, fitted in person, and made to last a lifetime.",
-    nameLabel:"Name",
-    namePlaceholder:"Enter your full name",
-    phoneLabel:"Phone",
-    phonePlaceholder:"Enter your phone number",
-    emailLabel:"Email",
-    emailPlaceholder:"Enter your email address",
-    dateLabel:"Preferred Fitting Date",
-    buttonLabel:"Book Atelier Appointment",
-    successTitle:"Fitting Session Requested!",
-    successMessage:"Thank you! A Suitoholic master bespoke consultant will reach out shortly to confirm your private fitting in Delhi NCR.",
-    jumpToConfiguratorLabel:"Or Design Your Shirt with 3D Mannequin Online",
-    pillars: ["Hand-Drafted Paper Pattern","1-on-1 Master Fitting","100% Fit Guarantee",
-    ],
-  };
-
-  const customOfferingsList: { title: string; detail?: string }[] = (c as any).customOfferings || [
-    { title:"Bespoke Shirts", detail:"Formal, Casual & Tuxedo" },
-    { title:"Handcrafted Suits", detail:"Two-Piece & Three-Piece" },
-    { title:"Luxury Overcoats", detail:"Cashmere & Merino Wool" },
-    { title:"Tailored Blazers", detail:"Italian Poplins & Twills" },
-    { title:"Royal Bandhgalas", detail:"Heritage Silhouette" },
-    { title:"Tuxedos & Dinner Jackets", detail:"Silk Satin Lapels" },
-    { title:"Custom Trousers", detail:"Pleated & Gurkha Waist" },
-    { title:"Bespoke Waistcoats", detail:"Double & Single Breasted" },
-    { title:"Nehru Jackets", detail:"Raw Silk & Linen" },
-    { title:"Jodhpuri Suits", detail:"Royal Ceremonial Edit" },
-    { title:"Monogrammed Accents", detail:"Custom Embroidery on Cuffs" },
-  ];
+  const heroCopy = c.hero || customShirtPage.hero;
+  const customOfferingsList = c.customOfferings || customShirtPage.customOfferings;
 
   const handleAppointmentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -329,8 +284,8 @@ function CustomShirtConfiguratorContent() {
       {/* CONTINUOUS SLOW AUTOPLAY MARQUEE STRIP: What We Customize */}
       <section className="relative w-full bg-[#F5F4F0] border-b border-[#E5E3DD] py-3.5 sm:py-4 overflow-hidden">
         {/* Left and Right Edge Gradient Masks */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#F5F4F0] to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#F5F4F0] to-transparent z-10" />
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-linear-to-r from-[#F5F4F0] to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-linear-to-l from-[#F5F4F0] to-transparent z-10" />
 
         {/* Marquee Track: Seamless full-width infinite loop */}
         <div className="overflow-hidden w-full">
@@ -382,7 +337,7 @@ function CustomShirtConfiguratorContent() {
       {/* 3. ATELIER APPOINTMENT BOOKING SECTION */}
       <section className="relative w-full py-12 sm:py-16 bg-[#ECEAE5]">
         <div className="w-full max-w-[1740px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white border border-[#E5E3DD] rounded-[12px] p-8 sm:p-12 lg:p-16 shadow-sm">
+          <div className="bg-white border border-[#E5E3DD] rounded-xl p-8 sm:p-12 lg:p-16 shadow-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
               
               {/* LEFT COLUMN: Bespoke Tailors Headline & Narrative */}

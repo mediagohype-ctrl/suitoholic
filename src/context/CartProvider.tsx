@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useIsClient } from "@/lib/useIsClient";
 import { useRouter } from "next/navigation";
 import { ApiError, apiFetch, formatMoney } from "@/lib/api";
 import { allProducts } from "@/data/products";
@@ -144,12 +145,21 @@ function calculateCartTotals(items: CartItem[], currencySymbol = "₹", preferre
 const isStaleBag = (err: unknown) => err instanceof ApiError && (err.status === 404 || err.status === 409);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<Cart | null>(null);
-  const [loading, setLoading] = useState(true);
+  const isClient = useIsClient();
+  const loading = !isClient;
+  const storedCart = useMemo(() => {
+    const local = isClient ? readLocalCart() : null;
+    return local?.items.length ? local : null;
+  }, [isClient]);
+  const storedCoupon = useMemo(() => storedCart ? readStoredCoupon() : null, [storedCart]);
+  const [updatedCart, setCart] = useState<Cart | null>();
+  const cart = updatedCart === undefined ? storedCart : updatedCart;
   const [busy] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [couponCode, setCouponCode] = useState<string>("");
-  const [discountAmount, setDiscountAmount] = useState<number>(0);
+  const [updatedCouponCode, setCouponCode] = useState<string>();
+  const [updatedDiscount, setDiscountAmount] = useState<number>();
+  const couponCode = updatedCouponCode ?? storedCoupon?.code ?? "";
+  const discountAmount = updatedDiscount ?? (storedCoupon?.code ? storedCoupon.discount : 0);
   const cartIdRef = useRef<string | null>(null);
 
   const router = useRouter();
@@ -241,30 +251,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [setActiveCart]);
 
   useEffect(() => {
-    // 1. Immediately hydrate local cart from localStorage
-    const local = readLocalCart();
-    if (local && Array.isArray(local.items) && local.items.length > 0) {
-      if (isUuid(local.id)) {
-        cartIdRef.current = local.id;
-      }
-      setCart(local);
-
-      // Hydrate saved coupon if exists
-      const savedCoupon = readStoredCoupon();
-      if (savedCoupon && savedCoupon.code) {
-        setCouponCode(savedCoupon.code);
-        setDiscountAmount(savedCoupon.discount);
-      }
-    }
-    setLoading(false);
-
-    // 2. Silently attempt server sync only if a valid server UUID was stored
+    if (!isClient) return;
     const existingServerId = readId();
-    if (existingServerId) {
-      cartIdRef.current = existingServerId;
-      void refresh();
-    }
-  }, [refresh]);
+    cartIdRef.current = existingServerId ?? (isUuid(storedCart?.id) ? storedCart.id : null);
+    if (existingServerId) void refresh();
+  }, [isClient, refresh, storedCart]);
 
   // Keep tabs synchronized if user opens multiple tabs
   useEffect(() => {

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { useIsClient } from "@/lib/useIsClient";
+import React, { useState, useEffect, useRef } from "react";
 import Link from"next/link";
 import Image from"next/image";
 import { usePathname } from"next/navigation";
@@ -36,7 +37,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
-  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const isClient = useIsClient();
   const pathname = usePathname();
   const c = useContent("header");
   const { itemCount } = useCart();

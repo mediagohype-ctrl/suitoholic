@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
+import { readBrowserJson } from "@/lib/browser-storage";
+import { useIsClient } from "@/lib/useIsClient";
+import type { SavedAddress } from "@/app/saved-addresses/page";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, CreditCard, Lock, ShieldCheck, Wallet } from "lucide-react";
@@ -34,18 +37,27 @@ export default function CheckoutPage() {
   const [couponInput, setCouponInput] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    line1: "",
-    line2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    country: "India",
-    notes: "",
-  });
+  const isClient = useIsClient();
+  const initialForm = useMemo(() => {
+    const user = isClient ? readBrowserJson<{ name?: string; email?: string; phone?: string }>("suitoholic_client_user") : null;
+    const stored = isClient ? readBrowserJson<SavedAddress[]>("suitoholic_saved_addresses") : null;
+    const addresses = Array.isArray(stored) ? stored : [];
+    const address = addresses.find((item) => item?.isDefault) ?? addresses[0];
+    return {
+      name: address?.name || user?.name || "",
+      email: user?.email || "",
+      phone: address?.phone || user?.phone || "",
+      line1: address?.address || "",
+      line2: address?.locality || "",
+      city: address?.city || "",
+      state: address?.state || "",
+      postalCode: address?.pincode || "",
+      country: "India",
+      notes: "",
+    };
+  }, [isClient]);
+  const [formEdits, setForm] = useState<Partial<typeof initialForm>>({});
+  const form = { ...initialForm, ...formEdits };
   const [step, setStep] = useState<"details" | "payment">("details");
   const [paymentMethod, setPaymentMethod] = useState<"partial_cod" | "upi">("partial_cod");
   const [submitting, setSubmitting] = useState(false);
@@ -87,49 +99,6 @@ export default function CheckoutPage() {
       }
     }
   };
-
-  // Auto-fill from saved addresses & logged-in profile
-  useEffect(() => {
-    try {
-      const userRaw = localStorage.getItem("suitoholic_client_user");
-      let uName = "";
-      let uEmail = "";
-      let uPhone = "";
-      if (userRaw) {
-        const u = JSON.parse(userRaw);
-        if (u.name) uName = u.name;
-        if (u.email) uEmail = u.email;
-        if (u.phone) uPhone = u.phone;
-      }
-      const addrRaw = localStorage.getItem("suitoholic_saved_addresses");
-      if (addrRaw) {
-        const addrs = JSON.parse(addrRaw);
-        const def = addrs.find((a: any) => a.isDefault) || addrs[0];
-        if (def) {
-          setForm((prev) => ({
-            ...prev,
-            name: prev.name || def.name || uName,
-            email: prev.email || uEmail,
-            phone: prev.phone || def.phone || uPhone,
-            line1: prev.line1 || def.address || "",
-            line2: prev.line2 || def.locality || "",
-            city: prev.city || def.city || "",
-            state: prev.state || def.state || "",
-            postalCode: prev.postalCode || def.pincode || "",
-          }));
-          return;
-        }
-      }
-      if (uName || uEmail || uPhone) {
-        setForm((prev) => ({
-          ...prev,
-          name: prev.name || uName,
-          email: prev.email || uEmail,
-          phone: prev.phone || uPhone,
-        }));
-      }
-    } catch { }
-  }, []);
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));

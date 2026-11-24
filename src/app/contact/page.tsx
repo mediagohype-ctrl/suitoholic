@@ -128,12 +128,12 @@ export default function ContactPage() {
         {/* 3. COMMISSION ENQUIRY & GET IN TOUCH (BLUORNG MINIMALIST PALETTE)         */}
         {/* ========================================================================= */}
         <section className="w-full bg-[#ECEAE5] py-16 sm:py-24 border-b border-[#E5E3DD] text-black">
-          <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="max-w-340 mx-auto px-4 sm:px-6 lg:px-12">
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               
               {/* LEFT COLUMN: Commission Inquiry Form (lg:col-span-7) */}
-              <div className="lg:col-span-7 bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 shadow-sm">
+              <div className="lg:col-span-7 bg-white border border-[#E5E3DD] rounded-3xl sm:rounded-4xl p-6 sm:p-10 shadow-sm">
                 
                 {submitted ? (
                   <div className="text-center space-y-5 py-6 animate-fadeIn">
@@ -295,7 +295,7 @@ export default function ContactPage() {
 
               <section aria-labelledby="studio-visit-heading" className="lg:col-span-5">
                 <div 
-                  className="@container bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-8 sm:p-10 lg:p-12 shadow-sm space-y-7 sm:space-y-8"
+                  className="@container bg-white border border-[#E5E3DD] rounded-3xl sm:rounded-4xl p-8 sm:p-10 lg:p-12 shadow-sm space-y-7 sm:space-y-8"
                 >
                   <h2 id="studio-visit-heading" className="font-serif-luxury whitespace-nowrap text-[min(2.375rem,7cqi)] font-bold uppercase leading-tight">
                     Visit Our Vapi Studio
@@ -352,7 +352,7 @@ export default function ContactPage() {
                     </span>
                     <a
                       href="mailto:infosuitoholic@gmail.com"
-                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block break-words"
+                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block wrap-break-word"
                     >
                       infosuitoholic@gmail.com
                     </a>

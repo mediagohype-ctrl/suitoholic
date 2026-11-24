@@ -9,6 +9,12 @@ export const shopCollections = [
 
 type ShopCollectionId = (typeof shopCollections)[number]["id"];
 
+const legacyShirtCategories = new Set(["formal_shirts", "formal_stripes", "formal_bespoke"]);
+
+export function isLegacyShirtCategory(category: string) {
+  return legacyShirtCategories.has(category);
+}
+
 export function shopCategoryHref(id: string) {
   return `/shop?category=${encodeURIComponent(id)}`;
 }
@@ -18,7 +24,7 @@ export function getShopCollectionId(product: ProductItem): ShopCollectionId | un
   if (assigned) return assigned.id;
 
   const isLegacyStripe = product.category === "formal_stripes";
-  const isFormal = isLegacyStripe || product.category === "formal_shirts" || product.category === "formal_bespoke";
+  const isFormal = isLegacyShirtCategory(product.category);
   const isShirt = isFormal || (/\bshirts?\b/i.test(product.name) && !/\bt[ -]?shirts?\b/i.test(product.name));
   if (!isShirt) return;
 

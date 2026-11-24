@@ -534,35 +534,32 @@ export default function MannequinShirtViewer({
     },
   };
 
-  // Crossfade state when switching sister shirt / fabric product
-  const currentShirtKey = `${product?.slug || product?.name || "bengal"}`;
-  const [displayedProductKey, setDisplayedProductKey] = useState(currentShirtKey);
+  // Keep the previous image visible while the replacement fades in.
+  const currentShirtKey = product?.slug || product?.name || "bengal";
+  const shirtSrc = shirtModels[isHalfSleeve ? "half" : "full"][activeFitForModel];
+  const [displayedShirt, setDisplayedShirt] = useState({ key: currentShirtKey, src: shirtSrc });
   const [crossfadeShirtSrc, setCrossfadeShirtSrc] = useState<string | null>(null);
-
+  if (displayedShirt.key !== currentShirtKey || displayedShirt.src !== shirtSrc) {
+    if (displayedShirt.key !== currentShirtKey) setCrossfadeShirtSrc(displayedShirt.src);
+    setDisplayedShirt({ key: currentShirtKey, src: shirtSrc });
+  }
   useEffect(() => {
-    if (currentShirtKey !== displayedProductKey) {
-      const prevSrc = shirtModels[isHalfSleeve ? "half" : "full"][activeFitForModel];
-      setCrossfadeShirtSrc(prevSrc);
-      setDisplayedProductKey(currentShirtKey);
+    if (!crossfadeShirtSrc) return;
+    const timer = window.setTimeout(() => setCrossfadeShirtSrc(null), 550);
+    return () => window.clearTimeout(timer);
+  }, [crossfadeShirtSrc, currentShirtKey]);
 
-      const timer = setTimeout(() => {
-        setCrossfadeShirtSrc(null);
-      }, 550);
-      return () => clearTimeout(timer);
-    }
-  }, [currentShirtKey, displayedProductKey, isHalfSleeve, activeFitForModel, shirtModels]);
-
-  // Smooth Crossfade for Step 5 folded shirts.
   const [activeFolded, setActiveFolded] = useState(foldedImage);
   const [prevFolded, setPrevFolded] = useState<string | null>(null);
+  if (foldedImage !== activeFolded) {
+    setPrevFolded(activeFolded);
+    setActiveFolded(foldedImage);
+  }
   useEffect(() => {
-    if (foldedImage !== activeFolded) {
-      setPrevFolded(activeFolded);
-      setActiveFolded(foldedImage);
-      const timer = setTimeout(() => setPrevFolded(null), 450);
-      return () => clearTimeout(timer);
-    }
-  }, [foldedImage, activeFolded]);
+    if (!prevFolded) return;
+    const timer = window.setTimeout(() => setPrevFolded(null), 450);
+    return () => window.clearTimeout(timer);
+  }, [prevFolded, activeFolded]);
 
   // Calculated stomach measurement values matching the 3-panel reference
   const activeChestForCalc = chestSize && chestSize > 0 ? chestSize : 40;

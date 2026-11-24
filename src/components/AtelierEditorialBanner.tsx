@@ -1,5 +1,6 @@
 "use client";
 
+import { useIsClient } from "@/lib/useIsClient";
 import React, { useRef, useEffect, useState } from "react";
 import { useContent } from "@/context/SiteDataProvider";
 
@@ -10,20 +11,18 @@ export default function AtelierEditorialBanner() {
   const innerRef = useRef<HTMLDivElement>(null);
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [loadVideo, setLoadVideo] = useState(false);
+  const [inView, setInView] = useState(false);
+  const isClient = useIsClient();
+  const loadVideo = inView || (isClient && !("IntersectionObserver" in window));
 
   const videoSource = c.video || "/video/create_a_second_premium_shirt_video.mp4";
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
-    if (!("IntersectionObserver" in window)) {
-      setLoadVideo(true);
-      return;
-    }
+    if (!section || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        setLoadVideo(true);
+        setInView(true);
         observer.disconnect();
       }
     }, { rootMargin: "250px 0px" });

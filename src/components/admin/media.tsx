@@ -24,15 +24,14 @@ export function cleanMediaUrl(url: string | null | undefined): string {
 /** Preview of an image or video URL (storefront-relative paths render as-is). */
 export function MediaPreview({ src: rawSrc, kind = "image", className }: { src?: string; kind?: MediaKind; className?: string }) {
   const src = cleanMediaUrl(rawSrc);
+  return <MediaPreviewContent key={src} src={src} kind={kind} className={className} />;
+}
+
+function MediaPreviewContent({ src, kind, className }: { src: string; kind: MediaKind; className?: string }) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const failed = !!src && failedSrc === src;
   const base = cn("flex items-center justify-center overflow-hidden rounded-lg border border-[#E5E7EB] bg-[#F3F4F6]", className);
-
-  useEffect(() => {
-    setFailedSrc(null);
-    setLoaded(false);
-  }, [src]);
 
   if (!src) {
     return (

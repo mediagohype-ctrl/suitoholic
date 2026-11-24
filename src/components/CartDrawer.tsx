@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from"react";
+import { useIsClient } from "@/lib/useIsClient";
 import { createPortal } from"react-dom";
 import Link from"next/link";
 import { useRouter } from"next/navigation";
@@ -23,14 +24,10 @@ export default function CartDrawer() {
     removeCoupon,
   } = useCart();
 
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsClient();
   const [couponInput, setCouponInput] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (isDrawerOpen) {

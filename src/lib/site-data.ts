@@ -1,5 +1,5 @@
 import "server-only";
-import { Pool } from "pg";
+import { Pool, type QueryResult } from "pg";
 import { fallbackCategories } from "@/data/categories";
 import { allProducts, type ProductItem } from "@/data/products";
 import { API_URL } from "@/lib/api";
@@ -50,6 +50,10 @@ function getPool(): Pool | null {
       connectionString: dbUrl,
       ssl: { rejectUnauthorized: false },
       max: 5,
+      connectionTimeoutMillis: 4000,
+    });
+    pool.on("error", (error) => {
+      console.warn("[site] Idle DB connection failed:", error.message || error.name);
     });
   }
   return pool;
@@ -112,15 +116,29 @@ function toProduct(row: Record<string, unknown>): ProductItem {
   } as ProductItem;
 }
 
+function querySiteDb(db: Pool, sql: string): Promise<QueryResult> {
+  return new Promise((resolve, reject) => {
+    // pg's promise API recaptures the stack of network AggregateErrors.
+    // Pass a plain Error into the Next.js render path so it can fall back safely.
+    db.query(sql, (error, result) => {
+      if (error) {
+        reject(new Error(error.message || error.name));
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
 async function loadFromDb(): Promise<SiteBundle | null> {
   const db = getPool();
   if (!db) return null;
   try {
     const [catRes, prodRes, contentRes, settingsRes] = await Promise.all([
-      db.query("SELECT * FROM categories WHERE active = TRUE ORDER BY sort_order ASC, id ASC"),
-      db.query("SELECT * FROM products WHERE active = TRUE ORDER BY sort_order ASC, id ASC"),
-      db.query("SELECT key, data FROM site_content").catch(() => ({ rows: [] })),
-      db.query("SELECT key, value FROM settings").catch(() => ({ rows: [] })),
+      querySiteDb(db, "SELECT * FROM categories WHERE active = TRUE ORDER BY sort_order ASC, id ASC"),
+      querySiteDb(db, "SELECT * FROM products WHERE active = TRUE ORDER BY sort_order ASC, id ASC"),
+      querySiteDb(db, "SELECT key, data FROM site_content").catch(() => ({ rows: [] })),
+      querySiteDb(db, "SELECT key, value FROM settings").catch(() => ({ rows: [] })),
     ]);
 
     const categories = catRes.rows.map(toCategory);

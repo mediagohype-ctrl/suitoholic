@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { readBrowserJson } from "@/lib/browser-storage";
+import { useIsClient } from "@/lib/useIsClient";
 import Link from "next/link";
 import {
   MapPin,
@@ -50,8 +52,15 @@ const INITIAL_SAMPLE_ADDRESSES: SavedAddress[] = [
 ];
 
 export default function SavedAddressesPage() {
-  const [addresses, setAddresses] = useState<SavedAddress[]>([]);
-  const [loading, setLoading] = useState(true);
+  const isClient = useIsClient();
+  const loading = !isClient;
+  const storedAddresses = useMemo(() => {
+    if (!isClient) return [];
+    const stored = readBrowserJson<SavedAddress[]>(STORAGE_ADDRESSES_KEY);
+    return Array.isArray(stored) ? stored : INITIAL_SAMPLE_ADDRESSES;
+  }, [isClient]);
+  const [editedAddresses, setAddresses] = useState<SavedAddress[]>();
+  const addresses = editedAddresses ?? storedAddresses;
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
   const [addressForm, setAddressForm] = useState<Omit<SavedAddress, "id">>({
@@ -72,17 +81,11 @@ export default function SavedAddressesPage() {
 
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_ADDRESSES_KEY);
-      if (stored) {
-        setAddresses(JSON.parse(stored));
-      } else {
-        setAddresses(INITIAL_SAMPLE_ADDRESSES);
+      if (localStorage.getItem(STORAGE_ADDRESSES_KEY) === null) {
         localStorage.setItem(STORAGE_ADDRESSES_KEY, JSON.stringify(INITIAL_SAMPLE_ADDRESSES));
       }
     } catch {
-      setAddresses(INITIAL_SAMPLE_ADDRESSES);
-    } finally {
-      setLoading(false);
+      // Storage unavailable.
     }
   }, []);
 

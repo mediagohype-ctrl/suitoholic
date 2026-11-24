@@ -1,6 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
+
+import { readBrowserJson } from "@/lib/browser-storage";
+import { useIsClient } from "@/lib/useIsClient";
 
 const STORAGE_KEY = "suitoholic_wishlist_ids";
 
@@ -19,34 +22,23 @@ interface WishlistContextValue {
 const WishlistContext = createContext<WishlistContextValue | null>(null);
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
-  const [wishlistIds, setWishlistIds] = useState<(number | string)[]>([]);
+  const isClient = useIsClient();
+  const storedIds = useMemo(() => {
+    const stored = isClient ? readBrowserJson<unknown>(STORAGE_KEY) : null;
+    return Array.isArray(stored) ? stored.map(String) : [];
+  }, [isClient]);
+  const [updatedIds, setWishlistIds] = useState<string[]>();
+  const wishlistIds = updatedIds ?? storedIds;
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    if (!updatedIds) return;
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setWishlistIds(parsed.map(String));
-        }
-      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedIds));
     } catch {
-      // storage unavailable
-    } finally {
-      setLoaded(true);
+      // Storage unavailable.
     }
-  }, []);
-
-  useEffect(() => {
-    if (!loaded) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(wishlistIds));
-    } catch {
-      // ignore
-    }
-  }, [wishlistIds, loaded]);
+  }, [updatedIds]);
 
   const isInWishlist = useCallback(
     (productId: number | string) => {
@@ -58,17 +50,16 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   const toggleWishlist = useCallback((productId: number | string) => {
     const sId = String(productId);
-    setWishlistIds((prev) =>
-      prev.some((id) => String(id) === sId)
-        ? prev.filter((id) => String(id) !== sId)
-        : [...prev, sId]
-    );
-  }, []);
+    setWishlistIds((prev) => {
+      const ids = prev ?? storedIds;
+      return ids.includes(sId) ? ids.filter((id) => id !== sId) : [...ids, sId];
+    });
+  }, [storedIds]);
 
   const removeFromWishlist = useCallback((productId: number | string) => {
     const sId = String(productId);
-    setWishlistIds((prev) => prev.filter((id) => String(id) !== sId));
-  }, []);
+    setWishlistIds((prev) => (prev ?? storedIds).filter((id) => id !== sId));
+  }, [storedIds]);
 
   const clearWishlist = useCallback(() => {
     setWishlistIds([]);

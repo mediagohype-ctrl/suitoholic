@@ -47,6 +47,7 @@ export default function AdminFinishedLooksPage() {
 
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [data, setData] = useState<FinishedLooksContent>(defaultContent);
   const [original, setOriginal] = useState<FinishedLooksContent>(defaultContent);
   const [saving, setSaving] = useState(false);
@@ -66,37 +67,31 @@ export default function AdminFinishedLooksPage() {
   const [formErrors, setFormErrors] = useState<{ fabricImage?: string; lookImage?: string; title?: string }>({});
 
   // Fetch current stored content
-  const loadData = async () => {
-    setLoading(true);
-    setLoadError(null);
-    try {
-      const res = await apiFetch<{ data: FinishedLooksContent | null }>(
-        "/content/finishedLooks"
-      );
-      if (res?.data && res.data.slides && Array.isArray(res.data.slides)) {
-        setData(res.data);
-        setOriginal(res.data);
-      } else {
-        setData(defaultContent);
-        setOriginal(defaultContent);
-      }
-    } catch (err: unknown) {
-      const e = toApiError(err);
-      if (e.status === 404) {
-        // Defaults
-        setData(defaultContent);
-        setOriginal(defaultContent);
-      } else {
-        setLoadError(e.message || "Failed to load finished looks data.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    loadData();
-  }, []);
+    const controller = new AbortController();
+    const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]);
+    apiFetch<{ data: FinishedLooksContent | null }>("/content/finishedLooks", { signal })
+      .then((res) => {
+        if (controller.signal.aborted) return;
+        const content = res?.data && Array.isArray(res.data.slides) ? res.data : defaultContent;
+        setData(content);
+        setOriginal(content);
+      })
+      .catch((err: unknown) => {
+        if (controller.signal.aborted) return;
+        const error = toApiError(err);
+        if (error.status === 404) {
+          setData(defaultContent);
+          setOriginal(defaultContent);
+        } else {
+          setLoadError(error.message || "Failed to load finished looks data.");
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
+  }, [loadAttempt]);
 
   const isDirty = useMemo(
     () => JSON.stringify(data) !== JSON.stringify(original),
@@ -299,7 +294,11 @@ export default function AdminFinishedLooksPage() {
       ) : loadError ? (
         <ErrorState
           message={loadError}
-          onRetry={loadData}
+          onRetry={() => {
+            setLoading(true);
+            setLoadError(null);
+            setLoadAttempt((attempt) => attempt + 1);
+          }}
         />
       ) : (
         <div className="space-y-6">

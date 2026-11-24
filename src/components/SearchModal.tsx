@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from"react";
+import { useIsClient } from "@/lib/useIsClient";
 import { createPortal } from"react-dom";
 import Link from"next/link";
 import { useRouter } from"next/navigation";
@@ -13,28 +14,27 @@ interface SearchModalProps {
 }
 
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsClient();
   const [query, setQuery] = useState("");
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  if (isOpen !== wasOpen) {
+    setWasOpen(isOpen);
+    if (!isOpen) setQuery("");
+  }
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { products, categories } = useCatalog();
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 80);
-      document.body.style.overflow ="hidden";
-    } else {
-      document.body.style.overflow ="unset";
-      setQuery("");
-    }
+    if (!mounted || !isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 80);
     return () => {
-      document.body.style.overflow ="unset";
+      window.clearTimeout(focusTimer);
+      document.body.style.overflow = previousOverflow;
     };
-  }, [isOpen]);
+  }, [isOpen, mounted]);
 
   // Handle ESC key
   useEffect(() => {

@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { readBrowserJson } from "@/lib/browser-storage";
+import { useIsClient } from "@/lib/useIsClient";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   User,
@@ -140,13 +143,23 @@ const INITIAL_SAMPLE_ADDRESSES: SavedAddress[] = [
 ];
 
 export default function AccountPage() {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const isClient = useIsClient();
+  const loading = !isClient;
+  const storedUser = useMemo(() => isClient ? readBrowserJson<UserProfile>(STORAGE_USER_KEY) : null, [isClient]);
+  const [updatedUser, setUser] = useState<UserProfile | null>();
+  const user = updatedUser === undefined ? (storedUser?.isLoggedIn ? storedUser : null) : updatedUser;
   const [submitting, setSubmitting] = useState(false);
-  const [activeTab, setActiveTab] = useState<"profile" | "orders" | "addresses" | "wishlist">("profile");
+  const tabParam = useSearchParams()?.get("tab");
+  const activeTab = tabParam === "orders" || tabParam === "addresses" || tabParam === "wishlist" ? tabParam : "profile";
 
   // Saved Addresses State
-  const [addresses, setAddresses] = useState<SavedAddress[]>([]);
+  const storedAddresses = useMemo(() => {
+    if (!isClient) return [];
+    const stored = readBrowserJson<SavedAddress[]>(STORAGE_ADDRESSES_KEY);
+    return Array.isArray(stored) ? stored : INITIAL_SAMPLE_ADDRESSES;
+  }, [isClient]);
+  const [editedAddresses, setAddresses] = useState<SavedAddress[]>();
+  const addresses = editedAddresses ?? storedAddresses;
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
   const [addressForm, setAddressForm] = useState<Omit<SavedAddress, "id">>({
@@ -165,19 +178,7 @@ export default function AccountPage() {
   const [addressNotice, setAddressNotice] = useState<string | null>(null);
   const [addressError, setAddressError] = useState<string | null>(null);
 
-  // Sync tab with URL search param "?tab="
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const tabParam = params.get("tab");
-      if (tabParam === "profile" || tabParam === "orders" || tabParam === "addresses" || tabParam === "wishlist") {
-        setActiveTab(tabParam);
-      }
-    }
-  }, []);
-
   const switchTab = (tab: "profile" | "orders" | "addresses" | "wishlist") => {
-    setActiveTab(tab);
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
       url.searchParams.set("tab", tab);
@@ -185,18 +186,13 @@ export default function AccountPage() {
     }
   };
 
-  // Load saved addresses from storage
   useEffect(() => {
     try {
-      const storedAddrs = localStorage.getItem(STORAGE_ADDRESSES_KEY);
-      if (storedAddrs) {
-        setAddresses(JSON.parse(storedAddrs));
-      } else {
-        setAddresses(INITIAL_SAMPLE_ADDRESSES);
+      if (localStorage.getItem(STORAGE_ADDRESSES_KEY) === null) {
         localStorage.setItem(STORAGE_ADDRESSES_KEY, JSON.stringify(INITIAL_SAMPLE_ADDRESSES));
       }
     } catch {
-      setAddresses(INITIAL_SAMPLE_ADDRESSES);
+      // Storage unavailable.
     }
   }, []);
 
@@ -237,36 +233,17 @@ export default function AccountPage() {
   const { wishlistIds, clearWishlist, toggleWishlist, wishlistCount } = useWishlist();
   const { products } = useCatalog();
 
-  // Load existing session from storage
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_USER_KEY);
-      if (stored) {
-        const parsed: UserProfile = JSON.parse(stored);
-        if (parsed?.isLoggedIn) {
-          setUser(parsed);
-          setEditFirstName(parsed.firstName || parsed.name.split(" ")[0] || "");
-          setEditLastName(parsed.lastName || parsed.name.split(" ").slice(1).join(" ") || "");
-          setEditEmail(parsed.email || "");
-          setEditPhone(parsed.phone || "");
-        }
-      }
-    } catch {
-      // ignore
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Sync user profile fields when user changes
-  useEffect(() => {
+  const [previousUser, setPreviousUser] = useState<UserProfile | null>(null);
+  if (previousUser !== user) {
+    setPreviousUser(user);
     if (user) {
-      setEditFirstName(user.firstName || user.name.split(" ")[0] || "");
-      setEditLastName(user.lastName || user.name.split(" ").slice(1).join(" ") || "");
+      const [firstName = "", ...lastNames] = (user.name || "").split(" ");
+      setEditFirstName(user.firstName || firstName);
+      setEditLastName(user.lastName || lastNames.join(" "));
       setEditEmail(user.email || "");
       setEditPhone(user.phone || "");
     }
-  }, [user]);
+  }
 
   // Resolve all saved wishlist products
   const wishlistProducts: ProductItem[] = useMemo(() => {
@@ -343,17 +320,17 @@ export default function AccountPage() {
 
     // Check sessionStorage for last placed order
     try {
-      const lastRaw = sessionStorage.getItem("suitoholic_last_order");
+      const lastRaw = isClient ? sessionStorage.getItem("suitoholic_last_order") : null;
       if (lastRaw) {
         const parsed = JSON.parse(lastRaw);
         if (parsed?.orderNumber) {
           list.push({
             orderNumber: parsed.orderNumber,
-            date: new Date(parsed.createdAt || Date.now()).toLocaleDateString("en-IN", {
+            date: parsed.createdAt ? new Date(parsed.createdAt).toLocaleDateString("en-IN", {
               day: "numeric",
               month: "short",
               year: "numeric",
-            }),
+            }) : "Date unavailable",
             statusLabel: parsed.status === "delivered" ? "Delivered" : "Atelier Crafting Phase",
             currentStage: "Hand-Cut & Precision Stitching",
             progressPercent: 65,
@@ -392,7 +369,7 @@ export default function AccountPage() {
     });
 
     return list;
-  }, []);
+  }, [isClient]);
 
   const handleEmailPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();

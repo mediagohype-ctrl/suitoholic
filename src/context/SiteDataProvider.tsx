@@ -64,7 +64,7 @@ export function useCatalog(): Catalog {
       homeCollections: categories
         .filter((c) => c.showOnHome)
         .map((c) => ({
-          id: c.id || (c as any).key,
+          id: c.id || ("key" in c && typeof c.key === "string" ? c.key : c.id),
           title: c.homeTitle || c.title,
           subtitle: c.description || c.subtitle,
           tag: c.tag,

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from"react";
+import React, { useEffect } from"react";
+import { useIsClient } from "@/lib/useIsClient";
 import { createPortal } from"react-dom";
 import Link from"next/link";
 import { X, User, Package, Calendar, RefreshCcw, HelpCircle, Shield, Phone, Mail, Clock, ArrowRight } from"lucide-react";
@@ -11,11 +12,7 @@ interface AccountDrawerProps {
 }
 
 export default function AccountDrawer({ isOpen, onClose }: AccountDrawerProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsClient();
 
   useEffect(() => {
     if (isOpen) {

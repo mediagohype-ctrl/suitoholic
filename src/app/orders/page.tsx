@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
+import { useIsClient } from "@/lib/useIsClient";
 import Link from "next/link";
 import { Package, Clock, ShoppingBag, ArrowRight, ExternalLink, ChevronRight, MessageSquare } from "lucide-react";
 import PageShell from "@/components/bag/PageShell";
@@ -23,10 +24,9 @@ interface UserOrder {
 }
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<UserOrder[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
+  const isClient = useIsClient();
+  const orders = useMemo(() => {
+    if (!isClient) return [];
     try {
       const list: UserOrder[] = [];
       const lastRaw = sessionStorage.getItem("suitoholic_last_order");
@@ -35,11 +35,11 @@ export default function OrdersPage() {
         if (parsed?.orderNumber) {
           list.push({
             orderNumber: parsed.orderNumber,
-            date: new Date(parsed.createdAt || Date.now()).toLocaleDateString("en-IN", {
+            date: parsed.createdAt ? new Date(parsed.createdAt).toLocaleDateString("en-IN", {
               day: "numeric",
               month: "short",
               year: "numeric",
-            }),
+            }) : "Date unavailable",
             statusLabel: parsed.status === "delivered" ? "Delivered" : "Atelier Crafting Phase",
             currentStage: "Hand-Cut & Precision Stitching",
             progressPercent: 65,
@@ -68,15 +68,13 @@ export default function OrdersPage() {
         }
       }
 
-      setOrders(list);
+      return list;
     } catch {
-      setOrders([]);
-    } finally {
-      setLoading(false);
+      return [];
     }
-  }, []);
+  }, [isClient]);
 
-  if (loading) {
+  if (!isClient) {
     return (
       <PageShell eyebrow="ATELIER COMMISSIONS" title="YOUR ORDERS">
         <div className="flex items-center justify-center py-20">

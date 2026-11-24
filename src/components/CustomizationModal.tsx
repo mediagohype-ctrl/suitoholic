@@ -47,7 +47,7 @@ interface CustomizationModalProps {
 type MannequinFit = "lean" | "regular" | "tummy";
 const asMannequinFit = (fit: string): MannequinFit => (fit === "regular" || fit === "tummy" ? fit : "lean");
 
-function getSuggestionThumbnail(p: any): string {
+function getSuggestionThumbnail(p: Pick<ProductItem, "image" | "gallery">): string {
   if (p?.image) return p.image;
   if (p?.gallery && p.gallery.length > 0) return p.gallery[0];
   return "/new_shirts/shirt_21.jpg";
