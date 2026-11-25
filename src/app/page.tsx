@@ -16,6 +16,7 @@ import FaqSection from "@/components/FaqSection";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 
 const HOME_CARD_IMAGES: Readonly<Record<string, string>> = {
+  "soft-ivory-white-egyptian-cotton-shirt": "/generated/soft_ivory_models/character_1_soft_ivory.jpg",
   "d-116-pastel-lavender-mist-bespoke-shirt": "/banners/shop/home-folded-lavender.webp",
   "d-120-imperial-royal-plum-bespoke-shirt": "/banners/shop/home-folded-plum.webp",
   "d-121-desert-khaki-bespoke-twill-shirt": "/banners/shop/home-folded-khaki.webp",

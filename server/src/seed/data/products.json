@@ -33,7 +33,9 @@
     "threadCount": "130s Luxury Twill",
     "image": "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg",
     "gallery": [
-      "/api/media/5/whatsapp-image-2026-10-27-at-1-06-36-pm-2.jpeg"
+      "/products/coral-bengal-stripe-model-garden.webp",
+      "/new_shirts/shirt_14.jpg",
+      "/customizer/full_shirt_14.jpg"
     ],
     "colorways": [],
     "rating": 5,
@@ -1390,5 +1392,43 @@
     "featured": true,
     "active": true,
     "sortOrder": 24
+  },
+  {
+    "id": 144,
+    "slug": "soft-ivory-white-egyptian-cotton-shirt",
+    "name": "SOFT IVORY WHITE EGYPTIAN COTTON SHIRT",
+    "category_key": "formal_shirts",
+    "price": "2999.00",
+    "compare_at_price": "3999.00",
+    "subtitle": "Luminous soft ivory white superfine Egyptian cotton bespoke shirt \u2022 Code: WHSUP14",
+    "description": "Crafted from the world's finest Egyptian cotton, this bespoke shirt in Soft Ivory White offers exceptional softness, superior breathability, and timeless luxury. Styled with custom spread or mandarin collar and French or classic single cuffs.",
+    "fabric": "100% Superfine Egyptian Giza Cotton (140s Two-Ply)",
+    "thread_count": "140s Two-Ply Fine Weave",
+    "collar": "Semi-Spread Classic / Mandarin Band Collar",
+    "cuff": "Single Round / Double French Cuff",
+    "fit": "Custom Made-to-Measure (Lean / Regular / Comfort)",
+    "image": "/generated/soft_ivory_models/character_1_soft_ivory.jpg",
+    "gallery": [
+      "/generated/soft_ivory_models/character_1_soft_ivory.jpg",
+      "/generated/soft_ivory_models/character_2_soft_ivory.jpg",
+      "/generated/soft_ivory_models/character_3_soft_ivory.jpg",
+      "/generated/soft_ivory_models/character_4_soft_ivory.jpg",
+      "/new_shirts/whsup14_soft_ivory.jpg"
+    ],
+    "colorways": [
+      {
+        "hex": "#F7F3EB",
+        "name": "Soft Ivory White",
+        "productSlug": "soft-ivory-white-egyptian-cotton-shirt"
+      }
+    ],
+    "rating": "5.0",
+    "reviews_count": 28,
+    "tag": "WHSUP14",
+    "stock": 35,
+    "customizable": true,
+    "featured": true,
+    "active": true,
+    "sort_order": 1
   }
 ]

@@ -70,7 +70,18 @@ export function useCatalog(): Catalog {
           tag: c.tag,
           bgImage: c.bgImage || c.image,
         })),
-      getProduct: (idOrSlug) => products.find((p) => String(p.id) === String(idOrSlug) || p.slug === idOrSlug),
+      getProduct: (idOrSlug) => {
+        const query = String(idOrSlug).toLowerCase();
+        return products.find(
+          (p) =>
+            String(p.id) === String(idOrSlug) ||
+            p.slug === idOrSlug ||
+            p.slug.toLowerCase() === query ||
+            (p.tag && p.tag.toLowerCase() === query) ||
+            (query.includes("soft-ivory") && p.slug.includes("soft-ivory")) ||
+            (query.includes("0i8sbyx0") && p.slug.includes("soft-ivory"))
+        );
+      },
       getCategory: (id) => byKey.get(id),
     };
   }, [products, categories]);

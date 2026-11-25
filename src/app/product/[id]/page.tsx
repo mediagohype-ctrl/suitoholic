@@ -116,6 +116,8 @@ export default function ProductDetailPage() {
   const matchingFull = getMatchingFullShirtImage(activeProduct);
   const onModelPhoto = activeProduct.slug === "coral-red-bold-bengal-stripe-twill-shirt"
     ? "/products/coral-bengal-stripe-on-model.webp"
+    : activeProduct.slug === "soft-ivory-white-egyptian-cotton-shirt"
+    ? "/generated/soft_ivory_models/character_1_soft_ivory.jpg"
     : "";
   const gallery = [...new Set([
     onModelPhoto,
@@ -240,7 +242,7 @@ export default function ProductDetailPage() {
                 <CatalogImage
                   key={selectedImage}
                   src={selectedImage}
-                  alt={selectedImage === onModelPhoto ? `${activeProduct.name} worn by a seated model` : activeProduct.name}
+                  alt={selectedImage === onModelPhoto ? `${activeProduct.name} worn by a seated model` : selectedImage.includes("coral-bengal-stripe-model-garden") ? `${activeProduct.name} worn by model at an outdoor garden party` : activeProduct.name}
                   sizes="(max-width: 1023px) 100vw, 50vw"
                   className="h-full w-full object-contain"
                   loading="eager"
@@ -284,7 +286,7 @@ export default function ProductDetailPage() {
                     <button
                       key={imgUrl}
                       type="button"
-                      aria-label={imgUrl === onModelPhoto ? "Show shirt on model" : `Show product photo ${idx + 1} of ${gallery.length}`}
+                      aria-label={imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
                       aria-pressed={selectedImageIndex === idx}
                       onClick={() => setSelectedImageIndex(idx)}
                       className={`relative aspect-[4/5] w-16 shrink-0 cursor-pointer overflow-hidden border bg-[#f7f6f3] transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-full ${selectedImageIndex === idx
@@ -482,9 +484,9 @@ export default function ProductDetailPage() {
                     [c.specLabels.threadCount, activeProduct.threadCount],
                     [c.specLabels.collar, activeProduct.collar],
                     [c.specLabels.cuff, activeProduct.cuff],
-                  ].filter(([, value]) => value).map(([label, value]) => (
+                  ].filter(([label, value]) => label && value).map(([label, value]) => (
                     <div key={label} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-3 py-2.5">
-                      <dt className="text-neutral-600">{label.replace(/:$/, "")}</dt>
+                      <dt className="text-neutral-600">{(label || "").replace(/:$/, "")}</dt>
                       <dd className="font-medium">{value}</dd>
                     </div>
                   ))}

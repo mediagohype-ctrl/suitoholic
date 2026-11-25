@@ -52,6 +52,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/Soft-Ivory-White-Egyptian-Cotton-Shirt-For-Men/:path*",
+        destination: "/product/soft-ivory-white-egyptian-cotton-shirt",
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     const apiUrl =
       process.env.NEXT_PUBLIC_API_URL ||
