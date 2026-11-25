@@ -13,6 +13,7 @@ interface ModernCollectionSectionProps {
   products: ProductItem[];
   headerTitle?: string;
   cardsPerView?: number;
+  cardImages?: Readonly<Record<string, string>>;
 }
 
 const FALLBACK_FABRIC_ITEMS: ProductItem[] = [
@@ -88,6 +89,7 @@ export default function ModernCollectionSection({
   products,
   headerTitle,
   cardsPerView,
+  cardImages,
 }: ModernCollectionSectionProps) {
   const colId = collection.id || (collection as unknown as { key?: string })?.key;
   const isThreeCardMode =
@@ -198,7 +200,7 @@ export default function ModernCollectionSection({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-x-[15px] gap-y-10 sm:gap-y-14 lg:gap-y-16 w-full items-start px-[7.5px]">
         {(gridProducts.length > 0 ? gridProducts : displayProducts).map((product, idx) => (
           <div key={`${product.id}-${product.slug || idx}`} className="w-full">
-            <ModernProductCard product={product} />
+            <ModernProductCard product={product} cardImage={cardImages?.[product.slug]} />
           </div>
         ))}
       </div>

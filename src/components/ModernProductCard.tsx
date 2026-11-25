@@ -11,6 +11,7 @@ import CatalogImage from "@/components/CatalogImage";
 
 interface ModernProductCardProps {
   product: ProductItem;
+  cardImage?: string;
   isWideSpan?: boolean;
   onCardClick?: (product: ProductItem) => void;
   onCustomise?: (product: ProductItem) => void;
@@ -18,6 +19,7 @@ interface ModernProductCardProps {
 
 export default function ModernProductCard({
   product,
+  cardImage,
   isWideSpan,
   onCardClick,
   onCustomise,
@@ -48,7 +50,8 @@ export default function ModernProductCard({
   const baseImage = isBeigeLinen
     ? "/new_shirts/shirt_13.jpg"
     : (cleanImages[0] || product.image || "/new_shirts/shirt_13.jpg");
-  const activeMainImage = wideMainImage || baseImage;
+  const activeMainImage = cardImage || wideMainImage || baseImage;
+  const imageAspect = cardImage ? "aspect-[529/646]" : isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]";
   const activeHoverImage = wideMainImage ? (cleanImages[0] || baseImage) : hoverImage;
 
   const [requestedHoverImage, setRequestedHoverImage] = useState<string | null>(null);
@@ -65,7 +68,7 @@ export default function ModernProductCard({
   return (
     <div className="group flex flex-col w-full">
       {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (or 508:350 for Wide Span) */}
-      <div className={`relative w-full ${isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]"} rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
+      <div className={`relative w-full ${imageAspect} rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
         {/* Main Product Image Container */}
         <Link
           href={`/product/${product.slug}`}

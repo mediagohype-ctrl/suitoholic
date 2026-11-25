@@ -15,6 +15,13 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FaqSection from "@/components/FaqSection";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
 
+const HOME_CARD_IMAGES: Readonly<Record<string, string>> = {
+  "d-116-pastel-lavender-mist-bespoke-shirt": "/banners/shop/home-folded-lavender.webp",
+  "d-120-imperial-royal-plum-bespoke-shirt": "/banners/shop/home-folded-plum.webp",
+  "d-121-desert-khaki-bespoke-twill-shirt": "/banners/shop/home-folded-khaki.webp",
+  "d-122-warm-apricot-sienna-bespoke-shirt": "/banners/shop/home-folded-apricot.webp",
+};
+
 const Divider = ({ wide = false }: { wide?: boolean }) =>
   wide ? (
     <div className="w-full my-4 sm:my-6 lg:my-8">
@@ -159,6 +166,7 @@ export default function Home() {
                 <ModernCollectionSection
                   collection={collection}
                   products={finalProducts}
+                  cardImages={HOME_CARD_IMAGES}
                   headerTitle={
                     index === 0
                       ? c.firstCollectionTitle

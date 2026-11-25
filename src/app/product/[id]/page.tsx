@@ -25,6 +25,8 @@ import {
   Check,
   Sparkles,
   Layers,
+  Share2,
+  Truck,
   type LucideIcon,
 } from"lucide-react";
 import confetti from"canvas-confetti";
@@ -112,11 +114,22 @@ export default function ProductDetailPage() {
 
   const colorways = activeProduct.colorways ?? [];
   const matchingFull = getMatchingFullShirtImage(activeProduct);
-  const rawGallery = activeProduct.gallery?.length ? [...activeProduct.gallery] : [activeProduct.image];
-  if (matchingFull && !rawGallery.some((g) => g && g.includes(matchingFull))) {
-    rawGallery.push(matchingFull);
-  }
-  const gallery = rawGallery.map((g) => (g ? g.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i,"/") :""));
+  const onModelPhoto = activeProduct.slug === "coral-red-bold-bengal-stripe-twill-shirt"
+    ? "/products/coral-bengal-stripe-on-model.webp"
+    : "";
+  const gallery = [...new Set([
+    onModelPhoto,
+    ...(activeProduct.gallery ?? []),
+    activeProduct.image,
+    matchingFull,
+    ...(onModelPhoto ? ["/customizer/coral-step5-wide/cutaway-classic-reference-matched.webp"] : []),
+  ].filter(Boolean).map((image) => image.trim().replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/")).filter(Boolean))];
+  const selectedImage = gallery[selectedImageIndex] || gallery[0] || "/shirt_classic_white.jpg";
+  const hasGallery = gallery.length > 1;
+  const discount = activeProduct.compareAtPrice && activeProduct.rawPrice > 0
+    ? Math.max(0, Math.round(100 * (1 - activeProduct.rawPrice / activeProduct.compareAtPrice)))
+    : 0;
+  const selectedColor = colorways.find((colorway) => colorway.productSlug === activeProduct.slug);
   const outOfStock = activeProduct.stock === 0;
   const lowStock = typeof activeProduct.stock ==="number" && activeProduct.stock > 0 && activeProduct.stock <= 5;
 
@@ -131,6 +144,22 @@ export default function ProductDetailPage() {
     if (outOfStock) return;
     setBuyNowMode(buyNow);
     setIsCustomizerOpen(true);
+  };
+
+  const handleShareProduct = async () => {
+    const url = new URL(`/product/${activeProduct.slug}`, window.location.origin).href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: activeProduct.name, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        showToast("Product link copied");
+      }
+    } catch (error) {
+      if (!(error instanceof Error && error.name === "AbortError")) {
+        showToast("Could not share this product", true);
+      }
+    }
   };
 
   const handleConfirmCustomization = async (customFit: CustomFit, chosenProduct?: { id?: number | string; name?: string } | null) => {
@@ -182,38 +211,38 @@ export default function ProductDetailPage() {
     .slice(0, 4);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#ECEAE5] text-black antialiased relative overflow-x-hidden selection:bg-black selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white text-black antialiased relative overflow-x-hidden selection:bg-black selection:text-white">
       {/* Header */}
       <Header activeTab="shop" />
 
       {/* Main Studio Content */}
       <div className="relative flex-1 w-full">
-        <main className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 pt-28 sm:pt-32 lg:pt-36 pb-8 sm:pb-16 space-y-8 sm:space-y-10">
+        <main className="relative z-10 mx-auto w-full max-w-[1800px] space-y-4 px-4 pb-8 pt-28 sm:px-8 sm:pb-16 sm:pt-32 lg:px-12 lg:pt-36">
 
           {/* Top Bar Navigation */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Link
               href={`/shop?category=${activeProduct.category}`}
-              className="inline-flex items-center space-x-2 bg-white hover:bg-black text-black hover:text-white border border-[#E5E3DD] px-5 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all shadow-sm"
+              className="inline-flex items-center gap-2 py-2 text-xs font-semibold tracking-wide text-neutral-600 hover:text-black"
             >
               <ArrowLeft size={15} />
               <span>{c.backLabel}</span>
             </Link>
           </div>
 
-          {/* SECTION 1: HERO 2-COLUMN VISUAL SHOWCASE */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-10">
 
             {/* LEFT COLUMN: Visual Showcase Gallery */}
-            <div className="lg:col-span-6 space-y-4">
+            <div className={`grid min-w-0 items-start gap-4 ${hasGallery ? "lg:grid-cols-[88px_minmax(0,1fr)] xl:grid-cols-[112px_minmax(0,1fr)]" : ""}`}>
 
               {/* Main Display Box */}
-              <div className="relative w-full aspect-[4/4.1] sm:aspect-[4/4.1] lg:aspect-[4/4] max-h-[485px] sm:max-h-[520px] lg:max-h-[540px] rounded-[24px] sm:rounded-[32px] overflow-hidden bg-white border border-[#E5E3DD] shadow-sm flex items-center justify-center group">
+              <div className={`relative aspect-[4/5] max-h-[min(82svh,820px)] w-full overflow-hidden bg-[#f7f6f3] lg:row-start-1 ${hasGallery ? "lg:col-start-2" : ""}`}>
                 <CatalogImage
-                  src={gallery[selectedImageIndex] || (activeProduct.image ? activeProduct.image.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i,"/") :"")}
-                  alt={activeProduct.name}
-                  sizes="(max-width: 1023px) 100vw, (max-width: 1600px) 50vw, 800px"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  key={selectedImage}
+                  src={selectedImage}
+                  alt={selectedImage === onModelPhoto ? `${activeProduct.name} worn by a seated model` : activeProduct.name}
+                  sizes="(max-width: 1023px) 100vw, 50vw"
+                  className="h-full w-full object-contain"
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
@@ -241,25 +270,33 @@ export default function ProductDetailPage() {
                     className={isWishlisted ?"fill-[#E04B4B] text-[#E04B4B]" :"text-white"}
                   />
                 </button>
+                {activeProduct.customizable && (
+                  <span className="absolute bottom-4 left-4 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-800">
+                    Customisable
+                  </span>
+                )}
               </div>
 
               {/* Thumbnail Strip */}
-              {gallery.length > 1 && (
-                <div className="grid grid-cols-4 gap-3">
+              {hasGallery && (
+                <div role="group" aria-label="Product photos" className="flex gap-3 overflow-x-auto p-1 lg:col-start-1 lg:row-start-1 lg:max-h-[min(82svh,820px)] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto">
                   {gallery.map((imgUrl, idx) => (
                     <button
-                      key={idx}
+                      key={imgUrl}
+                      type="button"
+                      aria-label={imgUrl === onModelPhoto ? "Show shirt on model" : `Show product photo ${idx + 1} of ${gallery.length}`}
+                      aria-pressed={selectedImageIndex === idx}
                       onClick={() => setSelectedImageIndex(idx)}
-                      className={`aspect-[4/3.2] rounded-[16px] overflow-hidden transition-all relative cursor-pointer border ${selectedImageIndex === idx
-                        ?"border-black ring-2 ring-black shadow-sm opacity-100"
-                        :"border-[#E5E3DD] opacity-60 hover:opacity-100"
+                      className={`relative aspect-[4/5] w-16 shrink-0 cursor-pointer overflow-hidden border bg-[#f7f6f3] transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-full ${selectedImageIndex === idx
+                        ?"border-black ring-1 ring-black"
+                        :"border-[#E5E3DD] opacity-75 hover:opacity-100"
                         }`}
                     >
                       <CatalogImage
                         src={imgUrl}
                         alt=""
-                        sizes="(max-width: 1023px) 25vw, 180px"
-                        className="w-full h-full object-cover object-center"
+                        sizes="112px"
+                        className="h-full w-full object-contain"
                         loading="lazy"
                         decoding="async"
                         onError={(e) => {
@@ -280,7 +317,7 @@ export default function ProductDetailPage() {
               )}
 
               {/* Visual Assurance Badges Strip */}
-              <div className="grid grid-cols-3 gap-2.5 pt-1 text-center">
+              <div className="col-span-full grid grid-cols-3 gap-2.5 pt-1 text-center">
                 {c.badges.map((badge, i) => {
                   const Icon = BADGE_ICONS[badge.icon] ?? ShieldCheck;
                   return (
@@ -296,13 +333,16 @@ export default function ProductDetailPage() {
             </div>
 
             {/* RIGHT COLUMN: Interactive Product Specs, Swatches & Action Buttons */}
-            <div className="lg:col-span-6 bg-white border border-[#E5E3DD] rounded-[24px] sm:rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6">
+            <div className="min-w-0 space-y-5 lg:py-1">
 
               {/* Brand Title & Price */}
               <div>
-                <h1 className="text-xl sm:text-2xl lg:text-[28px] font-normal font-serif-luxury text-black tracking-tight uppercase leading-tight">
-                  {activeProduct.name}
-                </h1>
+                <div className="flex items-start justify-between gap-3">
+                  <h1 className="text-xl font-semibold leading-snug tracking-tight sm:text-2xl">{activeProduct.name}</h1>
+                  <button type="button" onClick={handleShareProduct} aria-label="Share product" className="grid size-10 shrink-0 place-items-center rounded-full bg-neutral-100 hover:bg-neutral-200">
+                    <Share2 size={17} />
+                  </button>
+                </div>
 
                 {/* Rating & Review Counter */}
                 <div className="flex items-center space-x-2.5 mt-2.5">
@@ -316,7 +356,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Price Display */}
-                <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[#E5E3DD] pt-3.5">
+                <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <span className="font-sans text-2xl sm:text-3xl font-bold text-black tracking-tight">
                     {activeProduct.price}
                   </span>
@@ -325,10 +365,9 @@ export default function ProductDetailPage() {
                       {activeProduct.price.replace(/[\d,.]+/, Number(activeProduct.compareAtPrice).toLocaleString("en-IN"))}
                     </span>
                   ) : null}
-                  <span className="text-xs text-[#666666] font-medium">
-                    {c.taxNote}
-                  </span>
+                  {discount > 0 && <span className="text-sm font-semibold text-[#29493d]">{discount}% off</span>}
                 </div>
+                <p className="mt-1.5 text-xs text-neutral-600">{c.taxNote}</p>
                 {(outOfStock || lowStock) && (
                   <p className={`mt-2 text-[11px] font-bold uppercase tracking-wider ${outOfStock ?"text-red-600" :"text-[#666666]"}`}>
                     {outOfStock ? c.outOfStockLabel : fillTemplate(c.lowStockTemplate, { stock: activeProduct.stock ?? 0 })}
@@ -339,36 +378,36 @@ export default function ProductDetailPage() {
               {/* VISUAL COLORWAY / FABRIC SWATCH SELECTOR */}
               {colorways.length > 0 && (
                 <div className="space-y-2.5 border-t border-[#E5E3DD] pt-3.5">
-                  <div className="flex justify-between items-center">
-                    <label className="text-[10.5px] font-bold tracking-[0.2em] uppercase text-black">
-                      {c.colorwaysLabel}
-                    </label>
-                    <span className="text-[11px] font-bold text-[#666666] uppercase">{activeProduct.name.split("")[0]}</span>
-                  </div>
+                  <h2 className="text-sm font-semibold">{selectedColor ? `Style · ${selectedColor.name}` : c.colorwaysLabel}</h2>
 
                   <div className="flex flex-wrap items-center gap-3">
                     {colorways.map((cw, idx) => {
                       const isSelected = activeProduct.slug === cw.productSlug;
+                      const target = getProduct(cw.productSlug);
                       return (
                         <button
                           key={idx}
                           onClick={() => {
-                            const target = getProduct(cw.productSlug);
                             if (target) {
                               setActiveProduct(target);
                               setSelectedImageIndex(0);
                               window.history.replaceState(null,"", `/product/${target.slug}`);
                             }
                           }}
-                          className={`w-9 h-9 rounded-full border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm relative group ${isSelected
-                            ?"border-black ring-2 ring-black scale-110"
+                          type="button"
+                          aria-pressed={isSelected}
+                          disabled={!target}
+                          className={`relative grid h-[74px] w-[62px] place-items-center overflow-hidden border transition-opacity disabled:cursor-default ${isSelected
+                            ?"border-black ring-1 ring-black"
                             :"border-[#E5E3DD] opacity-80 hover:opacity-100"
                             }`}
                           style={{ backgroundColor: cw.hex }}
                           title={cw.name}
                           aria-label={cw.name}
                         >
-                          {isSelected && (
+                          {target?.image ? (
+                            <CatalogImage src={target.image} alt="" sizes="62px" className="h-full w-full object-cover" loading="lazy" />
+                          ) : isSelected && (
                             <Check size={14} className={isLightHex(cw.hex) ?"text-black" :"text-white"} />
                           )}
                         </button>
@@ -378,32 +417,34 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              {/* E-COMMERCE ACTION BUTTONS (SOLID BLACK PILLS) */}
-              <div className="space-y-3 pt-3 border-t border-[#E5E3DD]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 divide-x divide-neutral-200 border border-neutral-200 bg-neutral-50 text-center text-xs font-semibold">
+                <div className="grid justify-items-center gap-2 p-4"><RefreshCw size={18} />30-Day Fit Guarantee</div>
+                <div className="grid justify-items-center gap-2 p-4"><Truck size={18} />Complimentary shipping</div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2.5">
                   <button
+                    type="button"
                     onClick={() => handleOpenCustomizer(false)}
                     disabled={outOfStock || busy}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-black hover:bg-neutral-800 text-white rounded-full py-4 px-6 text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-sm cursor-pointer group"
+                    className="flex min-h-[64px] flex-col items-center justify-center gap-0.5 border border-[#263a32] px-2 py-3 text-sm font-semibold hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <div className="flex items-center space-x-2.5">
-                      <ShoppingBag size={17} className="text-white" />
+                      <ShoppingBag size={16} />
                       <span>{outOfStock ? c.outOfStockLabel : c.addToBagLabel}</span>
                     </div>
-                    <span className="text-[10px] text-white/70 font-bold tracking-widest">
-                      {c.addToBagHint}
-                    </span>
+                    {activeProduct.customizable && <span className="text-xs font-normal">Customisable</span>}
                   </button>
 
                   <button
+                    type="button"
                     onClick={() => handleOpenCustomizer(true)}
                     disabled={outOfStock || busy}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-black hover:bg-neutral-800 text-white rounded-full py-4 px-6 text-xs font-bold tracking-[0.16em] uppercase transition-all flex items-center justify-between shadow-sm cursor-pointer group"
+                    className="flex min-h-[64px] flex-col items-center justify-center gap-0.5 border border-[#263a32] bg-[#263a32] px-2 py-3 text-sm font-semibold text-white hover:bg-[#1b2b25] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span>{c.buyNowLabel}</span>
-                    <span className="text-[10px] text-white/70 font-bold tracking-widest">
-                      {(c as { buyNowHint?: string }).buyNowHint || c.addToBagHint}
-                    </span>
+                    {activeProduct.customizable && <span className="text-xs font-normal">Customisable</span>}
                   </button>
                 </div>
 
@@ -424,42 +465,37 @@ export default function ProductDetailPage() {
                 )}
               </div>
 
-              {/* Specifications Card */}
-              <div className="bg-[#F5F4F0] border border-[#E5E3DD] rounded-2xl p-4.5 space-y-2 text-xs shadow-xs">
-                <h4 className="text-[10.5px] font-bold tracking-[0.2em] text-[#666666] uppercase mb-2">
-                  {c.specsHeading}
-                </h4>
-                <div className="flex justify-between gap-3 border-b border-[#E5E3DD] pb-2">
-                  <span className="text-[#666666]">{c.specLabels.fabric}</span>
-                  <strong className="text-black text-right">{activeProduct.fabric}</strong>
-                </div>
-                <div className="flex justify-between gap-3 border-b border-[#E5E3DD] pb-2">
-                  <span className="text-[#666666]">{c.specLabels.threadCount}</span>
-                  <strong className="text-black text-right">{activeProduct.threadCount}</strong>
-                </div>
-                {activeProduct.collar && (
-                  <div className="flex justify-between gap-3 border-b border-[#E5E3DD] pb-2">
-                    <span className="text-[#666666]">{c.specLabels.collar}</span>
-                    <strong className="text-black text-right">{activeProduct.collar}</strong>
-                  </div>
-                )}
-                {activeProduct.cuff && (
-                  <div className="flex justify-between gap-3">
-                    <span className="text-[#666666]">{c.specLabels.cuff}</span>
-                    <strong className="text-black text-right">{activeProduct.cuff}</strong>
-                  </div>
-                )}
-              </div>
+              {activeProduct.customizable && (
+                <section className="border border-neutral-200 p-4" aria-label="Variant">
+                  <h2 className="mb-3 text-base font-semibold">Variant</h2>
+                  <div className="border border-neutral-400 px-4 py-2.5 text-center text-sm">Customisable</div>
+                </section>
+              )}
 
-              {/* Product Description Paragraph (Placed AFTER Specifications) */}
-              <div className="pt-2 border-t border-[#E5E3DD]">
-                <span className="text-[10.5px] font-bold tracking-[0.2em] text-[#666666] uppercase block mb-1.5">
-                  {c.descriptionHeading}
-                </span>
-                <p className="text-xs sm:text-[13px] text-[#444444] font-normal leading-relaxed whitespace-pre-line">
-                  {activeProduct.description}
-                </p>
-              </div>
+              {/* Specifications Card */}
+              <section className="border border-neutral-200 p-4">
+                <h2 className="mb-2 text-base font-semibold">Product Information</h2>
+                <dl className="divide-y divide-neutral-200 text-sm">
+                  {[
+                    ["Brand", "Suitoholic"],
+                    [c.specLabels.fabric, activeProduct.fabric],
+                    [c.specLabels.threadCount, activeProduct.threadCount],
+                    [c.specLabels.collar, activeProduct.collar],
+                    [c.specLabels.cuff, activeProduct.cuff],
+                  ].filter(([, value]) => value).map(([label, value]) => (
+                    <div key={label} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-3 py-2.5">
+                      <dt className="text-neutral-600">{label.replace(/:$/, "")}</dt>
+                      <dd className="font-medium">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {activeProduct.description && (
+                  <details className="mt-2 border-t border-neutral-200 pt-3 text-sm">
+                    <summary className="cursor-pointer font-semibold">Read more</summary>
+                    <p className="mt-3 whitespace-pre-line leading-relaxed text-neutral-600">{activeProduct.description}</p>
+                  </details>
+                )}
+              </section>
 
             </div>
 

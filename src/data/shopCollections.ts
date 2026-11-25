@@ -1,7 +1,7 @@
 import type { ProductItem } from "@/lib/types";
 
 export const shopCollections = [
-  { id: "plain-formal-shirts", title: "Plain Formal Shirts", heroImage: "/banners/shop_hero_banner_hd.jpg" },
+  { id: "plain-formal-shirts", title: "Plain Formal Shirts", heroImage: "/banners/plain-formal-shirts-fullscreen.webp" },
   { id: "stripe-cotton-shirts", title: "Stripe Cotton Shirts", heroImage: "/bengal_stripe_flatlay_macro.jpg" },
   { id: "executive-linen-shirts", title: "Executive Linen Shirts", heroImage: "/banners/shop_hero_nature_linen.jpg" },
   { id: "handcrafted-shirts", title: "Handcrafted Shirts", heroImage: "/about_atelier_heritage.jpg" },

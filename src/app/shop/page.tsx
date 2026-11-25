@@ -70,6 +70,28 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
           <h1 className="sr-only">{c.allCategoryName}</h1>
           <ShopNatureHeroBanner />
         </>
+      ) : collection?.id === "plain-formal-shirts" ? (
+        <section className="relative h-[100dvh] w-full overflow-hidden bg-[#211b16]">
+          <h1 className="sr-only">{currentCategoryName}</h1>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 scale-110 bg-cover bg-center opacity-65 blur-xl"
+            style={{ backgroundImage: `url(${collectionHeroImage})` }}
+          />
+          <Link
+            href="#collection-products"
+            aria-label="Shop plain formal shirts"
+            className="absolute inset-0 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={collectionHeroImage}
+              alt="Two models wearing blue and white formal shirts"
+              className="h-full w-full object-contain p-[2vmin]"
+              fetchPriority="high"
+            />
+          </Link>
+        </section>
       ) : (
         <section className="relative h-[55vh] min-h-[360px] w-full overflow-hidden bg-[#e7e7e4] sm:h-[65vh] lg:h-[70vh]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
