@@ -167,7 +167,7 @@ export const USER_CATALOG_SHIRTS: ProductItem[] = [
     collar: "Semi-Spread Formal Collar",
     cuff: "Rounded Single-Button Cuff",
     image: "/new_shirts/shirt_14.jpg",
-    gallery: ["/products/coral-bengal-stripe-model-garden.webp", "/new_shirts/shirt_14.jpg", "/customizer/full_shirt_14.jpg"],
+    gallery: ["/products/coral-bengal-stripe-model-garden-v2.webp", "/new_shirts/shirt_14.jpg", "/customizer/full_shirt_14.jpg"],
     rating: 5.0,
     reviewsCount: 65,
     tag: "HERITAGE STRIPE",

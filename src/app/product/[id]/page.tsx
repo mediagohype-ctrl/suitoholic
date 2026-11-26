@@ -114,7 +114,15 @@ export default function ProductDetailPage() {
 
   const colorways = activeProduct.colorways ?? [];
   const matchingFull = getMatchingFullShirtImage(activeProduct);
-  const onModelPhoto = activeProduct.slug === "coral-red-bold-bengal-stripe-twill-shirt"
+  const isCoralProduct = activeProduct.slug === "coral-red-bold-bengal-stripe-twill-shirt";
+  const studioModelPhoto = isCoralProduct ? "/products/coral-bengal-stripe-model-studio.webp" : "";
+  const armchairModelPhoto = isCoralProduct ? "/products/coral-bengal-stripe-model-armchair.webp" : "";
+  const excludedCoralGalleryPhotos = [
+    "/customizer/shirt_model_coral_stripe.png",
+    "/new_shirts/shirt_14.jpg",
+    "/customizer/coral-step5-wide/cutaway-classic-reference-matched.webp",
+  ];
+  const onModelPhoto = isCoralProduct
     ? "/products/coral-bengal-stripe-on-model.webp"
     : activeProduct.slug === "soft-ivory-white-egyptian-cotton-shirt"
     ? "/generated/soft_ivory_models/character_1_soft_ivory.jpg"
@@ -122,10 +130,17 @@ export default function ProductDetailPage() {
   const gallery = [...new Set([
     onModelPhoto,
     ...(activeProduct.gallery ?? []),
+    studioModelPhoto,
+    armchairModelPhoto,
     activeProduct.image,
     matchingFull,
     ...(onModelPhoto ? ["/customizer/coral-step5-wide/cutaway-classic-reference-matched.webp"] : []),
-  ].filter(Boolean).map((image) => image.trim().replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/")).filter(Boolean))];
+  ].filter(Boolean).map((image) => {
+    const path = image.trim().replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/");
+    return path === "/products/coral-bengal-stripe-model-garden.webp"
+      ? "/products/coral-bengal-stripe-model-garden-v2.webp"
+      : path;
+  }).filter((path) => path && !(isCoralProduct && excludedCoralGalleryPhotos.includes(path))))];
   const selectedImage = gallery[selectedImageIndex] || gallery[0] || "/shirt_classic_white.jpg";
   const hasGallery = gallery.length > 1;
   const discount = activeProduct.compareAtPrice && activeProduct.rawPrice > 0
@@ -238,13 +253,15 @@ export default function ProductDetailPage() {
             <div className={`grid min-w-0 items-start gap-4 ${hasGallery ? "lg:grid-cols-[88px_minmax(0,1fr)] xl:grid-cols-[112px_minmax(0,1fr)]" : ""}`}>
 
               {/* Main Display Box */}
-              <div className={`relative aspect-[4/5] max-h-[min(82svh,820px)] w-full overflow-hidden bg-[#f7f6f3] lg:row-start-1 ${hasGallery ? "lg:col-start-2" : ""}`}>
+              <div
+                className={`relative w-fit max-w-full justify-self-center overflow-hidden lg:row-start-1 ${hasGallery ? "lg:col-start-2" : ""}`}
+              >
                 <CatalogImage
                   key={selectedImage}
                   src={selectedImage}
-                  alt={selectedImage === onModelPhoto ? `${activeProduct.name} worn by a seated model` : selectedImage.includes("coral-bengal-stripe-model-garden") ? `${activeProduct.name} worn by model at an outdoor garden party` : activeProduct.name}
+                  alt={selectedImage === armchairModelPhoto ? `${activeProduct.name} worn with rolled sleeves by a model in an armchair` : selectedImage === studioModelPhoto ? `${activeProduct.name} with a band collar, worn by a seated studio model` : selectedImage === onModelPhoto ? `${activeProduct.name} worn by a seated model` : selectedImage.includes("coral-bengal-stripe-model-garden") ? `${activeProduct.name} worn by model at an outdoor garden party` : activeProduct.name}
                   sizes="(max-width: 1023px) 100vw, 50vw"
-                  className="h-full w-full object-contain"
+                  className="block h-auto max-h-[min(82svh,820px)] w-auto max-w-full"
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
@@ -281,12 +298,12 @@ export default function ProductDetailPage() {
 
               {/* Thumbnail Strip */}
               {hasGallery && (
-                <div role="group" aria-label="Product photos" className="flex gap-3 overflow-x-auto p-1 lg:col-start-1 lg:row-start-1 lg:max-h-[min(82svh,820px)] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto">
+                <div role="group" aria-label="Product photos" data-lenis-prevent tabIndex={0} className="flex gap-3 overflow-x-auto p-1 lg:col-start-1 lg:row-start-1 lg:max-h-[min(82svh,820px)] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto lg:overscroll-y-contain">
                   {gallery.map((imgUrl, idx) => (
                     <button
                       key={imgUrl}
                       type="button"
-                      aria-label={imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
+                      aria-label={imgUrl === armchairModelPhoto ? "Show shirt on model in armchair" : imgUrl === studioModelPhoto ? "Show shirt on seated studio model" : imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
                       aria-pressed={selectedImageIndex === idx}
                       onClick={() => setSelectedImageIndex(idx)}
                       className={`relative aspect-[4/5] w-16 shrink-0 cursor-pointer overflow-hidden border bg-[#f7f6f3] transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-full ${selectedImageIndex === idx
@@ -335,12 +352,12 @@ export default function ProductDetailPage() {
             </div>
 
             {/* RIGHT COLUMN: Interactive Product Specs, Swatches & Action Buttons */}
-            <div className="min-w-0 space-y-5 lg:py-1">
+            <div className="min-w-0 space-y-6 rounded-[24px] border border-[#E5E3DD] bg-white p-6 shadow-sm sm:rounded-[32px] sm:p-9">
 
               {/* Brand Title & Price */}
               <div>
                 <div className="flex items-start justify-between gap-3">
-                  <h1 className="text-xl font-semibold leading-snug tracking-tight sm:text-2xl">{activeProduct.name}</h1>
+                  <h1 className="font-serif-luxury text-xl font-normal uppercase leading-tight tracking-tight text-black sm:text-2xl lg:text-[28px]">{activeProduct.name}</h1>
                   <button type="button" onClick={handleShareProduct} aria-label="Share product" className="grid size-10 shrink-0 place-items-center rounded-full bg-neutral-100 hover:bg-neutral-200">
                     <Share2 size={17} />
                   </button>
@@ -358,7 +375,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Price Display */}
-                <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[#E5E3DD] pt-3.5">
                   <span className="font-sans text-2xl sm:text-3xl font-bold text-black tracking-tight">
                     {activeProduct.price}
                   </span>
@@ -380,7 +397,7 @@ export default function ProductDetailPage() {
               {/* VISUAL COLORWAY / FABRIC SWATCH SELECTOR */}
               {colorways.length > 0 && (
                 <div className="space-y-2.5 border-t border-[#E5E3DD] pt-3.5">
-                  <h2 className="text-sm font-semibold">{selectedColor ? `Style · ${selectedColor.name}` : c.colorwaysLabel}</h2>
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-black">{selectedColor ? `Style · ${selectedColor.name}` : c.colorwaysLabel}</h2>
 
                   <div className="flex flex-wrap items-center gap-3">
                     {colorways.map((cw, idx) => {
@@ -399,17 +416,15 @@ export default function ProductDetailPage() {
                           type="button"
                           aria-pressed={isSelected}
                           disabled={!target}
-                          className={`relative grid h-[74px] w-[62px] place-items-center overflow-hidden border transition-opacity disabled:cursor-default ${isSelected
-                            ?"border-black ring-1 ring-black"
+                          className={`relative grid size-9 place-items-center overflow-hidden rounded-full border-2 shadow-sm transition-all disabled:cursor-default ${isSelected
+                            ?"scale-110 border-black ring-2 ring-black"
                             :"border-[#E5E3DD] opacity-80 hover:opacity-100"
                             }`}
                           style={{ backgroundColor: cw.hex }}
                           title={cw.name}
                           aria-label={cw.name}
                         >
-                          {target?.image ? (
-                            <CatalogImage src={target.image} alt="" sizes="62px" className="h-full w-full object-cover" loading="lazy" />
-                          ) : isSelected && (
+                          {isSelected && (
                             <Check size={14} className={isLightHex(cw.hex) ?"text-black" :"text-white"} />
                           )}
                         </button>
@@ -419,34 +434,34 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 divide-x divide-neutral-200 border border-neutral-200 bg-neutral-50 text-center text-xs font-semibold">
+              <div className="grid grid-cols-2 divide-x divide-[#E5E3DD] overflow-hidden rounded-2xl border border-[#E5E3DD] bg-[#F5F4F0] text-center text-xs font-semibold">
                 <div className="grid justify-items-center gap-2 p-4"><RefreshCw size={18} />30-Day Fit Guarantee</div>
                 <div className="grid justify-items-center gap-2 p-4"><Truck size={18} />Complimentary shipping</div>
               </div>
 
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-2.5">
+              <div className="space-y-3 border-t border-[#E5E3DD] pt-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <button
                     type="button"
                     onClick={() => handleOpenCustomizer(false)}
                     disabled={outOfStock || busy}
-                    className="flex min-h-[64px] flex-col items-center justify-center gap-0.5 border border-[#263a32] px-2 py-3 text-sm font-semibold hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-h-[58px] flex-wrap items-center justify-between gap-x-2 gap-y-1 rounded-full bg-black px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white shadow-sm transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <div className="flex items-center space-x-2.5">
                       <ShoppingBag size={16} />
                       <span>{outOfStock ? c.outOfStockLabel : c.addToBagLabel}</span>
                     </div>
-                    {activeProduct.customizable && <span className="text-xs font-normal">Customisable</span>}
+                    {activeProduct.customizable && <span className="whitespace-nowrap text-[10px] tracking-wide text-white/70">{c.addToBagHint}</span>}
                   </button>
 
                   <button
                     type="button"
                     onClick={() => handleOpenCustomizer(true)}
                     disabled={outOfStock || busy}
-                    className="flex min-h-[64px] flex-col items-center justify-center gap-0.5 border border-[#263a32] bg-[#263a32] px-2 py-3 text-sm font-semibold text-white hover:bg-[#1b2b25] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-h-[58px] flex-wrap items-center justify-between gap-x-2 gap-y-1 rounded-full bg-black px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white shadow-sm transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span>{c.buyNowLabel}</span>
-                    {activeProduct.customizable && <span className="text-xs font-normal">Customisable</span>}
+                    {activeProduct.customizable && <span className="whitespace-nowrap text-[10px] tracking-wide text-white/70">{c.buyNowHint || c.addToBagHint}</span>}
                   </button>
                 </div>
 
@@ -468,15 +483,15 @@ export default function ProductDetailPage() {
               </div>
 
               {activeProduct.customizable && (
-                <section className="border border-neutral-200 p-4" aria-label="Variant">
+                <section className="rounded-2xl border border-[#E5E3DD] bg-[#F5F4F0] p-4" aria-label="Variant">
                   <h2 className="mb-3 text-base font-semibold">Variant</h2>
-                  <div className="border border-neutral-400 px-4 py-2.5 text-center text-sm">Customisable</div>
+                  <div className="rounded-full border border-[#E5E3DD] bg-white px-4 py-2.5 text-center text-sm">Customisable</div>
                 </section>
               )}
 
               {/* Specifications Card */}
-              <section className="border border-neutral-200 p-4">
-                <h2 className="mb-2 text-base font-semibold">Product Information</h2>
+              <section className="rounded-2xl border border-[#E5E3DD] bg-[#F5F4F0] p-4.5 shadow-xs">
+                <h2 className="mb-2 text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#666666]">Product Information</h2>
                 <dl className="divide-y divide-neutral-200 text-sm">
                   {[
                     ["Brand", "Suitoholic"],

@@ -77,6 +77,61 @@ const CORAL_STEP4_SLEEVE_PHOTOS = {
   },
 };
 
+// Angle the hems down toward the underarms and follow the gaps beside the torso.
+const CORAL_SHORT_SLEEVE_CLIP = `polygon(
+  0 0, 100% 0,
+  100% 44%, 94% 44.4%, 80% 48.4%, 77.7% 48.9%, 76.5% 48.7%,
+  76.7% 51.5%, 78.3% 57%, 79.5% 60.2%, 79.5% 61.9%,
+  80% 65.1%, 80.7% 71.6%, 81.5% 78.1%, 82% 100%,
+  14% 100%, 15% 78.1%, 15.7% 71.6%, 16.4% 65.1%, 16.8% 61.9%,
+  17.3% 60.2%, 18.5% 57%, 20% 51.5%, 20.4% 48.7%, 19.6% 48.9%,
+  17.3% 48.4%, 2.5% 44.4%, 0 44%
+)`;
+
+function CoralSelectedFitPreview({
+  fit, halfSleeve, hasPocket, collarPhoto, alt,
+}: {
+  fit: CoralFit;
+  halfSleeve: boolean;
+  hasPocket: boolean;
+  collarPhoto?: string;
+  alt: string;
+}) {
+  const src = CORAL_BUY_NOW_PHOTOS[fit];
+  const photoPath = src.split(".webp")[0];
+  const frameClass = `${CORAL_FIT_FRAME} object-contain object-top`;
+  const [readyCollar, setReadyCollar] = useState<string>();
+  const showCollar = !!collarPhoto && readyCollar === collarPhoto;
+
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        srcSet={`${photoPath}-640-v1.webp 640w, ${photoPath}-896-v1.webp 896w, ${src} 1072w`}
+        sizes="(max-width: 639px) 295px, (max-width: 1023px) 330px, 365px"
+        alt={alt}
+        className={frameClass}
+        style={{
+          clipPath: halfSleeve ? CORAL_SHORT_SLEEVE_CLIP : undefined,
+          maskImage: showCollar ? CORAL_BODY_BLEND : undefined,
+        }}
+      />
+      {collarPhoto && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={collarPhoto}
+          alt=""
+          className={frameClass}
+          style={{ maskImage: CORAL_COLLAR_BLEND, opacity: showCollar ? 1 : 0 }}
+          onLoad={() => setReadyCollar(collarPhoto)}
+        />
+      )}
+      {hasPocket && <CoralPocket visible halfSleeve={false} />}
+    </>
+  );
+}
+
 export function getCoralStep4SleevePhoto(
   slug?: string,
   sleeveType?: MannequinShirtViewerProps["sleeveType"],
@@ -437,7 +492,7 @@ export default function MannequinShirtViewer({
 
   const isCoralBuyNow = buyNow && isCoralProduct;
   const isCoralStep4Plus = isCoralProduct && currentStep >= 4;
-  const useCoralFitPhotos = isCoralBuyNow && currentStep <= 3;
+  const useCoralFitPhotos = isCoralProduct && (currentStep === 3 || (isCoralBuyNow && currentStep < 3));
   const useCoralPhotoFrame = useCoralFitPhotos || isCoralStep4Plus;
   const showCoralFitMeasurements = isCoralBuyNow && currentStep === 2 && chestSize > 0 && !!previewBodyFit;
   const showCoralChestMeasurements = isCoralBuyNow && currentStep <= 2 && chestSize > 0;
@@ -454,30 +509,22 @@ export default function MannequinShirtViewer({
   const coralCuffLabel = coralCuffKey === "cufflink" ? "Cufflink" : "Classic";
 
   const coralSleeve = sleeveType === "half" ? "half" : "full";
-  const coralPocket = pocket === "no-pocket" ? "no-pocket" : "pocket";
+  const coralPocket = pocket === "no-pocket" || (showCoralSleevePreview && !pocket) ? "no-pocket" : "pocket";
   const fitKey = (bodyFit === "tummy" || bodyFit === "regular") ? bodyFit : "lean";
   const fitSuffix = fitKey === "lean" ? "" : `-${fitKey}`;
 
-  let coralCustomPhoto: string;
-  if (currentStep === 4) {
-    coralCustomPhoto = `/customizer/coral-stripe-${coralSleeve}-${coralPocket}${fitSuffix}-step4-1072.webp?v=6`;
-  } else if (currentStep === 5 || currentStep === 6) {
-    if (activeCollarKey === "buttondown") {
-      coralCustomPhoto = `/customizer/coral-stripe-${coralSleeve}-${coralPocket}-buttondown${fitSuffix}-step5-1072.webp?v=6`;
-    } else if (activeCollarKey === "mandarin") {
-      coralCustomPhoto = `/customizer/coral-stripe-${coralSleeve}-${coralPocket}-mandarin${fitSuffix}-step5-1072.webp?v=6`;
-    } else {
-      coralCustomPhoto = `/customizer/coral-stripe-${coralSleeve}-${coralPocket}${fitSuffix}-step4-1072.webp?v=6`;
-    }
-  } else {
-    coralCustomPhoto = `/customizer/coral-stripe-${coralSleeve}-${coralPocket}${fitSuffix}-step4-1072.webp?v=6`;
-  }
+  const coralCollarDetail = currentStep >= 5 && activeCollarKey !== "spread" && activeCollarKey !== "cutaway"
+    ? `/customizer/coral-stripe-${coralSleeve}-${coralPocket}-${activeCollarKey}${fitSuffix}-step5-1072.webp?v=6`
+    : undefined;
   const coralSelectedFitPhoto = fitKey !== "lean" ? CORAL_BUY_NOW_PHOTOS[fitKey] : undefined;
   const showSelectedFitPocket = false;
   const halfSleeveCollarPhoto: string | undefined = undefined;
 
   const activeFitForModel = (previewBodyFit === "regular" || previewBodyFit === "tummy" || previewBodyFit === "lean") ? previewBodyFit : "regular";
   const previewFit = useCoralFitPhotos && currentStep === 1 && !bodyFit ? "lean" : activeFitForModel;
+  const showLeanHalfPocketReference = showCoralSleevePreview && previewFit === "lean" && isHalfSleeve && pocket === "pocket";
+  const showLeanHalfNoPocketReference = showCoralSleevePreview && previewFit === "lean" && isHalfSleeve && pocket === "no-pocket";
+  const showRegularHalfSleeveReference = showCoralSleevePreview && previewFit === "regular" && isHalfSleeve && !!pocket;
   const showCoralSleevePhotos = isCoralBuyNow && currentStep === 5;
   const sleevePreviewSlug = showCoralCollarPreview ? product?.slug : undefined;
   const sleevePreviewPhotos = [
@@ -684,8 +731,6 @@ export default function MannequinShirtViewer({
   const chestScaleX = Number((1 + (chestDiff >= 0 ? chestDiff * 0.018 : chestDiff * 0.020)).toFixed(3));
   const chestScaleY = Number((1 + chestDiff * 0.005).toFixed(3));
 
-  // Overall shirt container scales ONLY for chest size (Step 1) and height (Step 3).
-  // In Step 2 (Body Fit), chest scale does NOT change at all.
   const totalScaleX = chestScaleX;
   const totalScaleY = Number((heightConfig.scaleY * chestScaleY).toFixed(3));
 
@@ -893,15 +938,45 @@ export default function MannequinShirtViewer({
                 />
               )}
 
-              {isCoralStep4Plus ? (
+              {showRegularHalfSleeveReference ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  key={coralCustomPhoto}
-                  src={coralCustomPhoto}
-                  alt={`${product?.name ?? "Coral Red Bold Bengal Stripe Shirt"} (${fitKey !== "lean" ? `${fitKey} fit, ` : ""}${coralSleeve} sleeve, ${coralPocket}${currentStep >= 5 ? `, ${coralCollarLabel} collar` : ""})`}
-                  className={`${CORAL_FIT_FRAME} object-contain transition-opacity duration-300 ease-in-out`}
-                  style={{ filter: shirtFilter }}
-                  loading="eager"
-                  decoding="async"
+                  src={`/customizer/coral-regular-half-sleeve-${coralPocket}-step4.png`}
+                  alt={`${product?.name} (regular fit, half sleeve ${pocket === "pocket" ? "with" : "without"} pocket)`}
+                  className="absolute left-1/2 top-0 h-[min(100cqh,calc(100cqw*1127/950))] w-auto max-w-none -translate-x-[42.3%]"
+                  style={{ clipPath: "inset(2% 23.8% 9% 8.3%)" }}
+                />
+              ) : showLeanHalfPocketReference ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src="/customizer/coral-lean-half-sleeve-pocket-step4.png"
+                  alt={`${product?.name} (lean fit, half sleeve with pocket)`}
+                  className="absolute left-1/2 top-0 h-[min(100cqh,calc(100cqw*585/515))] w-auto max-w-none -translate-x-[42.8%]"
+                  style={{ clipPath: "inset(3.9% 19.9% 2% 7.6%)" }}
+                />
+              ) : showLeanHalfNoPocketReference ? (
+                <div
+                  className="absolute left-1/2 top-0 aspect-[1360/1157] w-[min(calc(100cqh*1360/1157),calc(100cqw*1360/1000))] -translate-x-[43.4%] [container-type:inline-size]"
+                  style={{ clipPath: "inset(3.9% 19.9% 2% 7.6%)" }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/customizer/coral-lean-half-sleeve-no-pocket-step4.png"
+                    alt={`${product?.name} (lean fit, half sleeve without pocket)`}
+                    className="size-full"
+                  />
+                  <span aria-hidden="true" className="absolute left-[8.1%] top-[5%] flex h-[5.7%] w-[33.5%] items-center justify-center gap-[1cqw] whitespace-nowrap rounded-full bg-[#202020] font-sans text-[1.55cqw] font-black text-white">
+                    <span className="size-[1cqw] shrink-0 rounded-full bg-[#C68A4C]" />
+                    HALF SLEEVE • WITHOUT POCKET
+                  </span>
+                </div>
+              ) : isCoralStep4Plus ? (
+                <CoralSelectedFitPreview
+                  fit={previewFit}
+                  halfSleeve={isHalfSleeve}
+                  hasPocket={pocket === "pocket"}
+                  collarPhoto={coralCollarDetail}
+                  alt={`${product?.name} (${previewFit} fit, ${coralSleeve} sleeve, ${coralPocket}${currentStep >= 5 ? `, ${coralCollarLabel} collar` : ""})`}
                 />
               ) : (
                 /* Keep fit photos mounted for transitions between selections. */
@@ -1021,7 +1096,7 @@ export default function MannequinShirtViewer({
             </div>
 
             {/* Step 4 Sleeve & Pocket Live Status Badge */}
-            {currentStep === 4 && pocket && (
+            {currentStep === 4 && pocket && !showLeanHalfPocketReference && !showLeanHalfNoPocketReference && (
               <div className="absolute top-2 left-2 z-30 flex items-center gap-1.5 whitespace-nowrap bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full shadow-xs border border-white/10 animate-in fade-in duration-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C] shrink-0" />
                 <span>
