@@ -29,6 +29,9 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
   const c = useContent("shopPage");
   const [visibleCount, setVisibleCount] = useState(14);
   const isShopAll = selectedCategory === "all";
+  const isStripedCollection = selectedCategory === "stripe-cotton-shirts" || selectedCategory === "formal_stripes";
+  const isHandcraftedCollection = selectedCategory === "handcrafted-shirts";
+  const isLinenCollection = selectedCategory === "executive-linen-shirts" || selectedCategory === "linen_collection";
   const collection = shopCollections.find(({ id }) => id === selectedCategory);
   const legacyCategory = categories.find(({ id }) => id === selectedCategory);
   const currentCategoryName = collection?.title || legacyCategory?.title || c.allCategoryName;
@@ -43,7 +46,7 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
   const displayProducts = useMemo(() => {
     return categoryProducts.slice(0, visibleCount);
   }, [categoryProducts, visibleCount]);
-  const showCustomFit = selectedCategory === "handcrafted-shirts" && categoryProducts.length === 0;
+  const showCustomFit = isHandcraftedCollection && categoryProducts.length === 0;
 
   // Alternate four standard cards with rows whose third card spans two columns.
   const productRows = useMemo(() => {
@@ -59,8 +62,10 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
     return rows;
   }, [displayProducts]);
 
+  const heroCollectionId = isStripedCollection ? "stripe-cotton-shirts" : isLinenCollection ? "executive-linen-shirts" : selectedCategory;
+  const heroCollection = shopCollections.find(({ id }) => id === heroCollectionId);
   const collectionHeroImage =
-    collection?.heroImage || legacyCategory?.bgImage || legacyCategory?.image ||
+    heroCollection?.heroImage || legacyCategory?.bgImage || legacyCategory?.image ||
     "/banners/shop_hero_banner_hd.jpg";
 
   return (
@@ -70,7 +75,7 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
           <h1 className="sr-only">{c.allCategoryName}</h1>
           <ShopNatureHeroBanner />
         </>
-      ) : collection?.id === "plain-formal-shirts" ? (
+      ) : isStripedCollection || isHandcraftedCollection || isLinenCollection || collection?.id === "plain-formal-shirts" ? (
         <section className="relative h-[100dvh] w-full overflow-hidden bg-[#211b16]">
           <h1 className="sr-only">{currentCategoryName}</h1>
           <div
@@ -79,17 +84,22 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
             style={{ backgroundImage: `url(${collectionHeroImage})` }}
           />
           <Link
-            href="#collection-products"
-            aria-label="Shop plain formal shirts"
+            href={showCustomFit ? "/custom-shirt" : "#collection-products"}
+            aria-label={isLinenCollection ? "Shop linen formal shirts" : isHandcraftedCollection ? (showCustomFit ? "Explore Custom Fit" : "Shop handcrafted shirts") : isStripedCollection ? "Shop striped formal shirts" : "Shop plain formal shirts"}
             className="absolute inset-0 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={collectionHeroImage}
-              alt="Two models wearing blue and white formal shirts"
-              className="h-full w-full object-contain p-[2vmin]"
+              alt={isLinenCollection ? "Two models wearing pink and cream linen shirts in a garden lounge" : isHandcraftedCollection ? "Tailor hand-stitching a striped shirt in a showroom" : isStripedCollection ? "Two models in red and blue striped formal shirts in a showroom" : "Two models wearing blue and white formal shirts"}
+              className={`h-full w-full object-contain ${collection?.id === "plain-formal-shirts" ? "p-[2vmin]" : ""}`}
               fetchPriority="high"
             />
+            {isHandcraftedCollection && (
+              <span className="absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap border border-white bg-black/50 px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white">
+                {showCustomFit ? "Explore Custom Fit" : "Shop now"}
+              </span>
+            )}
           </Link>
         </section>
       ) : (
