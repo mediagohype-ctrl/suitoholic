@@ -32,10 +32,9 @@ const TAB_PATHS: Record<string, string> = {
 
 const emptySubscribe = () => () => {};
 
-export default function Header({ activeTab, cartCount, forceSolid = false }: HeaderProps) {
+export default function Header({ activeTab, cartCount }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const isClient = useIsClient();
   const pathname = usePathname();
@@ -119,9 +118,6 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Update background style state
-      setScrolled(currentScrollY > 20);
-
       // Hide navbar on scroll down, reveal on scroll up
       if (currentScrollY > 80 && currentScrollY > lastScrollY) {
         setVisible(false);
@@ -146,11 +142,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-transform duration-300 ease-in-out ${
           visible ?"translate-y-0" :"-translate-y-full"
-        } ${
-          scrolled || forceSolid || isShopMenuOpen
-            ?"shadow-sm bg-white/98 backdrop-blur-md border-b border-[#E5E3DD]"
-            :"bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
-        }`}
+        } bg-transparent`}
       >
       {/* Top Announcement Bar */}
       <div className="hidden sm:block bg-[#000000] text-[#FFFFFF] border-b border-[#222222] py-1.5 px-4 sm:px-8 text-[10px] font-medium tracking-[0.18em] uppercase z-50 relative shadow-xs">
@@ -172,11 +164,7 @@ export default function Header({ activeTab, cartCount, forceSolid = false }: Hea
       </div>
 
       {/* Main Navigation Bar */}
-      <div className={`transition-all duration-300 ${
-        scrolled || forceSolid
-          ?"bg-white/95 backdrop-blur-md border-b border-[#E5E3DD]"
-          :"bg-transparent border-b border-transparent"
-      }`}>
+      <div className="border-b border-transparent bg-transparent transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-between">
 
           {/* Mobile: Hamburger Button (Left) */}

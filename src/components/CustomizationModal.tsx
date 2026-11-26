@@ -1444,7 +1444,7 @@ export default function CustomizationModal({
                           </div>
 
                           {/* 6-Row Specification Strip matching Reference Image */}
-                          <div className="rounded-[16px] bg-[#FFFFFF] border-2 border-[#D9C4B0] overflow-hidden divide-y divide-[#EADCCE] shadow-xs">
+                          <div className="rounded-[16px] bg-[#F6EBDD] border-2 border-[#D9C4B0] overflow-hidden divide-y divide-[#EADCCE] shadow-xs">
                             {/* 1. FABRIC */}
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
@@ -1582,7 +1582,7 @@ export default function CustomizationModal({
                             </span>
                           </div>
 
-                          <div className="relative rounded-[14px] bg-[#FFFFFF] border-2 border-[#D9C4B0] p-2.5 sm:p-3 flex items-start gap-2.5 shadow-2xs">
+                          <div className="relative rounded-[14px] bg-[#F6EBDD] border-2 border-[#D9C4B0] p-2.5 sm:p-3 flex items-start gap-2.5 shadow-2xs">
                             <svg className="w-4 h-4 text-[#8A4418] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
