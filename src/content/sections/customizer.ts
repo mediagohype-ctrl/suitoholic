@@ -29,13 +29,13 @@ export const customizer = {
   chestLabel: "CHEST SIZE (IN INCHES)",
   chestSizes: [
     { size: 38, collar: 15, shoulder: 17.5 },
-    { size: 39, collar: 15.25, shoulder: 17.75 },
-    { size: 40, collar: 15.5, shoulder: 18 },
-    { size: 41, collar: 15.75, shoulder: 18.25 },
-    { size: 42, collar: 16, shoulder: 18.5 },
-    { size: 44, collar: 16.5, shoulder: 19 },
-    { size: 46, collar: 17, shoulder: 19.5 },
-    { size: 48, collar: 17.5, shoulder: 20 },
+    { size: 39, collar: 15.5, shoulder: 18 },
+    { size: 40, collar: 16, shoulder: 18.5 },
+    { size: 41, collar: 16, shoulder: 18.5 },
+    { size: 42, collar: 16.5, shoulder: 19 },
+    { size: 44, collar: 17, shoulder: 19.5 },
+    { size: 46, collar: 17.5, shoulder: 20 },
+    { size: 48, collar: 18, shoulder: 21 },
   ],
   // The id must stay one of lean / regular / tummy — the 3D mannequin is drawn for these shapes.
   bodyFits: [

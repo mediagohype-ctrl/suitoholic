@@ -240,21 +240,46 @@ function getHeightMeta(id: string) {
   };
 }
 
+export interface SizeChartEntry {
+  chest: number;
+  collar: string;
+  collarNum: number;
+  shoulder: string;
+  shoulderNum: number;
+  leanStomach: string;
+  regularStomach: string;
+  tummyStomach: string;
+}
+
+export const SIZE_CHART_TABLE: Record<number, SizeChartEntry> = {
+  38: { chest: 38, collar: '15"', collarNum: 15, shoulder: '17.5"', shoulderNum: 17.5, leanStomach: '34"', regularStomach: '36"', tummyStomach: '39" – 40"' },
+  39: { chest: 39, collar: '15.5"', collarNum: 15.5, shoulder: '18"', shoulderNum: 18, leanStomach: '35"', regularStomach: '37"', tummyStomach: '40" – 41"' },
+  40: { chest: 40, collar: '16"', collarNum: 16, shoulder: '18.5"', shoulderNum: 18.5, leanStomach: '36"', regularStomach: '38"', tummyStomach: '41" – 42"' },
+  41: { chest: 41, collar: '16"', collarNum: 16, shoulder: '18.5"', shoulderNum: 18.5, leanStomach: '37"', regularStomach: '39"', tummyStomach: '42" – 43"' },
+  42: { chest: 42, collar: '16.5"', collarNum: 16.5, shoulder: '19"', shoulderNum: 19, leanStomach: '37"', regularStomach: '39"', tummyStomach: '42" – 43"' },
+  44: { chest: 44, collar: '17"', collarNum: 17, shoulder: '19.5"', shoulderNum: 19.5, leanStomach: '40"', regularStomach: '42"', tummyStomach: '45" – 46"' },
+  46: { chest: 46, collar: '17.5"', collarNum: 17.5, shoulder: '20"', shoulderNum: 20, leanStomach: '42"', regularStomach: '42" – 45"', tummyStomach: '47" – 48"' },
+  48: { chest: 48, collar: '18"', collarNum: 18, shoulder: '21"', shoulderNum: 21, leanStomach: '45"', regularStomach: '47" – 48"', tummyStomach: '49" – 50"' },
+};
+
 const FIT_METADATA: Record<string, { desc: string; stomachLabel: string; getStomach: (chest: number) => string }> = {
   lean: {
     desc: "For a slimmer, more tailored look that follows your natural shape.",
     stomachLabel: "Stomach is",
-    getStomach: (chest) => `${chest - 4}"`,
+    getStomach: (chest) => SIZE_CHART_TABLE[chest]?.leanStomach ?? `${chest - 4}"`,
   },
   regular: {
     desc: "A balanced fit with extra comfort for everyday wear.",
     stomachLabel: "Stomach is",
-    getStomach: (chest) => `${chest - 2}"`,
+    getStomach: (chest) => SIZE_CHART_TABLE[chest]?.regularStomach ?? `${chest - 2}"`,
   },
   tummy: {
     desc: "Extra room around the stomach for maximum comfort.",
     stomachLabel: "Stomach size is",
-    getStomach: (chest) => `${chest + 1}" – ${chest + 2}".`,
+    getStomach: (chest) => {
+      const val = SIZE_CHART_TABLE[chest]?.tummyStomach ?? `${chest + 1}" – ${chest + 2}"`;
+      return val.endsWith(".") ? val : `${val}.`;
+    },
   },
 };
 

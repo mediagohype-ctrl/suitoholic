@@ -4,6 +4,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { useContent } from "@/context/SiteDataProvider";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
+import { SIZE_CHART_TABLE } from "./CustomizationModal";
 
 export interface MannequinShirtViewerProps {
   buyNow?: boolean;
@@ -700,20 +701,23 @@ export default function MannequinShirtViewer({
     return () => window.clearTimeout(timer);
   }, [prevFolded, activeFolded]);
 
-  // Calculated stomach measurement values matching the 3-panel reference
+  // Calculated stomach measurement values matching the updated size chart
   const activeChestForCalc = chestSize && chestSize > 0 ? chestSize : 40;
-  const stomachSizeLean = activeChestForCalc - 4;
-  const stomachSizeRegular = activeChestForCalc - 2;
-  const stomachSizeTummy = useCoralFitPhotos
-    ? `${activeChestForCalc + 1}" – ${activeChestForCalc + 2}"`
-    : `${activeChestForCalc + 2}" – ${activeChestForCalc + 4}"`;
+  const chartEntry = SIZE_CHART_TABLE[activeChestForCalc];
+  const stomachSizeLean = chartEntry ? chartEntry.leanStomach : `${activeChestForCalc - 4}"`;
+  const stomachSizeRegular = chartEntry ? chartEntry.regularStomach : `${activeChestForCalc - 2}"`;
+  const stomachSizeTummy = chartEntry
+    ? chartEntry.tummyStomach
+    : useCoralFitPhotos
+      ? `${activeChestForCalc + 1}" – ${activeChestForCalc + 2}"`
+      : `${activeChestForCalc + 2}" – ${activeChestForCalc + 4}"`;
   const measurementFit = useCoralFitPhotos ? visiblePhotoFit : previewBodyFit;
 
   const currentStomachValue =
     measurementFit === "lean"
-      ? `${stomachSizeLean}"`
+      ? `${stomachSizeLean}`
       : measurementFit === "regular"
-        ? `${stomachSizeRegular}"`
+        ? `${stomachSizeRegular}`
         : measurementFit === "tummy"
           ? `${stomachSizeTummy}`
           : "";
@@ -976,35 +980,24 @@ export default function MannequinShirtViewer({
               {showRegularHalfSleeveReference ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={`/customizer/coral-regular-half-sleeve-${coralPocket}-step4-clean.webp`}
+                  src={`/customizer/coral-regular-half-sleeve-${coralPocket}-step4-clean.webp?v=8`}
                   alt={`${product?.name} (regular fit, half sleeve ${pocket === "pocket" ? "with" : "without"} pocket)`}
-                  className="absolute left-1/2 top-0 h-[min(100cqh,calc(100cqw*1127/950))] w-auto max-w-none -translate-x-[42.3%]"
-                  style={{ clipPath: "inset(2% 23.8% 9% 8.3%)" }}
+                  className="absolute left-1/2 top-0 h-[min(100cqh,calc(100cqw*1127/950))] w-auto max-w-none -translate-x-[42.3%] transition-opacity duration-300 ease-in-out"
                 />
               ) : showLeanHalfPocketReference ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src="/customizer/coral-lean-half-sleeve-pocket-step4.png"
+                  src="/customizer/coral-lean-half-sleeve-pocket-step4.png?v=9"
                   alt={`${product?.name} (lean fit, half sleeve with pocket)`}
-                  className="absolute left-1/2 top-0 h-[min(100cqh,calc(100cqw*585/515))] w-auto max-w-none -translate-x-[42.8%]"
-                  style={{ clipPath: "inset(3.9% 19.9% 2% 7.6%)" }}
+                  className="absolute inset-0 size-full object-contain object-center transition-opacity duration-300 ease-in-out"
                 />
               ) : showLeanHalfNoPocketReference ? (
-                <div
-                  className="absolute left-1/2 top-0 aspect-[1360/1157] w-[min(calc(100cqh*1360/1157),calc(100cqw*1360/1000))] -translate-x-[43.4%] [container-type:inline-size]"
-                  style={{ clipPath: "inset(3.9% 19.9% 2% 7.6%)" }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/customizer/coral-lean-half-sleeve-no-pocket-step4.png"
-                    alt={`${product?.name} (lean fit, half sleeve without pocket)`}
-                    className="size-full"
-                  />
-                  <span aria-hidden="true" className="absolute left-[8.1%] top-[5%] flex h-[5.7%] w-[33.5%] items-center justify-center gap-[1cqw] whitespace-nowrap rounded-full bg-[#202020] font-sans text-[1.55cqw] font-black text-white">
-                    <span className="size-[1cqw] shrink-0 rounded-full bg-[#C68A4C]" />
-                    HALF SLEEVE • WITHOUT POCKET
-                  </span>
-                </div>
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src="/customizer/coral-lean-half-sleeve-no-pocket-step4.png?v=9"
+                  alt={`${product?.name} (lean fit, half sleeve without pocket)`}
+                  className="absolute inset-0 size-full object-contain object-center transition-opacity duration-300 ease-in-out"
+                />
               ) : isCoralStep4Plus ? (
                 <CoralSelectedFitPreview
                   fit={previewFit}
@@ -1410,7 +1403,7 @@ export default function MannequinShirtViewer({
 
                 {/* Dashed stomach line with a cream measurement badge */}
                 {(currentStep === 3 || showCoralFitMeasurements) && (() => {
-                  const displayStomach = currentStomachValue || `${stomachSizeLean}"`;
+                  const displayStomach = currentStomachValue || `${stomachSizeLean}`;
                   return (
                     <g className="transition-all duration-500 ease-out">
                       <line
