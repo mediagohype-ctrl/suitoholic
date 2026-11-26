@@ -76,13 +76,15 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
           <ShopNatureHeroBanner />
         </>
       ) : isStripedCollection || isHandcraftedCollection || isLinenCollection || collection?.id === "plain-formal-shirts" ? (
-        <section className="relative h-[100dvh] w-full overflow-hidden bg-[#211b16]">
+        <section className={`relative w-full overflow-hidden bg-[#211b16] ${isHandcraftedCollection ? "h-screen" : "h-[100dvh]"}`}>
           <h1 className="sr-only">{currentCategoryName}</h1>
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 scale-110 bg-cover bg-center opacity-65 blur-xl"
-            style={{ backgroundImage: `url(${collectionHeroImage})` }}
-          />
+          {!isHandcraftedCollection && (
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 scale-110 bg-cover bg-center opacity-65 blur-xl"
+              style={{ backgroundImage: `url(${collectionHeroImage})` }}
+            />
+          )}
           <Link
             href={showCustomFit ? "/custom-shirt" : "#collection-products"}
             aria-label={isLinenCollection ? "Shop linen formal shirts" : isHandcraftedCollection ? (showCustomFit ? "Explore Custom Fit" : "Shop handcrafted shirts") : isStripedCollection ? "Shop striped formal shirts" : "Shop plain formal shirts"}
@@ -92,7 +94,7 @@ function ShopCatalog({ selectedCategory }: { selectedCategory: string }) {
             <img
               src={collectionHeroImage}
               alt={isLinenCollection ? "Two models wearing pink and cream linen shirts in a garden lounge" : isHandcraftedCollection ? "Tailor hand-stitching a striped shirt in a showroom" : isStripedCollection ? "Two models in red and blue striped formal shirts in a showroom" : "Two models wearing blue and white formal shirts"}
-              className={`h-full w-full object-contain ${collection?.id === "plain-formal-shirts" ? "p-[2vmin]" : ""}`}
+              className={`h-full w-full ${isHandcraftedCollection ? "object-cover object-[42%_center] md:object-[65%_center]" : "object-contain"} ${collection?.id === "plain-formal-shirts" ? "p-[2vmin]" : ""}`}
               fetchPriority="high"
             />
             {isHandcraftedCollection && (

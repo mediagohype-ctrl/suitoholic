@@ -89,42 +89,77 @@ const CORAL_SHORT_SLEEVE_CLIP = `polygon(
 )`;
 
 function CoralSelectedFitPreview({
-  fit, halfSleeve, hasPocket, collarPhoto, alt,
+  fit, halfSleeve, hasPocket, collarPhoto, hideCutawayButton, alt,
 }: {
   fit: CoralFit;
   halfSleeve: boolean;
   hasPocket: boolean;
   collarPhoto?: string;
+  hideCutawayButton: boolean;
   alt: string;
 }) {
-  const src = CORAL_BUY_NOW_PHOTOS[fit];
+  const hasTailoredHalfSleeves = fit === "tummy" && halfSleeve;
+  const src = hasTailoredHalfSleeves
+    ? "/customizer/coral-stripe-tummy-preview-half-sleeve-matched.webp"
+    : CORAL_BUY_NOW_PHOTOS[fit];
   const photoPath = src.split(".webp")[0];
   const frameClass = `${CORAL_FIT_FRAME} object-contain object-top`;
   const [readyCollar, setReadyCollar] = useState<string>();
   const showCollar = !!collarPhoto && readyCollar === collarPhoto;
+  const isButtonDownCollar = collarPhoto?.includes("-buttondown-");
+  const isMandarinCollar = collarPhoto?.includes("-mandarin-");
+  const collarMask = isButtonDownCollar
+    ? "radial-gradient(ellipse 24% 21.5% at 50% 7%, #000 97%, transparent 100%)"
+    : isMandarinCollar
+    ? "radial-gradient(ellipse 24% 24% at 50% 7%, #000 90%, transparent 100%)"
+    : CORAL_COLLAR_BLEND;
+  const bodyMask = isButtonDownCollar
+    ? "radial-gradient(ellipse 24% 21.5% at 50% 7%, transparent 97%, #000 100%)"
+    : isMandarinCollar
+    ? "radial-gradient(ellipse 24% 24% at 50% 7%, transparent 90%, #000 100%)"
+    : CORAL_BODY_BLEND;
 
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
-        srcSet={`${photoPath}-640-v1.webp 640w, ${photoPath}-896-v1.webp 896w, ${src} 1072w`}
-        sizes="(max-width: 639px) 295px, (max-width: 1023px) 330px, 365px"
+        srcSet={hasTailoredHalfSleeves ? undefined : `${photoPath}-640-v1.webp 640w, ${photoPath}-896-v1.webp 896w, ${src} 1072w`}
+        sizes={hasTailoredHalfSleeves ? undefined : "(max-width: 639px) 295px, (max-width: 1023px) 330px, 365px"}
         alt={alt}
         className={frameClass}
         style={{
-          clipPath: halfSleeve ? CORAL_SHORT_SLEEVE_CLIP : undefined,
-          maskImage: showCollar ? CORAL_BODY_BLEND : undefined,
+          clipPath: halfSleeve && !hasTailoredHalfSleeves ? CORAL_SHORT_SLEEVE_CLIP : undefined,
+          maskImage: showCollar ? bodyMask : undefined,
         }}
       />
+      {hasTailoredHalfSleeves && hideCutawayButton && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src="/customizer/coral-tummy-cutaway-button-retouch.webp"
+          alt=""
+          className={`${frameClass} pointer-events-none`}
+          style={{ maskImage: "radial-gradient(ellipse 1.9% 1.4% at 47.7% 25%, #000 72%, transparent 100%)" }}
+        />
+      )}
+      {/* Add the complementary mask opacities so the background cannot bleed through the seam. */}
       {collarPhoto && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={collarPhoto}
           alt=""
-          className={frameClass}
-          style={{ maskImage: CORAL_COLLAR_BLEND, opacity: showCollar ? 1 : 0 }}
+          className={`${frameClass} mix-blend-plus-lighter`}
+          style={{ maskImage: collarMask, opacity: showCollar ? 1 : 0 }}
           onLoad={() => setReadyCollar(collarPhoto)}
+        />
+      )}
+      {showCollar && isButtonDownCollar && hasTailoredHalfSleeves && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src="/customizer/coral-tummy-buttondown-centered-button.webp"
+          alt=""
+          className={`${frameClass} pointer-events-none`}
+          style={{ maskImage: "radial-gradient(ellipse 3.7% 1.65% at 47.15% 16.65%, #000 78%, transparent 100%)" }}
         />
       )}
       {hasPocket && <CoralPocket visible halfSleeve={false} />}
@@ -941,7 +976,7 @@ export default function MannequinShirtViewer({
               {showRegularHalfSleeveReference ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={`/customizer/coral-regular-half-sleeve-${coralPocket}-step4.png`}
+                  src={`/customizer/coral-regular-half-sleeve-${coralPocket}-step4-clean.webp`}
                   alt={`${product?.name} (regular fit, half sleeve ${pocket === "pocket" ? "with" : "without"} pocket)`}
                   className="absolute left-1/2 top-0 h-[min(100cqh,calc(100cqw*1127/950))] w-auto max-w-none -translate-x-[42.3%]"
                   style={{ clipPath: "inset(2% 23.8% 9% 8.3%)" }}
@@ -976,6 +1011,7 @@ export default function MannequinShirtViewer({
                   halfSleeve={isHalfSleeve}
                   hasPocket={pocket === "pocket"}
                   collarPhoto={coralCollarDetail}
+                  hideCutawayButton={currentStep === 5 && coralCollarKey === "cutaway"}
                   alt={`${product?.name} (${previewFit} fit, ${coralSleeve} sleeve, ${coralPocket}${currentStep >= 5 ? `, ${coralCollarLabel} collar` : ""})`}
                 />
               ) : (
@@ -1096,7 +1132,7 @@ export default function MannequinShirtViewer({
             </div>
 
             {/* Step 4 Sleeve & Pocket Live Status Badge */}
-            {currentStep === 4 && pocket && !showLeanHalfPocketReference && !showLeanHalfNoPocketReference && (
+            {currentStep === 4 && pocket && !showRegularHalfSleeveReference && !showLeanHalfPocketReference && !showLeanHalfNoPocketReference && (
               <div className="absolute top-2 left-2 z-30 flex items-center gap-1.5 whitespace-nowrap bg-black/85 backdrop-blur-md text-white text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full shadow-xs border border-white/10 animate-in fade-in duration-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C68A4C] shrink-0" />
                 <span>

@@ -117,6 +117,14 @@ export default function ProductDetailPage() {
   const isCoralProduct = activeProduct.slug === "coral-red-bold-bengal-stripe-twill-shirt";
   const studioModelPhoto = isCoralProduct ? "/products/coral-bengal-stripe-model-studio.webp" : "";
   const armchairModelPhoto = isCoralProduct ? "/products/coral-bengal-stripe-model-armchair.webp" : "";
+  const matchingPortraitPrefixes: Partial<Record<string, string>> = {
+    "mustard-ochre-bengal-striped-twill-shirt": "mustard-ochre",
+    "royal-blue-classic-bengal-stripe-twill-shirt": "royal-blue-bengal",
+  };
+  const matchingPortraitPrefix = matchingPortraitPrefixes[activeProduct.slug];
+  const matchingModelPhotos = matchingPortraitPrefix
+    ? ["sofa", "garden", "studio", "armchair"].map((pose) => `/products/${matchingPortraitPrefix}-model-${pose}.webp`)
+    : [];
   const excludedCoralGalleryPhotos = [
     "/customizer/shirt_model_coral_stripe.png",
     "/new_shirts/shirt_14.jpg",
@@ -129,6 +137,7 @@ export default function ProductDetailPage() {
     : "";
   const gallery = [...new Set([
     onModelPhoto,
+    ...matchingModelPhotos,
     ...(activeProduct.gallery ?? []),
     studioModelPhoto,
     armchairModelPhoto,
