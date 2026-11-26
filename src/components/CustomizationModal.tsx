@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import MannequinShirtViewer, { getCoralBuyNowFitPhoto, getShirtColorFamily, getMatchingShirtModel } from "@/components/MannequinShirtViewer";
+import MannequinShirtViewer, { CORAL_PRODUCT_SLUG, getCoralBuyNowFitPhoto, getCoralFoldedPreview, getShirtColorFamily, getMatchingShirtModel } from "@/components/MannequinShirtViewer";
 import InitialsPanel, { DEFAULT_INITIALS_THREAD, getInitialsThreadLabel, InitialsCuffPreview } from "@/components/customizer/InitialsPanel";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
 import { ArrowLeft, Check, X, Scissors, Plus, RefreshCw, ChevronDown, ShoppingBag, Heart } from "lucide-react";
@@ -262,22 +262,22 @@ export const SIZE_CHART_TABLE: Record<number, SizeChartEntry> = {
   48: { chest: 48, collar: '18"', collarNum: 18, shoulder: '21"', shoulderNum: 21, leanStomach: '45"', regularStomach: '47" – 48"', tummyStomach: '49" – 50"' },
 };
 
-const FIT_METADATA: Record<string, { desc: string; stomachLabel: string; getStomach: (chest: number) => string }> = {
+const FIT_METADATA: Record<string, { desc: string; stomachLabel: string; getStomach: (chest: number, chartEntry?: SizeChartEntry) => string }> = {
   lean: {
     desc: "For a slimmer, more tailored look that follows your natural shape.",
     stomachLabel: "Stomach is",
-    getStomach: (chest) => SIZE_CHART_TABLE[chest]?.leanStomach ?? `${chest - 4}"`,
+    getStomach: (chest, chartEntry) => chartEntry?.leanStomach ?? `${chest - 4}"`,
   },
   regular: {
     desc: "A balanced fit with extra comfort for everyday wear.",
     stomachLabel: "Stomach is",
-    getStomach: (chest) => SIZE_CHART_TABLE[chest]?.regularStomach ?? `${chest - 2}"`,
+    getStomach: (chest, chartEntry) => chartEntry?.regularStomach ?? `${chest - 2}"`,
   },
   tummy: {
     desc: "Extra room around the stomach for maximum comfort.",
     stomachLabel: "Stomach size is",
-    getStomach: (chest) => {
-      const val = SIZE_CHART_TABLE[chest]?.tummyStomach ?? `${chest + 1}" – ${chest + 2}"`;
+    getStomach: (chest, chartEntry) => {
+      const val = chartEntry?.tummyStomach ?? `${chest + 1}" – ${chest + 2}"`;
       return val.endsWith(".") ? val : `${val}.`;
     },
   },
@@ -482,6 +482,9 @@ export default function CustomizationModal({
   const handleCuffChange = (cuffStyle: string) => setCustomFit((prev) => ({ ...prev, cuffStyle }));
   const showMonogram = currentStep >= 5 && includesInitials && !!customFit.initials?.trim();
   const reviewFitPhoto = getCoralBuyNowFitPhoto((activeItem || product)?.slug, customFit.bodyFit);
+  const reviewFoldedPhoto = isFullSleeve && (activeItem || product)?.slug === CORAL_PRODUCT_SLUG
+    ? getCoralFoldedPreview(customFit.collarStyle, customFit.cuffStyle)
+    : undefined;
   const reviewFitTitle = c.bodyFits.find(({ id }) => id === customFit.bodyFit)?.title;
   const reviewHeight = getHeightMeta(customFit.height);
   const reviewSleeve = isFullSleeve ? "Full Sleeves" : "Half Sleeves";
@@ -901,7 +904,7 @@ export default function CustomizationModal({
                                       <span>
                                         <span className="font-['Playfair_Display',Georgia,serif] font-medium">{meta.stomachLabel} </span>
                                         <strong className="font-sans font-bold text-[#140E0A] text-[12px] sm:text-[12.5px]">
-                                          {customFit.chestSize > 0 ? meta.getStomach(customFit.chestSize) : "—"}
+                                          {customFit.chestSize > 0 ? meta.getStomach(customFit.chestSize, activeItem?.slug === CORAL_PRODUCT_SLUG ? undefined : SIZE_CHART_TABLE[customFit.chestSize]) : "—"}
                                         </strong>
                                       </span>
                                     </div>
@@ -1526,13 +1529,23 @@ export default function CustomizationModal({
                             {/* 5. COLLAR & CUFF */}
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="flex w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] items-center divide-x divide-[#DEC7B2] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
-                                <img
-                                  src={(selectedCollar ?? COLLAR_OPTIONS[0]).image}
-                                  alt={selectedCollar?.title ?? customFit.collarStyle}
-                                  className="min-w-0 flex-1 h-full object-contain p-0.5"
-                                />
-                                {isFullSleeve && selectedCuff && (
-                                  <img src={selectedCuff.image} alt={selectedCuff.title} className="min-w-0 flex-1 h-full object-contain p-0.5" />
+                                {reviewFoldedPhoto ? (
+                                  <img
+                                    src={reviewFoldedPhoto}
+                                    alt={`${selectedCollar?.title ?? customFit.collarStyle}, ${selectedCuff?.title ?? customFit.cuffStyle}`}
+                                    className="w-full h-full object-contain p-0.5"
+                                  />
+                                ) : (
+                                  <>
+                                    <img
+                                      src={(selectedCollar ?? COLLAR_OPTIONS[0]).image}
+                                      alt={selectedCollar?.title ?? customFit.collarStyle}
+                                      className="min-w-0 flex-1 h-full object-contain p-0.5"
+                                    />
+                                    {isFullSleeve && selectedCuff && (
+                                      <img src={selectedCuff.image} alt={selectedCuff.title} className="min-w-0 flex-1 h-full object-contain p-0.5" />
+                                    )}
+                                  </>
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
