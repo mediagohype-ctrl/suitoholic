@@ -33,7 +33,7 @@ import confetti from"canvas-confetti";
 import CustomizationModal from "@/components/CustomizationModal";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import CatalogImage from "@/components/CatalogImage";
-import ProductModelPreview, { getProductModelColor, productModelPhotos } from "@/components/ProductModelPreview";
+import ProductModelPreview, { getFabricBackground, productModelPhotos, useProductModelFabric } from "@/components/ProductModelPreview";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 // Icon keys usable in the productPage.badges content
@@ -73,6 +73,7 @@ export default function ProductDetailPage() {
   const router = useRouter();
 
   const activeProduct = getProduct(idOrSlug);
+  const { color: modelColor, stripeColor } = useProductModelFabric(activeProduct);
   const [photoSelection, setPhotoSelection] = useState({ productSlug: "", index: 0 });
   const selectedImageIndex = photoSelection.productSlug === activeProduct?.slug ? photoSelection.index : 0;
 
@@ -166,14 +167,17 @@ export default function ProductDetailPage() {
       : path;
   }).filter((path) => path && !(isCoralProduct && excludedCoralGalleryPhotos.includes(path))
     && !(isSageBengal && path === "/customizer/shirt_model_sage.png")))];
-  const gallery = [
+  const fabricModelPhotos = isCoralProduct
+    ? [studioModelPhoto, armchairModelPhoto, "/products/coral-bengal-stripe-model-garden-v2.webp", "/products/coral-bengal-stripe-model-curly.webp"]
+    : matchingModelPhotos;
+  const gallery = [...new Set([
     productPhotos[0] ?? "/shirt_classic_white.jpg",
-    ...productModelPhotos.map(({ src }) => src),
+    ...(fabricModelPhotos.length ? fabricModelPhotos : productModelPhotos.map(({ src }) => src)),
     ...productPhotos.slice(1),
-  ];
+  ])];
   const selectedImage = gallery[selectedImageIndex] ?? gallery[0];
   const selectedModel = productModelPhotos.find(({ src }) => src === selectedImage);
-  const modelColor = getProductModelColor(activeProduct);
+  const modelPattern = getFabricBackground(activeProduct, modelColor, 1, stripeColor);
   const discount = activeProduct.compareAtPrice && activeProduct.rawPrice > 0
     ? Math.max(0, Math.round(100 * (1 - activeProduct.rawPrice / activeProduct.compareAtPrice)))
     : 0;
@@ -292,6 +296,7 @@ export default function ProductDetailPage() {
                     <ProductModelPreview
                       photo={selectedModel}
                       color={modelColor}
+                      pattern={modelPattern}
                       alt={selectedModel.label + " · " + (modelColor ? activeProduct.name + " color preview" : "fit reference")}
                     />
                     <figcaption className="absolute bottom-2 left-2 rounded bg-black/75 px-2 py-1 text-xs text-white">
@@ -354,7 +359,7 @@ export default function ProductDetailPage() {
                       :"border-[#E5E3DD] opacity-75 hover:opacity-100"
                       }`}
                   >
-                    {model ? <ProductModelPreview photo={model} color={modelColor} alt="" thumbnail /> : <CatalogImage
+                    {model ? <ProductModelPreview photo={model} color={modelColor} pattern={modelPattern} alt="" thumbnail /> : <CatalogImage
                       src={imgUrl}
                       alt=""
                       sizes="112px"
@@ -444,8 +449,10 @@ export default function ProductDetailPage() {
 
                   <div className="flex flex-wrap items-center gap-3">
                     {colorways.map((cw, idx) => {
-                      const isSelected = activeProduct.slug === cw.productSlug;
                       const target = getProduct(cw.productSlug);
+                      const isSelected = target?.slug === activeProduct.slug;
+                      const swatchColor = isSelected ? modelColor : undefined;
+                      const swatchPattern = isSelected && target ? getFabricBackground(target, swatchColor, 10, stripeColor) : undefined;
                       return (
                         <button
                           key={idx}
@@ -462,12 +469,15 @@ export default function ProductDetailPage() {
                             ?"scale-110 border-black ring-2 ring-black"
                             :"border-[#E5E3DD] opacity-80 hover:opacity-100"
                             }`}
-                          style={{ backgroundColor: cw.hex }}
+                          style={{ backgroundColor: swatchColor || "#eee7dd", backgroundImage: swatchPattern }}
                           title={cw.name}
                           aria-label={cw.name}
                         >
+                          {!swatchColor && target?.image && (
+                            <CatalogImage src={target.image} alt="" sizes="36px" className="absolute inset-0 size-full object-cover" />
+                          )}
                           {isSelected && (
-                            <Check size={14} className={isLightHex(cw.hex) ?"text-black" :"text-white"} />
+                            <Check size={14} className={isLightHex(swatchColor ?? "#eee7dd") ?"relative text-black" :"relative text-white"} />
                           )}
                         </button>
                       );

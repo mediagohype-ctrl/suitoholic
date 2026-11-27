@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { allProducts, type ProductItem } from "@/data/products";
 
 const poses = [
@@ -40,6 +41,8 @@ const unlistedSwatches: Record<string, string> = {
   "navy-blue-fine-pinstripe-formal-shirt": "#23334C",
   "sage-mint-sartorial-stripe-shirt": "#91A99B",
   "imperial-charcoal-executive-twill-shirt": "#45464B",
+  "french-blue-bengal-striped-twill-shirt": "#7580B9",
+  "d-112-deep-wine-satin-twill-shirt": "#21101A",
   "italian-wool-navy-blazer": "#252E41",
   "british-houndstooth-sports-jacket": "#696157",
   "midnight-charcoal-dinner-jacket": "#313138",
@@ -62,16 +65,88 @@ const unlistedSwatches: Record<string, string> = {
 };
 
 export function getProductModelColor(product: ProductItem) {
-  const selectedSwatch = product.colorways?.find(({ productSlug }) => productSlug === product.slug)?.hex;
-  return [selectedSwatch, catalogSwatches.get(product.slug), unlistedSwatches[product.slug]]
+  const slug = product.slug.replace(/^suitoholic-/, "");
+  const selectedSwatch = product.colorways?.find(({ productSlug }) => productSlug?.replace(/^suitoholic-/, "") === slug)?.hex;
+  return [selectedSwatch, catalogSwatches.get(slug), unlistedSwatches[slug]]
     .find((hex) => hex && /^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(hex));
 }
 
+export function getFabricBackground(product: ProductItem, color?: string, scale = 1, stripeColor = "#f4f0ea") {
+  if (!color) return undefined;
+  const name = product.name + " " + product.slug;
+  const light = stripeColor;
+  if (/pinstripe|pin[ -]stripe/i.test(name)) {
+    const stripeStart = 1.45 * scale + "%";
+    return "repeating-linear-gradient(90deg, " + color + " 0 " + stripeStart + ", " + light + " " + stripeStart + " " + 1.6 * scale + "%)";
+  }
+  if (/stripe|striped/i.test(name)) {
+    const stripeStart = 1.25 * scale + "%";
+    return "repeating-linear-gradient(90deg, " + color + " 0 " + stripeStart + ", " + light + " " + stripeStart + " " + 2.5 * scale + "%)";
+  }
+  return undefined;
+}
+
+export function useProductModelFabric(product?: ProductItem) {
+  const configured = product && getProductModelColor(product);
+  const src = product?.image.trim().replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\//i, "/");
+  const isStriped = /stripe/i.test((product?.name ?? "") + " " + (product?.slug ?? ""));
+  const [sample, setSample] = useState<{ src: string; isStriped: boolean; color?: string; stripeColor?: string }>();
+
+  useEffect(() => {
+    if (!src) return;
+    const photo = new window.Image();
+    let active = true;
+    photo.crossOrigin = "anonymous";
+    const unavailable = () => {
+      if (active) setSample({ src, isStriped });
+    };
+    photo.onerror = unavailable;
+    photo.onload = () => {
+      if (!active) return;
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 32;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      if (!context) return unavailable();
+      let pixels: Uint8ClampedArray;
+      try {
+        context.drawImage(photo, photo.naturalWidth * 0.35, photo.naturalHeight * 0.40,
+          photo.naturalWidth * 0.30, photo.naturalHeight * 0.26, 0, 0, 32, 32);
+        pixels = context.getImageData(0, 0, 32, 32).data;
+      } catch {
+        return unavailable();
+      }
+      const colors: number[][] = [];
+      for (let i = 0; i < pixels.length; i += 4) {
+        if (pixels[i + 3] > 220) colors.push([pixels[i], pixels[i + 1], pixels[i + 2]]);
+      }
+      if (!colors.length) return unavailable();
+      colors.sort((a, b) => (a[0] + a[1] + a[2]) - (b[0] + b[1] + b[2]));
+      const hexAt = (quantile: number) => "#" + colors[Math.floor(colors.length * quantile)]
+        .map((channel) => channel.toString(16).padStart(2, "0")).join("");
+      setSample({
+        src,
+        isStriped,
+        color: hexAt(isStriped ? 0.25 : 0.5),
+        stripeColor: isStriped ? hexAt(0.78) : undefined,
+      });
+    };
+    photo.src = src;
+    return () => { active = false; };
+  }, [isStriped, src]);
+
+  const current = sample?.src === src && sample?.isStriped === isStriped ? sample : undefined;
+  return {
+    color: current?.color ?? configured,
+    stripeColor: current?.stripeColor,
+  };
+}
+
 export default function ProductModelPreview({
-  photo, color, alt, thumbnail = false,
+  photo, color, pattern, alt, thumbnail = false,
 }: {
   photo: (typeof productModelPhotos)[number];
   color?: string;
+  pattern?: string;
   alt: string;
   thumbnail?: boolean;
 }) {
@@ -92,9 +167,9 @@ export default function ProductModelPreview({
         />
         {color && (
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 isolate"
-            style={{ clipPath: photo.clip, backgroundColor: "color-mix(in srgb, " + color + " 88%, #888)" }}>
+            style={{ clipPath: photo.clip, backgroundColor: color, backgroundImage: pattern }}>
             <Image src={photo.src} alt="" fill sizes={sizes} loading={thumbnail ? "lazy" : "eager"}
-              className="mix-blend-soft-light [filter:grayscale(1)_brightness(.82)_contrast(1.2)]" />
+              className="mix-blend-soft-light [filter:grayscale(1)_brightness(.8)_contrast(1.45)]" />
           </div>
         )}
       </div>
