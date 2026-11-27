@@ -71,18 +71,9 @@ export default function ProductDetailPage() {
   const { addItem, busy } = useCart();
   const router = useRouter();
 
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
-  const [activeProduct, setActiveProduct] = useState<ProductItem | undefined>(() => getProduct(idOrSlug));
-  const [prevIdOrSlug, setPrevIdOrSlug] = useState(idOrSlug);
-
-  if (idOrSlug !== prevIdOrSlug) {
-    setPrevIdOrSlug(idOrSlug);
-    const target = getProduct(idOrSlug);
-    if (target) {
-      setActiveProduct(target);
-      setSelectedImageIndex(0);
-    }
-  }
+  const activeProduct = getProduct(idOrSlug);
+  const [photoSelection, setPhotoSelection] = useState({ productSlug: "", index: 0 });
+  const selectedImageIndex = photoSelection.productSlug === activeProduct?.slug ? photoSelection.index : 0;
 
   const selectedSize = 38;
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -113,7 +104,8 @@ export default function ProductDetailPage() {
   }
 
   const colorways = activeProduct.colorways ?? [];
-  const matchingFull = getMatchingFullShirtImage(activeProduct);
+  const isSageBengal = /^(suitoholic-)?sage-green-bengal-striped-twill-shirt$/.test(activeProduct.slug);
+  const matchingFull = isSageBengal ? "" : getMatchingFullShirtImage(activeProduct);
   const isCoralProduct = activeProduct.slug === "coral-red-bold-bengal-stripe-twill-shirt";
   const studioModelPhoto = isCoralProduct ? "/products/coral-bengal-stripe-model-studio.webp" : "";
   const armchairModelPhoto = isCoralProduct ? "/products/coral-bengal-stripe-model-armchair.webp" : "";
@@ -122,9 +114,16 @@ export default function ProductDetailPage() {
     "royal-blue-classic-bengal-stripe-twill-shirt": "royal-blue-bengal",
   };
   const matchingPortraitPrefix = matchingPortraitPrefixes[activeProduct.slug];
+  const referenceModelPhoto = isSageBengal
+    ? "/products/suitoholic-sage-green-bengal-striped-twill-shirt-model.webp"
+    : activeProduct.slug === "crisp-executive-white-twill-shirt" || activeProduct.slug === "beige-textured-linen-cotton-shirt"
+      ? `/products/${activeProduct.slug}-model.webp`
+      : "";
   const matchingModelPhotos = matchingPortraitPrefix
     ? ["sofa", "garden", "studio", "armchair"].map((pose) => `/products/${matchingPortraitPrefix}-model-${pose}.webp`)
-    : [];
+    : activeProduct.slug === "soft-ivory-white-egyptian-cotton-shirt"
+      ? [1, 2, 3, 4].map((number) => `/generated/soft_ivory_models/character_${number}_soft_ivory.jpg`)
+      : [];
   const excludedCoralGalleryPhotos = [
     "/customizer/shirt_model_coral_stripe.png",
     "/new_shirts/shirt_14.jpg",
@@ -135,23 +134,24 @@ export default function ProductDetailPage() {
     : activeProduct.slug === "soft-ivory-white-egyptian-cotton-shirt"
     ? "/generated/soft_ivory_models/character_1_soft_ivory.jpg"
     : "";
-  const gallery = [...new Set([
+  const productPhotos = [...new Set([
     onModelPhoto,
     ...matchingModelPhotos,
+    referenceModelPhoto,
     ...(activeProduct.gallery ?? []),
     studioModelPhoto,
     armchairModelPhoto,
     activeProduct.image,
     matchingFull,
-    ...(onModelPhoto ? ["/customizer/coral-step5-wide/cutaway-classic-reference-matched.webp"] : []),
   ].filter(Boolean).map((image) => {
     const path = image.trim().replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/");
     return path === "/products/coral-bengal-stripe-model-garden.webp"
       ? "/products/coral-bengal-stripe-model-garden-v2.webp"
       : path;
-  }).filter((path) => path && !(isCoralProduct && excludedCoralGalleryPhotos.includes(path))))];
-  const selectedImage = gallery[selectedImageIndex] || gallery[0] || "/shirt_classic_white.jpg";
-  const hasGallery = gallery.length > 1;
+  }).filter((path) => path && !(isCoralProduct && excludedCoralGalleryPhotos.includes(path))
+    && !(isSageBengal && path === "/customizer/shirt_model_sage.png")))];
+  const gallery = productPhotos.length ? productPhotos : ["/shirt_classic_white.jpg"];
+  const selectedImage = gallery[selectedImageIndex] ?? gallery[0];
   const discount = activeProduct.compareAtPrice && activeProduct.rawPrice > 0
     ? Math.max(0, Math.round(100 * (1 - activeProduct.rawPrice / activeProduct.compareAtPrice)))
     : 0;
@@ -259,11 +259,11 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-10">
 
             {/* LEFT COLUMN: Visual Showcase Gallery */}
-            <div className={`grid min-w-0 items-start gap-4 ${hasGallery ? "lg:grid-cols-[88px_minmax(0,1fr)] xl:grid-cols-[112px_minmax(0,1fr)]" : ""}`}>
+            <div className={"grid min-w-0 items-start gap-4 lg:grid-cols-[88px_minmax(0,1fr)] xl:grid-cols-[112px_minmax(0,1fr)]"}>
 
               {/* Main Display Box */}
               <div
-                className={`relative w-fit max-w-full justify-self-center overflow-hidden lg:row-start-1 ${hasGallery ? "lg:col-start-2" : ""}`}
+                className={"relative w-fit max-w-full justify-self-center overflow-hidden lg:col-start-2 lg:row-start-1"}
               >
                 <CatalogImage
                   key={selectedImage}
@@ -306,43 +306,41 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Thumbnail Strip */}
-              {hasGallery && (
-                <div role="group" aria-label="Product photos" data-lenis-prevent tabIndex={0} className="flex gap-3 overflow-x-auto p-1 lg:col-start-1 lg:row-start-1 lg:max-h-[min(82svh,820px)] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto lg:overscroll-y-contain">
-                  {gallery.map((imgUrl, idx) => (
-                    <button
-                      key={imgUrl}
-                      type="button"
-                      aria-label={imgUrl === armchairModelPhoto ? "Show shirt on model in armchair" : imgUrl === studioModelPhoto ? "Show shirt on seated studio model" : imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
-                      aria-pressed={selectedImageIndex === idx}
-                      onClick={() => setSelectedImageIndex(idx)}
-                      className={`relative aspect-[4/5] w-16 shrink-0 cursor-pointer overflow-hidden border bg-[#f7f6f3] transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-full ${selectedImageIndex === idx
-                        ?"border-black ring-1 ring-black"
-                        :"border-[#E5E3DD] opacity-75 hover:opacity-100"
-                        }`}
-                    >
-                      <CatalogImage
-                        src={imgUrl}
-                        alt=""
-                        sizes="112px"
-                        className="h-full w-full object-contain"
-                        loading="lazy"
-                        decoding="async"
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          if (!target.dataset.retried) {
-                            target.dataset.retried = "1";
-                            if (target.src.endsWith(".png")) target.src = target.src.replace(/\.png$/i, ".jpg");
-                            else if (target.src.endsWith(".jpg")) target.src = target.src.replace(/\.jpg$/i, ".png");
-                            else target.src = "/shirt_classic_white.jpg";
-                          } else {
-                            target.src = "/shirt_classic_white.jpg";
-                          }
-                        }}
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
+              <div key={activeProduct.slug} role="group" aria-label="Product photos" data-lenis-prevent tabIndex={0} className="flex gap-3 overflow-x-auto p-1 lg:col-start-1 lg:row-start-1 lg:max-h-[min(82svh,820px)] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto lg:overscroll-y-contain">
+                {gallery.map((imgUrl, idx) => (
+                  <button
+                    key={imgUrl}
+                    type="button"
+                    aria-label={imgUrl === armchairModelPhoto ? "Show shirt on model in armchair" : imgUrl === studioModelPhoto ? "Show shirt on seated studio model" : imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
+                    aria-pressed={selectedImageIndex === idx}
+                    onClick={() => setPhotoSelection({ productSlug: activeProduct.slug, index: idx })}
+                    className={`relative aspect-[4/5] w-16 shrink-0 cursor-pointer overflow-hidden border bg-[#f7f6f3] transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-full ${selectedImageIndex === idx
+                      ?"border-black ring-1 ring-black"
+                      :"border-[#E5E3DD] opacity-75 hover:opacity-100"
+                      }`}
+                  >
+                    <CatalogImage
+                      src={imgUrl}
+                      alt=""
+                      sizes="112px"
+                      className="h-full w-full object-contain"
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        if (!target.dataset.retried) {
+                          target.dataset.retried = "1";
+                          if (target.src.endsWith(".png")) target.src = target.src.replace(/\.png$/i, ".jpg");
+                          else if (target.src.endsWith(".jpg")) target.src = target.src.replace(/\.jpg$/i, ".png");
+                          else target.src = "/shirt_classic_white.jpg";
+                        } else {
+                          target.src = "/shirt_classic_white.jpg";
+                        }
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
 
               {/* Visual Assurance Badges Strip */}
               <div className="col-span-full grid grid-cols-3 gap-2.5 pt-1 text-center">
@@ -417,9 +415,8 @@ export default function ProductDetailPage() {
                           key={idx}
                           onClick={() => {
                             if (target) {
-                              setActiveProduct(target);
-                              setSelectedImageIndex(0);
-                              window.history.replaceState(null,"", `/product/${target.slug}`);
+                              setPhotoSelection({ productSlug: target.slug, index: 0 });
+                              router.replace(`/product/${target.slug}`, { scroll: false });
                             }
                           }}
                           type="button"
