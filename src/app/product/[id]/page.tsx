@@ -33,6 +33,7 @@ import confetti from"canvas-confetti";
 import CustomizationModal from "@/components/CustomizationModal";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import CatalogImage from "@/components/CatalogImage";
+import ProductModelPreview, { getProductModelColor, productModelPhotos } from "@/components/ProductModelPreview";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 
 // Icon keys usable in the productPage.badges content
@@ -165,8 +166,14 @@ export default function ProductDetailPage() {
       : path;
   }).filter((path) => path && !(isCoralProduct && excludedCoralGalleryPhotos.includes(path))
     && !(isSageBengal && path === "/customizer/shirt_model_sage.png")))];
-  const gallery = productPhotos.length ? productPhotos : ["/shirt_classic_white.jpg"];
+  const gallery = [
+    productPhotos[0] ?? "/shirt_classic_white.jpg",
+    ...productModelPhotos.map(({ src }) => src),
+    ...productPhotos.slice(1),
+  ];
   const selectedImage = gallery[selectedImageIndex] ?? gallery[0];
+  const selectedModel = productModelPhotos.find(({ src }) => src === selectedImage);
+  const modelColor = getProductModelColor(activeProduct);
   const discount = activeProduct.compareAtPrice && activeProduct.rawPrice > 0
     ? Math.max(0, Math.round(100 * (1 - activeProduct.rawPrice / activeProduct.compareAtPrice)))
     : 0;
@@ -280,7 +287,18 @@ export default function ProductDetailPage() {
               <div
                 className={"relative w-fit max-w-full justify-self-center overflow-hidden lg:col-start-2 lg:row-start-1"}
               >
-                <CatalogImage
+                {selectedModel ? (
+                  <figure>
+                    <ProductModelPreview
+                      photo={selectedModel}
+                      color={modelColor}
+                      alt={selectedModel.label + " · " + (modelColor ? activeProduct.name + " color preview" : "fit reference")}
+                    />
+                    <figcaption className="absolute bottom-2 left-2 rounded bg-black/75 px-2 py-1 text-xs text-white">
+                      {modelColor ? "Color preview" : "Fit reference"}
+                    </figcaption>
+                  </figure>
+                ) : <CatalogImage
                   key={selectedImage}
                   src={selectedImage}
                   alt={selectedImage === armchairModelPhoto ? `${activeProduct.name} worn with rolled sleeves by a model in an armchair` : selectedImage === studioModelPhoto ? `${activeProduct.name} with a band collar, worn by a seated studio model` : selectedImage === onModelPhoto ? `${activeProduct.name} worn by a seated model` : selectedImage.includes("coral-bengal-stripe-model-garden") ? `${activeProduct.name} worn by model at an outdoor garden party` : activeProduct.name}
@@ -300,7 +318,7 @@ export default function ProductDetailPage() {
                       target.src = "/shirt_classic_white.jpg";
                     }
                   }}
-                />
+                />}
 
                 {/* Wishlist Button */}
                 <button
@@ -322,11 +340,13 @@ export default function ProductDetailPage() {
 
               {/* Thumbnail Strip */}
               <div key={activeProduct.slug} role="group" aria-label="Product photos" data-lenis-prevent tabIndex={0} className="flex gap-3 overflow-x-auto p-1 lg:col-start-1 lg:row-start-1 lg:max-h-[min(82svh,820px)] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto lg:overscroll-y-contain">
-                {gallery.map((imgUrl, idx) => (
+                {gallery.map((imgUrl, idx) => {
+                  const model = productModelPhotos.find(({ src }) => src === imgUrl);
+                  return (
                   <button
                     key={imgUrl}
                     type="button"
-                    aria-label={imgUrl === armchairModelPhoto ? "Show shirt on model in armchair" : imgUrl === studioModelPhoto ? "Show shirt on seated studio model" : imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
+                    aria-label={model ? "Show model preview · " + model.label : imgUrl === armchairModelPhoto ? "Show shirt on model in armchair" : imgUrl === studioModelPhoto ? "Show shirt on seated studio model" : imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
                     aria-pressed={selectedImageIndex === idx}
                     onClick={() => setPhotoSelection({ productSlug: activeProduct.slug, index: idx })}
                     className={`relative aspect-[4/5] w-16 shrink-0 cursor-pointer overflow-hidden border bg-[#f7f6f3] transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-full ${selectedImageIndex === idx
@@ -334,7 +354,7 @@ export default function ProductDetailPage() {
                       :"border-[#E5E3DD] opacity-75 hover:opacity-100"
                       }`}
                   >
-                    <CatalogImage
+                    {model ? <ProductModelPreview photo={model} color={modelColor} alt="" thumbnail /> : <CatalogImage
                       src={imgUrl}
                       alt=""
                       sizes="112px"
@@ -352,9 +372,10 @@ export default function ProductDetailPage() {
                           target.src = "/shirt_classic_white.jpg";
                         }
                       }}
-                    />
+                    />}
                   </button>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Visual Assurance Badges Strip */}
@@ -624,7 +645,7 @@ export default function ProductDetailPage() {
         productName={activeProduct.name}
         product={{
           ...activeProduct,
-          image: gallery[selectedImageIndex] || activeProduct.image,
+          image: selectedModel ? activeProduct.image : selectedImage,
         }}
         initialChestSize={selectedSize}
         submitting={busy}

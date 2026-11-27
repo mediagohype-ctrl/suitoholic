@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MannequinShirtViewer, { CORAL_PRODUCT_SLUG, getCoralBuyNowFitPhoto, getCoralFoldedPreview, getShirtColorFamily, getMatchingShirtModel } from "@/components/MannequinShirtViewer";
 import InitialsPanel, { DEFAULT_INITIALS_THREAD, getInitialsThreadLabel, InitialsCuffPreview } from "@/components/customizer/InitialsPanel";
 import { CollarIllustration, CuffIllustration } from "@/components/customizer/StyleIllustrations";
@@ -315,6 +315,7 @@ export default function CustomizationModal({
   });
 
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const modalContentRef = useRef<HTMLDivElement>(null);
   const [activeItem, setActiveItem] = useState<CustomizationModalProduct | ProductItem | null>(() => product);
   const [activeItemName, setActiveItemName] = useState<string>(() => productName);
   const [customFit, setCustomFit] = useState<CustomFitState>(createEmptyCustomFit);
@@ -512,10 +513,15 @@ export default function CustomizationModal({
     }
   })();
 
+  const goToStep = (step: number) => {
+    modalContentRef.current?.scrollTo({ top: 0, behavior: "instant" });
+    setCurrentStep(step);
+  };
+
   const handleNextStep = () => {
     if (!isCurrentStepComplete) return;
     if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
+      goToStep(currentStep + 1);
     } else if (!submitting) {
       // Step 6: Complete — the parent adds the configured shirt to the bag
       triggerCelebration();
@@ -525,7 +531,7 @@ export default function CustomizationModal({
 
   const handlePrevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+      goToStep(currentStep - 1);
     }
   };
 
@@ -553,7 +559,7 @@ export default function CustomizationModal({
 
       {/* Modal Container */}
       <div
-        className="relative w-full max-w-[1560px] bg-[#F2E4D3] border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col min-h-[92vh] max-h-[97vh]"
+        className="relative h-[97dvh] w-full max-w-[1560px] bg-[#F2E4D3] border border-[#E5E3DD] rounded-[24px] sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col"
         data-lenis-prevent
       >
 
@@ -585,17 +591,18 @@ export default function CustomizationModal({
 
         {/* Modal Scrollable Content Body */}
         <div
-          className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-2.5 sm:px-3 lg:px-4 pt-1 sm:pt-1.5 pb-3 sm:pb-4 space-y-1.5 sm:space-y-2"
+          ref={modalContentRef}
+          className="flex-1 min-h-0 overflow-y-auto overscroll-contain [overflow-anchor:none] [scrollbar-gutter:stable] px-2.5 sm:px-3 lg:px-4 pt-1 sm:pt-1.5 pb-3 sm:pb-4 space-y-1.5 sm:space-y-2"
           data-lenis-prevent
         >
           <div className="w-full max-w-[1420px] mx-auto px-1 sm:px-2 space-y-1.5 sm:space-y-2 transition-all duration-300">
 
             {/* Breadcrumb Steps Header */}
             <div className="flex items-center justify-between border-b border-[#E5E3DD] pb-1">
-              <div className="flex items-center text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.2em] uppercase space-x-2 text-black">
+              <div className="flex min-w-0 items-center whitespace-nowrap text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.2em] uppercase space-x-2 text-black">
                 <span>{c.breadcrumbRoot}</span>
                 <span className="text-[#888888] text-xs font-normal">&gt;</span>
-                <span className="text-black font-bold">{stepCopy(currentStep).breadcrumb}</span>
+                <span className="truncate text-black font-bold">{stepCopy(currentStep).breadcrumb}</span>
               </div>
             </div>
 
@@ -606,7 +613,7 @@ export default function CustomizationModal({
               <div className="lg:col-span-6 flex flex-col justify-start relative transition-all duration-300">
 
                 {/* Top Row: Inscription & Selection Summary (Shown from Step 1 onwards) */}
-                <div className="flex items-start justify-between relative z-10 pl-1 pr-2 mb-2 animate-in fade-in duration-300">
+                <div className="relative z-10 mb-2 h-40 pl-1 sm:h-30 animate-in fade-in duration-300">
                   <div className="">
                     <h3 className="font-serif-luxury text-xl sm:text-2xl font-bold text-black tracking-[0.06em] uppercase leading-tight">
                       {c.studioTitleLines.map((line, i) => (
@@ -621,11 +628,11 @@ export default function CustomizationModal({
 
                   {/* Floating "Your Selection" Box - Dynamically reveals selections per step (Hidden on Step 6 to spotlight shirt preview and avoid duplicate specs) */}
                   {currentStep < 6 && (
-                    <div className={`text-left ${currentStep === 5 ? "min-w-[240px] sm:min-w-[270px] p-2.5" : "min-w-[130px] sm:min-w-[155px] p-3"} bg-white rounded-2xl border border-[#E5E3DD] shadow-sm transition-all duration-300`}>
+                    <div className={`absolute right-2 top-0 max-w-[calc(100%-8rem)] text-left ${currentStep === 5 ? "w-[270px] p-2" : "min-w-[130px] sm:min-w-[155px] p-3"} bg-white rounded-2xl border border-[#E5E3DD] shadow-sm`}>
                       <h5 className="text-[11px] font-bold tracking-[0.14em] text-black uppercase mb-1 pb-1 border-b border-[#E5E3DD]">
                         {c.selectionTitle}
                       </h5>
-                      <div className={`${currentStep === 5 ? "grid grid-cols-2 gap-x-3 gap-y-1" : "space-y-1.5"} text-[10.5px]`}>
+                      <div className={`text-[10.5px] ${currentStep === 5 ? "grid grid-cols-2 gap-x-2 gap-y-1 max-sm:text-[9px] max-sm:[&>div]:flex-col max-sm:[&>div]:items-start max-sm:[&>div]:gap-0 max-sm:[&_strong]:truncate max-sm:[&_strong]:max-w-full" : "space-y-1.5"}`}>
                         {/* Step 1: Chest Size (always shown) */}
                         <div className="flex justify-between items-center gap-2">
                           <span className="text-[#666666] font-medium">Chest Size</span>
@@ -720,14 +727,14 @@ export default function CustomizationModal({
               </div>
 
               {/* RIGHT COLUMN: 6-Step Interactive Configurator Box */}
-              <div className="lg:col-span-6 relative flex flex-col items-end w-full transition-all duration-300 -mt-1 sm:-mt-1.5 lg:-mt-2">
+              <div className={`lg:col-span-6 relative flex flex-col items-end w-full transition-all duration-300 -mt-1 sm:-mt-1.5 ${currentStep === 6 ? "lg:-mt-3" : "lg:-mt-2"}`}>
 
-                <div className={`bg-gradient-to-b from-[#FAF3EA] via-[#F8EFE4] to-[#FAF3EA] border border-[#E7D6C6] rounded-[24px] sm:rounded-[32px] p-4 sm:p-5 lg:p-6 shadow-[0_20px_50px_rgba(120,70,30,0.1)] relative z-10 flex flex-col justify-between w-full max-w-[550px] lg:ml-auto shrink-0 ${showInitialsPanel ? "h-[635px] sm:h-[705px] lg:h-[715px]" : "h-[585px] sm:h-[605px] lg:h-[625px]"}`}>
+                <div className={`bg-gradient-to-b from-[#FAF3EA] via-[#F8EFE4] to-[#FAF3EA] border border-[#E7D6C6] rounded-[24px] sm:rounded-[32px] p-4 sm:p-5 lg:p-6 shadow-[0_20px_50px_rgba(120,70,30,0.1)] relative z-10 flex flex-col justify-between w-full max-w-[550px] lg:ml-auto shrink-0 ${currentStep === 6 ? "sm:pt-3 lg:pt-3" : ""} ${showInitialsPanel ? "h-[635px] sm:h-[705px] lg:h-[715px]" : "h-[585px] sm:h-[605px] lg:h-[625px]"}`}>
 
                   {/* Stepper Header with Brand Accent */}
                   <div className="shrink-0 mb-0.5 sm:mb-1">
                     {/* SUITOHOLIC Brand Strip matching Reference Design */}
-                    <div className="flex items-center justify-center gap-3 w-full mb-1">
+                    <div className={currentStep === 6 ? "hidden" : "flex items-center justify-center gap-3 w-full mb-1"}>
                       <div className="h-[1.5px] w-14 sm:w-20 bg-[#8E6F57]" />
                       <span className="font-['Playfair_Display',Georgia,serif] text-[10.5px] sm:text-[11.5px] tracking-[0.28em] uppercase text-[#32241C] font-semibold">
                         SUITOHOLIC™
@@ -756,11 +763,11 @@ export default function CustomizationModal({
                         </span>
                       </h3>
 
-                      <p className="font-['Playfair_Display',Georgia,serif] italic font-bold text-[12.5px] sm:text-[13.5px] lg:text-[14px] text-[#140D09] text-center mt-1 sm:mt-1.5 mb-1 sm:mb-1.5 leading-snug tracking-tight sm:tracking-normal sm:whitespace-nowrap">
+                      {currentStep !== 6 && <p className="font-['Playfair_Display',Georgia,serif] italic font-bold text-[12.5px] sm:text-[13.5px] lg:text-[14px] text-[#140D09] text-center mt-1 sm:mt-1.5 mb-1 sm:mb-1.5 leading-snug tracking-tight sm:tracking-normal sm:whitespace-nowrap">
                         {currentStep === 5 && !isFullSleeve
                           ? "Tailor the perfect collar curvature for your half sleeve shirt."
                           : stepCopy(currentStep).subtitle}
-                      </p>
+                      </p>}
                     </div>
                   </div>
 
@@ -1357,7 +1364,7 @@ export default function CustomizationModal({
                           {/* Step 1: Chest */}
                           <button
                             type="button"
-                            onClick={() => setCurrentStep(1)}
+                            onClick={() => goToStep(1)}
                             className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                           >
                             <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
@@ -1371,7 +1378,7 @@ export default function CustomizationModal({
                           {/* Step 2: Body */}
                           <button
                             type="button"
-                            onClick={() => setCurrentStep(2)}
+                            onClick={() => goToStep(2)}
                             className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                           >
                             <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
@@ -1385,7 +1392,7 @@ export default function CustomizationModal({
                           {/* Step 3: Height */}
                           <button
                             type="button"
-                            onClick={() => setCurrentStep(3)}
+                            onClick={() => goToStep(3)}
                             className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                           >
                             <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
@@ -1399,7 +1406,7 @@ export default function CustomizationModal({
                           {/* Step 4: Measure */}
                           <button
                             type="button"
-                            onClick={() => setCurrentStep(4)}
+                            onClick={() => goToStep(4)}
                             className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                           >
                             <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
@@ -1413,7 +1420,7 @@ export default function CustomizationModal({
                           {/* Step 5: Cuff / Collar */}
                           <button
                             type="button"
-                            onClick={() => setCurrentStep(5)}
+                            onClick={() => goToStep(5)}
                             className="flex flex-col items-center gap-1 cursor-pointer group flex-1"
                           >
                             <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#B87A46] to-[#9C5F2D] text-white text-[10px] font-bold flex items-center justify-center shadow-xs group-hover:scale-105 transition-all">
@@ -1447,7 +1454,7 @@ export default function CustomizationModal({
                           </div>
 
                           {/* 6-Row Specification Strip matching Reference Image */}
-                          <div className="rounded-[16px] bg-[#F6EBDD] border-2 border-[#D9C4B0] overflow-hidden divide-y divide-[#EADCCE] shadow-xs">
+                          <div className="rounded-[16px] bg-[#F6EBDD] border-2 border-[#D9C4B0] overflow-hidden divide-y divide-[#EADCCE] shadow-xs [&>div]:py-1.5 [&>div>div:first-child]:h-9">
                             {/* 1. FABRIC */}
                             <div className="py-2.5 px-3 sm:py-3 sm:px-4 flex items-center gap-3 sm:gap-3.5">
                               <div className="w-[76px] h-[36px] sm:w-[86px] sm:h-[40px] md:w-[94px] md:h-[44px] rounded-[8px] overflow-hidden border border-[#DEC7B2] shrink-0 bg-[#F4EDE4] shadow-2xs">
