@@ -8,87 +8,40 @@ export const infoPages = {
     {
       slug: "returns",
       eyebrow: "CUSTOMER CARE",
-      title: "RETURNS & EXCHANGES",
-      intro: "At Suitoholic, your satisfaction and sartorial confidence are our highest priorities. Every piece is crafted with meticulous care and backed by our commitment to quality.",
-      body: `## 1. 7-Day Return & Exchange Window
-We offer a 7-day return and exchange policy from the date your order is delivered to your address. Within this period, you may request an exchange for size, collar, or fit adjustments, or initiate a return for refund, provided your order meets our return eligibility criteria.
+      title: "RETURN & EXCHANGE POLICY",
+      intro: "At Suitoholic, we want you to receive the right product and the right fit.",
+      body: `Returns or exchanges are accepted only in the following cases:
 
-## 2. Eligibility & Garment Condition
-To qualify for a return or exchange, items must satisfy the following conditions:
-- The garment must be completely unused, unworn, unwashed, unaltered, and in its original pristine condition.
-- All original brand tags, woven neck labels, spare button bags, and packaging must remain completely intact.
-- Items with broken security seals, marks of perfume, deodorant, stains, or signs of laundering cannot be accepted for a return or refund.
+- **Wrong Product Delivered:** If you receive a product different from the one you ordered.
+- **Size Issue:** If the delivered product has a size-related issue, subject to our exchange policy and product eligibility.
 
-## 3. Our 100% Bespoke Fit Guarantee
-Because every bespoke and made-to-measure shirt at Suitoholic is individually drafted and stitched to your unique measurements, we stand firmly behind your fit:
-- If your bespoke piece requires any minor sizing, sleeve, or waist adjustment, our master atelier provides **Complimentary Fit Alterations** within 30 days of delivery.
-- Simply contact our concierge team with your order details and photos describing the fit adjustment needed.
-- We will arrange a reverse pickup, perform the tailoring corrections at our Vapi atelier, and deliver the perfected garment back to you.
+Please contact us within 7 days of delivery to request a return or exchange. The product must be unused, unwashed, unworn and returned with its original tags and packaging.
 
-## 4. One-Time Exchange Policy
-Each eligible order is entitled to a **one-time exchange** for a different size, sleeve length, or fabric (subject to cloth stock availability).
-- Once approved, our team coordinates a reverse courier pickup from your address.
-- A standard reverse logistics and inspection fee of **₹300** applies to cover courier charges and processing.
+## Please Note
+- Returns or exchanges are not accepted for change of mind, personal preference, or reasons other than the above, except where required under applicable law.
+- Customized or made-to-order products are not eligible for exchange due to customer-provided incorrect measurements or change of preference.
+- If you receive a damaged, defective or incorrect product, please contact us with photographs so we can review and assist you.
 
-## 5. Inspection & Refund Timelines
-- Returned parcels undergo a thorough quality and craftsmanship inspection at our atelier within **24 to 48 hours** of receipt.
-- Once approved, refunds are initiated within **5 to 7 business days**.
-- **Prepaid Orders (UPI, Cards, Net Banking):** The refund amount is credited directly back to your original payment source.
-- **Cash on Delivery (COD) Orders:** Our concierge will request your preferred bank account or UPI ID for direct transfer.
-- Original shipping fees paid at the time of purchase are non-refundable.
-
-## 6. Non-Returnable & Final Sale Items
-The following items cannot be returned or refunded:
-- Monogrammed garments with custom-embroidered initials (these remain fully covered under our Complimentary Fit Alteration Guarantee).
-- Items purchased during Final Archive Sale or clearance events marked as Non-Returnable.
-
-## 7. How to Initiate a Return or Exchange
-To start a request, please reach out to our concierge with your **Order Number** and email/phone:
-- **WhatsApp & Phone:** +91 99799 38022 (Monday – Saturday, 10:00 AM – 8:30 PM)
-- **Email:** infosuitoholic@gmail.com
-- **Studio Address:** Suitoholic, Near Upasana School, Behind Gunjan Cinema, GIDC, Vapi, Gujarat - 396195`,
+For return or exchange assistance, contact us at **+91 6353994123** or **infosuitoholic@gmail.com**.`,
       showContactForm: false,
     },
     {
       slug: "shipping",
       eyebrow: "CUSTOMER CARE",
       title: "SHIPPING POLICY",
-      intro: "Suitoholic delivers bespoke craftsmanship and sartorial luxury directly to your doorstep across India with tracked express logistics.",
-      body: `## 1. Order Processing & Crafting Timeline
-Every garment at Suitoholic is tailored to the highest standards of master cutting and bespoke finishing:
-- **Bespoke Made-to-Measure Orders:** Please allow **3 to 7 business days** for master pattern drafting, precision cutting, single-needle stitching, and multi-point hand inspection before dispatch.
-- **Curated In-Stock Essentials:** Quality-checked, steam-pressed, and dispatched within **24 to 48 business hours** (Monday through Saturday, excluding public holidays).
-- Once your order is dispatched from our atelier, a shipment confirmation containing your live AWB tracking link is immediately sent via email, WhatsApp, and SMS.
+      intro: "The following delivery estimates are proposed and must be confirmed against Suitoholic's actual production and courier timelines.",
+      body: `## Order processing
+- **Ready-made orders:** proposed dispatch within 2–5 business days after order confirmation.
+- **Customized orders:** proposed dispatch within 7–15 business days, depending on customization and production requirements.
 
-## 2. Shipping Coverage & Partner Couriers
-- We ship to over 19,000+ pin codes across all states and union territories in India.
-- We partner exclusively with premium express courier networks—including Blue Dart, Delhivery, DTDC, and Express Cargo—to ensure prompt, insured transit.
-- Currently, Suitoholic ships exclusively within India. For international inquiries, please contact our concierge directly.
+## Delivery
+After dispatch, courier delivery is estimated at 3–7 business days, depending on the destination, courier service, and circumstances. These are estimates, not guaranteed delivery dates.
 
-## 3. Shipping Charges
-- **Standard Express Shipping:** We offer **Free Express Shipping** on all prepaid orders across India.
-- **Cash on Delivery (COD):** Available for serviceable pin codes with convenient advance partial-payment support.
+Shipping charges, if any, will be displayed during checkout or communicated before order confirmation. Tracking details will be shared when available.
 
-## 4. Estimated Transit & Delivery Timelines
-Delivery times from the date of dispatch:
-- **Metro Cities (Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Kolkata, Pune, Ahmedabad):** 2 to 4 business days.
-- **Tier 2 & Tier 3 Cities:** 4 to 6 business days.
-- **Remote, Hill & North-East Locations:** 5 to 7 business days.
-*Please note that external transit delays caused by regional weather disruptions, festive courier backlogs, or remote accessibility may occasionally extend delivery timelines.*
+Please ensure your shipping address and contact number are correct. Delays may occur due to weather, courier disruptions, holidays, remote-area delivery, or other circumstances outside our control.
 
-## 5. Live Tracking Your Shipment
-- As soon as your order is handed over to the courier, an active tracking link is generated.
-- You can follow live shipment progress 24/7 on our dedicated **Track Order** page (/track-order).
-- Please allow up to 12–24 hours for the carrier's portal to reflect real-time waypoint updates.
-
-## 6. Damaged, Tampered, or Incomplete Packages
-- All Suitoholic parcels are securely packed in heavy-duty, tamper-evident bespoke packaging.
-- If the outer box or seal appears torn, damaged, or opened upon delivery, please **do not accept the package** or record an unboxing video before opening.
-- Notify our concierge team within **24 hours** at **+91 99799 38022** or **infosuitoholic@gmail.com** with photos of the damaged parcel so we can immediately arrange a replacement.
-
-## 7. Return to Origin (RTO) & Delivery Attempts
-- Our courier partners make up to 3 delivery attempts and will attempt to call your registered phone number.
-- In the event that a shipment is returned to our atelier due to an incorrect/incomplete address, recipient unavailability, or refusal, an **RTO charge of ₹300** applies to cover round-trip logistics for re-dispatch.`,
+For shipping assistance, contact **+91 6353994123** or email **infosuitoholic@gmail.com**.`,
       showContactForm: false,
     },
     {
@@ -130,112 +83,107 @@ Lustrous satin twills feature an ultra-smooth floating weave that reflects ambie
       slug: "terms",
       eyebrow: "LEGAL",
       title: "TERMS & CONDITIONS",
-      intro: "Please review these Terms and Conditions carefully. They govern your access to and use of our bespoke tailoring services, digital customizer, and purchases made through suitoholic.com.",
-      body: `## 1. General Agreement & About Us
-This website (suitoholic.com) is owned and operated by **Suitoholic Atelier**, having its registered workshop and studio at:
-Suitoholic, Near Upasana School, Behind Gunjan Cinema, GIDC, Vapi, Gujarat - 396195, India.
-By accessing our website, browsing our collections, or placing an order through our digital customizer, you agree to be bound by these Terms & Conditions and our published policies.
+      intro: "By accessing or shopping on suitoholic.shop, you agree to the site's applicable terms. Please read them carefully.",
+      body: `## Website use and orders
+- Please provide accurate contact, address, and order information.
+- Orders are subject to product availability, payment verification, and confirmation by Suitoholic.
+- Prices, product details, and offers may be updated. The price and terms applicable to a confirmed order will be communicated through the checkout or order confirmation process.
 
-## 2. User Eligibility & Account Accuracy
-- You must be at least 18 years of age or accessing under the supervision of a parent or legal guardian to make purchases.
-- You agree to provide truthful, accurate, and complete information regarding your contact details, delivery addresses, and body measurement submissions.
-- Suitoholic reserves the right to refuse service, terminate accounts, or cancel orders at our discretion if fraudulent or unlawful activity is suspected.
+## Product and customization
+We aim to display product colours, textures, and details accurately. Actual appearance may vary due to screen settings, lighting, or manufacturing variations. Customers are responsible for reviewing and submitting customization and measurement details carefully.
 
-## 3. Bespoke Tailoring & Sizing Specifications
-- Every bespoke garment is individually cut and stitched according to the chest size, body type (Lean, Regular, Tummy), height, collar style, and cuff choices submitted by the patron.
-- In artisanal tailoring, allowable hand-crafting tolerances of up to ±0.5 inches are standard across industry practices.
-- While we make every effort to display fabric colors, textures, and stripe weaves accurately, slight variations may exist between screen displays and physical woven textiles due to monitor color calibration and ambient lighting.
+## Shipping, returns and payment
+Shipping and return/exchange terms are described in the corresponding policies on this website. Payment options available at checkout will apply to the order.
 
-## 4. Pricing, Taxes & Payment Methods
-- All product and service prices on suitoholic.com are listed in Indian Rupees (INR) and are inclusive of Goods and Services Tax (GST).
-- We reserve the right to modify pricing, special commissions, or fabric availability without prior notice.
-- Payments are processed via encrypted, RBI-compliant, PCI-DSS certified payment gateways. We accept UPI, Credit Cards, Debit Cards, Net Banking, and Cash on Delivery (COD).
+## Intellectual property
+Website content, photographs, branding, designs, text, and graphics may be protected by intellectual-property laws and may not be copied or used without permission, except where permitted by law.
 
-## 5. Order Confirmation, Cutting & Modifications
-- An order is considered confirmed once payment authorization is received or COD verification is completed.
-- Because bespoke orders involve custom fabric cutting specifically for your order, requests for design modifications, monogram changes, or cancellations must be communicated within **24 hours of placing your order** before master cutting commences.
+## Legal rights and changes
+Nothing in these terms is intended to exclude or restrict consumer rights or remedies that cannot lawfully be excluded. Suitoholic may update website content or these terms; changes will be posted on the website.
 
-## 6. Intellectual Property Protection
-- All text, graphics, logos, icons, lookbook imagery, customizer interfaces, bespoke pattern software, and branding appearing on suitoholic.com are the exclusive intellectual property of Suitoholic.
-- No content may be copied, reproduced, scraped, republished, or exploited for commercial purposes without prior written authorization from Suitoholic.
-
-## 7. Limitation of Liability
-- Suitoholic shall not be liable for any indirect, incidental, or consequential damages resulting from courier transit delays, third-party logistics failures, or improper garment maintenance contrary to our Fabric Care Guide.
-- Our total liability for any claim arising from an order shall not exceed the amount actually paid by you for the specific garment in question.
-
-## 8. Governing Law & Jurisdiction
-- These Terms & Conditions are governed by and construed in accordance with the laws of India.
-- Any disputes or legal claims arising under or in connection with these terms shall be subject to the exclusive jurisdiction of the competent courts in **Vapi / Valsad District, Gujarat**.
-
-## 9. Customer Support & Contact
-For inquiries regarding our terms, please contact our concierge:
-- **Phone & WhatsApp:** +91 99799 38022 (Monday – Saturday, 10:00 AM – 8:30 PM)
-- **Email:** infosuitoholic@gmail.com
-- **Studio Address:** Suitoholic, Near Upasana School, Behind Gunjan Cinema, GIDC, Vapi, Gujarat - 396195`,
+For questions, contact **infosuitoholic@gmail.com** or **+91 6353994123**.`,
       showContactForm: false,
     },
     {
       slug: "privacy",
       eyebrow: "LEGAL",
       title: "PRIVACY POLICY",
-      intro: "At Suitoholic, we treat your personal privacy and sartorial measurement data with the same uncompromising care, precision, and confidentiality that we apply to our handcrafted garments.",
-      body: `## 1. Information We Collect
-We collect information necessary to deliver exceptional bespoke tailoring and customer service:
-- **Personal Information:** Name, email address, telephone/WhatsApp number, shipping address, and billing address.
-- **Bespoke Measurement Profiles:** Chest size, stomach/waist measurement, body shape (Lean Fit, Regular Fit, Tummy Fit), height proportion, collar style, cuff preferences, and monogram initials.
-- **Payment Information:** All digital payments are processed through certified, RBI-compliant payment gateways. Suitoholic does not collect, handle, or store raw credit card numbers, CVVs, or net banking passwords on our servers.
-- **Technical & Browsing Data:** IP address, browser type, device information, and essential session cookies to remember your bag selections and customizer state.
+      intro: "Suitoholic respects your privacy. This policy describes how information may be collected and used when you visit or shop at suitoholic.shop.",
+      body: `## Information we may collect
+- Contact and account information, such as name, phone number, email address, and shipping or billing address.
+- Order details, product preferences, and measurements or fit information that you choose to provide.
+- Payment-related information handled by payment providers. We may receive transaction status and limited details, but payment credentials may be processed directly by the payment provider.
+- Device, browser, website usage, and cookie information, where enabled.
 
-## 2. How We Use Your Information
-We use the information collected strictly for legitimate sartorial and operational purposes:
-- To individually draft, cut, stitch, and deliver your bespoke garments to your exact measurements.
-- To communicate order confirmations, provide real-time WhatsApp/SMS shipping updates, and assist with fit consultations.
-- To maintain your secure bespoke measurement profile for effortless one-click future reorders.
-- To send occasional atelier journals, new luxury cloth releases, and seasonal updates (only if you subscribe; you may unsubscribe at any time with one click).
+## How we use information
+- To process, deliver, and support orders; provide sizing or customization; and manage returns, exchanges, and customer enquiries.
+- To communicate order updates, service information, or promotional messages where permitted.
+- To improve our website, services, customer experience, security, and compliance with applicable law.
 
-## 3. Strict Non-Disclosure & Data Protection
-- **We never sell, rent, trade, or monetize your personal details or measurement profiles with third-party advertising companies or marketing data brokers.**
-- Your data is shared strictly with essential operational service partners who are bound by stringent confidentiality agreements:
-  - **Logistics Partners:** Trusted courier partners (Blue Dart, Delhivery) solely for delivering your orders to your address.
-  - **Payment Gateways:** Certified payment processors for executing secure financial transactions.
+## Sharing information
+We may share relevant information with service providers such as payment processors, delivery partners, hosting providers, and customer-support or website tools, as needed to operate our services. We do not intend to sell personal information.
 
-## 4. Cookies & Web Tracking
-- **Essential Cookies:** Required for basic site navigation, maintaining shopping bag contents, and user session authentication.
-- **Performance Cookies:** Help us analyze site loading speed, popular fabric searches, and checkout fluidity to optimize user experience.
-- You can manage or disable cookies via your browser settings, though certain customizer features may be affected.
+## Security, choices and contact
+We take reasonable steps to protect information, but no online system can be guaranteed to be completely secure. You may contact us to request access, correction, or deletion where applicable, subject to legal and operational requirements. Cookies or similar technologies may be used.
 
-## 5. Security of Your Personal Information
-- We implement industry-standard 256-bit SSL/TLS encryption for all data transmitted between your browser and our servers.
-- Our databases are maintained in secure cloud environments with restricted administrative access, regular security audits, and firewall defenses.
-
-## 6. Your Rights & Data Control
-- You have the right to review, update, or request the deletion of your personal account information and saved measurement profiles at any time.
-- To request a copy of your stored data or request complete data deletion, please contact our concierge at infosuitoholic@gmail.com.
-
-## 7. Policy Updates & Grievance Redressal
-- We may periodically update this Privacy Policy to reflect evolving regulatory standards or service enhancements. The latest revision date is always posted at the top of this document.
-- If you have questions, concerns, or grievances regarding our privacy practices, please contact our Grievance Officer:
-  - **Atelier:** Suitoholic Atelier, Near Upasana School, Behind Gunjan Cinema, GIDC, Vapi, Gujarat - 396195
-  - **Phone:** +91 99799 38022
-  - **Email:** infosuitoholic@gmail.com`,
+**Privacy contact:** infosuitoholic@gmail.com | +91 6353994123`,
       showContactForm: false,
     },
     {
       slug: "faq",
-      eyebrow: "CUSTOMER CARE",
+      eyebrow: "HELP & SUPPORT",
       title: "FREQUENTLY ASKED QUESTIONS",
-      intro: "Answers to common questions about bespoke ordering, measuring, fabrics, and deliveries.",
-      body: `## How do I choose my size?
-Use the 6-step customizer on any product page. It intelligently calculates ideal proportions based on your chest size, posture/body type (Lean, Regular, Tummy), and height.
+      intro: "Frequently asked questions about ordering, sizing, delivery, customization, and returns at Suitoholic.",
+      body: `## What is Suitoholic?
+Suitoholic is a clothing and tailoring brand focused on premium fabrics, craftsmanship, and fit, with online shopping and fitting options available through suitoholic.shop.
 
-## How long does a bespoke order take?
-Every bespoke piece is crafted to order with single-needle tailoring and dispatched within 3 to 7 working days.
+## How do I choose my size?
+Simply select your favourite shirt on Suitoholic.shop and follow our simple 6-step sizing process to find the perfect fit according to your body type, height and preferences.
 
-## Can I change my order details after placing it?
-Please contact our concierge within 24 hours of placing your order. We can adjust measurements, sleeve styles, or monograms before cutting begins.
+## Can I customize my fit?
+Where customization is offered, follow the options available on the product page and submit the requested details carefully.
 
-## What is your 100% Fit Guarantee?
-If your shirt requires any fit adjustment upon arrival, we provide complimentary tailoring alterations within 30 days of delivery.`,
+## How long does delivery take?
+Proposed estimates: ready-made orders dispatch in 2–5 business days, customized orders in 7–15 business days, followed by estimated courier delivery of 3–7 business days.
+
+## Can I return or exchange an item?
+Returns or exchanges are accepted only for wrong products delivered or eligible size issues, within 7 days of delivery, subject to the conditions in our Return & Exchange Policy. Customized products may have different conditions. Please read the full policy and contact us for assistance.
+
+## What if my order is damaged or incorrect?
+Contact us as soon as possible with your order details and clear photos. Our team will review the issue and guide you through the appropriate resolution, subject to applicable law.
+
+## How do I track my order?
+Tracking details will be shared once your order is dispatched, when tracking is available.
+
+## Do you deliver across India?
+Delivery availability is shown during checkout or confirmed by our team, depending on the destination.
+
+## Will product colours look exactly the same?
+Colours may look slightly different due to screen display, lighting, or photography.
+
+## How can I contact Suitoholic?
+- **Phone / WhatsApp:** +91 6353994123
+- **Email:** infosuitoholic@gmail.com
+- **Website:** suitoholic.shop`,
+      showContactForm: false,
+    },
+    {
+      slug: "about-us",
+      eyebrow: "OUR STORY",
+      title: "ABOUT US",
+      intro: "A Better Fit Starts Here.",
+      body: `Established in 2003, Suitoholic brings more than two decades of tailoring experience, craftsmanship, and a commitment to quality and fit.
+
+Our journey began with a focus on premium tailoring and personal service. We believe clothing should feel as good as it looks, and that the right fit makes all the difference.
+
+With suitoholic.shop, we are bringing that experience into a convenient online journey—helping customers explore premium clothing and fitting options while keeping the spirit of personalized service at the heart of our brand.
+
+At Suitoholic, we combine craftsmanship, thoughtful details, and a customer-first approach to make finding your fit easier.
+
+## Suitoholic — A Better Fit Starts Here.
+- **Website:** suitoholic.shop
+- **Phone / WhatsApp:** +91 6353994123
+- **Email:** infosuitoholic@gmail.com`,
       showContactForm: false,
     },
   ],

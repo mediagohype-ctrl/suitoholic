@@ -169,9 +169,12 @@ export default function ContactPage() {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="mb-4">
-                      <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[38px] font-bold text-black tracking-[0.14em] uppercase leading-tight">
-                        Bespoke Consultation
+                      <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[34px] font-bold text-black tracking-[0.08em] leading-tight">
+                        We&apos;re Here to Help You Find Your Perfect Fit.
                       </h2>
+                      <p className="mt-2 text-xs sm:text-sm text-[#555555] leading-relaxed font-sans">
+                        Have a question about your order, sizing, customization, delivery, or our products? Our team is happy to assist.
+                      </p>
                     </div>
                     
                     {/* Row 1: Full Name & Email */}
@@ -215,7 +218,7 @@ export default function ContactPage() {
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          placeholder="+91 99799 38022"
+                          placeholder="+91 6353994123"
                           className="w-full bg-[#F5F4F0] border border-[#E5E3DD] hover:border-black/40 focus:border-black focus:ring-1 focus:ring-black rounded-xl px-4 py-3.5 text-xs sm:text-sm text-black placeholder:text-[#999999] transition-all outline-hidden font-sans"
                         />
                       </div>
@@ -293,54 +296,30 @@ export default function ContactPage() {
 
               </div>
 
-              <section aria-labelledby="studio-visit-heading" className="lg:col-span-5">
+              <section aria-labelledby="customer-support-heading" className="lg:col-span-5">
                 <div 
                   className="@container bg-white border border-[#E5E3DD] rounded-3xl sm:rounded-4xl p-8 sm:p-10 lg:p-12 shadow-sm space-y-7 sm:space-y-8"
                 >
-                  <h2 id="studio-visit-heading" className="font-serif-luxury whitespace-nowrap text-[min(2.375rem,7cqi)] font-bold uppercase leading-tight">
-                    Visit Our Vapi Studio
-                  </h2>
-
-                  <div className="space-y-1.5 font-sans">
-                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      Studio Address
-                    </span>
-                    <address className="space-y-1.5 not-italic">
-                      <div className="text-base sm:text-[17px] text-black font-semibold">
-                        Suitoholic Atelier
-                      </div>
-                      <div className="text-xs sm:text-sm text-[#14110E] font-medium leading-relaxed">
-                        Near Upasana School, Behind Gunjan Cinema,<br />
-                        GIDC, Vapi, Gujarat - 396195
-                      </div>
-                    </address>
+                  <div>
+                    <h2 id="customer-support-heading" className="font-serif-luxury text-2xl sm:text-3xl lg:text-[32px] font-bold text-black tracking-[0.06em] leading-tight">
+                      Customer Support
+                    </h2>
+                    <p className="mt-1.5 text-xs sm:text-sm text-[#666666] font-sans">
+                      Reach out directly via Phone, WhatsApp or Email.
+                    </p>
                   </div>
 
-                  <div className="border-t border-[#E5E3DD]" />
-
                   <div className="space-y-1.5 font-sans">
                     <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      Visiting Hours
-                    </span>
-                    <div className="text-base sm:text-[17px] text-black font-medium">
-                      Monday — Saturday
-                    </div>
-                    <div className="text-xs sm:text-sm text-[#666666]">
-                      10:00 — 20:30 · By appointment
-                    </div>
-                  </div>
-
-                  <div className="border-t border-[#E5E3DD]" />
-
-                  <div className="space-y-1.5 font-sans">
-                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      Call for an Appointment
+                      Phone / WhatsApp
                     </span>
                     <a
-                      href="tel:+919979938022"
-                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block"
+                      href="https://wa.me/916353994123"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-semibold block"
                     >
-                      +91 99799 38022
+                      +91 6353994123
                     </a>
                   </div>
 
@@ -348,14 +327,44 @@ export default function ContactPage() {
 
                   <div className="space-y-1.5 font-sans">
                     <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
-                      Studio Email
+                      Email
                     </span>
                     <a
                       href="mailto:infosuitoholic@gmail.com"
-                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-medium block wrap-break-word"
+                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-semibold block wrap-break-word"
                     >
                       infosuitoholic@gmail.com
                     </a>
+                  </div>
+
+                  <div className="border-t border-[#E5E3DD]" />
+
+                  <div className="space-y-1.5 font-sans">
+                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
+                      Website
+                    </span>
+                    <a
+                      href="https://suitoholic.shop"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base sm:text-[17px] text-black hover:text-[#666666] transition-colors font-semibold block"
+                    >
+                      suitoholic.shop
+                    </a>
+                  </div>
+
+                  <div className="border-t border-[#E5E3DD]" />
+
+                  <div className="space-y-1.5 font-sans">
+                    <span className="text-[10.5px] sm:text-[11px] font-sans tracking-[0.24em] text-[#666666] uppercase font-bold block">
+                      Support Hours
+                    </span>
+                    <div className="text-base sm:text-[17px] text-black font-semibold">
+                      Monday to Saturday
+                    </div>
+                    <div className="text-xs sm:text-sm text-[#666666]">
+                      11:00 AM – 7:00 PM (excluding holidays)
+                    </div>
                   </div>
                 </div>
               </section>

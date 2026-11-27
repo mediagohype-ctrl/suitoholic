@@ -14,14 +14,17 @@ interface CommitmentBannerSectionProps {
 }
 
 export default function CommitmentBannerSection({
-  eyebrow ="OUR COMMITMENT",
-  title ="A Standard We Hold Ourselves To",
-  description ="Every client who walks through our door receives the same level of attention — whether commissioning a single shirt or a full wardrobe. Precision, honesty, and craft are not reserved for special occasions. They are the baseline.",
-  ctaLabel ="BEGIN YOUR CONSULTATION",
-  ctaHref ="/custom-shirt#appointment-booking",
-  features = ["Expert guidance on fabric selection","Precise measurements and pattern creation","Hand-finished details & custom touches",
+  eyebrow = "OUR COMMITMENT",
+  title = "A Better Fit Starts Here",
+  description = "At Suitoholic, we combine craftsmanship, thoughtful details, and a customer-first approach to make finding your fit easier. We believe clothing should feel as good as it looks, and that the right fit makes all the difference.",
+  ctaLabel = "EXPLORE COLLECTION",
+  ctaHref = "/shop",
+  features = [
+    "Over two decades of tailoring experience (Estd. 2003)",
+    "Convenient online bespoke fitting journey",
+    "Personalized customer-first support",
   ],
-  image ="/about_commitment_light_banner.jpg",
+  image = "/about_commitment_light_banner.jpg",
 }: CommitmentBannerSectionProps) {
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#0D0B09]">

@@ -20,27 +20,27 @@ export interface AtelierStoryTimelineProps {
 }
 
 export default function AtelierStoryTimeline({
-  eyebrow ="OUR STORY",
-  titlePrefix ="Two Decades of Craft in",
-  titleAccent ="Delhi NCR",
-  description ="Founded in New Delhi by master bespoke cutters dedicated to heritage tailoring. Reclaiming the art of individual pattern drafting, Suitoholic crafts every garment from a hand-cut paper pattern engineered to your unique posture, drape, and silhouette.",
-  image ="/master_tailor_story.jpg",
-  imageCaption ="Master Bespoke Cutter • New Delhi Atelier Bench",
+  eyebrow = "OUR STORY",
+  titlePrefix = "Two Decades of Craft &",
+  titleAccent = "Tailoring Experience",
+  description = "Established in 2003, Suitoholic brings more than two decades of tailoring experience, craftsmanship, and a commitment to quality and fit. We believe clothing should feel as good as it looks, and that the right fit makes all the difference.",
+  image = "/master_tailor_story.jpg",
+  imageCaption = "Master Bespoke Cutter • Atelier Bench",
   milestones = [
     {
-      period:"ESTD. 2003",
-      title:"Founded In New Delhi Atelier",
-      story:"Suitoholic begins with master bespoke cutters committed to pure bespoke tailoring. Every garment drafted from a hand-cut paper pattern, upholding individual craft standards across devoted practice.",
+      period: "ESTD. 2003",
+      title: "A Better Fit Starts Here",
+      story: "Suitoholic was established in 2003. Our journey began with a focus on premium tailoring and personal service, believing that clothing should feel as good as it looks, and that the right fit makes all the difference.",
     },
     {
-      period:"PROVENANCE & CRAFT",
-      title:"Direct Textile Mill Alliances, Biella & Giza",
-      story:"Bypassing industrial middlemen, establishing direct partnerships with heritage looms in Biella, Italy for Super 150s worsted wool and Egypt's Nile Delta for authentic 140s Extra-Long Staple Giza cottons.",
+      period: "CRAFTSMANSHIP & CARE",
+      title: "Two Decades of Experience",
+      story: "Bringing more than two decades of tailoring experience, we combine craftsmanship, thoughtful details, and a customer-first approach to make finding your fit easier.",
     },
     {
-      period:"TODAY & BEYOND",
-      title:"Suitoholic Bespoke Atelier, Delhi NCR",
-      story:"Dressing corporate leaders, dignitaries, and connoisseurs across 42 countries. The same timeless belief: that a garment made well — to your body, for your occasion — is never just clothing.",
+      period: "ONLINE ATELIER",
+      title: "Suitoholic.shop",
+      story: "With suitoholic.shop, we bring that experience into a convenient online journey—helping customers explore premium clothing and fitting options while keeping personalized service at heart.",
     },
   ],
 }: AtelierStoryTimelineProps) {

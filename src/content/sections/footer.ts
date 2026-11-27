@@ -9,7 +9,7 @@ export const footer = {
   logoHref: "/",
   conciergeHeading: "Direct Concierge",
   phoneLabel: "Hotline",
-  phone: "+91 99799 38022",
+  phone: "+91 6353994123",
   emailLabel: "Private Appointments",
   email: "infosuitoholic@gmail.com",
   hoursLabel: "Studio Hours",

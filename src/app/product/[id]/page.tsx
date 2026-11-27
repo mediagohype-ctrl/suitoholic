@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from"react";
+import React, { useState, useEffect } from "react";
 import Link from"next/link";
 import { useParams, useRouter } from"next/navigation";
 import Header from"@/components/Header";
@@ -83,6 +83,21 @@ export default function ProductDetailPage() {
   const [toastError, setToastError] = useState<boolean>(false);
   const [isCustomizerOpen, setIsCustomizerOpen] = useState<boolean>(false);
   const [buyNowMode, setBuyNowMode] = useState<boolean>(false);
+
+  // Guarantee product page always lands at the very top on load / navigation
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (target: number, opts?: { immediate?: boolean }) => void } }).__lenis;
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [idOrSlug]);
 
   if (!activeProduct) {
     return (
