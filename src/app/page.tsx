@@ -23,6 +23,14 @@ const HOME_CARD_IMAGES: Readonly<Record<string, string>> = {
   "d-122-warm-apricot-sienna-bespoke-shirt": "/banners/shop/home-folded-apricot.webp",
 };
 
+const LATEST_DROP_CARD_IMAGES: Readonly<Record<string, string>> = {
+  ...HOME_CARD_IMAGES,
+  "lsp-378-13-arctic-frost-ice-blue-bespoke-shirt": "/banners/shop/home-folded-arctic-ice-blue.webp",
+  "lsp-029-37-deep-ink-indigo-bespoke-shirt": "/banners/shop/home-folded-deep-ink-indigo.webp",
+  "lsp-014-09-shadow-abyss-navy-bespoke-shirt": "/banners/shop/home-folded-shadow-abyss-navy.webp",
+  "lsp-014-07-lilac-whisper-bespoke-shirt": "/banners/shop/home-folded-lilac-whisper.webp",
+};
+
 const Divider = ({ wide = false }: { wide?: boolean }) =>
   wide ? (
     <div className="w-full my-4 sm:my-6 lg:my-8">
@@ -149,7 +157,7 @@ export default function Home() {
                 <ModernCollectionSection
                   collection={collection}
                   products={finalProducts}
-                  cardImages={HOME_CARD_IMAGES}
+                  cardImages={index === 0 ? LATEST_DROP_CARD_IMAGES : HOME_CARD_IMAGES}
                   headerTitle={
                     index === 0
                       ? c.firstCollectionTitle
