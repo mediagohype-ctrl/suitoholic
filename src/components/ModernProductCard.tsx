@@ -45,7 +45,8 @@ export default function ModernProductCard({
     ? "/new_shirts/shirt_13.jpg"
     : (cleanImages[0] || product.image || "/new_shirts/shirt_13.jpg");
   const activeMainImage = cardImage || wideMainImage || baseImage;
-  const imageAspect = cardImage ? "aspect-[529/646]" : isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]";
+  const isFoldedAsset = activeMainImage.includes("folded") || activeMainImage.includes("home-folded");
+  const imageAspect = (cardImage || isFoldedAsset) ? "aspect-[529/646]" : isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]";
   const imageSizes = isWideSpan ? "(max-width: 767px) 100vw, 50vw" : "(max-width: 767px) 50vw, 25vw";
 
   const handleToggleSave = (e: MouseEvent) => {

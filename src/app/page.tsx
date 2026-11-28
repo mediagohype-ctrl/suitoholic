@@ -137,26 +137,8 @@ export default function Home() {
               return true;
             });
 
-            // If this is the "Latest drop" section (index === 0), ensure the Royal Steel Blue Bengal Stripe shirt is strictly first
-            let orderedProducts = dedupedCollectionProducts;
-            if (index === 0) {
-              const targetShirt = products.find(
-                (p) =>
-                  p.id === 52 ||
-                  p.slug === "royal-blue-classic-bengal-stripe-twill-shirt" ||
-                  (p.image && p.image.includes("shirt_21")) ||
-                  (p.name && p.name.toLowerCase().includes("royal steel blue"))
-              );
-              if (targetShirt) {
-                const rest = dedupedCollectionProducts.filter(
-                  (p) =>
-                    p.id !== targetShirt.id &&
-                    p.slug !== targetShirt.slug &&
-                    p.image !== targetShirt.image
-                );
-                orderedProducts = [targetShirt, ...rest];
-              }
-            }
+            // Keep original collection sort order directly from database
+            const orderedProducts = dedupedCollectionProducts;
 
             // Strictly 8 products for the Shop by Fabrics section
             const finalProducts = isShopByFabrics ? orderedProducts.slice(0, 8) : orderedProducts;
