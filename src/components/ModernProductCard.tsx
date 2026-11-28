@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import type { MouseEvent } from "react";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import { ProductItem } from "@/data/products";
@@ -28,9 +28,6 @@ export default function ModernProductCard({
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSaved = isInWishlist(product.id);
 
-  // Resolved 100% color-matched full ghost mannequin shirt revealed on hover
-  const hoverFullShirt = getMatchingFullShirtImage(product);
-
   // Use gallery if available, or fallback to main image (clean any localhost URLs)
   const rawImages = (product.gallery && product.gallery.length > 0)
     ? product.gallery 
@@ -39,11 +36,8 @@ export default function ModernProductCard({
     .filter((img): img is string => Boolean(img && typeof img === "string" && img.trim().length > 0))
     .map(img => img.replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/"));
 
-  // Hover image: Full shirt ghost mannequin view or secondary gallery angle
-  const hoverImage = hoverFullShirt || (cleanImages.length > 1 ? cleanImages[1] : null);
-
   // When isWideSpan is true, prefer the secondary lookbook image if available for dramatic editorial width
-  const wideMainImage = isWideSpan && (hoverImage || (cleanImages.length > 1 ? cleanImages[1] : null));
+  const wideMainImage = !cardImage && isWideSpan && (getMatchingFullShirtImage(product) || cleanImages[1]);
   const isBeigeLinen =
     product.slug === "beige-textured-linen-cotton-shirt" ||
     (product.name || "").toLowerCase().includes("beige textured linen");
@@ -52,27 +46,22 @@ export default function ModernProductCard({
     : (cleanImages[0] || product.image || "/new_shirts/shirt_13.jpg");
   const activeMainImage = cardImage || wideMainImage || baseImage;
   const imageAspect = cardImage ? "aspect-[529/646]" : isWideSpan ? "aspect-[508/350]" : "aspect-[254/350]";
-  const activeHoverImage = wideMainImage ? (cleanImages[0] || baseImage) : hoverImage;
-
-  const [requestedHoverImage, setRequestedHoverImage] = useState<string | null>(null);
-  const [loadedHoverImage, setLoadedHoverImage] = useState<string | null>(null);
-  const showHoverImage = !!activeHoverImage && loadedHoverImage === activeHoverImage;
   const imageSizes = isWideSpan ? "(max-width: 767px) 100vw, 50vw" : "(max-width: 767px) 50vw, 25vw";
 
-  const handleToggleSave = (e: React.MouseEvent) => {
+  const handleToggleSave = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     toggleWishlist(product.id);
   };
 
   return (
-    <div className="group flex flex-col w-full">
+    <div className="flex flex-col w-full">
       {/* Upper Rectangular Image Container - Full Column Width with 254:350 Aspect Ratio (or 508:350 for Wide Span) */}
-      <div className={`relative w-full ${imageAspect} rounded-[10px] overflow-hidden bg-[#ECEAE5] transition-all duration-300`}>
+      <div className={`relative w-full ${imageAspect} rounded-[10px] overflow-hidden bg-[#ECEAE5]`}>
         {/* Main Product Image Container */}
         <Link
           href={`/product/${product.slug}`}
-          onMouseEnter={() => setRequestedHoverImage(activeHoverImage || null)}
+          prefetch={!onCardClick}
           onClick={(e) => {
             if (onCardClick) {
               e.preventDefault();
@@ -86,9 +75,7 @@ export default function ModernProductCard({
             src={activeMainImage}
             alt={product.name}
             sizes={imageSizes}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-102 ${
-              showHoverImage ? "group-hover:opacity-0" : ""
-            }`}
+            className="absolute inset-0 w-full h-full object-cover object-center"
             loading="lazy"
             decoding="async"
             onError={(e) => {
@@ -101,29 +88,6 @@ export default function ModernProductCard({
               }
             }}
           />
-
-          {/* Hover Image: Full Shirt View (Only Full Shirt shown on hover, clean background) */}
-          {activeHoverImage && activeHoverImage === requestedHoverImage && (
-            <div className={`absolute inset-0 w-full h-full bg-[#ECEAE5] opacity-0 ${showHoverImage ? "group-hover:opacity-100" : ""} transition-opacity duration-700 ease-out z-10 overflow-hidden pointer-events-none`}>
-              <CatalogImage
-                src={activeHoverImage}
-                sizes={imageSizes}
-                onLoad={() => setLoadedHoverImage(activeHoverImage)}
-                alt={`${product.name} Full Look`}
-                className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-102"
-                loading="eager"
-                decoding="async"
-                onError={(e) => {
-                  const img = e.currentTarget as HTMLImageElement;
-                  if (img.src.includes(".png")) {
-                    img.src = img.src.replace(/\.png(\?.*)?$/i, ".jpg$1");
-                  } else {
-                    img.style.display = "none";
-                  }
-                }}
-              />
-            </div>
-          )}
         </Link>
 
         {/* Top Right: Floating Outline Heart Wishlist Icon */}
@@ -151,6 +115,7 @@ export default function ModernProductCard({
         <div className="min-w-0 flex-1 space-y-1">
           <Link
             href={`/product/${product.slug}`}
+            prefetch={false}
             onClick={(e) => {
               if (onCardClick) {
                 e.preventDefault();
@@ -161,7 +126,7 @@ export default function ModernProductCard({
           >
             <h3 
               title={product.name}
-              className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black hover:opacity-75 uppercase transition-opacity truncate leading-snug"
+              className="font-sans font-bold text-[10.5px] sm:text-xs tracking-[0.16em] text-black uppercase truncate leading-snug"
             >
               {product.name}
             </h3>

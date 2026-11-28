@@ -69,7 +69,7 @@ export default function YouMayAlsoLikeSection({
                     onProductClick(item);
                   }
                 }}
-                className="group relative block shrink-0 w-[230px] sm:w-[270px] md:w-[300px] lg:w-[330px] aspect-[3/4] overflow-hidden bg-[#ECEAE5] cursor-pointer"
+                className="relative block shrink-0 w-[230px] sm:w-[270px] md:w-[300px] lg:w-[330px] aspect-[3/4] overflow-hidden bg-[#ECEAE5] cursor-pointer"
                 title={item.name}
               >
                 {/* Product Image: Clean, high-resolution portrait format without any text, price or badges */}
@@ -79,11 +79,8 @@ export default function YouMayAlsoLikeSection({
                   alt={item.name}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover object-top"
                 />
-
-                {/* Subtle Luxury Hover Vignette */}
-                <div className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
               </Link>
             );
           })}
