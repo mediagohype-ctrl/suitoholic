@@ -13,7 +13,7 @@ interface ModernCollectionSectionProps {
   products: ProductItem[];
   headerTitle?: string;
   cardsPerView?: number;
-  cardImages?: Readonly<Record<string, string>>;
+  cardImages?: Readonly<Partial<Record<string, string>>>;
 }
 
 const FALLBACK_FABRIC_ITEMS: ProductItem[] = [

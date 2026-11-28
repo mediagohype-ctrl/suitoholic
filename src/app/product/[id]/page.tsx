@@ -33,8 +33,16 @@ import confetti from"canvas-confetti";
 import CustomizationModal from "@/components/CustomizationModal";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import CatalogImage from "@/components/CatalogImage";
-import ProductModelPreview, { getFabricBackground, productModelPhotos, useProductModelFabric } from "@/components/ProductModelPreview";
+import ProductModelPreview, { getFabricBackground, getModelStripeStyle, productModelPhotos, useProductModelFabric } from "@/components/ProductModelPreview";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
+import { EXECUTIVE_STRIPED_CARD_IMAGES, LATEST_DROP_CARD_IMAGES } from "@/data/homeCardImages";
+
+const mineralSageModelPhotos = [
+  "/products/mineral-sage-model-studio.webp",
+  "/products/mineral-sage-model-armchair.webp",
+  "/products/mineral-sage-model-garden.webp",
+  "/products/mineral-sage-model-short-sleeve.webp",
+];
 
 // Icon keys usable in the productPage.badges content
 const BADGE_ICONS: Record<string, LucideIcon> = {
@@ -67,13 +75,23 @@ const triggerConfetti = () => {
 export default function ProductDetailPage() {
   const params = useParams();
   const idOrSlug = params?.id as string;
-  const { products, getProduct } = useCatalog();
+  const { products, homeCollections, getProduct } = useCatalog();
   const c = useContent("productPage");
   const { addItem, busy } = useCart();
   const router = useRouter();
 
   const activeProduct = getProduct(idOrSlug);
-  const { color: modelColor, stripeColor } = useProductModelFabric(activeProduct);
+  const latestDrop = homeCollections.find(({ id }) => id !== "trousers" && id !== "tshirts");
+  const isLatestDrop = latestDrop && activeProduct?.category === latestDrop.id;
+  const isExecutiveStriped = activeProduct?.category === "formal_stripes";
+  const modelFabric = (isLatestDrop || isExecutiveStriped) && activeProduct
+    ? [activeProduct.fabric, activeProduct.threadCount, activeProduct.name].filter(Boolean).join(" ")
+    : undefined;
+  const modelStripeStyle = isExecutiveStriped && activeProduct ? getModelStripeStyle(activeProduct) : undefined;
+  const fabricPhoto = modelFabric && activeProduct
+    ? (isLatestDrop ? LATEST_DROP_CARD_IMAGES[activeProduct.slug] : undefined) ?? activeProduct.gallery?.find((image) => image?.trim())
+    : undefined;
+  const { color: modelColor, stripeColor } = useProductModelFabric(activeProduct, fabricPhoto);
   const [photoSelection, setPhotoSelection] = useState({ productSlug: "", index: 0 });
   const selectedImageIndex = photoSelection.productSlug === activeProduct?.slug ? photoSelection.index : 0;
 
@@ -152,6 +170,7 @@ export default function ProductDetailPage() {
     ? "/generated/soft_ivory_models/character_1_soft_ivory.jpg"
     : "";
   const productPhotos = [...new Set([
+    isExecutiveStriped ? EXECUTIVE_STRIPED_CARD_IMAGES[activeProduct.slug] : "",
     onModelPhoto,
     ...matchingModelPhotos,
     referenceModelPhoto,
@@ -160,7 +179,7 @@ export default function ProductDetailPage() {
     armchairModelPhoto,
     activeProduct.image,
     matchingFull,
-  ].filter(Boolean).map((image) => {
+  ].filter((image): image is string => Boolean(image)).map((image) => {
     const path = image.trim().replace(/^https?:\/\/(localhost|127\.0\.0\.1):4000\/?/i, "/");
     return path === "/products/coral-bengal-stripe-model-garden.webp"
       ? "/products/coral-bengal-stripe-model-garden-v2.webp"
@@ -169,7 +188,9 @@ export default function ProductDetailPage() {
     && !(isSageBengal && path === "/customizer/shirt_model_sage.png")))];
   const fabricModelPhotos = isCoralProduct
     ? [studioModelPhoto, armchairModelPhoto, "/products/coral-bengal-stripe-model-garden-v2.webp", "/products/coral-bengal-stripe-model-curly.webp"]
-    : matchingModelPhotos;
+    : activeProduct.slug.replace(/^suitoholic-/, "") === "d-124-mineral-sage-slate-bespoke-shirt"
+      ? mineralSageModelPhotos
+      : matchingModelPhotos;
   const gallery = [...new Set([
     productPhotos[0] ?? "/shirt_classic_white.jpg",
     ...(fabricModelPhotos.length ? fabricModelPhotos : productModelPhotos.map(({ src }) => src)),
@@ -297,6 +318,9 @@ export default function ProductDetailPage() {
                       photo={selectedModel}
                       color={modelColor}
                       pattern={modelPattern}
+                      fabric={modelFabric}
+                      stripeStyle={modelStripeStyle}
+                      stripeColor={stripeColor}
                       alt={selectedModel.label + " · " + (modelColor ? activeProduct.name + " color preview" : "fit reference")}
                     />
                     <figcaption className="absolute bottom-2 left-2 rounded bg-black/75 px-2 py-1 text-xs text-white">
@@ -359,7 +383,7 @@ export default function ProductDetailPage() {
                       :"border-[#E5E3DD] opacity-75 hover:opacity-100"
                       }`}
                   >
-                    {model ? <ProductModelPreview photo={model} color={modelColor} pattern={modelPattern} alt="" thumbnail /> : <CatalogImage
+                    {model ? <ProductModelPreview photo={model} color={modelColor} pattern={modelPattern} fabric={modelFabric} stripeStyle={modelStripeStyle} stripeColor={stripeColor} alt="" thumbnail /> : <CatalogImage
                       src={imgUrl}
                       alt=""
                       sizes="112px"

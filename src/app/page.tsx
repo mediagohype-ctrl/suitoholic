@@ -14,22 +14,7 @@ import NewsletterSection from "@/components/NewsletterSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FaqSection from "@/components/FaqSection";
 import { useCatalog, useContent } from "@/context/SiteDataProvider";
-
-const HOME_CARD_IMAGES: Readonly<Record<string, string>> = {
-  "soft-ivory-white-egyptian-cotton-shirt": "/generated/soft_ivory_models/character_1_soft_ivory.jpg",
-  "d-116-pastel-lavender-mist-bespoke-shirt": "/banners/shop/home-folded-lavender.webp",
-  "d-120-imperial-royal-plum-bespoke-shirt": "/banners/shop/home-folded-plum.webp",
-  "d-121-desert-khaki-bespoke-twill-shirt": "/banners/shop/home-folded-khaki.webp",
-  "d-122-warm-apricot-sienna-bespoke-shirt": "/banners/shop/home-folded-apricot.webp",
-};
-
-const LATEST_DROP_CARD_IMAGES: Readonly<Record<string, string>> = {
-  ...HOME_CARD_IMAGES,
-  "lsp-378-13-arctic-frost-ice-blue-bespoke-shirt": "/banners/shop/home-folded-arctic-ice-blue.webp",
-  "lsp-029-37-deep-ink-indigo-bespoke-shirt": "/banners/shop/home-folded-deep-ink-indigo.webp",
-  "lsp-014-09-shadow-abyss-navy-bespoke-shirt": "/banners/shop/home-folded-shadow-abyss-navy.webp",
-  "lsp-014-07-lilac-whisper-bespoke-shirt": "/banners/shop/home-folded-lilac-whisper.webp",
-};
+import { EXECUTIVE_STRIPED_CARD_IMAGES, HOME_CARD_IMAGES, LATEST_DROP_CARD_IMAGES } from "@/data/homeCardImages";
 
 const Divider = ({ wide = false }: { wide?: boolean }) =>
   wide ? (
@@ -157,7 +142,7 @@ export default function Home() {
                 <ModernCollectionSection
                   collection={collection}
                   products={finalProducts}
-                  cardImages={index === 0 ? LATEST_DROP_CARD_IMAGES : HOME_CARD_IMAGES}
+                  cardImages={index === 0 ? LATEST_DROP_CARD_IMAGES : colId === "formal_stripes" ? EXECUTIVE_STRIPED_CARD_IMAGES : HOME_CARD_IMAGES}
                   headerTitle={
                     index === 0
                       ? c.firstCollectionTitle
