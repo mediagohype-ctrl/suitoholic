@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { allProducts, type ProductItem } from "@/data/products";
+import { getModelStripePanels } from "./modelStripePanels";
 
 const poses = [
   {
@@ -192,6 +193,44 @@ export function getModelStripeStyle(product: ProductItem) {
 }
 
 type ModelStripeStyle = ReturnType<typeof getModelStripeStyle>;
+const stripeCoordinates = new Map<string, Float32Array>();
+
+function getStripeCoordinates(photo: ModelPhoto) {
+  const cached = stripeCoordinates.get(photo.src);
+  if (cached) return cached;
+
+  const { width, height } = photo;
+  const values = new Float32Array(width * height);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const side = (x - width / 2) / width;
+      values[y * width + x] = x + y * 0.045 + side * (y / height - 0.37) * 130;
+    }
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (context) {
+    for (const { path, angle, phase, bend = 0 } of getModelStripePanels(photo.src)) {
+      context.clearRect(0, 0, width, height);
+      context.fill(new Path2D(path));
+      const mask = context.getImageData(0, 0, width, height).data;
+      const radians = angle * Math.PI / 180;
+      const acrossX = Math.cos(radians);
+      const acrossY = Math.sin(radians);
+      for (let pixel = 0; pixel < values.length; pixel++) {
+        if (mask[pixel * 4 + 3] < 128) continue;
+        const x = pixel % width;
+        const y = Math.floor(pixel / width);
+        values[pixel] = x * acrossX + y * acrossY + phase + bend * Math.sin(y / 39);
+      }
+    }
+  }
+  stripeCoordinates.set(photo.src, values);
+  return values;
+}
 
 function FabricOnModel({ photo, color, fabric, stripeStyle, stripeColor }: {
   photo: ModelPhoto;
@@ -218,6 +257,7 @@ function FabricOnModel({ photo, color, fabric, stripeStyle, stripeColor }: {
       const yarn = fabricRGB(stripeColor ?? "#f4f0ea").map(channel => channel * 0.95);
       const stripePeriod = photo.width * (stripeStyle === "pinstripe" ? 0.012 : 0.022);
       const stripeWidth = stripePeriod * (stripeStyle === "pinstripe" ? 0.17 : stripeStyle === "jacquard" ? 0.34 : 0.5);
+      const stripeU = stripeStyle ? getStripeCoordinates(photo) : undefined;
       const yarnHeadroom = 255 - Math.max(...yarn);
       const yarnHighlightStrength = Math.max(...yarn) * 0.29 + 45;
       const darkFabric = unit((118 - Math.max(...midtone)) / 72);
@@ -241,12 +281,12 @@ function FabricOnModel({ photo, color, fabric, stripeStyle, stripeColor }: {
         const x = (i / 4) % photo.width;
         const y = Math.floor(i / 4 / photo.width);
         const shade = light / photo.fabricLight;
-        // Let the stripe direction follow the drape of the original shirt.
-        const side = (x - photo.width / 2) / photo.width;
-        const vertical = (y - photo.height * 0.37) / photo.height;
-        const drape = y * 0.045 + side * vertical * 130 + (shade - 1) * 2.3;
-        const stripeDistance = Math.abs(((x + drape) % stripePeriod + stripePeriod) % stripePeriod - stripePeriod / 2);
-        const yarnWeight = stripeStyle ? unit(stripeWidth / 2 + 0.5 - stripeDistance) : 0;
+        let yarnWeight = 0;
+        if (stripeU) {
+          const position = stripeU[i / 4] + (shade - 1) * 2.3;
+          const stripeDistance = Math.abs(((position % stripePeriod + stripePeriod) % stripePeriod) - stripePeriod / 2);
+          yarnWeight = unit(stripeWidth / 2 + 0.5 - stripeDistance);
+        }
         const weave = isTwill
           ? 1.6 * Math.sin(x * 1.56 + y * 1.22) + 0.55 * Math.cos(y * 2.2 - x * 0.38)
           : (isTextured ? 2.1 : 0.75) * Math.sin(x * 1.7) * Math.sin(y * 2.1);

@@ -34,6 +34,7 @@ import CustomizationModal from "@/components/CustomizationModal";
 import CommonAtelierShowcase from "@/components/CommonAtelierShowcase";
 import CatalogImage from "@/components/CatalogImage";
 import ProductModelPreview, { getFabricBackground, getModelStripeStyle, productModelPhotos, useProductModelFabric } from "@/components/ProductModelPreview";
+import WovenStripePortrait, { wovenStripePortraits } from "@/components/WovenStripePortrait";
 import { getMatchingFullShirtImage } from "@/lib/matchingFullShirt";
 import { EXECUTIVE_STRIPED_CARD_IMAGES, LATEST_DROP_CARD_IMAGES } from "@/data/homeCardImages";
 
@@ -43,6 +44,17 @@ const mineralSageModelPhotos = [
   "/products/mineral-sage-model-garden.webp",
   "/products/mineral-sage-model-short-sleeve.webp",
 ];
+
+const portraitPoses = ["studio", "armchair", "garden", "short-sleeve"];
+const getDedicatedPortraits = (prefix: string) => portraitPoses.map((pose) => `/products/${prefix}-model-${pose}.webp`);
+const dedicatedFabricPortraits: Readonly<Partial<Record<string, readonly string[]>>> = {
+  "d-124-mineral-sage-slate-bespoke-shirt": mineralSageModelPhotos,
+  "forest-green-bengal-striped-twill-shirt": wovenStripePortraits.map(({ src }) => src),
+  "pastel-pink-striped-jacquard-shirt": getDedicatedPortraits("pastel-pink-jacquard"),
+  "beige-cream-bengal-striped-twill-shirt": getDedicatedPortraits("beige-cream-bengal"),
+  "baby-pink-bengal-striped-twill-shirt": getDedicatedPortraits("baby-pink-bengal"),
+  "ice-blue-bengal-striped-twill-shirt": getDedicatedPortraits("ice-blue-bengal"),
+};
 
 // Icon keys usable in the productPage.badges content
 const BADGE_ICONS: Record<string, LucideIcon> = {
@@ -186,17 +198,20 @@ export default function ProductDetailPage() {
       : path;
   }).filter((path) => path && !(isCoralProduct && excludedCoralGalleryPhotos.includes(path))
     && !(isSageBengal && path === "/customizer/shirt_model_sage.png")))];
+  const modelProductSlug = activeProduct.slug.replace(/^suitoholic-/, "");
   const fabricModelPhotos = isCoralProduct
     ? [studioModelPhoto, armchairModelPhoto, "/products/coral-bengal-stripe-model-garden-v2.webp", "/products/coral-bengal-stripe-model-curly.webp"]
-    : activeProduct.slug.replace(/^suitoholic-/, "") === "d-124-mineral-sage-slate-bespoke-shirt"
-      ? mineralSageModelPhotos
-      : matchingModelPhotos;
+    : dedicatedFabricPortraits[modelProductSlug] ?? matchingModelPhotos;
+  const wovenPortraits = !fabricModelPhotos.length && modelStripeStyle === "bengal"
+    ? wovenStripePortraits
+    : undefined;
   const gallery = [...new Set([
     productPhotos[0] ?? "/shirt_classic_white.jpg",
-    ...(fabricModelPhotos.length ? fabricModelPhotos : productModelPhotos.map(({ src }) => src)),
+    ...(fabricModelPhotos.length ? fabricModelPhotos : (wovenPortraits ?? productModelPhotos).map(({ src }) => src)),
     ...productPhotos.slice(1),
   ])];
   const selectedImage = gallery[selectedImageIndex] ?? gallery[0];
+  const selectedWoven = wovenPortraits?.find(({ src }) => src === selectedImage);
   const selectedModel = productModelPhotos.find(({ src }) => src === selectedImage);
   const modelPattern = getFabricBackground(activeProduct, modelColor, 1, stripeColor);
   const discount = activeProduct.compareAtPrice && activeProduct.rawPrice > 0
@@ -312,7 +327,15 @@ export default function ProductDetailPage() {
               <div
                 className={"relative w-fit max-w-full justify-self-center overflow-hidden lg:col-start-2 lg:row-start-1"}
               >
-                {selectedModel ? (
+                {selectedWoven ? (
+                  <figure>
+                    <WovenStripePortrait key={selectedImage} photo={selectedWoven} color={modelColor}
+                      alt={`${activeProduct.name} fabric preview · ${selectedWoven.label}`} />
+                    <figcaption className="absolute bottom-2 left-2 rounded bg-black/75 px-2 py-1 text-xs text-white">
+                      Color preview
+                    </figcaption>
+                  </figure>
+                ) : selectedModel ? (
                   <figure>
                     <ProductModelPreview
                       photo={selectedModel}
@@ -371,11 +394,12 @@ export default function ProductDetailPage() {
               <div key={activeProduct.slug} role="group" aria-label="Product photos" data-lenis-prevent tabIndex={0} className="flex gap-3 overflow-x-auto p-1 lg:col-start-1 lg:row-start-1 lg:max-h-[min(82svh,820px)] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto lg:overscroll-y-contain">
                 {gallery.map((imgUrl, idx) => {
                   const model = productModelPhotos.find(({ src }) => src === imgUrl);
+                  const woven = wovenPortraits?.find(({ src }) => src === imgUrl);
                   return (
                   <button
                     key={imgUrl}
                     type="button"
-                    aria-label={model ? "Show model preview · " + model.label : imgUrl === armchairModelPhoto ? "Show shirt on model in armchair" : imgUrl === studioModelPhoto ? "Show shirt on seated studio model" : imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
+                    aria-label={woven ? "Show model preview · " + woven.label : model ? "Show model preview · " + model.label : imgUrl === armchairModelPhoto ? "Show shirt on model in armchair" : imgUrl === studioModelPhoto ? "Show shirt on seated studio model" : imgUrl === onModelPhoto ? "Show shirt on model" : imgUrl.includes("coral-bengal-stripe-model-garden") ? "Show shirt on garden party model" : `Show product photo ${idx + 1} of ${gallery.length}`}
                     aria-pressed={selectedImageIndex === idx}
                     onClick={() => setPhotoSelection({ productSlug: activeProduct.slug, index: idx })}
                     className={`relative aspect-[4/5] w-16 shrink-0 cursor-pointer overflow-hidden border bg-[#f7f6f3] transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-full ${selectedImageIndex === idx
@@ -383,7 +407,7 @@ export default function ProductDetailPage() {
                       :"border-[#E5E3DD] opacity-75 hover:opacity-100"
                       }`}
                   >
-                    {model ? <ProductModelPreview photo={model} color={modelColor} pattern={modelPattern} fabric={modelFabric} stripeStyle={modelStripeStyle} stripeColor={stripeColor} alt="" thumbnail /> : <CatalogImage
+                    {woven ? <WovenStripePortrait photo={woven} color={modelColor} alt="" thumbnail /> : model ? <ProductModelPreview photo={model} color={modelColor} pattern={modelPattern} fabric={modelFabric} stripeStyle={modelStripeStyle} stripeColor={stripeColor} alt="" thumbnail /> : <CatalogImage
                       src={imgUrl}
                       alt=""
                       sizes="112px"
